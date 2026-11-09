@@ -478,7 +478,7 @@ def page_tests(lessons):
   <div class="test-card test-pack">
    <p class="eyebrow eyebrow-p">Coming soon</p>
    <h2>Grade 5 Practice Pack</h2>
-   <p class="price"><b>$14.99</b> for 10 full tests</p>
+   <p class="price"><b>$19.99</b> for 10 full tests</p>
    <ul class="ticks">
     <li>10 more tests in the same format</li>
     <li>200 new problems, every one checked by computer</li>
