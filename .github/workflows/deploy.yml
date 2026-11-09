@@ -21,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -33,7 +35,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add data/live.json
             git commit -m "Update public lessons"
-            git push
+            git pull --rebase origin main && git push || echo "could not save live.json; the site still deploys"
           fi
       - uses: actions/upload-pages-artifact@v3
         with:
