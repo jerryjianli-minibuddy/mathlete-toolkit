@@ -207,7 +207,7 @@ def card(l, root, h="h3"):
     href = f'{root}lessons/{l["slug"]}/'
     data = " ".join(l["contests"])
     if l["live"]:
-        badge = f'<span class="dur">{mmss(l["seconds"])}</span>'
+        badge = ''
         cls = "card"
     else:
         badge = '<span class="soon">Coming soon</span>'
@@ -380,7 +380,7 @@ def page_lesson(l, lessons):
     if l["live"]:
         ld = json.dumps({"@context": "https://schema.org", "@type": "VideoObject", "name": l["youtube_title"],
                          "description": desc, "thumbnailUrl": [f"{SITE}/assets/covers/{l['slug']}.jpg"],
-                         "uploadDate": UPLOADED, "duration": iso_dur(l["seconds"]),
+                         "uploadDate": UPLOADED,
                          "embedUrl": f"https://www.youtube.com/embed/{l['video_id']}",
                          "contentUrl": f"https://www.youtube.com/watch?v={l['video_id']}",
                          "educationalLevel": "Grade 5", "learningResourceType": "Video lesson"})
@@ -408,7 +408,7 @@ def page_lesson(l, lessons):
     <div class="lesson-actions">{status}</div>
    </div>
    <aside class="lesson-side">
-    <p class="tool-num">Tool #{l['tool_num']} &middot; Grade 5 &middot; {e(l['family'])}{' &middot; ' + mmss(l['seconds']) if l['live'] else ''}</p>
+    <p class="tool-num">Tool #{l['tool_num']} &middot; Grade 5 &middot; {e(l['family'])}</p>
     <h1>{e(l['tool'])}</h1>
     <p class="lesson-hook">{e(l['hook'])}</p>
     <div class="chips">{chips(l, root)}</div>
