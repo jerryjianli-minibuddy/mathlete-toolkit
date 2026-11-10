@@ -491,6 +491,42 @@ def page_tests(lessons):
     write("mock-tests/index.html", body)
 
 
+def page_free():
+    """keymovemath.com/free: the address every video and description points to for the free test (Nov 10).
+    Signups still go to the same Google Form."""
+    root = "../"
+    body = head(f"Free Grade 5 Math Contest Test | {NAME}",
+                "Get the free 20-problem Grade 5 competition math test: answer key included, and a QR code beside every problem opens the key move for it.",
+                "free/", root)
+    body += nav(root, "tests")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <p class="eyebrow">Free</p>
+  <h1>Your free Grade 5 contest test</h1>
+  <p class="lead">Twenty problems at real test length. Stuck on one? Scan its QR code and the key move for it opens. One key at a time.</p>
+ </div>
+</section>
+<section class="sec sec-tight">
+ <div class="wrap tests">
+  <div class="test-card test-free">
+   <h2>Grade 5 Diagnostic Test</h2>
+   <ul class="ticks">
+    <li>20 original contest-style problems, easy to hard</li>
+    <li>45 minutes, no calculator</li>
+    <li>Answer key on the last page</li>
+    <li>A QR code beside every problem opens its video lesson</li>
+   </ul>
+   <a class="btn btn-primary btn-lg" href="{FORM}" rel="noopener">Get the free test</a>
+   <p class="small">Fill in a short form (email, grade, contest) and the PDF link comes right up.</p>
+  </div>
+  <figure class="paper paper-lg"><img src="{root}assets/img/diagnostic-page1.webp" alt="First page of the Grade 5 Diagnostic Test" width="1105" height="1430" loading="lazy"><figcaption>Page 1 of the free Grade 5 Diagnostic Test</figcaption></figure>
+ </div>
+</section>
+"""
+    body += foot(root)
+    write("free/index.html", body)
+
+
 def page_about(lessons):
     root = "../"
     body = head(f"About | {NAME}",
@@ -585,7 +621,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "lessons/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 tools",
                f"{len(lessons)} tools for grade 5 contests, in the order we teach them. Start at Tool #1.", lessons,
                "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.")
@@ -598,6 +634,7 @@ def main():
         if sub:
             urls.append(C["slug"] + "/")
     page_tests(lessons)
+    page_free()
     page_about(lessons)
     page_404()
     for l in lessons:
