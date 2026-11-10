@@ -254,3 +254,4 @@ p { margin: 0 0 1em; }
 .singles small { color: var(--muted); font-size: .82rem; }
 .singles em { font-style: normal; font-weight: 800; color: var(--navy); }
 .soon-tag { font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--pink); white-space: nowrap; }
+.btn-buy { padding: .45rem 1rem; font-size: .9rem; background: var(--yellow, #FFD23F); color: #0E1A32; border-radius: 999px; font-weight: 800; white-space: nowrap; text-decoration: none; }

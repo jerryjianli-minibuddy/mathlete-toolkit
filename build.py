@@ -77,6 +77,26 @@ def load():
     return lessons
 
 
+def load_shop():
+    """Payhip checkout (Nov 10). Buy buttons show only once the store can take payments: on --check the
+    pack page is read, and Payhip's notice that no PayPal or Stripe account is connected keeps them as Coming soon."""
+    p = os.path.join(ROOT, "data/shop.json")
+    shop = json.load(open(p))
+    if "--check" in sys.argv:
+        try:
+            req = urllib.request.Request(shop["pack"], headers={"User-Agent": "Mozilla/5.0 keymovemath-site"})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                page = r.read().decode("utf-8", "replace")
+            ok = r.status == 200 and "unable to receive payments" not in page and "19.99" in page
+            if ok != shop["live"]:
+                shop["live"] = ok
+                json.dump(shop, open(p, "w"), indent=1)
+            print("checkout live:", ok)
+        except Exception as err:
+            print("checkout check skipped:", err)
+    return shop
+
+
 # ---------- pieces ----------
 
 def mark(size=34, cls="mark"):
@@ -459,8 +479,15 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None):
     write(f"{slug}/index.html", body)
 
 
-def page_tests(lessons):
+def page_tests(lessons, shop):
     root = "../"
+    live = shop["live"]
+    pack_btn = (f'<a class="btn btn-primary btn-lg" href="{e(shop["pack"])}">Buy all 10 for $19.99</a>' if live else
+                f'<a class="btn btn-ghost-d btn-lg" href="{root}free/">Coming soon: get the free test</a>')
+    singles = "\n".join(
+        f'    <li><span><b>Grade 5 Practice Test {n}</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em>'
+        + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
+        for n, u in enumerate(shop["tests"], 1))
     body = head(f"Grade 5 Math Contest Mock Tests | {NAME}",
                 "Grade 5 competition math mock tests: a free 20-problem diagnostic test, 10 practice tests at $3.99 each or $19.99 for all 10, each with an answer key and a lesson QR beside every problem.",
                 "mock-tests/", root)
@@ -486,7 +513,7 @@ def page_tests(lessons):
    <p class="small">Fill in a short form (email, grade, contest) and the PDF link comes right up.</p>
   </div>
   <div class="test-card test-pack">
-   <p class="eyebrow eyebrow-p">Coming soon</p>
+   <p class="eyebrow eyebrow-p">{"Best deal" if live else "Coming soon"}</p>
    <h2>Grade 5 Practice Pack</h2>
    <p class="price"><b>$19.99</b> for all 10 tests</p>
    <ul class="ticks">
@@ -494,22 +521,13 @@ def page_tests(lessons):
     <li>200 new problems, every one checked by computer</li>
     <li>Answer keys, plus a lesson QR on every problem</li>
    </ul>
-   <a class="btn btn-ghost-d btn-lg" href="{root}free/">Coming soon: get the free test</a>
+   {pack_btn}
   </div>
   <div class="test-singles">
    <h2>Single tests, $3.99 each</h2>
    <p class="small">Each one is a full 20-problem test with its answer key. Ten singles cost $39.90, so the pack is half price.</p>
    <ul class="singles">
-    <li><span><b>Grade 5 Practice Test 1</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
-    <li><span><b>Grade 5 Practice Test 2</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
-    <li><span><b>Grade 5 Practice Test 3</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
-    <li><span><b>Grade 5 Practice Test 4</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
-    <li><span><b>Grade 5 Practice Test 5</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
-    <li><span><b>Grade 5 Practice Test 6</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
-    <li><span><b>Grade 5 Practice Test 7</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
-    <li><span><b>Grade 5 Practice Test 8</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
-    <li><span><b>Grade 5 Practice Test 9</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
-    <li><span><b>Grade 5 Practice Test 10</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+{singles}
    </ul>
    <a class="btn btn-primary" href="{root}free/">Start with the free test</a>
   </div>
@@ -663,7 +681,7 @@ def main():
                    f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.")
         if sub:
             urls.append(C["slug"] + "/")
-    page_tests(lessons)
+    page_tests(lessons, load_shop())
     page_free()
     page_about(lessons)
     page_404()

@@ -1,0 +1,7 @@
+{
+ "store": "https://payhip.com/keymovemath",
+ "pack": "https://payhip.com/b/BVeZQ",
+ "tests": ["https://payhip.com/b/gAYfX", "https://payhip.com/b/3Q7Kx", "https://payhip.com/b/wD5bs", "https://payhip.com/b/vgUJE", "https://payhip.com/b/jvKAD",
+           "https://payhip.com/b/2eBRL", "https://payhip.com/b/9hZA2", "https://payhip.com/b/6d7KF", "https://payhip.com/b/O1RH3", "https://payhip.com/b/RDyJb"],
+ "live": false
+}
