@@ -412,13 +412,38 @@ def embed(l, root, eager=False):
             f'{"" if eager else " loading=lazy"}>{PLAY}</button>')
 
 
+def filter_box(lessons, contests=True, placeholder="Try: digits, area, speed"):
+    """Search box, contest buttons, topic menu and live-only switch over a .grid of cards (assets/js/site.js).
+    Without JS every lesson shows and the search box is a plain GET form."""
+    fams = sorted({l["family"] for l in lessons})
+    fam_opts = "".join(f'<option value="{e(f)}">{e(f)}</option>' for f in fams)
+    contest_row = ""
+    if contests:
+        contest_btns = "".join(
+            f'<button class="f" data-contest="{k}" aria-pressed="false">{e(C["short"])}</button>'
+            for k, C in CONTESTS.items() if not C.get("soon"))
+        contest_row = (f'<div class="f-row"><span class="f-label">Grade</span><button class="f" aria-pressed="true" disabled>Grade 5</button><span class="f-note">More grades coming</span></div>\n'
+                       f'   <div class="f-row"><span class="f-label">Contest</span><button class="f" data-contest="" aria-pressed="true">All</button>{contest_btns}</div>\n')
+    return f"""  <div class="filters" role="group" aria-label="Find and filter lessons">
+   <form class="f-row f-search" role="search" action="./" method="get">
+    <label class="f-label" for="q">Search</label>
+    <input type="search" id="q" name="q" placeholder="{placeholder}" autocomplete="off" enterkeyhint="search" aria-controls="lesson-grid">
+    <button class="f f-go" type="submit">Search</button>
+   </form>
+   {contest_row}   <div class="f-row"><label class="f-label" for="fam">Topic</label><select id="fam"><option value="">All topics</option>{fam_opts}</select>
+   <label class="f-check"><input type="checkbox" id="liveonly"> Live only</label></div>
+  </div>
+  <p class="count" id="count" aria-live="polite">{len(lessons)} lessons</p>
+  <div class="empty f-empty" hidden>
+   <h2>No lessons match.</h2>
+   <p>Try fewer words, or a different {"contest or " if contests else ""}topic.</p>
+   <button class="btn btn-primary" type="button" data-clear>Clear filters</button>
+  </div>
+"""
+
+
 def page_lessons(lessons):
     root = "../"
-    fams = sorted({l["family"] for l in lessons})
-    contest_btns = "".join(
-        f'<button class="f" data-contest="{k}" aria-pressed="false">{e(C["short"])}</button>'
-        for k, C in CONTESTS.items() if not C.get("soon"))
-    fam_opts = "".join(f'<option value="{e(f)}">{e(f)}</option>' for f in fams)
     n_live = sum(l["live"] for l in lessons)
     body = head(f"All Lessons | {NAME}",
                 "Every Key Move Math lesson in one place. Filter by contest (Math Kangaroo, Noetic, MATHCOUNTS) or topic. Free competition math videos.",
@@ -432,24 +457,7 @@ def page_lessons(lessons):
 </section>
 <section class="sec sec-tight">
  <div class="wrap">
-  <div class="filters" role="group" aria-label="Find and filter lessons">
-   <form class="f-row f-search" role="search" action="./" method="get">
-    <label class="f-label" for="q">Search</label>
-    <input type="search" id="q" name="q" placeholder="Try: digits, area, speed" autocomplete="off" enterkeyhint="search" aria-controls="lesson-grid">
-    <button class="f f-go" type="submit">Search</button>
-   </form>
-   <div class="f-row"><span class="f-label">Grade</span><button class="f" aria-pressed="true" disabled>Grade 5</button><span class="f-note">More grades coming</span></div>
-   <div class="f-row"><span class="f-label">Contest</span><button class="f" data-contest="" aria-pressed="true">All</button>{contest_btns}</div>
-   <div class="f-row"><label class="f-label" for="fam">Topic</label><select id="fam"><option value="">All topics</option>{fam_opts}</select>
-   <label class="f-check"><input type="checkbox" id="liveonly"> Live only</label></div>
-  </div>
-  <p class="count" id="count" aria-live="polite">{len(lessons)} lessons</p>
-  <div class="empty f-empty" hidden>
-   <h2>No lessons match.</h2>
-   <p>Try fewer words, or a different contest or topic.</p>
-   <button class="btn btn-primary" type="button" data-clear>Clear filters</button>
-  </div>
-  {grid(lessons, root, "h2", search=True, gid="lesson-grid")}
+{filter_box(lessons)}  {grid(lessons, root, "h2", search=True, gid="lesson-grid")}
  </div>
 </section>
 """
@@ -538,7 +546,12 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None):
     root = "../"
     body = head(title, desc, f"{slug}/", root)
     body += nav(root, active or slug)
-    inner = grid(lessons, root, "h2") if lessons else f"""<div class="empty">
+    if len(lessons) > 6:
+        inner = filter_box(lessons, contests=False) + grid(lessons, root, "h2", search=True, gid="lesson-grid")
+    elif lessons:
+        inner = grid(lessons, root, "h2")
+    else:
+        inner = f"""<div class="empty">
   <h2>Lessons are on the way</h2>
   <p>We are building this set now. Many Grade 5 tools already carry over, so start there.</p>
   <a class="btn btn-primary" href="{root}grade-5/">See the Grade 5 tools</a>
