@@ -69,10 +69,24 @@ def iso_dur(s):
 
 # ---------- data ----------
 
+def is_public(vid, known):
+    """True when YouTube will play this video for anyone (public or unlisted)."""
+    url = "https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v=" + vid
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "keymovemath-site"}), timeout=20) as r:
+            return r.status == 200
+    except urllib.error.HTTPError as err:
+        return known and err.code not in (401, 403, 404)  # YouTube hiccup: keep what we knew
+    except Exception:
+        return known
+
+
 def load():
     lessons = json.load(open(os.path.join(ROOT, "data/lessons.json")))
     live_path = os.path.join(ROOT, "data/live.json")
-    live = set(json.load(open(live_path))["live"]) if os.path.exists(live_path) else set()
+    saved = json.load(open(live_path)) if os.path.exists(live_path) else {}
+    live = set(saved.get("live", []))
+    shorts = set(saved.get("shorts", []))
     if "--check" in sys.argv:
         found = set()
         for l in lessons:
@@ -90,10 +104,14 @@ def load():
                     found.add(l["video_id"])
         live = found
         ids = [l["video_id"] for l in lessons if l["video_id"] in live]
-        json.dump({"live": ids}, open(live_path, "w"), indent=1)
-        print(f"live: {len(ids)} of {len(lessons)}")
+        # Shorts go public an hour after their lesson; a lesson page links its Short only once it plays (Nov 10).
+        shorts = {l["short_id"] for l in lessons if l.get("short_id") and is_public(l["short_id"], l["short_id"] in shorts)}
+        sids = [l["short_id"] for l in lessons if l.get("short_id") in shorts]
+        json.dump({"live": ids, "shorts": sids}, open(live_path, "w"), indent=1)
+        print(f"live: {len(ids)} of {len(lessons)}, shorts: {len(sids)}")
     for l in lessons:
         l["live"] = l["video_id"] in live
+        l["short_live"] = l["live"] and l.get("short_id") in shorts
         l["contests"] = [c for c in l["contests"] if c in CONTESTS]
     return lessons
 
@@ -493,6 +511,9 @@ def page_lesson(l, lessons):
     body += nav(root, "lessons")
     status = (f'<a class="btn btn-yt" href="https://www.youtube.com/watch?v={l["video_id"]}" rel="noopener">{YT_ICON}<span>Watch on YouTube</span></a>'
               if l["live"] else '<p class="soon-note">This lesson goes live soon. New lessons come out every day at 7 AM and 4 PM Pacific.</p>')
+    if l.get("short_live"):
+        status += (f'<a class="btn btn-ghost-d" href="https://www.youtube.com/shorts/{l["short_id"]}" rel="noopener">'
+                   f'1-minute Short</a>')
     status += f'<a class="btn btn-primary" href="{root}free/">Free practice test</a>'
     if nxt:
         next_up = (f'<p class="next-up">Got this one? Next key: <a href="../{nxt["slug"]}/">Tool #{nxt["tool_num"]}, '
