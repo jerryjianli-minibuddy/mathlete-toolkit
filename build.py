@@ -140,20 +140,33 @@ def head(title, desc, path, root, image=None, noindex=False, extra=""):
 
 
 def nav(root, active=""):
-    def a(href, label, key):
+    """Header plus the always-visible browse bar (Jian, Nov 10: navigation at the top so people can go straight
+    to the material they want). On phones the bar scrolls sideways; there is no hidden menu."""
+    def a(href, label, key, cls="cat"):
         cur = ' aria-current="page"' if key == active else ""
-        return f'<a href="{root}{href}"{cur}>{label}</a>'
+        return f'<a class="{cls}" href="{root}{href}"{cur}>{label}</a>'
+    contests = "".join(
+        a(f'{C["slug"]}/', e(C["short"]) + (' <small>soon</small>' if C.get("soon") else ""), C["slug"])
+        for C in CONTESTS.values())
     return f"""<header class="top">
  <div class="wrap top-in">
   <a class="brand" href="{root}" aria-label="{NAME} home">{mark(34)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
-  <button class="menu" aria-expanded="false" aria-controls="nav" aria-label="Menu"><span></span><span></span><span></span></button>
-  <nav id="nav">
-   {a('lessons/', 'Lessons', 'lessons')}
-   {a('mock-tests/', 'Mock tests', 'tests')}
-   {a('about/', 'About', 'about')}
-   <a class="btn btn-yt" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe</span></a>
-  </nav>
+  <a class="btn btn-yt btn-sub" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe</span></a>
  </div>
+ <nav class="catbar" aria-label="Browse">
+  <div class="wrap cat-in">
+   {a('free/', 'Free test', 'free', 'cat cat-free')}
+   {a('mock-tests/', 'Mock tests', 'tests')}
+   <span class="cat-label">By grade</span>
+   {a('grade-5/', 'Grade 5', 'grade-5')}
+   <span class="cat cat-soon">Grades 1 to 12 <small>soon</small></span>
+   <span class="cat-label">By contest</span>
+   {contests}
+   <span class="cat-label">More</span>
+   {a('lessons/', 'All lessons', 'lessons')}
+   {a('about/', 'About', 'about')}
+  </div>
+ </nav>
 </header>
 <main id="main">
 """
@@ -174,7 +187,7 @@ def foot(root):
   <div>
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
-   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{FORM}" rel="noopener">Free Grade 5 test</a></li></ul>
+   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Free Grade 5 test</a></li></ul>
   </div>
   <div>
    <h3>By contest</h3>
@@ -230,7 +243,7 @@ def test_cta(root, compact=False):
    <p class="eyebrow">Free download</p>
    <h2>Take the Grade 5 Diagnostic Test</h2>
    <p>20 contest problems, easy to hard, 45 minutes, answer key included. Next to every problem is a QR code that opens the video lesson for it, so every miss turns into a lesson.</p>
-   <a class="btn btn-primary btn-lg" href="{FORM}" rel="noopener">Get the free test</a>
+   <a class="btn btn-primary btn-lg" href="{root}free/">Get the free test</a>
   </div>
   {'' if compact else f'<a class="paper" href="{root}mock-tests/"><img src="{root}assets/img/diagnostic-page1.webp" alt="First page of the Grade 5 Diagnostic Test" width="1105" height="1430" loading="lazy"></a>'}
  </div>
@@ -277,7 +290,7 @@ def page_home(lessons):
    <h1>Competition math, <span>one key at a time.</span></h1>
    <p class="lead">Hard contest problems get easy once you know the key move. Every lesson hands you one key (a tool with a name), shows the trap most kids fall into, then works problems from easy to hardest, so the next one is yours.</p>
    <div class="hero-cta">
-    <a class="btn btn-primary btn-lg" href="{FORM}" rel="noopener">Get the free Grade 5 test</a>
+    <a class="btn btn-primary btn-lg" href="{root}free/">Get the free Grade 5 test</a>
     <a class="btn btn-ghost btn-lg" href="lessons/">Watch the lessons</a>
    </div>
    <ul class="hero-stats"><li><b>{len(lessons)}</b> Grade 5 tools</li><li><b>{n_live}</b> live now</li>{"<li><b>2</b> new a day</li>" if n_live < len(lessons) else "<li><b>Free</b> to watch</li>"}</ul>
@@ -425,10 +438,10 @@ def page_lesson(l, lessons):
     write(f"lessons/{l['slug']}/index.html", body)
 
 
-def page_group(slug, title, h1, lead, lessons, desc, soon=False, active="lessons"):
+def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None):
     root = "../"
     body = head(title, desc, f"{slug}/", root)
-    body += nav(root, active)
+    body += nav(root, active or slug)
     inner = grid(lessons, root, "h2") if lessons else f"""<div class="empty">
   <h2>Lessons are on the way</h2>
   <p>We are building this set now. Many Grade 5 tools already carry over, so start there.</p>
@@ -448,8 +461,8 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active="lessons
 
 def page_tests(lessons):
     root = "../"
-    body = head(f"Free Grade 5 Mock Test | {NAME}",
-                "A free 20-problem Grade 5 competition math diagnostic test with answer key and a QR code to a video lesson beside every problem.",
+    body = head(f"Grade 5 Math Contest Mock Tests | {NAME}",
+                "Grade 5 competition math mock tests: a free 20-problem diagnostic test, 10 practice tests at $3.99 each or $19.99 for all 10, each with an answer key and a lesson QR beside every problem.",
                 "mock-tests/", root)
     body += nav(root, "tests")
     body += f"""<section class="page-head">
@@ -469,19 +482,36 @@ def page_tests(lessons):
     <li>Answer key on the last page</li>
     <li>A QR code beside every problem opens its video lesson</li>
    </ul>
-   <a class="btn btn-primary btn-lg" href="{FORM}" rel="noopener">Get the free test</a>
+   <a class="btn btn-primary btn-lg" href="{root}free/">Get the free test</a>
    <p class="small">Fill in a short form (email, grade, contest) and the PDF link comes right up.</p>
   </div>
   <div class="test-card test-pack">
    <p class="eyebrow eyebrow-p">Coming soon</p>
    <h2>Grade 5 Practice Pack</h2>
-   <p class="price"><b>$19.99</b> for 10 full tests, or $3.99 per test</p>
+   <p class="price"><b>$19.99</b> for all 10 tests</p>
    <ul class="ticks">
     <li>10 more tests in the same format</li>
     <li>200 new problems, every one checked by computer</li>
     <li>Answer keys, plus a lesson QR on every problem</li>
    </ul>
-   <span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>
+   <a class="btn btn-ghost-d btn-lg" href="{root}free/">Coming soon: get the free test</a>
+  </div>
+  <div class="test-singles">
+   <h2>Single tests, $3.99 each</h2>
+   <p class="small">Each one is a full 20-problem test with its answer key. Ten singles cost $39.90, so the pack is half price.</p>
+   <ul class="singles">
+    <li><span><b>Grade 5 Practice Test 1</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+    <li><span><b>Grade 5 Practice Test 2</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+    <li><span><b>Grade 5 Practice Test 3</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+    <li><span><b>Grade 5 Practice Test 4</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+    <li><span><b>Grade 5 Practice Test 5</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+    <li><span><b>Grade 5 Practice Test 6</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+    <li><span><b>Grade 5 Practice Test 7</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+    <li><span><b>Grade 5 Practice Test 8</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+    <li><span><b>Grade 5 Practice Test 9</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+    <li><span><b>Grade 5 Practice Test 10</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em><span class="soon-tag">Coming soon</span></li>
+   </ul>
+   <a class="btn btn-primary" href="{root}free/">Start with the free test</a>
   </div>
   <figure class="paper paper-lg"><img src="{root}assets/img/diagnostic-page1.webp" alt="First page of the Grade 5 Diagnostic Test" width="1105" height="1430" loading="lazy"><figcaption>Page 1 of the free Grade 5 Diagnostic Test</figcaption></figure>
  </div>
@@ -498,7 +528,7 @@ def page_free():
     body = head(f"Free Grade 5 Math Contest Test | {NAME}",
                 "Get the free 20-problem Grade 5 competition math test: answer key included, and a QR code beside every problem opens the key move for it.",
                 "free/", root)
-    body += nav(root, "tests")
+    body += nav(root, "free")
     body += f"""<section class="page-head">
  <div class="wrap">
   <p class="eyebrow">Free</p>
