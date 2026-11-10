@@ -9,7 +9,7 @@ scheduled for later appear by themselves on their release day (the GitHub
 workflow rebuilds every hour). To add a lesson, add a row to data/lessons.json
 and a cover to assets/covers/<slug>.webp, <slug>-lg.webp and <slug>.jpg.
 """
-import html, json, os, re, shutil, sys, urllib.request, urllib.error
+import hashlib, html, json, os, re, shutil, sys, urllib.request, urllib.error
 from datetime import date
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +36,18 @@ CONTESTS = {
 GRADES = [("1-2", False), ("3-4", False), ("5", True), ("6", False), ("7-8", False), ("9-10", False), ("11-12", False)]
 
 e = html.escape
+
+
+# Cache stamp for site.css and site.js, so phones load the new file the moment a change goes live (Nov 10).
+def _asset_v():
+    h = hashlib.sha1()
+    for f in ("assets/css/site.css", "assets/js/site.js"):
+        with open(os.path.join(ROOT, f), "rb") as fh:
+            h.update(fh.read())
+    return h.hexdigest()[:8]
+
+
+ASSET_V = _asset_v()
 
 
 # Lesson fields the search box on lessons/ looks through (Nov 10).
@@ -160,7 +172,7 @@ def head(title, desc, path, root, image=None, noindex=False, extra=""):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{root}assets/css/site.css">
+<link rel="stylesheet" href="{root}assets/css/site.css?v={ASSET_V}">
 {extra}
 </head>
 <body>
@@ -228,7 +240,7 @@ def foot(root):
   <p>&copy; {yr} {NAME}</p>
  </div>
 </footer>
-<script src="{root}assets/js/site.js" defer></script>
+<script src="{root}assets/js/site.js?v={ASSET_V}" defer></script>
 </body>
 </html>
 """
