@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds the Mathlete Toolkit website into _site/.
+"""Builds the Key Move Math website into _site/.
 
   python3 build.py            use data/live.json for which lessons are public
   python3 build.py --check    ask YouTube which lessons are public now, update data/live.json
@@ -15,10 +15,10 @@ from datetime import date
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "_site")
 SITE = "https://jerryjianli-minibuddy.github.io/mathlete-toolkit"
-YT = "https://www.youtube.com/@MathleteToolkit"
+YT = "https://www.youtube.com/@keymovemath"
 YT_SUB = YT + "?sub_confirmation=1"
 FORM = "https://forms.gle/83Bkot9sWTyZDhpj8"
-NAME = "Mathlete Toolkit"
+NAME = "Key Move Math"
 UPLOADED = "2026-11-09"
 
 CONTESTS = {
@@ -58,7 +58,7 @@ def load():
             url = ("https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v="
                    + l["video_id"])
             try:
-                with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "mathlete-site"}), timeout=20) as r:
+                with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "keymovemath-site"}), timeout=20) as r:
                     if r.status == 200:
                         found.add(l["video_id"])
             except urllib.error.HTTPError as err:
@@ -79,29 +79,26 @@ def load():
 
 # ---------- pieces ----------
 
-def cube(size=34, cls="cube"):
-    c, h = 0.866, 0.5
-    def p(pts): return " ".join(f"{x:.3f},{y:.3f}" for x, y in pts)
-    top = [(0, -1), (c, -h), (0, 0), (-c, -h)]
-    left = [(-c, -h), (0, 0), (0, 1), (-c, h)]
-    right = [(0, 0), (c, -h), (c, h), (0, 1)]
-    # '=' bars lying on the top face
-    u, v = (c, -h), (c, h)
-    bars = []
-    for off in (-0.13, 0.13):
-        cx, cy = 0 + v[0] * off * 0.9, -0.5 + v[1] * off * 0.9
-        L, W = 0.26, 0.06
-        q = [(cx - u[0] * L - v[0] * W, cy - u[1] * L - v[1] * W), (cx + u[0] * L - v[0] * W, cy + u[1] * L - v[1] * W),
-             (cx + u[0] * L + v[0] * W, cy + u[1] * L + v[1] * W), (cx - u[0] * L + v[0] * W, cy - u[1] * L + v[1] * W)]
-        bars.append(f'<polygon points="{p(q)}" fill="#0E1A32"/>')
-    return (f'<svg class="{cls}" width="{size}" height="{size}" viewBox="-1.08 -1.08 2.16 2.16" aria-hidden="true">'
-            f'<g stroke="#0E1A32" stroke-width="0.07" stroke-linejoin="round">'
-            f'<polygon points="{p(top)}" fill="#FFD23F"/><polygon points="{p(left)}" fill="#E0457B"/>'
-            f'<polygon points="{p(right)}" fill="#2BA59A"/></g>{"".join(bars)}'
-            f'<g transform="translate(-0.433 0.25) skewY(30)" stroke="#fff" stroke-width="0.12">'
-            f'<path d="M-0.2 0H0.2M0 -0.2V0.2"/></g>'
-            f'<g transform="translate(0.433 0.25) skewY(-30) rotate(45)" stroke="#fff" stroke-width="0.12">'
-            f'<path d="M-0.2 0H0.2M0 -0.2V0.2"/></g></svg>')
+def mark(size=34, cls="mark"):
+    """Key Move Math mark: teal padlock with its shackle sprung open, yellow key in the keyhole, pink sparks."""
+    N = "#0E1A32"
+    return (f'<svg class="{cls}" width="{size}" height="{size}" viewBox="-1.08 -1.37 2.5 2.5" aria-hidden="true">'
+            f'<g stroke="{N}" stroke-width="0.06" stroke-linejoin="round" stroke-linecap="round">'
+            # shackle: half ring, left leg down into the body, right leg lifted out
+            f'<path d="M-0.78 0.1V-0.68A0.56 0.56 0 0 1 0.34 -0.68V-0.48H0.11V-0.68A0.33 0.33 0 0 0 -0.55 -0.68V0.1Z" fill="#DCE6F5"/>'
+            f'<rect x="-1.03" y="-0.16" width="1.62" height="1.16" rx="0.2" fill="#2BA59A"/>'
+            f'</g>'
+            # keyhole
+            f'<circle cx="-0.22" cy="0.34" r="0.15" fill="{N}"/>'
+            f'<path d="M-0.29 0.36H-0.15L-0.11 0.7H-0.33Z" fill="{N}"/>'
+            # key: shaft into the keyhole from the right, two teeth, round bow with a hole
+            f'<path d="M-0.22 0.24H0.6642A0.36 0.36 0 1 1 0.6642 0.44H0.465V0.5848H0.335V0.44H0.225V0.68H0.095V0.44H-0.22Z'
+            f'M1.15 0.34A0.14 0.14 0 1 0 0.87 0.34A0.14 0.14 0 1 0 1.15 0.34Z" fill="#FFD23F" fill-rule="evenodd"'
+            f' stroke="{N}" stroke-width="0.06" stroke-linejoin="round"/>'
+            f'<path d="M1.2294 0.2201A0.25 0.25 0 0 0 1.0027 0.0901" fill="none" stroke="#fff" stroke-width="0.05" stroke-linecap="round"/>'
+            # unlock sparks
+            f'<path d="M0.621 -0.358L0.898 -0.4M0.539 -0.528L0.744 -0.719M0.375 -0.622L0.436 -0.895"'
+            f' stroke="#E0457B" stroke-width="0.07" stroke-linecap="round"/></svg>')
 
 
 YT_ICON = ('<svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><rect width="20" height="14" rx="4" fill="#FF0033"/>'
@@ -148,7 +145,7 @@ def nav(root, active=""):
         return f'<a href="{root}{href}"{cur}>{label}</a>'
     return f"""<header class="top">
  <div class="wrap top-in">
-  <a class="brand" href="{root}" aria-label="{NAME} home">{cube(34)}<span><b>MATHLETE</b> <i>TOOLKIT</i></span></a>
+  <a class="brand" href="{root}" aria-label="{NAME} home">{mark(34)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
   <button class="menu" aria-expanded="false" aria-controls="nav" aria-label="Menu"><span></span><span></span><span></span></button>
   <nav id="nav">
    {a('lessons/', 'Lessons', 'lessons')}
@@ -170,7 +167,7 @@ def foot(root):
 <footer class="foot">
  <div class="wrap foot-grid">
   <div>
-   <a class="brand brand-foot" href="{root}">{cube(30)}<span><b>MATHLETE</b> <i>TOOLKIT</i></span></a>
+   <a class="brand brand-foot" href="{root}">{mark(30)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
    <p>Competition math, one tool at a time. Free video lessons for grades 1 to 12.</p>
    <a class="btn btn-yt" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe on YouTube</span></a>
   </div>
@@ -305,7 +302,7 @@ def page_home(lessons):
 
 <section class="sec">
  <div class="wrap">
-  <div class="sec-head"><h2>Grade 5 toolkit</h2><a class="more" href="grade-5/">See all {len(lessons)} &rarr;</a></div>
+  <div class="sec-head"><h2>Grade 5 tools</h2><a class="more" href="grade-5/">See all {len(lessons)} &rarr;</a></div>
   {grid(first, root)}
  </div>
 </section>
@@ -342,7 +339,7 @@ def page_lessons(lessons):
     fam_opts = "".join(f'<option value="{e(f)}">{e(f)}</option>' for f in fams)
     n_live = sum(l["live"] for l in lessons)
     body = head(f"All Lessons | {NAME}",
-                "Every Mathlete Toolkit lesson in one place. Filter by contest (Math Kangaroo, Noetic, MATHCOUNTS) or topic. Free competition math videos.",
+                "Every Key Move Math lesson in one place. Filter by contest (Math Kangaroo, Noetic, MATHCOUNTS) or topic. Free competition math videos.",
                 "lessons/", root)
     body += nav(root, "lessons")
     body += f"""<section class="page-head">
@@ -497,7 +494,7 @@ def page_tests(lessons):
 def page_about(lessons):
     root = "../"
     body = head(f"About | {NAME}",
-                "Mathlete Toolkit teaches competition math as a set of named tools, with free video lessons and mock tests for grades 1 to 12.",
+                "Key Move Math teaches competition math as a set of named tools, with free video lessons and mock tests for grades 1 to 12.",
                 "about/", root)
     body += nav(root, "about")
     body += f"""<section class="page-head">
@@ -518,7 +515,7 @@ def page_about(lessons):
    <li>A last problem to pause and try alone</li>
   </ul>
   <h2>Who it is for</h2>
-  <p>Students getting ready for Math Kangaroo, the Noetic Math Contest, MATHCOUNTS, AMC 8, 10 and 12, and math olympiads. The Grade 5 toolkit is out now. Other grades follow.</p>
+  <p>Students getting ready for Math Kangaroo, the Noetic Math Contest, MATHCOUNTS, AMC 8, 10 and 12, and math olympiads. The Grade 5 tools are out now. Other grades follow.</p>
   <h2>Our problems</h2>
   <p>Every problem in our videos and tests is written by us and checked by computer. We study past contests to learn which tools come up and how hard they get, but we never copy their problems.</p>
   <p class="note">{NAME} is an independent practice channel. It is not affiliated with or endorsed by Math Kangaroo, Noetic Learning, MATHCOUNTS, the MAA (AMC) or any math olympiad.</p>
@@ -541,6 +538,32 @@ def page_404():
     write("404.html", body)
 
 
+def page_qr(l):
+    """Stable short link for QR codes in tests and videos: t/<tool number>/ sends the visitor to the video
+    once YouTube has it public, and to the lesson page on this site until then (the hourly rebuild flips it)."""
+    n = int(l["tool_num"])
+    lesson_url = f"{SITE}/lessons/{l['slug']}/"
+    target = f"https://youtu.be/{l['video_id']}" if l.get("video_id") and l["live"] else lesson_url
+    t = e(target)
+    write(f"t/{n}/index.html", f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tool #{n}: {e(l['tool'])} | {NAME}</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="{e(lesson_url)}">
+<meta http-equiv="refresh" content="0; url={t}">
+<script>location.replace({json.dumps(target)});</script>
+</head>
+<body style="font-family:system-ui,sans-serif;padding:24px">
+<p>Opening Tool #{n}, {e(l['tool'])}&hellip;</p>
+<p><a href="{t}">Tap here if it does not open.</a></p>
+</body>
+</html>
+""")
+
+
 def extras(lessons, urls):
     today = date.today().isoformat()
     sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
@@ -549,7 +572,7 @@ def extras(lessons, urls):
     sm.append("</urlset>")
     write("sitemap.xml", "\n".join(sm) + "\n")
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
-    write("assets/img/favicon.svg", cube(64))
+    write("assets/img/favicon.svg", mark(64))
     write(".nojekyll", "")
 
 
@@ -563,7 +586,7 @@ def main():
     for l in lessons:
         page_lesson(l, lessons)
     urls = ["", "lessons/", "grade-5/", "mock-tests/", "about/"]
-    page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 toolkit",
+    page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 tools",
                f"{len(lessons)} tools for grade 5 contests, in the order we teach them. Start at Tool #1.", lessons,
                "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.")
     for k, C in CONTESTS.items():
@@ -577,6 +600,8 @@ def main():
     page_tests(lessons)
     page_about(lessons)
     page_404()
+    for l in lessons:
+        page_qr(l)
     urls += [f"lessons/{l['slug']}/" for l in lessons if l["live"]]
     extras(lessons, urls)
     print(f"built {OUT}: {sum(l['live'] for l in lessons)} of {len(lessons)} lessons live")
