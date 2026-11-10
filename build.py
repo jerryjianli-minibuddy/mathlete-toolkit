@@ -274,8 +274,8 @@ def page_home(lessons):
  <div class="wrap hero-in">
   <div class="hero-copy">
    <p class="eyebrow eyebrow-y">Free video lessons &middot; Grades 1 to 12</p>
-   <h1>Competition math, <span>one tool at a time.</span></h1>
-   <p class="lead">Hard contest problems get easy once you know the right tool. Every lesson names one tool, shows the trap most kids fall into, then works problems from easy to hardest, so the next one is yours.</p>
+   <h1>Competition math, <span>one key at a time.</span></h1>
+   <p class="lead">Hard contest problems get easy once you know the key move. Every lesson hands you one key (a tool with a name), shows the trap most kids fall into, then works problems from easy to hardest, so the next one is yours.</p>
    <div class="hero-cta">
     <a class="btn btn-primary btn-lg" href="{FORM}" rel="noopener">Get the free Grade 5 test</a>
     <a class="btn btn-ghost btn-lg" href="lessons/">Watch the lessons</a>
