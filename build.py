@@ -9,7 +9,7 @@ scheduled for later appear by themselves on their release day (the GitHub
 workflow rebuilds every hour). To add a lesson, add a row to data/lessons.json
 and a cover to assets/covers/<slug>.webp, <slug>-lg.webp and <slug>.jpg.
 """
-import html, json, os, shutil, sys, urllib.request, urllib.error
+import html, json, os, re, shutil, sys, urllib.request, urllib.error
 from datetime import date
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +36,15 @@ CONTESTS = {
 GRADES = [("1-2", False), ("3-4", False), ("5", True), ("6", False), ("7-8", False), ("9-10", False), ("11-12", False)]
 
 e = html.escape
+
+
+# Lesson fields the search box on lessons/ looks through (Nov 10).
+SEARCH_FIELDS = ("tool", "hook", "problem", "topic", "family", "also_called", "search", "move", "trap")
+
+
+def norm(s):
+    """Lower case, punctuation to spaces. assets/js/site.js normalizes a typed search the same way."""
+    return re.sub(r"[^a-z0-9#]+", " ", str(s).lower()).strip()
 
 
 def mmss(s):
@@ -233,16 +242,21 @@ def chips(l, root):
     return "".join(out)
 
 
-def card(l, root, h="h3"):
+def card(l, root, h="h3", search=False):
     href = f'{root}lessons/{l["slug"]}/'
     data = " ".join(l["contests"])
+    hay = ""
+    if search:
+        words = " ".join(str(l.get(k) or "") for k in SEARCH_FIELDS)
+        hay = f' data-search="{e(norm(words))} tool #{l["tool_num"]}"'
+
     if l["live"]:
         badge = ''
         cls = "card"
     else:
         badge = '<span class="soon">Coming soon</span>'
         cls = "card is-soon"
-    return f"""<article class="{cls}" data-contests="{data}" data-family="{e(l['family'])}">
+    return f"""<article class="{cls}" data-contests="{data}" data-family="{e(l['family'])}"{hay}>
  <a class="thumb" href="{href}" tabindex="-1" aria-hidden="true"><img src="{root}assets/covers/{l['slug']}.webp" alt="" width="640" height="360" loading="lazy">{badge}</a>
  <div class="card-body">
   <p class="tool-num">Tool #{l['tool_num']} &middot; {e(l['family'])}</p>
@@ -252,8 +266,18 @@ def card(l, root, h="h3"):
 </article>"""
 
 
-def grid(lessons, root, h="h3"):
-    return '<div class="grid">' + "\n".join(card(l, root, h) for l in lessons) + "</div>"
+def grid(lessons, root, h="h3", search=False, gid=""):
+    gid = f' id="{gid}"' if gid else ""
+    return f'<div class="grid"{gid}>' + "\n".join(card(l, root, h, search) for l in lessons) + "</div>"
+
+
+def search_form(root, cls="", label="Find a lesson"):
+    """Small search box that sends to lessons/?q=... (works without JS: it is a plain GET form)."""
+    return f"""<form class="qform {cls}" role="search" action="{root}lessons/" method="get">
+   <label for="q-{cls or 'x'}">{label}</label>
+   <div class="qrow"><input type="search" id="q-{cls or 'x'}" name="q" placeholder="Try: digits, area, speed" autocomplete="off" enterkeyhint="search">
+   <button class="btn btn-primary" type="submit">Search</button></div>
+  </form>"""
 
 
 def test_cta(root, compact=False):
@@ -313,12 +337,25 @@ def page_home(lessons):
     <a class="btn btn-primary btn-lg" href="{root}free/">Get the free Grade 5 test</a>
     <a class="btn btn-ghost btn-lg" href="lessons/">Watch the lessons</a>
    </div>
+   {search_form(root, "hero-q", "Know the topic? Find its key move.")}
    <ul class="hero-stats"><li><b>{len(lessons)}</b> Grade 5 tools</li><li><b>{n_live}</b> live now</li>{"<li><b>2</b> new a day</li>" if n_live < len(lessons) else "<li><b>Free</b> to watch</li>"}</ul>
   </div>
   <div class="hero-media">
    {embed(feat, root, eager=True)}
    <p class="now">{'New' if feat['live'] else 'First up'}: <a href="lessons/{feat['slug']}/">Tool #{feat['tool_num']}, {e(feat['tool'])}</a></p>
   </div>
+ </div>
+</section>
+
+<section class="start" aria-labelledby="start-h">
+ <div class="wrap">
+  <p class="eyebrow">New here?</p>
+  <h2 id="start-h">Start here</h2>
+  <ol class="start-steps">
+   <li><span class="n n1">1</span><div><h3>Take the free test</h3><p>Twenty Grade 5 contest problems in 45 minutes. Circle the ones you miss.</p><a class="go" href="free/">Get the free test &rarr;</a></div></li>
+   <li><span class="n n2">2</span><div><h3>Watch the lesson for each miss</h3><p>Every problem has a QR code that opens its key move. Each lesson is a few minutes long.</p><a class="go" href="lessons/">See all lessons &rarr;</a></div></li>
+   <li><span class="n n3">3</span><div><h3>Try the next problem alone</h3><p>Pause before the last problem in the video and solve it yourself. Now that key is yours.</p></div></li>
+  </ol>
  </div>
 </section>
 
@@ -383,14 +420,24 @@ def page_lessons(lessons):
 </section>
 <section class="sec sec-tight">
  <div class="wrap">
-  <div class="filters" role="group" aria-label="Filter lessons">
+  <div class="filters" role="group" aria-label="Find and filter lessons">
+   <form class="f-row f-search" role="search" action="./" method="get">
+    <label class="f-label" for="q">Search</label>
+    <input type="search" id="q" name="q" placeholder="Try: digits, area, speed" autocomplete="off" enterkeyhint="search" aria-controls="lesson-grid">
+    <button class="f f-go" type="submit">Search</button>
+   </form>
    <div class="f-row"><span class="f-label">Grade</span><button class="f" aria-pressed="true" disabled>Grade 5</button><span class="f-note">More grades coming</span></div>
    <div class="f-row"><span class="f-label">Contest</span><button class="f" data-contest="" aria-pressed="true">All</button>{contest_btns}</div>
    <div class="f-row"><label class="f-label" for="fam">Topic</label><select id="fam"><option value="">All topics</option>{fam_opts}</select>
    <label class="f-check"><input type="checkbox" id="liveonly"> Live only</label></div>
   </div>
-  <p class="count" aria-live="polite"></p>
-  {grid(lessons, root, "h2")}
+  <p class="count" id="count" aria-live="polite">{len(lessons)} lessons</p>
+  <div class="empty f-empty" hidden>
+   <h2>No lessons match.</h2>
+   <p>Try fewer words, or a different contest or topic.</p>
+   <button class="btn btn-primary" type="button" data-clear>Clear filters</button>
+  </div>
+  {grid(lessons, root, "h2", search=True, gid="lesson-grid")}
  </div>
 </section>
 """
@@ -415,11 +462,23 @@ def page_lesson(l, lessons):
                          "contentUrl": f"https://www.youtube.com/watch?v={l['video_id']}",
                          "educationalLevel": "Grade 5", "learningResourceType": "Video lesson"})
         ld = f'<script type="application/ld+json">{ld}</script>'
+    crumb_name = f"Tool #{l['tool_num']}: {l['tool']}"
+    crumbs_ld = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"},
+        {"@type": "ListItem", "position": 2, "name": "Lessons", "item": SITE + "/lessons/"},
+        {"@type": "ListItem", "position": 3, "name": crumb_name, "item": f"{SITE}/lessons/{l['slug']}/"}]}
+    ld += f'<script type="application/ld+json">{json.dumps(crumbs_ld)}</script>'
     body = head(f"{l['tool']}: {l['hook']} | Grade 5 | {NAME}", desc, f"lessons/{l['slug']}/", root,
                 image=f"assets/covers/{l['slug']}.jpg", noindex=not l["live"], extra=ld)
     body += nav(root, "lessons")
     status = (f'<a class="btn btn-yt" href="https://www.youtube.com/watch?v={l["video_id"]}" rel="noopener">{YT_ICON}<span>Watch on YouTube</span></a>'
               if l["live"] else '<p class="soon-note">This lesson goes live soon. New lessons come out every day at 7 AM and 4 PM Pacific.</p>')
+    status += f'<a class="btn btn-primary" href="{root}free/">Free practice test</a>'
+    if nxt:
+        next_up = (f'<p class="next-up">Got this one? Next key: <a href="../{nxt["slug"]}/">Tool #{nxt["tool_num"]}, '
+                   f'{e(nxt["tool"])} &rarr;</a></p>')
+    else:
+        next_up = f'<p class="next-up">That was the last Grade 5 tool. <a href="{root}lessons/">Pick another lesson &rarr;</a></p>'
     also = f'<p class="also">Also called: {e(l["also_called"])}</p>' if l["also_called"] else ""
     pn = '<nav class="pn" aria-label="More lessons">'
     if prev:
@@ -431,11 +490,16 @@ def page_lesson(l, lessons):
     pn += "</nav>"
     body += f"""<article class="lesson">
  <div class="wrap">
-  <p class="crumbs"><a href="{root}lessons/">Lessons</a> / <a href="{root}grade-5/">Grade 5</a> / Tool #{l['tool_num']}</p>
+  <nav class="crumbs" aria-label="Breadcrumb"><ol>
+   <li><a href="{root}">Home</a></li>
+   <li><a href="{root}lessons/">Lessons</a></li>
+   <li><span aria-current="page">{e(crumb_name)}</span></li>
+  </ol></nav>
   <div class="lesson-grid">
    <div class="lesson-main">
     {embed(l, root, eager=True)}
     <div class="lesson-actions">{status}</div>
+    {next_up}
    </div>
    <aside class="lesson-side">
     <p class="tool-num">Tool #{l['tool_num']} &middot; Grade 5 &middot; {e(l['family'])}</p>
@@ -617,7 +681,8 @@ def page_404():
     body += nav(root)
     body += f"""<section class="page-head"><div class="wrap"><h1>That page is missing.</h1>
 <p class="lead">Even the best tool can't find it. Try the lessons instead.</p>
-<p><a class="btn btn-primary btn-lg" href="{root}lessons/">See all lessons</a></p></div></section>"""
+<p><a class="btn btn-primary btn-lg" href="{root}lessons/">See all lessons</a></p>
+{search_form(root, "nf-q", "Or look for a key move")}</div></section>"""
     body += foot(root)
     write("404.html", body)
 
