@@ -14,7 +14,7 @@ from datetime import date
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "_site")
-SITE = "https://jerryjianli-minibuddy.github.io/mathlete-toolkit"
+SITE = "https://keymovemath.com"
 YT = "https://www.youtube.com/@keymovemath"
 YT_SUB = YT + "?sub_confirmation=1"
 FORM = "https://forms.gle/83Bkot9sWTyZDhpj8"
@@ -528,7 +528,7 @@ def page_about(lessons):
 
 
 def page_404():
-    root = "/mathlete-toolkit/"
+    root = "/"
     body = head(f"Page not found | {NAME}", "This page does not exist.", "404.html", root, noindex=True)
     body += nav(root)
     body += f"""<section class="page-head"><div class="wrap"><h1>That page is missing.</h1>

@@ -1,6 +1,6 @@
 # Key Move Math website
 
-Static site for the Key Move Math YouTube channel (https://www.youtube.com/@keymovemath), hosted free on GitHub Pages. The repo keeps its old name, so the site lives at https://jerryjianli-minibuddy.github.io/mathlete-toolkit/.
+Static site for the Key Move Math YouTube channel (https://www.youtube.com/@keymovemath), hosted free on GitHub Pages. The site lives at https://keymovemath.com (the repo keeps its old name).
 
 - `data/lessons.json`: every lesson (tool, hook, problem, trap, rule, contests, YouTube id).
 - `assets/covers/`: lesson covers (`<slug>.webp`, `<slug>-lg.webp`, `<slug>.jpg`).
