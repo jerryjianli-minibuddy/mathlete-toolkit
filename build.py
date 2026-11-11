@@ -289,6 +289,7 @@ def foot(root, cta=True):
   <div>
    <a class="brand brand-foot" href="{root}">{mark(30)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
    <p>Competition math, one key at a time. Free video lessons and a free diagnostic test.</p>
+   <p class="foot-mail">Stuck on a problem? <a href="mailto:{CONTACT}">{CONTACT}</a></p>
    <a class="btn btn-yt" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe on YouTube</span></a>
   </div>
   <div>
@@ -953,41 +954,111 @@ def page_free():
     write("free/index.html", body)
 
 
+CONTACT = "keymovemath@gmail.com"  # Nov 11, Jian: "They can email me at keymovemath@gmail.com if they get stuck"
+
+
+def icon(kind):
+    """Small line icons for the About page (our own drawings)."""
+    d = {
+        "find": '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/>',
+        "key": '<circle cx="7.5" cy="12" r="4.5"/><path d="M12 12h10M18 12v4M21 12v3"/>',
+        "unlock": '<rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 7.6-1.7"/><circle cx="12" cy="16" r="1.4"/>',
+        "own": '<path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8.5 13h7M8.5 16.5h5"/>',
+        "check": '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="m8 12.5 3 3 5.5-6.5"/>',
+        "curve": '<path d="M3 20h18"/><path d="M4 17c5 0 7-1.5 9-5s3.5-6 7-7"/>',
+        "qr": '<rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM18 18h2.5v2.5H18z"/>',
+        "mail": '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/>',
+    }[kind]
+    return (f'<svg class="ic" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" '
+            f'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{d}</svg>')
+
+
+def contact_card(root):
+    return f"""<div class="contact-card">
+  <span class="cc-ic">{icon("mail")}</span>
+  <div><h2>Stuck on a problem? Ask us.</h2>
+  <p>Email a question from a lesson or a test, or anything else you need help with. We read every message.</p></div>
+  <a class="btn btn-primary btn-lg" href="mailto:{CONTACT}">{CONTACT}</a>
+</div>"""
+
+
 def page_about(lessons):
     root = "../"
     body = head(f"About | {NAME}",
                 "Key Move Math teaches competition math as a set of named tools, with free video lessons and mock tests for grades 1 to 12.",
                 "about/", root)
     body += nav(root, "about")
-    body += f"""<section class="page-head">
+    live = [l for l in lessons if l["live"]]
+    stats = [(str(len(lessons)), "key moves for Grade 5"), (str(len(live)), "video lessons out now"),
+             ("10", "Noetic-style practice tests"), ("1 to 12", "grades on the way")]
+    stat_html = "".join(f'<li><b>{e(n)}</b><span>{e(t)}</span></li>' for n, t in stats)
+    steps = [("find", "Spot the clue", "Every contest problem has clue words. We teach kids to see them first."),
+             ("key", "Pick the key move", "Each move has a short name, like Glue It or Find the Cycle, so it sticks."),
+             ("unlock", "Unlock the answer", "Use the move, skip the trap, and get it right without long arithmetic.")]
+    step_html = "".join(f'<li class="ab-step ab-step-{i}"><span class="ab-ic">{icon(k)}</span><small>Step {i}</small>'
+                        f'<h3>{e(t)}</h3><p>{e(x)}</p></li>' for i, (k, t, x) in enumerate(steps, 1))
+    lesson_parts = ["A contest-style problem in the first five seconds", "Why it looks hard, and what most kids try first",
+                    "The key move, named on every slide", "Problems from easy to hardest, slower on the tough ones",
+                    "A last problem to try alone"]
+    parts_html = "".join(f'<li><span>{i}</span>{e(t)}</li>' for i, t in enumerate(lesson_parts, 1))
+    show = live[0] if live else lessons[0]
+    covers = "".join(
+        f'<a class="ab-cover" href="{root}lessons/{l["slug"]}/"><img src="{root}assets/covers/{l["slug"]}.webp" '
+        f'alt="{e(l["tool"])} lesson cover" loading="lazy" width="640" height="360"><span>{e(l["tool"])}</span></a>'
+        for l in live[:6])
+    made = [("own", "Every problem is our own", "None is copied from a past contest."),
+            ("check", "Every answer is checked", "By computer, before a test is built."),
+            ("curve", "Matched to real tests", "Same difficulty curve as full Grade 5 contest tests: easy first, hardest last."),
+            ("qr", "A lesson for every miss", "The answer key names the tool, and a QR code opens its lesson.")]
+    made_html = "".join(f'<li><span class="ab-ic">{icon(k)}</span><h3>{e(t)}</h3><p>{e(x)}</p></li>' for k, t, x in made)
+    body += f"""<section class="hero ab-hero">
+ <div class="wrap ab-hero-in">
+  <div class="ab-mark">{mark(150, "mark ab-logo")}</div>
+  <div>
+   <p class="eyebrow">About us</p>
+   <h1>Every contest problem <span>has a key move.</span></h1>
+   <p class="lead">Contest math is not about being a genius. It is about knowing the right tool and spotting the trap. We teach one tool at a time.</p>
+  </div>
+ </div>
+ <div class="wrap"><ul class="ab-stats">{stat_html}</ul></div>
+</section>
+<section class="sec">
  <div class="wrap">
-  <h1>About {NAME}</h1>
-  <p class="lead">Contest math is not about being a genius. It is about knowing the right tool and spotting the trap.</p>
+  <h2 class="center">How the key move works</h2>
+  <ol class="ab-steps">{step_html}</ol>
  </div>
 </section>
-<section class="sec sec-tight">
- <div class="wrap prose">
-  <p>Most contest problems look hard because the obvious way is slow or wrong. Underneath, a small set of moves shows up again and again: glue two things together, count the pickiest spot first, keep the gap, find the cycle. We give each move a short name and teach it on its own.</p>
-  <h2>What one lesson looks like</h2>
-  <ul class="ticks">
-   <li>A real contest-style problem in the first five seconds</li>
-   <li>Why it looks hard, and what most kids try first</li>
-   <li>The tool, named on every slide, with the clue words that point to it</li>
-   <li>Problems from easy to hardest, slower on the tough ones</li>
-   <li>A last problem to pause and try alone</li>
-  </ul>
-  <h2>Who it is for</h2>
-  <p>Students getting ready for Math Kangaroo, the Noetic Math Contest, MATHCOUNTS, AMC 8, 10 and 12, and math olympiads. The Grade 5 tools are out now. Other grades follow.</p>
-  <h2>How we make every test</h2>
-  <ul class="ticks">
-   <li>Every problem is our own. None is copied from a past contest.</li>
-   <li>Every answer is checked by computer before a test is built.</li>
-   <li>We worked through full past Grade 5 contest tests, question by question, to match their difficulty curve (easy first, hardest last) and how often each tool comes up.</li>
-   <li>Every answer key shows the working and names the tool, and every problem has a QR code to its lesson.</li>
-  </ul>
-  <p><a class="btn btn-primary" href="{root}free/">See for yourself: get the free test</a></p>
-  <p class="note">{NAME} is an independent practice channel. It is not affiliated with or endorsed by Math Kangaroo, Noetic Learning, MATHCOUNTS, the MAA (AMC) or any math olympiad.</p>
-  <p><a class="btn btn-yt" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe on YouTube</span></a></p>
+<section class="sec sec-alt">
+ <div class="wrap ab-lesson">
+  <div>
+   <h2>What one lesson looks like</h2>
+   <ol class="ab-tl">{parts_html}</ol>
+   <p><a class="btn btn-ghost-d" href="{root}lessons/">See all lessons</a></p>
+  </div>
+  <a class="ab-show" href="{root}lessons/{show['slug']}/"><img src="{root}assets/covers/{show['slug']}-lg.webp" alt="{e(show['tool'])} lesson cover" width="1280" height="720" loading="lazy"><span>Watch: {e(show['tool'])}</span></a>
+ </div>
+</section>
+<section class="sec">
+ <div class="wrap">
+  <h2 class="center">A few of our key moves</h2>
+  <div class="ab-covers">{covers}</div>
+ </div>
+</section>
+<section class="sec sec-alt">
+ <div class="wrap ab-made">
+  <div>
+   <h2>How we make every test</h2>
+   <ul class="ab-cards">{made_html}</ul>
+   <p><a class="btn btn-primary" href="{root}free/">See for yourself: get the free test</a></p>
+  </div>
+  <img class="ab-sheet" src="{root}assets/img/sample-test-page1.webp" alt="Page 1 of a Key Move Math practice test" width="560" height="725" loading="lazy">
+ </div>
+</section>
+<section class="sec">
+ <div class="wrap">
+  {contact_card(root)}
+  <p class="note ab-note">{NAME} is an independent practice channel. It is not affiliated with or endorsed by Math Kangaroo, Noetic Learning, MATHCOUNTS, the MAA (AMC) or any math olympiad.</p>
+  <p class="center"><a class="btn btn-yt" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe on YouTube</span></a></p>
  </div>
 </section>
 """
