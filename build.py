@@ -855,14 +855,15 @@ def page_combo(lessons, g, k):
     write(f"{slug}/index.html", body)
 
 
-def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, badge=None, picker=""):
+def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, badge=None, picker="", tests=True):
     root = "../"
     n_live = sum(l["live"] for l in lessons)
     top = (f'<div class="sk-top"><p class="sk-count"><b>{len(lessons)}</b> key moves in {len(topic_groups(lessons))} topics'
            f'{f", {n_live} with a video now" if 0 < n_live < len(lessons) else ""}.</p>'
-           f'<div class="sk-links"><a class="btn btn-primary" href="{root}free/">Free diagnostic test</a>'
-           f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>'
-           f'<a class="btn btn-ghost-d" href="{root}lessons/">Watch as videos</a></div></div>'
+           f'<div class="sk-links">'
+           + (f'<a class="btn btn-primary" href="{root}free/">Free diagnostic test</a>'
+              f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>' if tests else "")
+           + f'<a class="btn btn-ghost-d" href="{root}lessons/">Watch as videos</a></div></div>'
            f'<nav class="sk-jump" aria-label="Topics">' + "".join(
                f'<a href="#topic-{L.lower()}"><b>{L}</b> {e(n)}</a>' for L, n, _ in topic_groups(lessons)) + '</nav>')
     body = head(title, desc, f"{slug}/", root)
@@ -1305,7 +1306,8 @@ def main():
                 if sub else f"{C['blurb']} Independent practice, not affiliated with the {C['name']} organizers.")
         page_group(C["slug"], f"{C['name']} Prep: Free Video Lessons | {NAME}", f"{C['name']} prep", lead, sub,
                    f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.",
-                   picker=grade_picker(lessons, k, "../"))
+                   picker=grade_picker(lessons, k, "../"),
+                   tests=any(t["contest"] == k and t["live"] for t in TEST_SETS))  # no Noetic test buttons on a Kangaroo page
         if sub:
             urls.append(C["slug"] + "/")
     write("amc-prep/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
