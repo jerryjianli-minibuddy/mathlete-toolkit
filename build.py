@@ -237,7 +237,7 @@ def foot(root, cta=True):
     """cta: the phone-only bar pinned to the bottom of the screen with the free test button (Nov 11).
     Left off on /free, where the page itself is the sign-up."""
     yr = date.today().year
-    bar = (f'<div class="mcta" id="mcta"><p><b>Free Grade 5 test</b><small>20 problems, answer key, a lesson for every miss</small></p>'
+    bar = (f'<div class="mcta" id="mcta"><p><b>Free diagnostic test</b><small>Answer key, and a lesson for every miss</small></p>'
            f'<a class="btn btn-primary" href="{root}free/">Get it free</a></div>\n') if cta else ""
     contest_links = "".join(
         f'<li><a href="{root}{c["slug"]}/">{e(c["name"])}{" (soon)" if c.get("soon") else ""}</a></li>' for c in CONTESTS.values())
@@ -252,7 +252,7 @@ def foot(root, cta=True):
   <div>
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
-   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Free Grade 5 test</a></li></ul>
+   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Free diagnostic test</a></li></ul>
   </div>
   <div>
    <h3>By contest</h3>
@@ -317,15 +317,15 @@ def search_form(root, cls="", label="Find a lesson"):
 
 
 def test_cta(root, compact=False):
+    """Free-test band at the foot of list pages. compact is kept for old calls; the band has no picture now."""
     return f"""<section class="cta-band">
  <div class="wrap cta-in">
   <div>
-   <p class="eyebrow">Free download</p>
-   <h2>Take the Grade 5 Diagnostic Test</h2>
-   <p>20 contest problems, easy to hard, 45 minutes, answer key included. Next to every problem is a QR code that opens the video lesson for it, so every miss turns into a lesson.</p>
+   <p class="eyebrow">Free</p>
+   <h2>Free diagnostic test</h2>
+   <p>Pick your grade. Answer key included, and every miss opens its lesson.</p>
    <a class="btn btn-primary btn-lg" href="{root}free/">Get the free test</a>
   </div>
-  {'' if compact else f'<a class="paper" href="{root}mock-tests/"><img src="{root}assets/img/diagnostic-page1.webp" alt="First page of the Grade 5 Diagnostic Test" width="1105" height="1430" loading="lazy"></a>'}
  </div>
 </section>"""
 
@@ -335,11 +335,11 @@ def test_cta(root, compact=False):
 # Real pages from the PDFs (mock-tests/preview/), small for phones and full size on tap.
 SAMPLES = {
     "diagnostic": ("diagnostic-page1-sm.webp", "diagnostic-page1.webp", "Free test, page 1",
-                   "20 problems, easy to hard, each with an answer box and a QR code to its lesson."),
+                   "A QR code beside every problem opens its lesson."),
     "practice": ("sample-test-page1.webp", "sample-test-page1-lg.webp", "Practice test, page 1",
-                 "Every test in the pack has the same format, so the free test is a fair preview."),
+                 "Every test in the pack has the same format."),
     "key": ("sample-answer-key.webp", "sample-answer-key-lg.webp", "Answer key",
-            "Each answer shows the working and names the tool it uses (sample from Practice Test 3)."),
+            "The working and the tool for every answer (from Practice Test 3)."),
 }
 
 
@@ -349,7 +349,7 @@ def samples(root, keys=("diagnostic", "practice", "key")):
         sm, lg, title, text = SAMPLES[k]
         figs.append(f'<figure class="sample"><a href="{root}assets/img/{lg}" aria-label="{e(title)}, full size">'
                     f'<img src="{root}assets/img/{sm}" srcset="{root}assets/img/{sm} 560w, {root}assets/img/{lg} 1105w" '
-                    f'sizes="(min-width: 960px) 340px, 78vw" width="560" height="725" loading="lazy" alt="{e(title)} of a Key Move Math Grade 5 test"></a>'
+                    f'sizes="(min-width: 960px) 340px, 78vw" width="560" height="725" loading="lazy" alt="{e(title)} of a Key Move Math test"></a>'
                     f'<figcaption><b>{e(title)}</b> {e(text)}</figcaption></figure>')
     return f'<div class="samples">{"".join(figs)}</div>'
 
@@ -361,28 +361,26 @@ def faqs():
     live = SHOP.get("live")
     return {
         "free": ("Is the test really free?",
-                 "Yes. Fill in a short form (email, grade and contest) and the link to the PDF shows right away. No payment, no card."),
-        "who": ("Who is it for?",
-                "Grade 5 students getting ready for a math contest, or any Grade 5 student who likes a challenge. Lessons for more grades are on the way."),
-        "time": ("How long does it take?",
-                 "45 minutes for 20 problems, no calculator. Print it at home, or open it on a tablet and write the answers on paper."),
-        "misses": ("What do we do with the problems my child misses?",
-                   "Scan the QR code beside the problem. It opens the video lesson for the key move behind it. Watch it, then try the problem again the next day without looking."),
+                 "Yes. Fill in a short form and the PDF link shows right away. No payment."),
+        "who": ("Which grades?",
+                "Grade 5 is ready now. More grades are coming; pick yours on the free test page."),
+        "misses": ("What do we do with the misses?",
+                   "Scan the QR beside the problem to open its lesson. Try the problem again the next day."),
         "original": ("Are the problems copied from real contests?",
-                     "No. Every problem is our own, and every answer is checked by computer. We studied real Grade 5 contest tests to match their difficulty and the mix of tools they use, but we never copy them."),
+                     "No. Every problem is our own and checked by computer. We match real contest difficulty but never copy."),
         "share": ("Can I share the free test?",
-                  "Yes. It is free for home and classroom use, so pass it on to a friend or a class."),
+                  "Yes. It is free for home and classroom use."),
         "lessons": ("Do the video lessons cost anything?",
-                    "No. Every lesson is free to watch on YouTube, and each one teaches a single named tool in about four minutes."),
+                    "No. Every lesson is free on YouTube, one named tool in about four minutes."),
         "pack": ("What is in the practice pack?",
-                 "Ten more full tests in the same format: 20 problems and 45 minutes each, a worked answer key after every test, and a lesson QR beside every problem. One 60-page PDF, for one family or one classroom."),
+                 "Ten Grade 5 tests in the free test's format, each with a worked answer key. One 60-page PDF for one family or classroom."),
         "when": (("How do I buy the practice tests?",
-                  "One test is $3.99 and all 10 are $19.99, half the price of ten singles. Pick them on the Mock tests page; the PDF downloads right after checkout.")
+                  "$3.99 for one Grade 5 test or $19.99 for all 10. The PDF downloads right after checkout.")
                  if live else
                  ("When can I buy the practice tests?",
-                  "Checkout opens soon: $3.99 for one test or $19.99 for all 10, half the price of ten singles. Until then, start with the free test, which uses the same format.")),
+                  "Checkout opens soon: $3.99 for one Grade 5 test or $19.99 for all 10. Start with the free test meanwhile.")),
         "independent": ("Is Key Move Math run by a contest organizer?",
-                        "No. Key Move Math is an independent practice channel. It is not affiliated with or endorsed by any contest organizer."),
+                        "No. It is an independent practice channel, not affiliated with or endorsed by any contest organizer."),
     }
 
 
@@ -428,7 +426,7 @@ def page_home(lessons):
     site_ld = {"@context": "https://schema.org", "@type": "WebSite", "name": NAME, "url": SITE + "/",
                "potentialAction": {"@type": "SearchAction", "target": SITE + "/lessons/?q={search_term_string}",
                                    "query-input": "required name=search_term_string"}}
-    faq_html, faq_ld = faq(("free", "who", "time", "misses", "original", "lessons", "pack", "when", "independent"))
+    faq_html, faq_ld = faq(("free", "who", "misses", "original", "lessons", "pack", "when", "independent"))
     body = head(f"{NAME}: Free Grade 5 Contest Math Test and Video Lessons",
                 "Free Grade 5 contest math test: 20 problems, 45 minutes, answer key included, and a QR code beside every problem that opens a short video lesson on the key move for it.",
                 "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script><script type="application/ld+json">{json.dumps(site_ld)}</script>' + faq_ld)
@@ -634,9 +632,9 @@ def page_lesson(l, lessons):
   </div>
   <aside class="test-box" data-cta-watch>
    <div>
-    <p class="eyebrow">Free Grade 5 test</p>
+    <p class="eyebrow">Free diagnostic test</p>
     <h2>Which keys does your child still need?</h2>
-    <p>Find out in 45 minutes: 20 contest problems, easy to hard, with the answer key. Each problem has a QR code to its lesson, so every miss shows the next key to learn.</p>
+    <p>Find out free. Every miss links to its lesson.</p>
    </div>
    <a class="btn btn-primary btn-lg" href="{root}free/">Get the free test</a>
   </aside>
@@ -679,26 +677,26 @@ def page_tests(lessons, shop):
     Buy buttons link to Payhip only when shop["live"]; until then they say Coming soon and the free test is the action."""
     root = "../"
     live = shop["live"]
-    faq_html, _ = faq(("pack", "when", "time", "misses", "original", "independent"))
+    faq_html, _ = faq(("pack", "when", "misses", "original", "independent"))
     if live:
         pack_btn = f'<a class="btn btn-primary btn-lg" href="{e(shop["pack"])}">Buy all 10 for $19.99</a>'
         single_btn = '<a class="btn btn-ghost-d btn-lg" href="#singles">Choose a test</a>'
     else:
         pack_btn = '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>'
         single_btn = '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>'
-    soon_note = "" if live else f'<p class="small">Checkout opens soon. <a href="{root}free/">Start with the free test</a>: same format.</p>'
+    soon_note = "" if live else f'<p class="small">Checkout opens soon. <a href="{root}free/">Start with the free test</a>.</p>'
     singles = "\n".join(
         f'    <li><span><b>Grade 5 Practice Test {n}</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em>'
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(shop["tests"], 1))
     body = head(f"Grade 5 Math Contest Practice Tests | {NAME}",
-                "Grade 5 competition math practice tests: a free 20-problem diagnostic test, then 10 full practice tests at $3.99 each or $19.99 for all 10, each with a worked answer key and a lesson QR beside every problem.",
+                "Grade 5 competition math practice tests at $3.99 each or $19.99 for all 10, each with a worked answer key and a lesson QR beside every problem. Start with the free diagnostic test.",
                 "mock-tests/", root)
     body += nav(root, "tests")
     body += f"""<section class="page-head">
  <div class="wrap">
   <h1>Grade 5 practice tests</h1>
-  <p class="lead">Practice at real contest length, then fix every miss with its key move. Start free, then keep going with the pack.</p>
+  <p class="lead">Real contest length. Every miss links to its key move. Start free.</p>
  </div>
 </section>
 <section class="sec sec-tight">
@@ -706,14 +704,14 @@ def page_tests(lessons, shop):
   <div class="plans">
    <div class="plan plan-free">
     <p class="eyebrow">Start here</p>
-    <h2>Diagnostic Test</h2>
+    <h2>Diagnostic test</h2>
     <p class="price"><b>Free</b></p>
-    <ul class="ticks"><li>1 full test, 20 problems</li><li>Answer key</li><li>Lesson QR on every problem</li></ul>
+    <ul class="ticks"><li>Pick your grade</li><li>Answer key</li><li>Lesson QR on every problem</li></ul>
     <a class="btn btn-primary btn-lg" href="{root}free/" data-cta-watch>Get the free test</a>
    </div>
    <div class="plan">
     <p class="eyebrow eyebrow-n">One test</p>
-    <h2>Single test</h2>
+    <h2>Grade 5 test</h2>
     <p class="price"><b>$3.99</b> each</p>
     <ul class="ticks"><li>1 full test, 20 problems</li><li>Worked answer key</li><li>Lesson QR on every problem</li></ul>
     {single_btn}
@@ -721,9 +719,9 @@ def page_tests(lessons, shop):
    <div class="plan plan-pack">
     <p class="ribbon">Best value</p>
     <p class="eyebrow">All 10 tests</p>
-    <h2>Practice Pack</h2>
+    <h2>Grade 5 Practice Pack</h2>
     <p class="price"><b>$19.99</b> <s>$39.90</s></p>
-    <ul class="ticks"><li>10 full tests, 200 problems</li><li>Worked answer key after every test</li><li>Lesson QR on every problem</li><li>Half the price of ten singles</li></ul>
+    <ul class="ticks"><li>10 full Grade 5 tests, 200 problems</li><li>Worked answer key after every test</li><li>Lesson QR on every problem</li><li>Half the price of ten singles</li></ul>
     {pack_btn}
    </div>
   </div>
@@ -732,7 +730,7 @@ def page_tests(lessons, shop):
 </section>
 <section class="sec sec-alt">
  <div class="wrap">
-  <h2>What every test holds</h2>
+  <h2>What every Grade 5 test holds</h2>
   <ul class="ticks ticks-2">
    <li>20 original problems, easy to hard, at real contest length</li>
    <li>45 minutes, no calculator, an answer box for each problem</li>
