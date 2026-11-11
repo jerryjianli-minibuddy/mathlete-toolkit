@@ -144,6 +144,10 @@ def load():
     return lessons
 
 
+# Nov 11: Jian raised every 10-test pack to $24.99; singles stay $3.99 (10 singles = $39.90).
+PACK_PRICE, SINGLE_PRICE, PACK_SAVE = "$24.99", "$3.99", "$14.91"
+
+
 def load_shop():
     """Payhip checkout (Nov 10). Buy buttons show only once the store can take payments: on --check the
     pack page is read, and Payhip's notice that no PayPal or Stripe account is connected keeps them as Coming soon."""
@@ -158,7 +162,7 @@ def load_shop():
             # Jian switched checkout on Nov 11 ("Make the payment work on the website. Payhip has been set up").
             if "unable to receive payments" in page:
                 ok = False
-            elif r.status == 200 and "19.99" in page:
+            elif r.status == 200 and PACK_PRICE in page:
                 ok = True
             else:
                 ok = shop["live"]
@@ -259,7 +263,7 @@ def nav(root, active=""):
         tests += f'<p class="dd-h">{t["label"]}, {grades_label(t["grades"])}</p>'
         tests += (f'<a class="dd-i" href="{free_href(root, t["contest"], t["grades"][0])}">Free diagnostic test<small class="dd-free">free</small></a>'
                   if t["diag"] else '<span class="dd-i dd-off">Free diagnostic test<small>soon</small></span>')
-        tests += (f'<a class="dd-i" href="{root}mock-tests/">Practice tests</a>' if t["practice"]
+        tests += (f'<a class="dd-i" href="{root}mock-tests/{t.get("anchor", "")}">Practice tests</a>' if t["practice"]
                   else '<span class="dd-i dd-off">Practice tests<small>soon</small></span>')
     topics = "".join(
         f'<a class="dd-i" href="{root}grade-5/#topic-{chr(97 + i)}"><span class="dd-letter">{chr(65 + i)}</span>{e(name)}</a>'
@@ -495,12 +499,12 @@ def faqs():
         "lessons": ("Do the video lessons cost anything?",
                     "No. Every lesson is free on YouTube, one named tool in about four minutes."),
         "pack": ("What is in the practice pack?",
-                 "Ten Grade 5 tests in the free test's format, each with a worked answer key. One 60-page PDF for one family or classroom."),
+                 "Ten tests in the free test's format, each with a worked answer key. One PDF for one family or classroom."),
         "when": (("How do I buy the practice tests?",
-                  "$3.99 for one Grade 5 test or $19.99 for all 10. The PDF downloads right after checkout.")
+                  "$3.99 for one test or $24.99 for a pack of 10. The PDF downloads right after checkout.")
                  if live else
                  ("When can I buy the practice tests?",
-                  "Checkout opens soon: $3.99 for one Grade 5 test or $19.99 for all 10. Start with the free test meanwhile.")),
+                  "Checkout opens soon: $3.99 for one test or $24.99 for a pack of 10. Start with the free test meanwhile.")),
         "independent": ("Is Key Move Math run by a contest organizer?",
                         "No. It is an independent practice channel, not affiliated with or endorsed by any contest organizer."),
     }
@@ -781,10 +785,10 @@ def page_lesson(l, lessons):
 # Nov 11, Jian: "the diagnostic test is not specific to the contest... we need to change that" -- each contest
 # and grade gets its own diagnostic, and a pick without one says Coming soon (never the Noetic test as a stand-in).
 TEST_SETS = [
-    dict(key="noetic-5", contest="noetic", grades=[5], label="Noetic-style", diag=True, practice=True),
+    dict(key="noetic-5", contest="noetic", grades=[5], label="Noetic-style", diag=True, practice=True, store=None, anchor=""),
     dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=True, practice=False),
     # Nov 11: Jian shared these three (anyone with the link, viewer).
-    dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=False),
+    dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=True, store="moems", anchor="#moems"),
     dict(key="amc8-6-8", contest="amc8", grades=[6, 7, 8], label="AMC 8-style", diag=True, practice=False),
     dict(key="mathcounts-6-8", contest="mathcounts", grades=[6, 7, 8], label="MATHCOUNTS-style", diag=True, practice=False),
 ]
@@ -854,7 +858,7 @@ def test_blocks(root, tests, g=None):
         if test_live(t):
             btns = (f'<a class="btn btn-primary" href="{diag_url(t)}" rel="noopener">Download free test</a>'
                     if t["diag"] else "")
-            btns += (f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>' if t["practice"] and SHOP.get("live")
+            btns += (f'<a class="btn btn-ghost-d" href="{root}mock-tests/{t.get("anchor", "")}">Practice tests</a>' if t["practice"] and SHOP.get("live")
                      else '<span class="btn btn-ghost-d btn-off">Practice tests soon</span>')
             blocks.append(f'<div class="combo-tests"><div><p class="eyebrow">Tests</p><h2>{t["label"]} tests, {who}</h2>'
                           f'<p>Printable, with a worked answer key.</p></div>'
@@ -1006,6 +1010,57 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
 YES = '<span class="yes" role="img" aria-label="Yes"></span>'
 
 
+def moems_section(root, shop):
+    """MOEMS-style Grades 4 to 6 practice tests (Payhip, Nov 11): pack and singles, same layout as the Noetic block."""
+    m, live = shop.get("moems"), shop["live"]
+    if not m:
+        return ""
+    pack = (f'<a class="btn btn-primary btn-lg" href="{e(m["pack"])}">Buy all 10 for {PACK_PRICE}</a>' if live
+            else '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>')
+    singles = "\n".join(
+        f'    <li><span><b>MOEMS-style Practice Test {n}</b><small>5 problems, 30 minutes, answer key</small></span><em>{SINGLE_PRICE}</em>'
+        + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
+        for n, u in enumerate(m["tests"], 1))
+    return f"""<section class="sec sec-alt" id="moems">
+ <div class="wrap">
+  <p class="eyebrow">MOEMS-style &middot; Grades 4 to 6</p>
+  <h2>MOEMS-style practice tests</h2>
+  <p class="lead">5 problems in 30 minutes, written answers, no calculator. Worked answer key in every test.</p>
+  <div class="plans">
+   <div class="plan plan-free">
+    <p class="eyebrow">Start here</p>
+    <h2>MOEMS-style diagnostic</h2>
+    <p class="price"><b>Free</b></p>
+    <ul class="facts-row"><li>PDF</li><li>Answer key</li><li>Free to share</li></ul>
+    <a class="btn btn-primary btn-lg" href="{free_href(root, "olympiad", 5)}">Get the free test</a>
+   </div>
+   <div class="plan">
+    <p class="eyebrow eyebrow-n">One test</p>
+    <h2>MOEMS-style test</h2>
+    <p class="price"><b>{SINGLE_PRICE}</b> each</p>
+    <ul class="facts-row"><li>Grades 4 to 6</li><li>PDF</li><li>30 min</li></ul>
+    <a class="btn btn-ghost-d btn-lg" href="#moems-singles">Choose a test</a>
+   </div>
+   <div class="plan plan-pack">
+    <p class="ribbon">Best value</p>
+    <p class="eyebrow">All 10 tests</p>
+    <h2>MOEMS-style Practice Pack</h2>
+    <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
+    <ul class="facts-row"><li>Grades 4 to 6</li><li>10 tests</li><li>50 problems</li></ul>
+    {pack}
+   </div>
+  </div>
+  <details class="qa singles-box" id="moems-singles"{" open" if live else ""}>
+   <summary>All 10 MOEMS-style single tests, {SINGLE_PRICE} each</summary>
+   <ul class="singles">
+{singles}
+   </ul>
+  </details>
+  <p class="test-note">"MOEMS-style" tests are written in the style of the Math Olympiads for Elementary and Middle Schools. Key Move Math is not affiliated with or endorsed by MOEMS. Every problem is our own.</p>
+ </div>
+</section>"""
+
+
 def page_tests(lessons, shop):
     """Mock tests as a pricing page (Nov 11): free vs single vs pack, what every test holds, sample pages, FAQ.
     Buy buttons link to Payhip only when shop["live"]; until then they say Coming soon and the free test is the action."""
@@ -1013,7 +1068,7 @@ def page_tests(lessons, shop):
     live = shop["live"]
     faq_html, _ = faq(("pack", "when", "misses", "original", "independent"))
     if live:
-        pack_btn = f'<a class="btn btn-primary btn-lg" href="{e(shop["pack"])}">Buy all 10 for $19.99</a>'
+        pack_btn = f'<a class="btn btn-primary btn-lg" href="{e(shop["pack"])}">Buy all 10 for {PACK_PRICE}</a>'
         single_btn = '<a class="btn btn-ghost-d btn-lg" href="#singles">Choose a test</a>'
     else:
         pack_btn = '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>'
@@ -1023,19 +1078,22 @@ def page_tests(lessons, shop):
         f'    <li><span><b>Noetic-style Grade 5 Practice Test {n}</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em>'
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(shop["tests"], 1))
-    body = head(f"Noetic-style Grade 5 Practice Tests | {NAME}",
-                "Noetic-style Grade 5 practice tests at $3.99 each or $19.99 for all 10, each with a worked answer key and a lesson QR beside every problem. Start with the free diagnostic test.",
+    body = head(f"Practice Tests: Noetic-style and MOEMS-style | {NAME}",
+                "Noetic-style Grade 5 and MOEMS-style Grades 4 to 6 practice tests at $3.99 each or $24.99 for 10, each with a worked answer key. Start with the free diagnostic test.",
                 "mock-tests/", root)
     body += nav(root, "tests")
     body += f"""<section class="page-head">
  <div class="wrap">
-  <p class="eyebrow">Noetic-style &middot; Grade 5</p>
-  <h1>Noetic-style Grade 5 practice tests</h1>
-  <p class="lead">Real contest length. Every miss links to its key move. Start free.</p>
+  <p class="eyebrow">Practice tests</p>
+  <h1>Practice tests</h1>
+  <p class="lead">Real contest length, with a worked answer key. Start free.</p>
+  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a></p>
  </div>
 </section>
-<section class="sec sec-tight">
+<section class="sec sec-tight" id="noetic">
  <div class="wrap">
+  <p class="eyebrow">Noetic-style &middot; Grade 5</p>
+  <h2>Noetic-style Grade 5 practice tests</h2>
   <div class="plans">
    <div class="plan plan-free">
     <p class="eyebrow">Start here</p>
@@ -1055,7 +1113,7 @@ def page_tests(lessons, shop):
     <p class="ribbon">Best value</p>
     <p class="eyebrow">All 10 tests</p>
     <h2>Noetic-style Grade 5 Practice Pack</h2>
-    <p class="price"><b>$19.99</b> <s>$39.90</s> <span class="save">Save $19.91</span></p>
+    <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
     <ul class="facts-row"><li>Noetic-style</li><li>Grade 5</li><li>10 tests</li><li>60 pages</li></ul>
     {pack_btn}
    </div>
@@ -1065,6 +1123,7 @@ def page_tests(lessons, shop):
   <div class="next-tests"><b>Kangaroo-style tests, Grades 5 and 6</b><span>Coming soon</span></div>
  </div>
 </section>
+{moems_section(root, shop)}
 <section class="sec sec-alt">
  <div class="wrap">
   <h2>Compare</h2>
@@ -1078,7 +1137,7 @@ def page_tests(lessons, shop):
      <tr><th scope="row">Lesson QR on every problem</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
      <tr><th scope="row">Contest style</th><td>Noetic</td><td>Noetic</td><td class="cmp-best">Noetic</td></tr>
      <tr><th scope="row">Grade</th><td>5</td><td>5</td><td class="cmp-best">5</td></tr>
-     <tr><th scope="row">Price</th><td>Free</td><td>$3.99</td><td class="cmp-best">$19.99</td></tr>
+     <tr><th scope="row">Price</th><td>Free</td><td>$3.99</td><td class="cmp-best">{PACK_PRICE}</td></tr>
     </tbody>
    </table>
   </div>
@@ -1107,12 +1166,17 @@ def page_tests(lessons, shop):
 # beside that contest's paid practice tests, or a short Coming soon line where none are on sale yet.
 
 
+def store_of(t):
+    """Payhip links for a test set: data/shop.json top level is Noetic G5, other sets sit under their own key."""
+    return SHOP[t["store"]] if t.get("store") else SHOP
+
+
 def free_result(root, t):
     """One result panel on /free: the free download next to the paid practice tests for that test set."""
     if t["practice"] and SHOP.get("live"):
         paid = (f'<p>Printable practice tests, each with a worked answer key.</p>'
-                f'<div class="fres-btns"><a class="btn btn-primary" href="{e(SHOP["pack"])}" rel="noopener">Get the practice pack</a>'
-                f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Buy one test</a></div>')
+                f'<div class="fres-btns"><a class="btn btn-primary" href="{e(store_of(t)["pack"])}" rel="noopener">Get the 10-test pack, {PACK_PRICE}</a>'
+                f'<a class="btn btn-ghost-d" href="{root}mock-tests/{t.get("anchor", "")}">Buy one test, {SINGLE_PRICE}</a></div>')
     else:
         paid = '<p>Practice tests coming soon.</p>'
     return f"""<div class="fres" data-key="{t['key']}">
