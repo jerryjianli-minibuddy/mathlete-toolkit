@@ -14,6 +14,42 @@
    "style": "Kangaroo-style",
    "grades": "Grades 5 and 6",
    "video_id": "sHaMB0PSYPo"
+  },
+  {
+   "tool_num": 43,
+   "tool": "Draw It to Scale",
+   "style": "Kangaroo-style",
+   "grades": "Grades 5 and 6"
+  },
+  {
+   "tool_num": 44,
+   "tool": "Cut It Into Pieces",
+   "style": "Kangaroo-style",
+   "grades": "Grades 5 and 6"
+  },
+  {
+   "tool_num": 45,
+   "tool": "Try the Choices",
+   "style": "Kangaroo-style",
+   "grades": "Grades 5 and 6"
+  },
+  {
+   "tool_num": 46,
+   "tool": "Top View First",
+   "style": "Kangaroo-style",
+   "grades": "Grades 5 and 6"
+  },
+  {
+   "tool_num": 47,
+   "tool": "Jump to the Hour",
+   "style": "Kangaroo-style",
+   "grades": "Grades 5 and 6"
+  },
+  {
+   "tool_num": 48,
+   "tool": "Take the Same Off Both Sides",
+   "style": "Kangaroo-style",
+   "grades": "Grades 5 and 6"
   }
  ]
 }

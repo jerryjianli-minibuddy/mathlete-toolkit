@@ -28,8 +28,13 @@ CONTESTS = {
                    blurb="Word problems that reward a clean method over long arithmetic."),
     "mathcounts": dict(name="MATHCOUNTS", slug="mathcounts-prep", short="MATHCOUNTS",
                        blurb="Fast, exact answers: counting, rates, number theory and geometry."),
-    "amc": dict(name="AMC 8, 10 and 12", slug="amc-prep", short="AMC", soon=True,
-                blurb="Multiple choice, harder every level. Lessons are on the way."),
+    # AMC split three ways (Nov 11, Jian: "People taking AMC 10 shouldn't be learning AMC 12 material").
+    "amc8": dict(name="AMC 8", slug="amc-8-prep", short="AMC 8", soon=True,
+                 blurb="Middle school, 25 questions in 40 minutes. Lessons are on the way."),
+    "amc10": dict(name="AMC 10", slug="amc-10-prep", short="AMC 10", soon=True,
+                  blurb="High school algebra, geometry and counting, no precalculus. Lessons are on the way."),
+    "amc12": dict(name="AMC 12", slug="amc-12-prep", short="AMC 12", soon=True,
+                  blurb="Everything on AMC 10, plus trig, logarithms and complex numbers. Lessons are on the way."),
     "olympiad": dict(name="Math Olympiad", slug="math-olympiad-prep", short="Olympiad", soon=True,
                      blurb="Short answer, deep thinking. Lessons are on the way."),
 }
@@ -1099,6 +1104,8 @@ def main():
                    f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.")
         if sub:
             urls.append(C["slug"] + "/")
+    write("amc-prep/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
+          '<meta http-equiv="refresh" content="0; url=/#contests-h"><a href="/#contests-h">AMC 8, AMC 10 and AMC 12</a>')
     page_tests(lessons, SHOP)
     page_free()
     page_about(lessons)
