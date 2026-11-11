@@ -33,7 +33,7 @@ CONTESTS = {
     "olympiad": dict(name="Math Olympiad", slug="math-olympiad-prep", short="Olympiad", soon=True,
                      blurb="Short answer, deep thinking. Lessons are on the way."),
 }
-GRADES = [("1-2", False), ("3-4", False), ("5", True), ("6", False), ("7-8", False), ("9-10", False), ("11-12", False)]
+GRADES = [(str(n), n == 5) for n in range(1, 13)]  # one row and one colour per grade (Jian, Nov 10: "Don't group grades")
 
 # Skill list layout (Nov 11, Jian: "something like ixl.com ... just the look and organization").
 # Lessons are grouped into lettered topics and numbered A.1, A.2 ... Groups join lesson "family" values.
@@ -216,14 +216,30 @@ def head(title, desc, path, root, image=None, noindex=False, extra=""):
 
 
 def nav(root, active=""):
-    """Header plus the always-visible browse bar (Jian, Nov 10: navigation at the top so people can go straight
-    to the material they want). On phones the bar scrolls sideways; there is no hidden menu."""
-    def a(href, label, key, cls="cat"):
-        cur = ' aria-current="page"' if key == active else ""
-        return f'<a class="{cls}" href="{root}{href}"{cur}>{label}</a>'
+    """Header plus the browse bar (Jian, Nov 10: navigation at the top). Grades, Contests, Tests and Lessons open
+    dropdown menus (Nov 11, IXL-style organization; assets/js/site.js). Without JS each trigger is a plain link."""
+    def cur(keys):
+        return ' aria-current="page"' if active in keys else ""
+
+    def dd(key, label, href, keys, inner, cls=""):
+        return (f'<div class="dd" data-dd><a class="cat dd-btn" href="{root}{href}" aria-haspopup="true" aria-expanded="false" '
+                f'aria-controls="dd-{key}"{cur(keys)}>{label}<span class="caret" aria-hidden="true"></span></a>'
+                f'<div class="dd-menu {cls}" id="dd-{key}">{inner}</div></div>')
+
+    grades = "".join(
+        f'<a class="dd-i" href="{root}grade-{g}/"><span class="gl-badge gc-{g}">{g}</span>Grade {g}</a>' if live
+        else f'<span class="dd-i dd-off"><span class="gl-badge gc-{g}">{g}</span>Grade {g}<small>soon</small></span>'
+        for g, live in GRADES)
     contests = "".join(
-        a(f'{C["slug"]}/', e(C["short"]) + (' <small>soon</small>' if C.get("soon") else ""), C["slug"])
+        f'<a class="dd-i" href="{root}{C["slug"]}/">{e(C["name"])}{"<small>soon</small>" if C.get("soon") else ""}</a>'
         for C in CONTESTS.values())
+    tests = (f'<a class="dd-i" href="{root}free/">Free diagnostic test<small class="dd-free">free</small></a>'
+             f'<a class="dd-i" href="{root}mock-tests/">Practice tests</a>')
+    topics = "".join(
+        f'<a class="dd-i" href="{root}grade-5/#topic-{chr(97 + i)}"><span class="dd-letter">{chr(65 + i)}</span>{e(name)}</a>'
+        for i, (name, _) in enumerate(TOPICS))
+    lessons = (f'<a class="dd-i" href="{root}lessons/">All video lessons</a>'
+               f'<p class="dd-h">Grade 5 topics</p>{topics}')
     return f"""<header class="top">
  <div class="wrap top-in">
   <a class="brand" href="{root}" aria-label="{NAME} home">{mark(34)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
@@ -231,16 +247,12 @@ def nav(root, active=""):
  </div>
  <nav class="catbar" aria-label="Browse">
   <div class="wrap cat-in">
-   {a('free/', 'Free test', 'free', 'cat cat-free')}
-   {a('mock-tests/', 'Mock tests', 'tests')}
-   <span class="cat-label">By grade</span>
-   {a('grade-5/', 'Grade 5', 'grade-5')}
-   <span class="cat cat-soon">Grades 1 to 12 <small>soon</small></span>
-   <span class="cat-label">By contest</span>
-   {contests}
-   <span class="cat-label">More</span>
-   {a('lessons/', 'All lessons', 'lessons')}
-   {a('about/', 'About', 'about')}
+   <a class="cat cat-free" href="{root}free/"{cur(("free",))}>Free test</a>
+   {dd("grades", "Grades", "#grades-h", ("grade-5",), grades, "dd-grades")}
+   {dd("contests", "Contests", "#contests-h", tuple(C["slug"] for C in CONTESTS.values()), contests)}
+   {dd("tests", "Tests", "mock-tests/", ("tests",), tests)}
+   {dd("lessons", "Lessons", "lessons/", ("lessons",), lessons)}
+   <a class="cat" href="{root}about/"{cur(("about",))}>About</a>
   </div>
  </nav>
 </header>
@@ -322,7 +334,7 @@ def grade_list(lessons, root):
     groups = topic_groups(lessons)
     rows = []
     for i, (g, live) in enumerate(GRADES):
-        badge = f'<span class="gl-badge gl-{GRADE_COLORS[i % len(GRADE_COLORS)]}">{e(g)}</span>'
+        badge = f'<span class="gl-badge gc-{g}">{e(g)}</span>'
         if live:
             picks = [next((l for l in items if l["live"]), items[0]) for _, _, items in groups][:6]
             inc = '<span class="gl-sep">|</span>'.join(f'<a href="{root}lessons/{l["slug"]}/">{e(l["tool"])}</a>' for l in picks)
@@ -550,7 +562,7 @@ def page_home(lessons):
 
 <section class="sec sec-alt">
  <div class="wrap">
-  <div class="sec-head"><h2>Pick your contest</h2></div>
+  <div class="sec-head"><h2 id="contests-h">Pick your contest</h2></div>
   <div class="contests contests-short">{''.join(cards)}</div>
  </div>
 </section>
@@ -734,7 +746,7 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
  </div>"""
     body += f"""<section class="page-head">
  <div class="wrap{" ph-badge" if badge else ""}">
-  {f'<span class="gl-badge gl-navy gl-big">{e(badge)}</span>' if badge else ""}<div>
+  {f'<span class="gl-badge gc-{e(badge)} gl-big">{e(badge)}</span>' if badge else ""}<div>
   <h1>{h1}</h1>
   <p class="lead">{lead}</p>
   </div>

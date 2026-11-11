@@ -516,3 +516,29 @@ main .hero :focus-visible, main .cta-band :focus-visible { outline-color: var(--
 .sk-play { flex: none; align-self: center; width: 0; height: 0; border-left: 8px solid var(--pink); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
 .sk-tag { flex: none; font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #8A8F9C; }
 .sk-soon .sk-name { color: var(--muted); font-weight: 500; }
+
+/* One colour per grade (Nov 11, Jian: "One grade per color. Don't group grades") */
+.gc-1 { background: #E8484A; } .gc-2 { background: #F28C28; } .gc-3 { background: #FFD23F; color: var(--navy); }
+.gc-4 { background: #6DB33F; } .gc-5 { background: #2BA59A; } .gc-6 { background: #2F80ED; }
+.gc-7 { background: #20345F; } .gc-8 { background: #7B5CD6; } .gc-9 { background: #E0457B; }
+.gc-10 { background: #C0662B; } .gc-11 { background: #1497B8; } .gc-12 { background: #56617A; }
+
+/* Browse bar dropdowns (Nov 11). The menu is fixed so the sideways-scrolling bar can't clip it; site.js places it. */
+.dd { flex: none; }
+.dd-btn { display: inline-flex; align-items: center; gap: 7px; }
+.caret { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; transition: transform .15s; }
+.dd.open .dd-btn { color: var(--navy); background: #fff; }
+.dd.open .caret { transform: rotate(180deg); }
+.dd-menu { display: none; position: fixed; z-index: 60; background: #fff; color: var(--ink); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-lg); padding: 8px; min-width: 250px; max-height: calc(100vh - 150px); overflow-y: auto; }
+.dd.open .dd-menu { display: block; }
+.dd-i { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; text-decoration: none; color: var(--ink); font-weight: 600; font-size: .95rem; white-space: nowrap; }
+a.dd-i:hover, a.dd-i:focus-visible { background: var(--cream); color: var(--pink); }
+.dd-i small { margin-left: auto; padding-left: 10px; color: #8A8F9C; font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.dd-i small.dd-free { color: var(--teal); }
+.dd-off { color: #8A8F9C; cursor: default; }
+.dd-off .gl-badge { opacity: .5; }
+.dd-menu .gl-badge { width: 30px; height: 30px; font-size: .88rem; border-radius: 8px; }
+.dd.open .dd-menu.dd-grades { display: grid; grid-template-columns: repeat(2, minmax(150px, 1fr)); gap: 2px 6px; }
+.dd-h { margin: 10px 10px 4px; font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.dd-letter { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; background: var(--navy2); color: #fff; font-size: .78rem; font-weight: 900; flex: none; }
+@media (max-width: 760px) { .dd-menu { min-width: 0; } .dd-i { white-space: normal; } }

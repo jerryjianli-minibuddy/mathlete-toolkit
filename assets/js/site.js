@@ -168,3 +168,42 @@
   });
   apply();
 })();
+
+// Browse bar dropdowns (Nov 11): tap opens and closes; on a desktop with a mouse they also open on hover.
+// Menus are position: fixed under the bar (the bar scrolls sideways on phones and would clip them).
+(function () {
+  var dds = Array.prototype.slice.call(document.querySelectorAll("[data-dd]"));
+  if (!dds.length) return;
+  var wide = window.matchMedia ? matchMedia("(hover: hover) and (min-width: 761px)") : { matches: false };
+  var timer = null;
+  function btn(d) { return d.querySelector(".dd-btn"); }
+  function close(d) { d.classList.remove("open"); btn(d).setAttribute("aria-expanded", "false"); }
+  function closeAll(except) { dds.forEach(function (d) { if (d !== except) close(d); }); }
+  function place(d) {
+    var m = d.querySelector(".dd-menu"), bar = d.closest(".catbar").getBoundingClientRect(), b = btn(d).getBoundingClientRect();
+    m.style.top = Math.round(bar.bottom + 6) + "px";
+    if (window.innerWidth > 760) {
+      m.style.right = "auto";
+      m.style.left = Math.round(Math.max(12, Math.min(b.left, window.innerWidth - m.offsetWidth - 12))) + "px";
+    } else { m.style.left = "10px"; m.style.right = "10px"; }
+  }
+  function open(d) { closeAll(d); d.classList.add("open"); btn(d).setAttribute("aria-expanded", "true"); place(d); }
+  dds.forEach(function (d) {
+    btn(d).addEventListener("click", function (ev) {
+      ev.preventDefault();
+      if (d.classList.contains("open") && !wide.matches) close(d); else open(d);
+    });
+    d.addEventListener("mouseenter", function () { if (!wide.matches) return; clearTimeout(timer); open(d); });
+    d.addEventListener("mouseleave", function () { if (!wide.matches) return; timer = setTimeout(function () { close(d); }, 250); });
+  });
+  document.addEventListener("click", function (ev) { if (!ev.target.closest("[data-dd]")) closeAll(); });
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key !== "Escape") return;
+    var o = dds.filter(function (d) { return d.classList.contains("open"); })[0];
+    if (o) { close(o); btn(o).focus(); }
+  });
+  window.addEventListener("resize", function () { closeAll(); });
+  window.addEventListener("scroll", function () { dds.forEach(function (d) { if (d.classList.contains("open")) { if (wide.matches) place(d); else close(d); } }); }, { passive: true });
+  var bar = document.querySelector(".cat-in");
+  if (bar) bar.addEventListener("scroll", function () { closeAll(); }, { passive: true });
+})();
