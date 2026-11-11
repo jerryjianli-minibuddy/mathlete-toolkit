@@ -413,3 +413,21 @@ main .hero :focus-visible, main .cta-band :focus-visible { outline-color: var(--
   .steps li .n { grid-row: span 3; margin: 0; }
   .steps .go { padding-top: 6px; }
 }
+
+/* pricing, round 3: fact chips, savings badge, compare table */
+.facts-row { list-style: none; padding: 0; margin: 0 0 20px; display: flex; flex-wrap: wrap; gap: 6px; flex: 1; align-content: flex-start; align-items: flex-start; }
+.facts-row li { font-size: .82rem; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: var(--cream); border: 1px solid var(--line); color: var(--navy); }
+.save { display: inline-block; vertical-align: middle; margin-left: 4px; font-size: .78rem; font-weight: 800; color: #fff; background: var(--teal); padding: 3px 9px; border-radius: 999px; }
+.cmp-wrap { overflow-x: auto; margin: 0 0 8px; }
+.cmp { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border: 1px solid var(--line); border-radius: 14px; font-size: .95rem; }
+.cmp th, .cmp td { padding: 12px 10px; text-align: center; border-bottom: 1px solid var(--line); }
+.cmp tbody tr:last-child th, .cmp tbody tr:last-child td { border-bottom: 0; }
+.cmp thead th { font-weight: 800; font-size: .9rem; }
+.cmp tbody th { text-align: left; font-weight: 600; color: var(--muted); }
+.cmp .cmp-best { background: #FFF1F5; }
+.cmp thead .cmp-best { color: var(--pink); }
+.cmp tbody tr:last-child td { font-weight: 800; color: var(--ink); }
+.yes { display: inline-block; width: 20px; height: 20px; vertical-align: middle; border-radius: 6px; background: var(--teal) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.cmp-note { margin: 10px 0 26px; }
+@media (max-width: 520px) { .cmp { font-size: .86rem; } .cmp th, .cmp td { padding: 10px 6px; } }

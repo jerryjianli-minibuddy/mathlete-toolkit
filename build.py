@@ -670,6 +670,9 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None):
     write(f"{slug}/index.html", body)
 
 
+YES = '<span class="yes" role="img" aria-label="Yes"></span>'
+
+
 def page_tests(lessons, shop):
     """Mock tests as a pricing page (Nov 11): free vs single vs pack, what every test holds, sample pages, FAQ.
     Buy buttons link to Payhip only when shop["live"]; until then they say Coming soon and the free test is the action."""
@@ -704,22 +707,22 @@ def page_tests(lessons, shop):
     <p class="eyebrow">Start here</p>
     <h2>Diagnostic test</h2>
     <p class="price"><b>Free</b></p>
-    <ul class="ticks"><li>Pick your grade</li><li>Answer key</li><li>Lesson QR on every problem</li></ul>
+    <ul class="facts-row"><li>PDF</li><li>Answer key</li><li>Free to share</li></ul>
     <a class="btn btn-primary btn-lg" href="{root}free/" data-cta-watch>Get the free test</a>
    </div>
    <div class="plan">
     <p class="eyebrow eyebrow-n">One test</p>
     <h2>Grade 5 test</h2>
     <p class="price"><b>$3.99</b> each</p>
-    <ul class="ticks"><li>1 full test, 20 problems</li><li>Worked answer key</li><li>Lesson QR on every problem</li></ul>
+    <ul class="facts-row"><li>Grade 5</li><li>PDF</li><li>6 pages</li><li>45 min</li></ul>
     {single_btn}
    </div>
    <div class="plan plan-pack">
     <p class="ribbon">Best value</p>
     <p class="eyebrow">All 10 tests</p>
     <h2>Grade 5 Practice Pack</h2>
-    <p class="price"><b>$19.99</b> <s>$39.90</s></p>
-    <ul class="ticks"><li>10 full Grade 5 tests, 200 problems</li><li>Worked answer key after every test</li><li>Lesson QR on every problem</li><li>Half the price of ten singles</li></ul>
+    <p class="price"><b>$19.99</b> <s>$39.90</s> <span class="save">Save $19.91</span></p>
+    <ul class="facts-row"><li>Grade 5</li><li>10 tests</li><li>60 pages</li></ul>
     {pack_btn}
    </div>
   </div>
@@ -728,15 +731,21 @@ def page_tests(lessons, shop):
 </section>
 <section class="sec sec-alt">
  <div class="wrap">
-  <h2>What every Grade 5 test holds</h2>
-  <ul class="ticks ticks-2">
-   <li>20 original problems, easy to hard, at real contest length</li>
-   <li>45 minutes, no calculator, an answer box for each problem</li>
-   <li>A worked answer key that names the tool behind every answer</li>
-   <li>A QR code beside every problem that opens its free video lesson</li>
-   <li>Difficulty and tool mix matched to real Grade 5 contest tests</li>
-   <li>Every answer checked by computer; print it or use a tablet</li>
-  </ul>
+  <h2>Compare</h2>
+  <div class="cmp-wrap">
+   <table class="cmp">
+    <thead><tr><th scope="col"><span class="vh">Feature</span></th><th scope="col">Free test</th><th scope="col">One test</th><th scope="col" class="cmp-best">Pack</th></tr></thead>
+    <tbody>
+     <tr><th scope="row">Problems</th><td>20</td><td>20</td><td class="cmp-best">200</td></tr>
+     <tr><th scope="row">Easy to hard, 45 min</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
+     <tr><th scope="row">Worked answer key</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
+     <tr><th scope="row">Lesson QR on every problem</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
+     <tr><th scope="row">Grade</th><td>Pick yours</td><td>5</td><td class="cmp-best">5</td></tr>
+     <tr><th scope="row">Price</th><td>Free</td><td>$3.99</td><td class="cmp-best">$19.99</td></tr>
+    </tbody>
+   </table>
+  </div>
+  <p class="small cmp-note">Every problem is our own. Every answer is checked by computer.</p>
   {samples(root, ("practice", "key", "diagnostic"))}
  </div>
 </section>
