@@ -241,7 +241,7 @@
         msg.appendChild(document.createTextNode("Downloading. "));
         urls.forEach(function (u, i) {
           var a = document.createElement("a");
-          a.href = u; a.rel = "noopener"; a.textContent = "Grade " + grades[i] + " test (PDF)";
+          a.href = u; a.rel = "noopener"; a.textContent = "Grade " + grades[i] + " Noetic-style test (PDF)";
           msg.appendChild(a); msg.appendChild(document.createTextNode(" "));
         });
         if (urls.length === 1) window.location.href = urls[0];

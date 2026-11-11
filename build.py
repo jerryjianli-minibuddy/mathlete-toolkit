@@ -233,8 +233,11 @@ def nav(root, active=""):
     contests = "".join(
         f'<a class="dd-i" href="{root}{C["slug"]}/">{e(C["name"])}{"<small>soon</small>" if C.get("soon") else ""}</a>'
         for C in CONTESTS.values())
-    tests = (f'<a class="dd-i" href="{root}free/">Free diagnostic test<small class="dd-free">free</small></a>'
-             f'<a class="dd-i" href="{root}mock-tests/">Practice tests</a>')
+    tests = (f'<p class="dd-h">Noetic-style, Grade 5</p>'
+             f'<a class="dd-i" href="{root}free/">Free diagnostic test<small class="dd-free">free</small></a>'
+             f'<a class="dd-i" href="{root}mock-tests/">Practice tests</a>'
+             f'<p class="dd-h">Kangaroo-style, Grades 5 and 6</p>'
+             f'<span class="dd-i dd-off">Practice tests<small>soon</small></span>')
     topics = "".join(
         f'<a class="dd-i" href="{root}grade-5/#topic-{chr(97 + i)}"><span class="dd-letter">{chr(65 + i)}</span>{e(name)}</a>'
         for i, (name, _) in enumerate(TOPICS))
@@ -410,12 +413,12 @@ def test_cta(root, compact=False):
 
 # Real pages from the PDFs (mock-tests/preview/), small for phones and full size on tap.
 SAMPLES = {
-    "diagnostic": ("diagnostic-page1-sm.webp", "diagnostic-page1.webp", "Free test, page 1",
+    "diagnostic": ("diagnostic-page1-sm.webp", "diagnostic-page1.webp", "Free Noetic-style test, page 1",
                    "A QR code beside every problem opens its lesson."),
-    "practice": ("sample-test-page1.webp", "sample-test-page1-lg.webp", "Practice test, page 1",
+    "practice": ("sample-test-page1.webp", "sample-test-page1-lg.webp", "Noetic-style practice test, page 1",
                  "Every test in the pack has the same format."),
     "key": ("sample-answer-key.webp", "sample-answer-key-lg.webp", "Answer key",
-            "The working and the tool for every answer (from Practice Test 3)."),
+            "The working and the tool for every answer (Noetic-style Practice Test 3)."),
 }
 
 
@@ -431,6 +434,12 @@ def samples(root, keys=("diagnostic", "practice", "key")):
 
 
 SHOP = {"live": False}  # set in main() from data/shop.json
+
+# Every test says which contest it is for (Nov 11, Jian: "tests for noetic are marked for noetic, kangaroo for
+# kangaroo"), with the not-affiliated line next to it. Links and Drive/Payhip ids stay the same.
+TEST_NOTE = ('"Noetic-style" tests are written in the style of the Noetic Learning Math Contest, and "Kangaroo-style" '
+             'tests in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Noetic Learning '
+             'or Math Kangaroo. Every problem is our own.')
 
 
 def faqs():
@@ -546,7 +555,7 @@ def page_home(lessons):
   <ol class="steps">
    <li><span class="n n1">1</span><h3>Take the free test</h3><p>Pick your grade. Check with the answer key.</p><a class="go" href="free/">Get the free test &rarr;</a></li>
    <li><span class="n n2">2</span><h3>Watch the key move</h3><p>Scan the QR beside each miss.</p><a class="go" href="lessons/">See all {len(lessons)} lessons &rarr;</a></li>
-   <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten Grade 5 tests with worked answer keys.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
+   <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten Noetic-style Grade 5 tests with worked answer keys.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
   </ol>
  </div>
 </section>
@@ -775,16 +784,17 @@ def page_tests(lessons, shop):
         single_btn = '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>'
     soon_note = "" if live else f'<p class="small">Checkout opens soon. <a href="{root}free/">Start with the free test</a>.</p>'
     singles = "\n".join(
-        f'    <li><span><b>Grade 5 Practice Test {n}</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em>'
+        f'    <li><span><b>Noetic-style Grade 5 Practice Test {n}</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em>'
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(shop["tests"], 1))
-    body = head(f"Grade 5 Math Contest Practice Tests | {NAME}",
-                "Grade 5 competition math practice tests at $3.99 each or $19.99 for all 10, each with a worked answer key and a lesson QR beside every problem. Start with the free diagnostic test.",
+    body = head(f"Noetic-style Grade 5 Practice Tests | {NAME}",
+                "Noetic-style Grade 5 practice tests at $3.99 each or $19.99 for all 10, each with a worked answer key and a lesson QR beside every problem. Start with the free diagnostic test.",
                 "mock-tests/", root)
     body += nav(root, "tests")
     body += f"""<section class="page-head">
  <div class="wrap">
-  <h1>Grade 5 practice tests</h1>
+  <p class="eyebrow">Noetic-style &middot; Grade 5</p>
+  <h1>Noetic-style Grade 5 practice tests</h1>
   <p class="lead">Real contest length. Every miss links to its key move. Start free.</p>
  </div>
 </section>
@@ -793,28 +803,30 @@ def page_tests(lessons, shop):
   <div class="plans">
    <div class="plan plan-free">
     <p class="eyebrow">Start here</p>
-    <h2>Diagnostic test</h2>
+    <h2>Noetic-style diagnostic</h2>
     <p class="price"><b>Free</b></p>
     <ul class="facts-row"><li>PDF</li><li>Answer key</li><li>Free to share</li></ul>
     <a class="btn btn-primary btn-lg" href="{root}free/" data-cta-watch>Get the free test</a>
    </div>
    <div class="plan">
     <p class="eyebrow eyebrow-n">One test</p>
-    <h2>Grade 5 test</h2>
+    <h2>Noetic-style Grade 5 test</h2>
     <p class="price"><b>$3.99</b> each</p>
-    <ul class="facts-row"><li>Grade 5</li><li>PDF</li><li>6 pages</li><li>45 min</li></ul>
+    <ul class="facts-row"><li>Noetic-style</li><li>Grade 5</li><li>PDF</li><li>45 min</li></ul>
     {single_btn}
    </div>
    <div class="plan plan-pack">
     <p class="ribbon">Best value</p>
     <p class="eyebrow">All 10 tests</p>
-    <h2>Grade 5 Practice Pack</h2>
+    <h2>Noetic-style Grade 5 Practice Pack</h2>
     <p class="price"><b>$19.99</b> <s>$39.90</s> <span class="save">Save $19.91</span></p>
-    <ul class="facts-row"><li>Grade 5</li><li>10 tests</li><li>60 pages</li><li>Home or class</li></ul>
+    <ul class="facts-row"><li>Noetic-style</li><li>Grade 5</li><li>10 tests</li><li>60 pages</li></ul>
     {pack_btn}
    </div>
   </div>
   {soon_note}
+  <p class="test-note">{TEST_NOTE}</p>
+  <div class="next-tests"><b>Kangaroo-style tests, Grades 5 and 6</b><span>Coming soon</span></div>
  </div>
 </section>
 <section class="sec sec-alt">
@@ -828,19 +840,20 @@ def page_tests(lessons, shop):
      <tr><th scope="row">Easy to hard, 45 min</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
      <tr><th scope="row">Worked answer key</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
      <tr><th scope="row">Lesson QR on every problem</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
-     <tr><th scope="row">Grade</th><td>Pick yours</td><td>5</td><td class="cmp-best">5</td></tr>
+     <tr><th scope="row">Contest style</th><td>Noetic</td><td>Noetic</td><td class="cmp-best">Noetic</td></tr>
+     <tr><th scope="row">Grade</th><td>5</td><td>5</td><td class="cmp-best">5</td></tr>
      <tr><th scope="row">Price</th><td>Free</td><td>$3.99</td><td class="cmp-best">$19.99</td></tr>
     </tbody>
    </table>
   </div>
-  <p class="small cmp-note">Every problem is our own. Every answer is checked by computer.</p>
+  <p class="small cmp-note">Every answer is checked by computer.</p>
   {samples(root, ("practice", "key", "diagnostic"))}
  </div>
 </section>
 <section class="sec">
  <div class="wrap">
   <details class="qa singles-box" id="singles"{" open" if live else ""}>
-   <summary>All 10 single tests, $3.99 each</summary>
+   <summary>All 10 Noetic-style single tests, $3.99 each</summary>
    <ul class="singles">
 {singles}
    </ul>
@@ -891,7 +904,7 @@ def page_free():
     tiles = []
     for g in range(1, 13):
         if g in FREE_TESTS:
-            tiles.append(f'<a class="gp gp-on" href="{e(FREE_TESTS[g])}" rel="noopener"><b>Grade {g}</b><span>Get the test</span></a>')
+            tiles.append(f'<a class="gp gp-on" href="{e(FREE_TESTS[g])}" rel="noopener"><b>Grade {g}</b><span>Noetic-style test</span></a>')
         else:
             tiles.append(f'<span class="gp" aria-disabled="true"><b>Grade {g}</b><span>Coming soon</span></span>')
     body = head(f"Free Diagnostic Test | {NAME}",
@@ -907,6 +920,7 @@ def page_free():
   <p class="form-note">Fill in a short form. It shows the password, and the PDF downloads right here.</p>
   {unlock_form()}
   <p class="teacher-note"><b>Teachers:</b> it is free to copy for your class.</p>
+  <p class="test-note test-note-d">The Grade 5 test is Noetic-style. Kangaroo-style tests for Grades 5 and 6 are coming. {TEST_NOTE}</p>
  </div>
 </section>
 <section class="sec">
