@@ -640,3 +640,25 @@ a.dd-i:hover, a.dd-i:focus-visible { background: var(--cream); color: var(--pink
 .pw-reveal b { font-size: 1.5rem; font-weight: 900; letter-spacing: .08em; margin-left: 4px; }
 .pw-reveal[hidden] { display: none; }
 #unlock-step { scroll-margin-top: 140px; }
+/* Grade x contest pickers (Nov 11): pick a contest on a grade page, a grade on a contest page */
+.pickers { display: grid; gap: 14px; margin-top: 22px; }
+.picker { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.pk-h { flex: none; margin: 0; font-size: .8rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); width: 112px; }
+.pk-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 2px; min-width: 0; }
+.pk-row::-webkit-scrollbar { display: none; }
+.pk { flex: none; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; white-space: nowrap; font-weight: 700; font-size: .92rem; color: var(--navy); background: #fff; border: 1.5px solid var(--line); border-radius: 999px; padding: 7px 14px; }
+a.pk:hover { border-color: var(--navy2); }
+.pk-on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.pk-off { color: var(--muted); border-style: dashed; font-weight: 600; }
+.pk-off small { font-size: .68rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; opacity: .8; }
+.pk-g { padding: 4px 12px 4px 4px; }
+.pk .gl-badge { width: 26px; height: 26px; font-size: .78rem; border-radius: 8px; }
+.pk-off .gl-badge { opacity: .45; }
+.ph-sep { color: var(--muted); font-weight: 600; }
+.combo-tests { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px; margin-bottom: 22px; }
+.combo-tests h2 { margin: 2px 0 4px; font-size: 1.25rem; }
+.combo-tests p { margin: 0; color: var(--muted); }
+.combo-tests .eyebrow { color: var(--pink); }
+.combo-btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.combo-soon { border-style: dashed; }
+@media (max-width: 640px) { .picker { flex-direction: column; align-items: stretch; gap: 6px; } .pk-h { width: auto; } }

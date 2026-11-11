@@ -761,7 +761,101 @@ def page_lesson(l, lessons):
     write(f"lessons/{l['slug']}/index.html", body)
 
 
-def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, badge=None):
+# ---------- grade x contest pickers (Nov 11, Jian: "after we click on a grade, we should be able to choose which
+# contests. same with contest: if we click contest first, then we will choose the grade") ----------
+# Which tests exist for each contest and grade. live=False shows as coming soon.
+TEST_SETS = [
+    dict(contest="noetic", grades=[5], label="Noetic-style", live=True),
+    dict(contest="kangaroo", grades=[5, 6], label="Kangaroo-style", live=False),
+]
+
+
+def combo_lessons(lessons, g, k):
+    return [l for l in lessons if str(l["grade"]) == str(g) and k in l["contests"]]
+
+
+def combo_tests(g, k):
+    return [t for t in TEST_SETS if t["contest"] == k and int(g) in t["grades"]]
+
+
+def combo_live(lessons, g, k):
+    """A grade and contest pair gets its own page once it has a lesson or a live test."""
+    return bool(combo_lessons(lessons, g, k)) or any(t["live"] for t in combo_tests(g, k))
+
+
+def contest_picker(lessons, g, root, current=None):
+    on = lambda x: ' pk-on" aria-current="page' if x == current else ""
+    items = [f'<a class="pk{on(None)}" href="{root}grade-{g}/">All contests</a>']
+    for k, C in CONTESTS.items():
+        if combo_live(lessons, g, k):
+            items.append(f'<a class="pk{on(k)}" href="{root}grade-{g}/{k}/">{e(C["name"])}</a>')
+        else:
+            items.append(f'<span class="pk pk-off">{e(C["name"])}<small>soon</small></span>')
+    return (f'<div class="picker"><p class="pk-h">Pick a contest</p>'
+            f'<div class="pk-row">{"".join(items)}</div></div>')
+
+
+def grade_picker(lessons, k, root, current=None):
+    items = []
+    for g, _ in GRADES:
+        badge = f'<span class="gl-badge gc-{g}">{g}</span>'
+        if combo_live(lessons, g, k):
+            cur = ' pk-on" aria-current="page' if str(g) == str(current) else ""
+            items.append(f'<a class="pk pk-g{cur}" href="{root}grade-{g}/{k}/">{badge}Grade {g}</a>')
+        else:
+            items.append(f'<span class="pk pk-g pk-off">{badge}Grade {g}<small>soon</small></span>')
+    return (f'<div class="picker"><p class="pk-h">Pick a grade</p>'
+            f'<div class="pk-row pk-grades">{"".join(items)}</div></div>')
+
+
+def page_combo(lessons, g, k):
+    """grade-N/<contest>/: the lessons and tests for one grade and one contest, with both pickers on top."""
+    root = "../../"
+    C = CONTESTS[k]
+    sub = combo_lessons(lessons, g, k)
+    tests = combo_tests(g, k)
+    slug = f"grade-{g}/{k}"
+    blocks = []
+    for t in tests:
+        who = grade_title("-".join(str(x) for x in (t["grades"][0], t["grades"][-1]))) if len(t["grades"]) > 1 else f"Grade {g}"
+        if t["live"]:
+            blocks.append(f'<div class="combo-tests"><div><p class="eyebrow">Tests</p><h2>{t["label"]} tests, {who}</h2>'
+                          f'<p>Printable, with a worked answer key and a lesson QR beside every problem.</p></div>'
+                          f'<div class="combo-btns"><a class="btn btn-primary" href="{root}free/">Free diagnostic test</a>'
+                          f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a></div></div>')
+        else:
+            blocks.append(f'<div class="combo-tests combo-soon"><div><p class="eyebrow">Tests</p>'
+                          f'<h2>{t["label"]} tests, {who}</h2><p>Coming soon.</p></div></div>')
+    if sub:
+        n_live = sum(l["live"] for l in sub)
+        inner = (f'<div class="sk-top"><p class="sk-count"><b>{len(sub)}</b> key moves in {len(topic_groups(sub))} topics'
+                 f'{f", {n_live} with a video now" if 0 < n_live < len(sub) else ""}.</p></div>'
+                 f'<nav class="sk-jump" aria-label="Topics">' + "".join(
+                     f'<a href="#topic-{L.lower()}"><b>{L}</b> {e(n)}</a>' for L, n, _ in topic_groups(sub)) + '</nav>'
+                 + skill_list(sub, root))
+    else:
+        inner = ('<div class="empty"><h2>Lessons are on the way</h2>'
+                 f'<p>We are building this set now.</p><a class="btn btn-primary" href="{root}lessons/">See all lessons</a></div>')
+    body = head(f"Grade {g} {C['name']} Prep: Lessons and Tests | {NAME}",
+                f"Grade {g} {C['name']} prep: free video lessons on the key moves that come up most, plus practice tests.",
+                f"{slug}/", root)
+    body += nav(root, f"grade-{g}")
+    body += f"""<section class="page-head">
+ <div class="wrap ph-badge">
+  <span class="gl-badge gc-{g} gl-big">{g}</span><div>
+  <h1>Grade {g} <span class="ph-sep">&middot;</span> {e(C['name'])}</h1>
+  <p class="lead">Key moves that come up on {e(C['name'])}, for Grade {g}. Independent practice, not affiliated with {e(C['name'])}.</p>
+  </div>
+ </div>
+ <div class="wrap pickers">{contest_picker(lessons, g, root, k)}{grade_picker(lessons, k, root, g)}</div>
+</section>
+<section class="sec sec-tight"><div class="wrap">{"".join(blocks)}{inner}</div></section>
+"""
+    body += test_cta(root, compact=True) + foot(root)
+    write(f"{slug}/index.html", body)
+
+
+def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, badge=None, picker=""):
     root = "../"
     n_live = sum(l["live"] for l in lessons)
     top = (f'<div class="sk-top"><p class="sk-count"><b>{len(lessons)}</b> key moves in {len(topic_groups(lessons))} topics'
@@ -788,6 +882,7 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
   <p class="lead">{lead}</p>
   </div>
  </div>
+ {f'<div class="wrap pickers">{picker}</div>' if picker else ""}
 </section>
 <section class="sec sec-tight"><div class="wrap">{inner}</div></section>
 """
@@ -1198,13 +1293,19 @@ def main():
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "Every key move for grade 5 contests, grouped by topic. Each one is a short video lesson.", lessons,
                "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.",
-               badge="5")
+               badge="5", picker=contest_picker(lessons, 5, "../"))
+    for g, _ in GRADES:
+        for k in CONTESTS:
+            if combo_live(lessons, g, k):
+                page_combo(lessons, g, k)
+                urls.append(f"grade-{g}/{k}/")
     for k, C in CONTESTS.items():
         sub = [l for l in lessons if k in l["contests"]]
         lead = (f"Key moves that come up on {C['name']}. {C['blurb']} Independent practice, not affiliated with {C['name']}."
                 if sub else f"{C['blurb']} Independent practice, not affiliated with the {C['name']} organizers.")
         page_group(C["slug"], f"{C['name']} Prep: Free Video Lessons | {NAME}", f"{C['name']} prep", lead, sub,
-                   f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.")
+                   f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.",
+                   picker=grade_picker(lessons, k, "../"))
         if sub:
             urls.append(C["slug"] + "/")
     write("amc-prep/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
