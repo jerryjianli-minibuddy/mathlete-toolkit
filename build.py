@@ -787,7 +787,7 @@ def page_lesson(l, lessons):
 # and grade gets its own diagnostic, and a pick without one says Coming soon (never the Noetic test as a stand-in).
 TEST_SETS = [
     dict(key="noetic-5", contest="noetic", grades=[5], label="Noetic-style", diag=True, practice=True),
-    dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=False, practice=False),
+    dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=True, practice=False),
     # Nov 11: Jian shared these three (anyone with the link, viewer).
     dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=False),
     dict(key="amc8-6-8", contest="amc8", grades=[6, 7, 8], label="AMC 8-style", diag=True, practice=False),
