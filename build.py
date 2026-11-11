@@ -476,7 +476,7 @@ def faqs():
         "free": ("Is the test really free?",
                  "Yes. Fill in a short form, then download the PDF right away. No payment."),
         "who": ("Which grades?",
-                "Grade 5 is ready now. More grades are coming; pick yours on the free test page."),
+                "Pick your grade on the free test page. New grades are added as they are ready."),
         "misses": ("What do we do with the misses?",
                    "Scan the QR beside the problem to open its lesson. Try the problem again the next day."),
         "original": ("Are the problems copied from real contests?",
@@ -957,7 +957,7 @@ def page_free():
   <p class="signup-h signup-h3"><span>3</span>Type the password to download</p>
   {unlock_form()}
   <p class="teacher-note"><b>Teachers:</b> it is free to copy for your class.</p>
-  <p class="test-note test-note-d">The Grade 5 test is Noetic-style. Kangaroo-style tests for Grades 5 and 6 are coming. {TEST_NOTE}</p>
+  <p class="test-note test-note-d">Every problem is our own. Not affiliated with any contest.</p>
  </div>
 </section>
 <section class="sec">
