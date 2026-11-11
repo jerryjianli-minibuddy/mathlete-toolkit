@@ -268,6 +268,7 @@ def nav(root, active=""):
         f'<a class="dd-i" href="{root}grade-5/#topic-{chr(97 + i)}"><span class="dd-letter">{chr(65 + i)}</span>{e(name)}</a>'
         for i, (name, _) in enumerate(TOPICS))
     lessons = (f'<a class="dd-i" href="{root}lessons/">All video lessons</a>'
+               f'<a class="dd-i" href="{root}key-moves/">Cheat sheet (print it)</a>'
                f'<p class="dd-h">Grade 5 topics</p>{topics}')
     return f"""<header class="top">
  <div class="wrap top-in">
@@ -313,6 +314,7 @@ def foot(root, cta=True):
   <div>
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
+   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li>
    <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Free diagnostic test</a></li></ul>
   </div>
   <div>
@@ -868,10 +870,73 @@ def page_combo(lessons, g, k):
  </div>
  <div class="wrap pickers">{contest_picker(lessons, g, root, k)}{grade_picker(lessons, k, root, g)}</div>
 </section>
-<section class="sec sec-tight"><div class="wrap">{"".join(blocks)}{inner}</div></section>
+<section class="sec sec-tight"><div class="wrap">{"".join(blocks)}{glance(k)}{inner}</div></section>
 """
     body += test_cta(root, compact=True) + foot(root)
     write(f"{slug}/index.html", body)
+
+
+# Contest format at a glance (Nov 11 overnight, toward "insanely useful for parents"). Source: the Contests tab of the
+# Past Test Database, which Jian's tests were logged against. Dates are left out on purpose: they move every year.
+CONTEST_FACTS = {
+    "kangaroo": dict(who="Grades 1 to 12, one test for each pair of grades (1-2, 3-4, 5-6 and so on)",
+                     rows=[("Questions", "24 for grades 1 to 4, 30 for grades 5 to 12. Multiple choice, 5 options."),
+                           ("Time", "75 minutes"),
+                           ("Scoring", "3, 4 and 5-point sections. The later problems are harder and worth more.")],
+                     q=30, mins=75, pace_label="Pace, grades 5 to 12"),
+    "noetic": dict(who="Grades 2 to 8, one test for each grade",
+                   rows=[("Questions", "20 short-answer problems"),
+                         ("Time", "45 minutes, no calculator"),
+                         ("When", "Fall and Spring"),
+                         ("Difficulty", "Problems 1 to 6 easy, 7 to 14 medium, 15 to 20 hard")],
+                   q=20, mins=45),
+    "mathcounts": dict(who="Grades 6 to 8",
+                       rows=[("Sprint round", "30 problems in 40 minutes, no calculator"),
+                             ("Target round", "8 problems, given in pairs"),
+                             ("Team round", "10 problems"),
+                             ("Countdown", "A fast head-to-head round")],
+                       q=30, mins=40, pace_label="Sprint round pace"),
+    "amc8": dict(who="Grade 8 and below",
+                 rows=[("Questions", "25 multiple choice, 5 options"),
+                       ("Time", "40 minutes, no calculator"),
+                       ("Scoring", "One point for each correct answer"),
+                       ("When", "Once a year, in January"),
+                       ("Difficulty", "It climbs: the last few problems are the hardest")],
+                 q=25, mins=40),
+    "amc10": dict(who="Grade 10 and below",
+                  rows=[("Questions", "25 multiple choice"),
+                        ("Time", "75 minutes"),
+                        ("Scoring", "A blank earns partial credit, so guessing can cost points")],
+                  q=25, mins=75),
+    "amc12": dict(who="Grade 12 and below",
+                  rows=[("Questions", "25 multiple choice"),
+                        ("Time", "75 minutes"),
+                        ("Scoring", "A blank earns partial credit, so guessing can cost points")],
+                  q=25, mins=75),
+    "olympiad": dict(who="MOEMS: Division E for grades 4 to 6, Division M for grades 6 to 8",
+                     rows=[("Contests", "5 a year, from November to March"),
+                           ("Questions", "5 short-answer problems in each contest"),
+                           ("Time", "Each problem has its own time limit, a few minutes each")]),
+}
+
+
+def pace(q, mins):
+    s = round(mins * 60 / q)
+    m, r = divmod(s, 60)
+    return (f"{m} min {r} s" if m and r else f"{m} min" if m else f"{r} s") + " a problem"
+
+
+def glance(k):
+    """The 'at a glance' card for a contest: who takes it, the format, and the pace to practice at."""
+    F = CONTEST_FACTS.get(k)
+    if not F:
+        return ""
+    rows = [("Who", F["who"])] + F["rows"]
+    if F.get("q"):
+        rows.append((F.get("pace_label", "Pace"), f'About {pace(F["q"], F["mins"])}. Practice with a timer at this speed.'))
+    dl = "".join(f'<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>' for a, b in rows)
+    return (f'<section class="glance" aria-labelledby="glance-{k}"><h2 id="glance-{k}">{e(CONTESTS[k]["name"])} at a glance</h2>'
+            f'<dl>{dl}</dl><p class="glance-note">Formats can change. Check the contest\'s own site before test day.</p></section>')
 
 
 def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, badge=None, picker="", tests=True):
@@ -906,7 +971,7 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
  </div>
  {f'<div class="wrap pickers">{picker}</div>' if picker else ""}
 </section>
-<section class="sec sec-tight"><div class="wrap">{inner}</div></section>
+<section class="sec sec-tight"><div class="wrap">{glance(tests) if isinstance(tests, str) else ""}{inner}</div></section>
 """
     body += test_cta(root, compact=True) + foot(root)
     write(f"{slug}/index.html", body)
@@ -1217,6 +1282,38 @@ def page_about(lessons):
     write("about/index.html", body)
 
 
+def page_cheatsheet(lessons):
+    """/key-moves/: every key move on one printable page: the tool, its rule and the trap to avoid.
+    Built for the fridge or the pencil case (Nov 11 overnight)."""
+    root = "../"
+    blocks = []
+    for letter, name, items in topic_groups(lessons):
+        rows = "".join(
+            f'<li><a href="{root}lessons/{l["slug"]}/"><b>{e(l["tool"])}</b></a>'
+            f'<span class="cs-rule">{e(l["rule"])}</span><span class="cs-trap">Trap: {e(l["trap"])}</span></li>'
+            for l in items)
+        blocks.append(f'<section class="cs-group"><h2><span class="sk-letter">{letter}</span>{e(name)}</h2><ol>{rows}</ol></section>')
+    body = head(f"Key Moves Cheat Sheet: Every Competition Math Tool on One Page | {NAME}",
+                "Every competition math key move on one printable page: the tool, the rule and the trap to avoid. Free.",
+                "key-moves/", root)
+    body += nav(root, "lessons")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <h1>Key moves cheat sheet</h1>
+  <p class="lead">Every tool on one page: the rule, and the trap to avoid. Print it and keep it by the practice tests.</p>
+  <p class="cs-actions"><button type="button" class="btn btn-primary" data-print>Print it</button>
+  <a class="btn btn-ghost-d cs-ghost" href="{root}lessons/">Watch the lessons</a></p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap cs">
+ <p class="cs-print-head">{NAME} &middot; Key moves cheat sheet &middot; keymovemath.com/key-moves</p>
+ {"".join(blocks)}
+</div></section>
+"""
+    body += foot(root)
+    write("key-moves/index.html", body)
+
+
 def page_404():
     root = "/"
     body = head(f"Page not found | {NAME}", "This page does not exist.", "404.html", root, noindex=True)
@@ -1320,7 +1417,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "Every key move for grade 5 contests, grouped by topic. Each one is a short video lesson.", lessons,
                "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.",
@@ -1344,6 +1441,7 @@ def main():
           '<meta http-equiv="refresh" content="0; url=/#contests-h"><a href="/#contests-h">AMC 8, AMC 10 and AMC 12</a>')
     page_tests(lessons, SHOP)
     page_free()
+    page_cheatsheet(lessons)
     page_about(lessons)
     page_404()
     for l in lessons:

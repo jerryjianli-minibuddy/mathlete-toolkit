@@ -675,3 +675,40 @@ a.pk:hover { border-color: var(--navy2); }
 .fpick-msg.ok { color: var(--yellow); }
 .fpick-msg.soon { color: #fff; }
 .btn-off { opacity: .55; cursor: default; }
+/* Contest at a glance (Nov 11) */
+.glance { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; margin: 0 0 22px; }
+.glance h2 { font-size: 1.15rem; margin: 0 0 10px; }
+.glance dl { margin: 0; display: grid; gap: 8px 22px; }
+@media (min-width: 760px) { .glance dl { grid-template-columns: 1fr 1fr; } }
+.glance dl div { display: grid; grid-template-columns: 112px 1fr; gap: 10px; align-items: baseline; }
+.glance dt { font-size: .74rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.glance dd { margin: 0; font-size: .95rem; }
+.glance-note { margin: 12px 0 0; font-size: .82rem; color: var(--muted); }
+/* Key moves cheat sheet (Nov 11) */
+.cs-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 0; }
+.cs-actions .btn { font-family: inherit; cursor: pointer; border: 0; }
+.cs-ghost { color: #fff !important; box-shadow: inset 0 0 0 2px rgba(255,255,255,.35) !important; }
+.cs { columns: 1; column-gap: 28px; }
+@media (min-width: 900px) { .cs { columns: 2; } }
+.cs-group { break-inside: avoid; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin: 0 0 18px; }
+.cs-group h2 { font-size: 1rem; margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
+.cs-group ol { margin: 0; padding: 0; list-style: none; }
+.cs-group li { padding: 7px 0; border-top: 1px solid var(--line); font-size: .92rem; line-height: 1.4; }
+.cs-group li:first-child { border-top: 0; }
+.cs-group li a { color: var(--ink); text-decoration: none; }
+.cs-group li a:hover { text-decoration: underline; }
+.cs-rule { display: block; }
+.cs-trap { display: block; color: var(--muted); font-size: .84rem; }
+.cs-print-head { display: none; }
+@media print {
+  .top, .foot, .mcta, .page-head, .cs-actions { display: none !important; }
+  body { background: #fff; font-size: 11px; }
+  .sec { padding: 0 !important; }
+  .cs { columns: 2; column-gap: 18px; }
+  .cs-print-head { display: block; font-weight: 800; margin: 0 0 8px; font-size: 12px; }
+  .cs-group { border: 1px solid #bbb; padding: 6px 8px; margin: 0 0 8px; border-radius: 6px; }
+  .cs-group h2 { font-size: 11px; margin: 0 0 3px; }
+  .cs-group li { padding: 2px 0; font-size: 9.5px; }
+  .cs-trap { font-size: 8.5px; }
+  @page { size: letter; margin: 0.5in; }
+}

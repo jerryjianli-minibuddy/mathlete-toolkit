@@ -312,3 +312,10 @@
   if (/^\d{1,2}$/.test(q.get("grade") || "")) st.grade = q.get("grade");
   paint();
 })();
+
+/* Print buttons (cheat sheet) */
+(function () {
+  Array.prototype.forEach.call(document.querySelectorAll("[data-print]"), function (b) {
+    b.addEventListener("click", function () { window.print(); });
+  });
+})();
