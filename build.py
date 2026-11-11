@@ -731,7 +731,7 @@ def page_tests(lessons, shop):
     <p class="eyebrow">All 10 tests</p>
     <h2>Grade 5 Practice Pack</h2>
     <p class="price"><b>$19.99</b> <s>$39.90</s> <span class="save">Save $19.91</span></p>
-    <ul class="facts-row"><li>Grade 5</li><li>10 tests</li><li>60 pages</li></ul>
+    <ul class="facts-row"><li>Grade 5</li><li>10 tests</li><li>60 pages</li><li>Home or class</li></ul>
     {pack_btn}
    </div>
   </div>
@@ -802,6 +802,7 @@ def page_free():
   <p class="lead">Pick your grade. Answer key included, and every miss opens its video lesson.</p>
   <div class="gpick" role="group" aria-label="Pick a grade">{"".join(tiles)}</div>
   <p class="form-note">Fill in a short form and the PDF link shows right away.</p>
+  <p class="teacher-note"><b>Teachers:</b> it is free to copy for your class.</p>
  </div>
 </section>
 <section class="sec">
