@@ -272,8 +272,6 @@ def nav(root, active=""):
  <div class="wrap top-in">
   <a class="brand" href="{root}" aria-label="{NAME} home">{mark(34)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
   <div class="socials">
-   <a class="soc soc-ig" href="{IG}" rel="noopener" aria-label="Key Move Math on Instagram">{IG_ICON}</a>
-   <a class="soc soc-tt" href="{TT}" rel="noopener" aria-label="Key Move Math on TikTok">{TT_ICON}</a>
    <a class="btn btn-yt btn-sub" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe</span></a>
   </div>
  </div>
