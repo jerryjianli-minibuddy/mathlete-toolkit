@@ -643,7 +643,7 @@ a.dd-i:hover, a.dd-i:focus-visible { background: var(--cream); color: var(--pink
 /* Grade x contest pickers (Nov 11): pick a contest on a grade page, a grade on a contest page */
 .pickers { display: grid; gap: 14px; margin-top: 22px; }
 .picker { display: flex; align-items: center; gap: 12px; min-width: 0; }
-.pk-h { flex: none; margin: 0; font-size: .8rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); width: 112px; }
+.pk-h { flex: none; margin: 0; font-size: .8rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); width: 132px; white-space: nowrap; }
 .pk-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 2px; min-width: 0; }
 .pk-row::-webkit-scrollbar { display: none; }
 .pk { flex: none; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; white-space: nowrap; font-weight: 700; font-size: .92rem; color: var(--navy); background: #fff; border: 1.5px solid var(--line); border-radius: 999px; padding: 7px 14px; }

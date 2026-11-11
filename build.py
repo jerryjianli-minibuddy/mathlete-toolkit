@@ -844,7 +844,7 @@ def page_combo(lessons, g, k):
  <div class="wrap ph-badge">
   <span class="gl-badge gc-{g} gl-big">{g}</span><div>
   <h1>Grade {g} <span class="ph-sep">&middot;</span> {e(C['name'])}</h1>
-  <p class="lead">Key moves that come up on {e(C['name'])}, for Grade {g}. Independent practice, not affiliated with {e(C['name'])}.</p>
+  <p class="lead">Lessons and tests for {e(C['name'])}, Grade {g}. Independent practice, not affiliated with {e(C['name'])}.</p>
   </div>
  </div>
  <div class="wrap pickers">{contest_picker(lessons, g, root, k)}{grade_picker(lessons, k, root, g)}</div>
