@@ -857,7 +857,7 @@ def test_blocks(root, tests, g=None):
             btns += (f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>' if t["practice"]
                      else '<span class="btn btn-ghost-d btn-off">Practice tests soon</span>')
             blocks.append(f'<div class="combo-tests"><div><p class="eyebrow">Tests</p><h2>{t["label"]} tests, {who}</h2>'
-                          f'<p>Printable, with a worked answer key and a lesson QR beside every problem.</p></div>'
+                          f'<p>Printable, with a worked answer key.</p></div>'
                           f'<div class="combo-btns">{btns}</div></div>')
         else:
             blocks.append(f'<div class="combo-tests combo-soon"><div><p class="eyebrow">Tests</p>'
