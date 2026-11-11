@@ -390,3 +390,18 @@ main .hero :focus-visible, main .cta-band :focus-visible { outline-color: var(--
 .test-box .eyebrow { color: var(--yellow); margin-bottom: .5em; }
 .test-box :focus-visible { outline-color: var(--yellow); }
 @media (min-width: 820px) { .test-box { grid-template-columns: 1fr auto; padding: 28px 32px; gap: 30px; } }
+
+/* /free grade picker (Nov 11): one page for every grade */
+.hero-free { padding-bottom: 48px; }
+.gpick { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 24px 0 14px; max-width: 720px; }
+@media (min-width: 620px) { .gpick { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 960px) { .gpick { grid-template-columns: repeat(6, 1fr); } }
+.gp { display: flex; flex-direction: column; justify-content: center; min-height: 64px; padding: 10px 12px; border-radius: 14px; border: 1.5px dashed rgba(255,255,255,.25); color: #8F9CBA; text-decoration: none; line-height: 1.2; }
+.gp b { font-size: 1.02rem; color: #C9D3E8; }
+.gp span { font-size: .78rem; font-weight: 600; margin-top: 3px; }
+.gp-on { border: 0; background: var(--yellow); color: var(--navy); box-shadow: 0 5px 0 #C9A11F; transition: transform .15s ease; }
+.gp-on b { color: var(--navy); font-size: 1.1rem; }
+.gp-on span { font-weight: 800; }
+.gp-on:hover { transform: translateY(-2px); }
+.ticks-3 { margin-bottom: 26px; }
+@media (min-width: 820px) { .ticks-3 { grid-template-columns: repeat(3, 1fr); } }

@@ -761,62 +761,47 @@ def page_tests(lessons, shop):
     write("mock-tests/index.html", body)
 
 
+# Free diagnostic tests by grade (Nov 11, Jian: one landing page for every grade). A grade listed here
+# links to its sign-up; every other grade on /free shows Coming soon. Add a grade when its test ships.
+FREE_TESTS = {5: FORM}
+
+
 def page_free():
-    """keymovemath.com/free: the address every video, test and description points to for the free test (Nov 10).
-    Signups go to the Google Form. Nov 11: a full landing page (what you get, what happens next, sample pages, FAQ)."""
+    """keymovemath.com/free: the one free-test page for every grade, linked from every video, test and
+    description. Pick a grade: a ready grade opens its sign-up form; the rest say Coming soon."""
     root = "../"
-    faq_html, _ = faq(("free", "who", "time", "misses", "share", "original"), title="Before you start")
-    go = (f'<a class="btn btn-primary btn-lg btn-wide" href="{FORM}" rel="noopener">Get the free test</a>')
-    body = head(f"Free Grade 5 Math Contest Test | {NAME}",
-                "Get the free 20-problem Grade 5 competition math test: answer key included, and a QR code beside every problem opens the key move for it.",
+    faq_html, _ = faq(("free", "misses", "share", "original"), title="Questions")
+    tiles = []
+    for g in range(1, 13):
+        if g in FREE_TESTS:
+            tiles.append(f'<a class="gp gp-on" href="{e(FREE_TESTS[g])}" rel="noopener"><b>Grade {g}</b><span>Get the test</span></a>')
+        else:
+            tiles.append(f'<span class="gp" aria-disabled="true"><b>Grade {g}</b><span>Coming soon</span></span>')
+    body = head(f"Free Diagnostic Test | {NAME}",
+                "Free contest math diagnostic test. Pick your grade: answer key included, and a QR code beside every problem opens its video lesson.",
                 "free/", root)
     body += nav(root, "free")
     body += f"""<section class="hero hero-free">
- <div class="wrap hero-in">
-  <div class="hero-copy">
-   <p class="eyebrow eyebrow-y">Free &middot; Grade 5</p>
-   <h1>Your free Grade 5 contest test</h1>
-   <p class="lead">Twenty problems at real test length, with the answer key. Stuck on one? Scan its QR code and the key move for it opens.</p>
-   <div class="hero-cta">{go}</div>
-   <p class="form-note">A short form asks for your email, grade and contest. The PDF link shows as soon as you send it.</p>
-  </div>
-  <a class="paper hero-paper" href="{root}assets/img/diagnostic-page1.webp"><img src="{root}assets/img/diagnostic-page1-sm.webp" srcset="{root}assets/img/diagnostic-page1-sm.webp 560w, {root}assets/img/diagnostic-page1.webp 1105w" sizes="(min-width: 960px) 380px, 70vw" alt="Page 1 of the free Grade 5 Diagnostic Test" width="560" height="725"></a>
+ <div class="wrap">
+  <p class="eyebrow eyebrow-y">Free</p>
+  <h1>Free diagnostic test</h1>
+  <p class="lead">Pick your grade. Answer key included, and every miss opens its video lesson.</p>
+  <div class="gpick" role="group" aria-label="Pick a grade">{"".join(tiles)}</div>
+  <p class="form-note">Fill in a short form and the PDF link shows right away.</p>
  </div>
 </section>
 <section class="sec">
- <div class="wrap free-grid">
-  <div class="test-card test-free">
-   <h2>What you get</h2>
-   <ul class="ticks">
-    <li>20 original contest-style problems, easy to hard</li>
-    <li>45 minutes, no calculator</li>
-    <li>Answer key on the last page</li>
-    <li>A QR code beside every problem opens its video lesson</li>
-    <li>Free for home and classroom use, so share it</li>
-   </ul>
-  </div>
-  <div class="test-card">
-   <h2>What happens next</h2>
-   <ol class="next-steps">
-    <li><b>Send the short form.</b> The link to the PDF shows right away.</li>
-    <li><b>Take the test.</b> Print it or use a tablet. Set a 45-minute timer.</li>
-    <li><b>Fix every miss.</b> Check with the answer key, then scan the QR beside each miss to watch its key move.</li>
-   </ol>
-  </div>
- </div>
-</section>
-<section class="sec sec-alt">
  <div class="wrap">
-  <h2>See the pages</h2>
-  <p class="sec-lead">Page 1 of the free test and a page of worked answers. Tap to see full size.</p>
+  <ul class="ticks ticks-3">
+   <li>Contest-style problems, easy to hard</li>
+   <li>Answer key on the last page</li>
+   <li>A QR beside every problem opens its lesson</li>
+  </ul>
   {samples(root, ("diagnostic", "key"))}
  </div>
 </section>
-<section class="sec">
- <div class="wrap">
-  {faq_html}
-  <p class="sec-cta">{go}</p>
- </div>
+<section class="sec sec-alt">
+ <div class="wrap">{faq_html}</div>
 </section>
 """
     body += foot(root, cta=False)
