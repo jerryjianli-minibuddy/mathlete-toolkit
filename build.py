@@ -328,6 +328,72 @@ def test_cta(root, compact=False):
 </section>"""
 
 
+# ---------- sample pages and parent FAQ (Nov 11) ----------
+
+# Real pages from the PDFs (mock-tests/preview/), small for phones and full size on tap.
+SAMPLES = {
+    "diagnostic": ("diagnostic-page1-sm.webp", "diagnostic-page1.webp", "Free test, page 1",
+                   "20 problems, easy to hard, each with an answer box and a QR code to its lesson."),
+    "practice": ("sample-test-page1.webp", "sample-test-page1-lg.webp", "Practice test, page 1",
+                 "Every test in the pack has the same format, so the free test is a fair preview."),
+    "key": ("sample-answer-key.webp", "sample-answer-key-lg.webp", "Answer key",
+            "Each answer shows the working and names the tool it uses (sample from Practice Test 3)."),
+}
+
+
+def samples(root, keys=("diagnostic", "practice", "key")):
+    figs = []
+    for k in keys:
+        sm, lg, title, text = SAMPLES[k]
+        figs.append(f'<figure class="sample"><a href="{root}assets/img/{lg}" aria-label="{e(title)}, full size">'
+                    f'<img src="{root}assets/img/{sm}" srcset="{root}assets/img/{sm} 560w, {root}assets/img/{lg} 1105w" '
+                    f'sizes="(min-width: 960px) 340px, 78vw" width="560" height="725" loading="lazy" alt="{e(title)} of a Key Move Math Grade 5 test"></a>'
+                    f'<figcaption><b>{e(title)}</b> {e(text)}</figcaption></figure>')
+    return f'<div class="samples">{"".join(figs)}</div>'
+
+
+SHOP = {"live": False}  # set in main() from data/shop.json
+
+
+def faqs():
+    live = SHOP.get("live")
+    return {
+        "free": ("Is the test really free?",
+                 "Yes. Fill in a short form (email, grade and contest) and the link to the PDF shows right away. No payment, no card."),
+        "who": ("Who is it for?",
+                "Grade 5 students getting ready for a math contest, or any Grade 5 student who likes a challenge. Lessons for more grades are on the way."),
+        "time": ("How long does it take?",
+                 "45 minutes for 20 problems, no calculator. Print it at home, or open it on a tablet and write the answers on paper."),
+        "misses": ("What do we do with the problems my child misses?",
+                   "Scan the QR code beside the problem. It opens the video lesson for the key move behind it. Watch it, then try the problem again the next day without looking."),
+        "original": ("Are the problems copied from real contests?",
+                     "No. Every problem is our own, and every answer is checked by computer. We studied real Grade 5 contest tests to match their difficulty and the mix of tools they use, but we never copy them."),
+        "share": ("Can I share the free test?",
+                  "Yes. It is free for home and classroom use, so pass it on to a friend or a class."),
+        "lessons": ("Do the video lessons cost anything?",
+                    "No. Every lesson is free to watch on YouTube, and each one teaches a single named tool in about four minutes."),
+        "pack": ("What is in the practice pack?",
+                 "Ten more full tests in the same format: 20 problems and 45 minutes each, a worked answer key after every test, and a lesson QR beside every problem. One 60-page PDF, for one family or one classroom."),
+        "when": (("How do I buy the practice tests?",
+                  "One test is $3.99 and all 10 are $19.99, half the price of ten singles. Pick them on the Mock tests page; the PDF downloads right after checkout.")
+                 if live else
+                 ("When can I buy the practice tests?",
+                  "Checkout opens soon: $3.99 for one test or $19.99 for all 10, half the price of ten singles. Until then, start with the free test, which uses the same format.")),
+        "independent": ("Is Key Move Math run by a contest organizer?",
+                        "No. Key Move Math is an independent practice channel. It is not affiliated with or endorsed by any contest organizer."),
+    }
+
+
+def faq(keys, h="h2", title="Questions parents ask"):
+    """FAQ as <details> (no JS needed). Returns (html, FAQPage JSON-LD script)."""
+    F = faqs()
+    items = "".join(f'<details class="qa"><summary>{e(F[k][0])}</summary><p>{e(F[k][1])}</p></details>' for k in keys)
+    ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": F[k][0], "acceptedAnswer": {"@type": "Answer", "text": F[k][1]}} for k in keys]}
+    return (f'<div class="faq"><{h}>{title}</{h}>{items}</div>',
+            f'<script type="application/ld+json">{json.dumps(ld)}</script>')
+
+
 def write(path, text):
     full = os.path.join(OUT, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
@@ -357,9 +423,10 @@ def page_home(lessons):
         else f'<span class="grade"><b>Grade {g}</b><span>Coming</span></span>' for g, live_g in GRADES)
     ld = {"@context": "https://schema.org", "@type": "Organization", "name": NAME, "url": SITE + "/",
           "logo": SITE + "/assets/img/logo-512.png", "sameAs": [YT]}
+    faq_html, faq_ld = faq(("free", "who", "time", "misses", "original", "lessons", "pack", "when", "independent"))
     body = head(f"{NAME}: Free Grade 5 Contest Math Test and Video Lessons",
                 "Free Grade 5 contest math test: 20 problems, 45 minutes, answer key included, and a QR code beside every problem that opens a short video lesson on the key move for it.",
-                "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script>')
+                "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script>' + faq_ld)
     body += nav(root)
     body += f"""<section class="hero">
  <div class="wrap hero-in">
@@ -392,6 +459,15 @@ def page_home(lessons):
  </div>
 </section>
 
+<section class="sec sec-alt" aria-labelledby="inside-h">
+ <div class="wrap">
+  <h2 id="inside-h">See inside the test</h2>
+  <p class="sec-lead">Real pages from the PDFs. Tap any page to see it full size.</p>
+  {samples(root)}
+  <p class="sec-cta" data-cta-watch><a class="btn btn-primary btn-lg btn-wide" href="{root}free/">Get the free test</a></p>
+ </div>
+</section>
+
 <section class="sec">
  <div class="wrap">
   <div class="sec-head"><h2>Grade 5 key moves</h2><a class="more" href="grade-5/">See all {len(lessons)} &rarr;</a></div>
@@ -409,7 +485,10 @@ def page_home(lessons):
   <div class="grades">{grades}</div>
  </div>
 </section>
-{test_cta(root)}
+<section class="sec" aria-label="Questions parents ask">
+ <div class="wrap">{faq_html}</div>
+</section>
+{test_cta(root, compact=True)}
 """
     body += foot(root)
     write("index.html", body)
@@ -644,34 +723,60 @@ def page_tests(lessons, shop):
 
 
 def page_free():
-    """keymovemath.com/free: the address every video and description points to for the free test (Nov 10).
-    Signups still go to the same Google Form."""
+    """keymovemath.com/free: the address every video, test and description points to for the free test (Nov 10).
+    Signups go to the Google Form. Nov 11: a full landing page (what you get, what happens next, sample pages, FAQ)."""
     root = "../"
+    faq_html, _ = faq(("free", "who", "time", "misses", "share", "original"), title="Before you start")
+    go = (f'<a class="btn btn-primary btn-lg btn-wide" href="{FORM}" rel="noopener">Get the free test</a>')
     body = head(f"Free Grade 5 Math Contest Test | {NAME}",
                 "Get the free 20-problem Grade 5 competition math test: answer key included, and a QR code beside every problem opens the key move for it.",
                 "free/", root)
     body += nav(root, "free")
-    body += f"""<section class="page-head">
- <div class="wrap">
-  <p class="eyebrow">Free</p>
-  <h1>Your free Grade 5 contest test</h1>
-  <p class="lead">Twenty problems at real test length. Stuck on one? Scan its QR code and the key move for it opens. One key at a time.</p>
+    body += f"""<section class="hero hero-free">
+ <div class="wrap hero-in">
+  <div class="hero-copy">
+   <p class="eyebrow eyebrow-y">Free &middot; Grade 5</p>
+   <h1>Your free Grade 5 contest test</h1>
+   <p class="lead">Twenty problems at real test length, with the answer key. Stuck on one? Scan its QR code and the key move for it opens.</p>
+   <div class="hero-cta">{go}</div>
+   <p class="form-note">A short form asks for your email, grade and contest. The PDF link shows as soon as you send it.</p>
+  </div>
+  <a class="paper hero-paper" href="{root}assets/img/diagnostic-page1.webp"><img src="{root}assets/img/diagnostic-page1-sm.webp" srcset="{root}assets/img/diagnostic-page1-sm.webp 560w, {root}assets/img/diagnostic-page1.webp 1105w" sizes="(min-width: 960px) 380px, 70vw" alt="Page 1 of the free Grade 5 Diagnostic Test" width="560" height="725"></a>
  </div>
 </section>
-<section class="sec sec-tight">
- <div class="wrap tests">
+<section class="sec">
+ <div class="wrap free-grid">
   <div class="test-card test-free">
-   <h2>Grade 5 Diagnostic Test</h2>
+   <h2>What you get</h2>
    <ul class="ticks">
     <li>20 original contest-style problems, easy to hard</li>
     <li>45 minutes, no calculator</li>
     <li>Answer key on the last page</li>
     <li>A QR code beside every problem opens its video lesson</li>
+    <li>Free for home and classroom use, so share it</li>
    </ul>
-   <a class="btn btn-primary btn-lg" href="{FORM}" rel="noopener">Get the free test</a>
-   <p class="small">Fill in a short form (email, grade, contest) and the PDF link comes right up.</p>
   </div>
-  <figure class="paper paper-lg"><img src="{root}assets/img/diagnostic-page1.webp" alt="First page of the Grade 5 Diagnostic Test" width="1105" height="1430" loading="lazy"><figcaption>Page 1 of the free Grade 5 Diagnostic Test</figcaption></figure>
+  <div class="test-card">
+   <h2>What happens next</h2>
+   <ol class="next-steps">
+    <li><b>Send the short form.</b> The link to the PDF shows right away.</li>
+    <li><b>Take the test.</b> Print it or use a tablet. Set a 45-minute timer.</li>
+    <li><b>Fix every miss.</b> Check with the answer key, then scan the QR beside each miss to watch its key move.</li>
+   </ol>
+  </div>
+ </div>
+</section>
+<section class="sec sec-alt">
+ <div class="wrap">
+  <h2>See the pages</h2>
+  <p class="sec-lead">Page 1 of the free test and a page of worked answers. Tap to see full size.</p>
+  {samples(root, ("diagnostic", "key"))}
+ </div>
+</section>
+<section class="sec">
+ <div class="wrap">
+  {faq_html}
+  <p class="sec-cta">{go}</p>
  </div>
 </section>
 """
@@ -767,6 +872,7 @@ def extras(lessons, urls):
 
 def main():
     lessons = load()
+    SHOP.update(load_shop())
     if os.path.exists(OUT):
         shutil.rmtree(OUT)
     shutil.copytree(os.path.join(ROOT, "assets"), os.path.join(OUT, "assets"))
@@ -786,7 +892,7 @@ def main():
                    f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.")
         if sub:
             urls.append(C["slug"] + "/")
-    page_tests(lessons, load_shop())
+    page_tests(lessons, SHOP)
     page_free()
     page_about(lessons)
     page_404()
