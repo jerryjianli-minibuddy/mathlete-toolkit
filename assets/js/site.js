@@ -1,10 +1,31 @@
 (function () {
-  // mobile menu
-  var menu = document.querySelector(".menu"), nav = document.getElementById("nav");
-  if (menu && nav) menu.addEventListener("click", function () {
-    var open = nav.classList.toggle("open");
-    menu.setAttribute("aria-expanded", open ? "true" : "false");
-  });
+  // phones: the header slides away while scrolling down and comes back on any scroll up, so the
+  // browse bar stays one flick away without covering the page (Nov 11)
+  var top = document.querySelector(".top"), lastY = window.scrollY || 0, ticking = false;
+  var phone = window.matchMedia ? matchMedia("(max-width: 760px)") : { matches: false };
+  function onScroll() {
+    ticking = false;
+    var y = window.scrollY || 0;
+    if (top) {
+      var hide = phone.matches && y > 160 && y > lastY + 4 && !top.contains(document.activeElement);
+      if (hide) top.classList.add("top-hide");
+      else if (y < lastY - 4 || y <= 160) top.classList.remove("top-hide");
+    }
+    lastY = y;
+  }
+  window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  if (top) top.addEventListener("focusin", function () { top.classList.remove("top-hide"); });
+
+  // phones: the bottom free-test bar hides while the page's own free-test button is on screen
+  var bar = document.getElementById("mcta"), watch = document.querySelectorAll("[data-cta-watch]");
+  if (bar && watch.length && "IntersectionObserver" in window) {
+    var seen = new Set();
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) seen.add(en.target); else seen.delete(en.target); });
+      bar.classList.toggle("mcta-off", seen.size > 0);
+    });
+    watch.forEach(function (w) { io.observe(w); });
+  }
 
   // click-to-play YouTube (loads the player only when asked, so pages stay fast)
   document.querySelectorAll("button.player[data-id]").forEach(function (b) {

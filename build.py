@@ -231,8 +231,12 @@ def nav(root, active=""):
 """
 
 
-def foot(root):
+def foot(root, cta=True):
+    """cta: the phone-only bar pinned to the bottom of the screen with the free test button (Nov 11).
+    Left off on /free, where the page itself is the sign-up."""
     yr = date.today().year
+    bar = (f'<div class="mcta" id="mcta"><p><b>Free Grade 5 test</b><small>20 problems, answer key, a lesson for every miss</small></p>'
+           f'<a class="btn btn-primary" href="{root}free/">Get it free</a></div>\n') if cta else ""
     contest_links = "".join(
         f'<li><a href="{root}{c["slug"]}/">{e(c["name"])}{" (soon)" if c.get("soon") else ""}</a></li>' for c in CONTESTS.values())
     return f"""</main>
@@ -258,7 +262,7 @@ def foot(root):
   <p>&copy; {yr} {NAME}</p>
  </div>
 </footer>
-<script src="{root}assets/js/site.js?v={ASSET_V}" defer></script>
+{bar}<script src="{root}assets/js/site.js?v={ASSET_V}" defer></script>
 </body>
 </html>
 """
@@ -671,7 +675,7 @@ def page_free():
  </div>
 </section>
 """
-    body += foot(root)
+    body += foot(root, cta=False)
     write("free/index.html", body)
 
 

@@ -314,3 +314,18 @@ main .hero :focus-visible, main .cta-band :focus-visible { outline-color: var(--
   .hero-media { transform: none; }
   .how { padding-top: 40px; }
 }
+
+/* phones: header slides away on scroll down; free-test bar pinned to the bottom (Nov 11) */
+.top { transition: transform .25s ease; }
+.top-hide { transform: translateY(-100%); }
+.mcta { display: none; }
+@media (max-width: 760px) {
+  .mcta { display: flex; align-items: center; gap: 12px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: var(--navy); color: #fff; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); box-shadow: 0 -8px 24px rgba(14,26,50,.25); border-top: 3px solid var(--yellow); transition: transform .25s ease; }
+  .mcta p { flex: 1; min-width: 0; margin: 0; line-height: 1.25; }
+  .mcta b { display: block; font-size: .98rem; }
+  .mcta small { display: block; color: #AFBBD6; font-size: .78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mcta .btn { flex: none; min-height: 46px; padding: 10px 18px; box-shadow: 0 4px 0 #C9A11F; }
+  .mcta-off { transform: translateY(110%); }
+  .foot { padding-bottom: 110px; }
+}
+@media (max-width: 340px) { .mcta small { display: none; } }
