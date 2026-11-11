@@ -758,3 +758,15 @@ a.pk:hover { border-color: var(--navy2); }
   .cmp td::before { content: attr(data-l) ": "; color: var(--muted); font-weight: 700; font-size: .85rem; }
 }
 .dd-more { border-top: 1px solid var(--line); font-weight: 800; }
+
+/* /free results: free download beside the paid practice tests (Nov 11) */
+.fres-list { margin-top: 18px; }
+.fres { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fres[hidden] { display: none; }
+.fres + .fres { margin-top: 14px; }
+.fres-card { background: #fff; color: var(--ink, #1b1f3b); border-radius: 16px; padding: 18px 18px 20px; box-shadow: 0 6px 22px rgba(0,0,0,.12); }
+.fres-card h2 { font-size: 1.15rem; margin: 4px 0 6px; line-height: 1.25; }
+.fres-card p { margin: 0 0 12px; }
+.fres-paid { background: #f6f7fb; }
+.fres-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (max-width: 640px) { .fres { grid-template-columns: 1fr; } }

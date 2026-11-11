@@ -26,9 +26,6 @@ IG_ICON = ('<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" f
 TT_ICON = ('<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">'
            '<path d="M14.2 2.5h3.1c.3 2.3 1.8 4 4.2 4.2v3.2c-1.6 0-3-.5-4.2-1.3v6.6a6.3 6.3 0 1 1-6.3-6.3c.3 0 .6 0 '
            '.9.1v3.3a3 3 0 1 0 2.3 2.9z"/></svg>')
-FORM = "https://forms.gle/83Bkot9sWTyZDhpj8"
-# Same form, embeddable, shown right on /free (Nov 11, Jian: "where is the form?" ... "do forms then")
-FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSeY2xBicN38Pyy0swQS7LFQ6yd4mv8P0Zr3ur6HJFg9CxbO7Q/viewform?embedded=true"
 NAME = "Key Move Math"
 UPLOADED = "2026-11-09"
 
@@ -488,7 +485,7 @@ def faqs():
     live = SHOP.get("live")
     return {
         "free": ("Is the test really free?",
-                 "Yes. Fill in a short form, then download the PDF right away. No payment."),
+                 "Yes. Download the PDF right away. No sign-up and no payment."),
         "who": ("Which grades?",
                 "Pick your grade on the free test page. New grades are added as they are ready."),
         "misses": ("What do we do with the misses?",
@@ -803,6 +800,11 @@ def test_live(t):
     return t["diag"] or t["practice"]
 
 
+def diag_url(t):
+    """Direct download of a free diagnostic (Nov 11, Jian: "People can just download. I don't need form. No need for password")."""
+    return f"https://drive.google.com/uc?export=download&id={DIAG_FILES[t['key']]}"
+
+
 def free_href(root, k=None, g=None):
     q = "&".join(x for x in (f"contest={k}" if k else "", f"grade={g}" if g else "") if x)
     return f"{root}free/" + (f"?{q}" if q else "")
@@ -852,9 +854,9 @@ def test_blocks(root, tests, g=None):
     for t in tests:
         who = grades_label(t["grades"])
         if test_live(t):
-            btns = (f'<a class="btn btn-primary" href="{free_href(root, t["contest"], g or t["grades"][0])}">Free diagnostic test</a>'
+            btns = (f'<a class="btn btn-primary" href="{diag_url(t)}" rel="noopener">Download free test</a>'
                     if t["diag"] else "")
-            btns += (f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>' if t["practice"]
+            btns += (f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>' if t["practice"] and SHOP.get("live")
                      else '<span class="btn btn-ghost-d btn-off">Practice tests soon</span>')
             blocks.append(f'<div class="combo-tests"><div><p class="eyebrow">Tests</p><h2>{t["label"]} tests, {who}</h2>'
                           f'<p>Printable, with a worked answer key.</p></div>'
@@ -1102,31 +1104,25 @@ def page_tests(lessons, shop):
     write("mock-tests/index.html", body)
 
 
-# Free diagnostic tests by grade (Nov 11, Jian: one landing page for every grade). A grade listed here
-# links to its sign-up; every other grade on /free shows Coming soon. Add a grade when its test ships.
-# Download after the form (Nov 11, Jian: "is there a way for people to just download the test after they fill out
-# the form? set a password keymove"). The form's thank-you screen gives the password; typing it on /free downloads
-# the PDF. The Drive link is stored scrambled with the password so it is not readable in the page source.
-FREE_PASSWORD = "keymove"
+# Free diagnostic tests (Nov 11). Jian, later that day: "People can just download. I don't need form. No need for
+# password. Free diagnostic sits next to paid additional practice tests". Each pick on /free shows its PDF download
+# beside that contest's paid practice tests, or a short Coming soon line where none are on sale yet.
 
 
-def _scramble(text, pw):
-    data = text.encode()
-    ks = b"".join(hashlib.sha256(f"{pw}:{i}".encode()).digest() for i in range(len(data) // 32 + 1))
-    import base64
-    return base64.b64encode(bytes(a ^ b for a, b in zip(data, ks))).decode()
-
-
-def unlock_form():
-    check = hashlib.sha256(("keymovemath:" + FREE_PASSWORD).encode()).hexdigest()
-    files = json.dumps({t["key"]: _scramble(f"https://drive.google.com/uc?export=download&id={DIAG_FILES[t['key']]}",
-                                            FREE_PASSWORD) for t in TEST_SETS if t["diag"]})
-    return f"""<form class="qform unlock" data-unlock data-check="{check}" data-files='{e(files)}'>
-   <label for="pw">The password is on the last screen of the form.</label>
-   <div class="qrow"><input id="pw" name="pw" type="text" placeholder="Password" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go">
-   <button class="btn btn-primary" type="submit">Download</button></div>
-   <p class="unlock-msg" aria-live="polite"></p>
-  </form>"""
+def free_result(root, t):
+    """One result panel on /free: the free download next to the paid practice tests for that test set."""
+    if t["practice"] and SHOP.get("live"):
+        paid = (f'<p>Printable practice tests, each with a worked answer key.</p>'
+                f'<div class="fres-btns"><a class="btn btn-primary" href="{e(SHOP["pack"])}" rel="noopener">Get the practice pack</a>'
+                f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Buy one test</a></div>')
+    else:
+        paid = '<p>Practice tests coming soon.</p>'
+    return f"""<div class="fres" data-key="{t['key']}">
+   <div class="fres-card fres-free"><p class="eyebrow">Free</p><h2>{t['label']} diagnostic, {grades_label(t['grades'])}</h2>
+    <p>Printable PDF with the answer key.</p>
+    <div class="fres-btns"><a class="btn btn-primary btn-lg" href="{diag_url(t)}" rel="noopener">Download free test</a></div></div>
+   <div class="fres-card fres-paid"><p class="eyebrow">Practice tests</p><h2>{t['label']} practice tests</h2>{paid}</div>
+  </div>"""
 
 
 def page_free():
@@ -1152,28 +1148,16 @@ def page_free():
    <p class="fpick-msg" aria-live="polite">Pick a contest and a grade.</p>
   </div>"""
     body = head(f"Free Diagnostic Test | {NAME}",
-                "Free contest math diagnostic test. Pick your contest and grade: answer key included, and a QR code beside every problem opens its video lesson.",
+                "Free contest math diagnostic test. Pick your contest and grade and download the PDF, answer key included. No sign-up.",
                 "free/", root)
     body += nav(root, "free")
     body += f"""<section class="hero hero-free">
  <div class="wrap">
   <p class="eyebrow eyebrow-y">Free</p>
   <h1>Free diagnostic test</h1>
-  <p class="lead">Pick your contest and grade. Answer key included, and every miss opens its video lesson.</p>
-  <ol class="free-steps">
-   <li><b>Pick your contest and grade.</b></li>
-   <li><b>Fill in the short form.</b></li>
-   <li><b>Type the password it shows you.</b></li>
-  </ol>
+  <p class="lead">Pick your contest and grade, then download. No sign-up.</p>
   {picker}
-  <div class="signup" id="signup">
-   <p class="signup-h"><span>2</span>Fill in the short form</p>
-   <iframe class="signup-form" src="{FORM_EMBED}" title="Free diagnostic test sign-up form" loading="lazy">Loading the form&hellip;</iframe>
-   <p class="signup-alt">Form not showing? <a href="{e(FORM)}" rel="noopener">Open it in a new tab</a>.</p>
-  </div>
-  <p class="signup-h signup-h3" id="unlock-step"><span>3</span>Type the password to download</p>
-  <p class="pw-reveal" hidden>&#128273; Your password: <b>{FREE_PASSWORD.upper()}</b></p>
-  {unlock_form()}
+  <div class="fres-list">{"".join(free_result(root, t) for t in TEST_SETS if t["diag"])}</div>
   <p class="teacher-note"><b>Teachers:</b> it is free to copy for your class.</p>
   <p class="test-note test-note-d">Every problem is our own. Not affiliated with any contest.</p>
  </div>
@@ -1183,7 +1167,7 @@ def page_free():
   <ul class="ticks ticks-3">
    <li>Contest-style problems, easy to hard</li>
    <li>Answer key on the last page</li>
-   <li>A QR beside every problem opens its lesson</li>
+   <li>Free for home and classroom use</li>
   </ul>
   {samples(root, ("diagnostic", "key"))}
  </div>
