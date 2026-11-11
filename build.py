@@ -450,6 +450,15 @@ def page_home(lessons):
  </div>
 </section>
 
+<section class="trust" aria-label="About our tests">
+ <ul class="wrap trust-in">
+  <li class="t-orig">Original problems</li>
+  <li class="t-check">Answers checked by computer</li>
+  <li class="t-qr">A lesson for every problem</li>
+  <li class="t-yt">Lessons free on YouTube</li>
+ </ul>
+</section>
+
 <section class="how" aria-labelledby="how-h">
  <div class="wrap">
   <h2 id="how-h" class="center">How it works</h2>
