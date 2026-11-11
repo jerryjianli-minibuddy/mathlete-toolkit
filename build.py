@@ -591,6 +591,10 @@ def page_home(lessons):
    <li><span class="n n2">2</span><h3>Watch the key move</h3><p>Scan the QR beside each miss.</p><a class="go" href="lessons/">See all {len(lessons)} lessons &rarr;</a></li>
    <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten Noetic-style Grade 5 tests with worked answer keys.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
   </ol>
+  <div class="freebies">
+   <a class="freebie" href="key-moves/"><b>Key moves cheat sheet</b><span>Every rule and trap on one printable page</span></a>
+   <a class="freebie" href="study-plan/"><b>4-week contest plan</b><span>15 to 20 minutes a day, with a miss log</span></a>
+  </div>
  </div>
 </section>
 
