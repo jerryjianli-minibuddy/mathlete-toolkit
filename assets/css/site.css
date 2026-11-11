@@ -662,3 +662,16 @@ a.pk:hover { border-color: var(--navy2); }
 .combo-btns { display: flex; flex-wrap: wrap; gap: 10px; }
 .combo-soon { border-style: dashed; }
 @media (max-width: 640px) { .picker { flex-direction: column; align-items: stretch; gap: 6px; } .pk-h { width: auto; } }
+/* /free contest + grade picker (Nov 11) */
+.fpick { margin: 22px 0 14px; max-width: 760px; }
+.pk-h-d { color: rgba(255,255,255,.7); margin: 0 0 8px; }
+.pk-row-d { margin-bottom: 16px; }
+.pk-row-d .pk { cursor: pointer; font-family: inherit; background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.25); }
+.pk-row-d .pk.pk-on { background: var(--yellow); border-color: var(--yellow); color: var(--navy); }
+.fpick .gpick { margin: 0 0 12px; }
+.fpick .gp { cursor: pointer; font-family: inherit; text-align: left; }
+.fpick .gp.gp-sel { outline: 3px solid #fff; outline-offset: 2px; }
+.fpick-msg { margin: 0; font-weight: 700; color: rgba(255,255,255,.85); }
+.fpick-msg.ok { color: var(--yellow); }
+.fpick-msg.soon { color: #fff; }
+.btn-off { opacity: .55; cursor: default; }

@@ -256,11 +256,14 @@ def nav(root, active=""):
     contests = "".join(
         f'<a class="dd-i" href="{root}{C["slug"]}/">{e(C["name"])}{"<small>soon</small>" if C.get("soon") else ""}</a>'
         for C in CONTESTS.values())
-    tests = (f'<p class="dd-h">Noetic-style, Grade 5</p>'
-             f'<a class="dd-i" href="{root}free/">Free diagnostic test<small class="dd-free">free</small></a>'
-             f'<a class="dd-i" href="{root}mock-tests/">Practice tests</a>'
-             f'<p class="dd-h">Kangaroo-style, Grades 5 and 6</p>'
-             f'<span class="dd-i dd-off">Practice tests<small>soon</small></span>')
+    tests = ""
+    for t in TEST_SETS:
+        who = grade_title(f'{t["grades"][0]}-{t["grades"][-1]}') if len(t["grades"]) > 1 else f'Grade {t["grades"][0]}'
+        tests += f'<p class="dd-h">{t["label"]}, {who.replace(" to ", " and ")}</p>'
+        tests += (f'<a class="dd-i" href="{free_href(root, t["contest"], t["grades"][0])}">Free diagnostic test<small class="dd-free">free</small></a>'
+                  if t["diag"] else '<span class="dd-i dd-off">Free diagnostic test<small>soon</small></span>')
+        tests += (f'<a class="dd-i" href="{root}mock-tests/">Practice tests</a>' if t["practice"]
+                  else '<span class="dd-i dd-off">Practice tests<small>soon</small></span>')
     topics = "".join(
         f'<a class="dd-i" href="{root}grade-5/#topic-{chr(97 + i)}"><span class="dd-letter">{chr(65 + i)}</span>{e(name)}</a>'
         for i, (name, _) in enumerate(TOPICS))
@@ -764,10 +767,24 @@ def page_lesson(l, lessons):
 # ---------- grade x contest pickers (Nov 11, Jian: "after we click on a grade, we should be able to choose which
 # contests. same with contest: if we click contest first, then we will choose the grade") ----------
 # Which tests exist for each contest and grade. live=False shows as coming soon.
+# diag = a free diagnostic is downloadable now (its PDF is in DIAG_FILES); practice = paid practice tests are on sale.
+# Nov 11, Jian: "the diagnostic test is not specific to the contest... we need to change that" -- each contest
+# and grade gets its own diagnostic, and a pick without one says Coming soon (never the Noetic test as a stand-in).
 TEST_SETS = [
-    dict(contest="noetic", grades=[5], label="Noetic-style", live=True),
-    dict(contest="kangaroo", grades=[5, 6], label="Kangaroo-style", live=False),
+    dict(key="noetic-5", contest="noetic", grades=[5], label="Noetic-style", diag=True, practice=True),
+    dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=False, practice=False),
 ]
+# Drive id of each diagnostic PDF (must be shared as anyone with the link).
+DIAG_FILES = {"noetic-5": "1PReaxlTwr3zcN-xdEyVcYWJtY8c8Tc2p", "kangaroo-5-6": "1ggmbBeozrqJopzf2vQNeLZS5msb5WJ4W"}
+
+
+def test_live(t):
+    return t["diag"] or t["practice"]
+
+
+def free_href(root, k=None, g=None):
+    q = "&".join(x for x in (f"contest={k}" if k else "", f"grade={g}" if g else "") if x)
+    return f"{root}free/" + (f"?{q}" if q else "")
 
 
 def combo_lessons(lessons, g, k):
@@ -780,7 +797,7 @@ def combo_tests(g, k):
 
 def combo_live(lessons, g, k):
     """A grade and contest pair gets its own page once it has a lesson or a live test."""
-    return bool(combo_lessons(lessons, g, k)) or any(t["live"] for t in combo_tests(g, k))
+    return bool(combo_lessons(lessons, g, k)) or any(test_live(t) for t in combo_tests(g, k))
 
 
 def contest_picker(lessons, g, root, current=None):
@@ -817,12 +834,14 @@ def page_combo(lessons, g, k):
     slug = f"grade-{g}/{k}"
     blocks = []
     for t in tests:
-        who = grade_title("-".join(str(x) for x in (t["grades"][0], t["grades"][-1]))) if len(t["grades"]) > 1 else f"Grade {g}"
-        if t["live"]:
+        who = grade_title(f'{t["grades"][0]}-{t["grades"][-1]}').replace(" to ", " and ") if len(t["grades"]) > 1 else f"Grade {g}"
+        if test_live(t):
+            btns = (f'<a class="btn btn-primary" href="{free_href(root, k, g)}">Free diagnostic test</a>' if t["diag"] else "")
+            btns += (f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>' if t["practice"]
+                     else '<span class="btn btn-ghost-d btn-off">Practice tests soon</span>')
             blocks.append(f'<div class="combo-tests"><div><p class="eyebrow">Tests</p><h2>{t["label"]} tests, {who}</h2>'
                           f'<p>Printable, with a worked answer key and a lesson QR beside every problem.</p></div>'
-                          f'<div class="combo-btns"><a class="btn btn-primary" href="{root}free/">Free diagnostic test</a>'
-                          f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a></div></div>')
+                          f'<div class="combo-btns">{btns}</div></div>')
         else:
             blocks.append(f'<div class="combo-tests combo-soon"><div><p class="eyebrow">Tests</p>'
                           f'<h2>{t["label"]} tests, {who}</h2><p>Coming soon.</p></div></div>')
@@ -861,8 +880,10 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
     top = (f'<div class="sk-top"><p class="sk-count"><b>{len(lessons)}</b> key moves in {len(topic_groups(lessons))} topics'
            f'{f", {n_live} with a video now" if 0 < n_live < len(lessons) else ""}.</p>'
            f'<div class="sk-links">'
-           + (f'<a class="btn btn-primary" href="{root}free/">Free diagnostic test</a>'
-              f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>' if tests else "")
+           + (f'<a class="btn btn-primary" href="{free_href(root, tests if isinstance(tests, str) else None)}">Free diagnostic test</a>'
+              if tests is True or any(t["diag"] and t["contest"] == tests for t in TEST_SETS) else "")
+           + (f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>'
+              if tests is True or any(t["practice"] and t["contest"] == tests for t in TEST_SETS) else "")
            + f'<a class="btn btn-ghost-d" href="{root}lessons/">Watch as videos</a></div></div>'
            f'<nav class="sk-jump" aria-label="Topics">' + "".join(
                f'<a href="#topic-{L.lower()}"><b>{L}</b> {e(n)}</a>' for L, n, _ in topic_groups(lessons)) + '</nav>')
@@ -992,12 +1013,10 @@ def page_tests(lessons, shop):
 
 # Free diagnostic tests by grade (Nov 11, Jian: one landing page for every grade). A grade listed here
 # links to its sign-up; every other grade on /free shows Coming soon. Add a grade when its test ships.
-FREE_TESTS = {5: FORM}
 # Download after the form (Nov 11, Jian: "is there a way for people to just download the test after they fill out
 # the form? set a password keymove"). The form's thank-you screen gives the password; typing it on /free downloads
 # the PDF. The Drive link is stored scrambled with the password so it is not readable in the page source.
 FREE_PASSWORD = "keymove"
-FREE_FILES = {5: "1PReaxlTwr3zcN-xdEyVcYWJtY8c8Tc2p"}  # Drive id of each grade's diagnostic PDF (anyone with the link)
 
 
 def _scramble(text, pw):
@@ -1009,8 +1028,8 @@ def _scramble(text, pw):
 
 def unlock_form():
     check = hashlib.sha256(("keymovemath:" + FREE_PASSWORD).encode()).hexdigest()
-    files = json.dumps({str(g): _scramble(f"https://drive.google.com/uc?export=download&id={fid}", FREE_PASSWORD)
-                        for g, fid in FREE_FILES.items()})
+    files = json.dumps({t["key"]: _scramble(f"https://drive.google.com/uc?export=download&id={DIAG_FILES[t['key']]}",
+                                            FREE_PASSWORD) for t in TEST_SETS if t["diag"]})
     return f"""<form class="qform unlock" data-unlock data-check="{check}" data-files='{e(files)}'>
    <label for="pw">The password is on the last screen of the form.</label>
    <div class="qrow"><input id="pw" name="pw" type="text" placeholder="Password" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go">
@@ -1020,31 +1039,42 @@ def unlock_form():
 
 
 def page_free():
-    """keymovemath.com/free: the one free-test page for every grade, linked from every video, test and
-    description. Pick a grade: a ready grade opens its sign-up form; the rest say Coming soon."""
+    """keymovemath.com/free: one free-test page for every contest and grade. Pick a contest and a grade; a pick with
+    a ready diagnostic downloads that test after the form, every other pick says Coming soon (assets/js/site.js).
+    ?contest=noetic&grade=5 preselects, so grade and contest pages link straight to their own test."""
     root = "../"
     faq_html, _ = faq(("free", "misses", "share", "original"), title="Questions")
-    tiles = []
-    for g in range(1, 13):
-        if g in FREE_TESTS:
-            tiles.append(f'<a class="gp gp-on" href="#signup"><b>Grade {g}</b><span>Noetic-style test</span></a>')
-        else:
-            tiles.append(f'<span class="gp" aria-disabled="true"><b>Grade {g}</b><span>Coming soon</span></span>')
+    ready = {}  # contest -> {grade: [test key, label, who]}
+    for t in TEST_SETS:
+        if t["diag"]:
+            who = grade_title(f'{t["grades"][0]}-{t["grades"][-1]}').replace(" to ", " and ") if len(t["grades"]) > 1 else f'Grade {t["grades"][0]}'
+            for g in t["grades"]:
+                ready.setdefault(t["contest"], {})[str(g)] = [t["key"], f'{t["label"]} test, {who}']
+    cbtn = "".join(f'<button type="button" class="pk" data-contest="{k}">{e(C["name"])}</button>' for k, C in CONTESTS.items())
+    tiles = "".join(f'<button type="button" class="gp" data-grade="{g}"><b>Grade {g}</b><span>Coming soon</span></button>'
+                    for g in range(1, 13))
+    picker = f"""<div class="fpick" data-fpick data-ready='{e(json.dumps(ready))}'>
+   <p class="pk-h pk-h-d">Contest</p>
+   <div class="pk-row pk-row-d">{cbtn}</div>
+   <p class="pk-h pk-h-d">Grade</p>
+   <div class="gpick" role="group" aria-label="Pick a grade">{tiles}</div>
+   <p class="fpick-msg" aria-live="polite">Pick a contest and a grade.</p>
+  </div>"""
     body = head(f"Free Diagnostic Test | {NAME}",
-                "Free contest math diagnostic test. Pick your grade: answer key included, and a QR code beside every problem opens its video lesson.",
+                "Free contest math diagnostic test. Pick your contest and grade: answer key included, and a QR code beside every problem opens its video lesson.",
                 "free/", root)
     body += nav(root, "free")
     body += f"""<section class="hero hero-free">
  <div class="wrap">
   <p class="eyebrow eyebrow-y">Free</p>
   <h1>Free diagnostic test</h1>
-  <p class="lead">Pick your grade. Answer key included, and every miss opens its video lesson.</p>
+  <p class="lead">Pick your contest and grade. Answer key included, and every miss opens its video lesson.</p>
   <ol class="free-steps">
-   <li><b>Pick your grade.</b></li>
+   <li><b>Pick your contest and grade.</b></li>
    <li><b>Fill in the short form.</b></li>
    <li><b>Type the password it shows you.</b></li>
   </ol>
-  <div class="gpick" role="group" aria-label="Pick a grade">{"".join(tiles)}</div>
+  {picker}
   <div class="signup" id="signup">
    <p class="signup-h"><span>2</span>Fill in the short form</p>
    <iframe class="signup-form" src="{FORM_EMBED}" title="Free diagnostic test sign-up form" loading="lazy">Loading the form&hellip;</iframe>
@@ -1307,7 +1337,7 @@ def main():
         page_group(C["slug"], f"{C['name']} Prep: Free Video Lessons | {NAME}", f"{C['name']} prep", lead, sub,
                    f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.",
                    picker=grade_picker(lessons, k, "../"),
-                   tests=any(t["contest"] == k and t["live"] for t in TEST_SETS))  # no Noetic test buttons on a Kangaroo page
+                   tests=k)  # each contest page links only its own tests
         if sub:
             urls.append(C["slug"] + "/")
     write("amc-prep/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'

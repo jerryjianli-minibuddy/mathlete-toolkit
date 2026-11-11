@@ -234,17 +234,20 @@
         msg.textContent = "That password doesn't match. It's on the form's thank-you screen.";
         return;
       }
-      var files = JSON.parse(f.getAttribute("data-files")), grades = Object.keys(files);
-      Promise.all(grades.map(function (g) { return unscramble(files[g], pw); })).then(function (urls) {
+      var files = JSON.parse(f.getAttribute("data-files")), pick = window.kmmPick || {};
+      if (!pick.key || !files[pick.key]) {
+        msg.className = "unlock-msg bad";
+        msg.textContent = pick.contest && pick.grade ? "That test is coming soon. Pick another contest or grade."
+                                                     : "Pick a contest and a grade first, at the top.";
+        return;
+      }
+      unscramble(files[pick.key], pw).then(function (u) {
         msg.className = "unlock-msg ok";
-        msg.textContent = "";
-        msg.appendChild(document.createTextNode("Downloading. "));
-        urls.forEach(function (u, i) {
-          var a = document.createElement("a");
-          a.href = u; a.rel = "noopener"; a.textContent = "Grade " + grades[i] + " Noetic-style test (PDF)";
-          msg.appendChild(a); msg.appendChild(document.createTextNode(" "));
-        });
-        if (urls.length === 1) window.location.href = urls[0];
+        msg.textContent = "Downloading. ";
+        var a = document.createElement("a");
+        a.href = u; a.rel = "noopener"; a.textContent = pick.label + " (PDF)";
+        msg.appendChild(a);
+        window.location.href = u;
       });
     });
   });
@@ -266,4 +269,46 @@
     var step = document.getElementById("unlock-step");
     if (step) step.scrollIntoView({ behavior: "smooth", block: "start" });
   });
+})();
+
+
+/* /free: pick a contest and a grade; the pick decides which diagnostic downloads (Nov 11, Jian: the diagnostic
+   should be specific to the contest). ?contest=kangaroo&grade=5 preselects. A pick with no test says Coming soon. */
+(function () {
+  var box = document.querySelector("[data-fpick]");
+  if (!box) return;
+  var ready = JSON.parse(box.getAttribute("data-ready") || "{}");
+  var cbs = box.querySelectorAll("[data-contest]"), gbs = box.querySelectorAll("[data-grade]");
+  var msg = box.querySelector(".fpick-msg");
+  var st = window.kmmPick = { contest: null, grade: null, key: null, label: "" };
+  function paint() {
+    var r = ready[st.contest] || {};
+    Array.prototype.forEach.call(cbs, function (b) {
+      var on = b.getAttribute("data-contest") === st.contest;
+      b.classList.toggle("pk-on", on); b.setAttribute("aria-pressed", on ? "true" : "false");
+      b.classList.toggle("pk-ready", !!ready[b.getAttribute("data-contest")]);
+    });
+    Array.prototype.forEach.call(gbs, function (b) {
+      var g = b.getAttribute("data-grade"), ok = !!r[g], on = g === st.grade;
+      b.classList.toggle("gp-on", ok); b.classList.toggle("gp-sel", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+      b.querySelector("span").textContent = !st.contest ? "Pick a contest" : ok ? "Free test" : "Coming soon";
+    });
+    var hit = r[st.grade];
+    st.key = hit ? hit[0] : null; st.label = hit ? hit[1] : "";
+    msg.className = "fpick-msg" + (hit ? " ok" : st.contest && st.grade ? " soon" : "");
+    msg.textContent = hit ? "Your test: " + hit[1] + "."
+      : st.contest && st.grade ? "This test is coming soon. Fill in the form and we'll email you when it's ready."
+      : st.contest ? "Now pick a grade." : "Pick a contest and a grade.";
+  }
+  Array.prototype.forEach.call(cbs, function (b) {
+    b.addEventListener("click", function () { st.contest = b.getAttribute("data-contest"); paint(); });
+  });
+  Array.prototype.forEach.call(gbs, function (b) {
+    b.addEventListener("click", function () { st.grade = b.getAttribute("data-grade"); paint(); });
+  });
+  var q = new URLSearchParams(location.search);
+  if (q.get("contest") && box.querySelector('[data-contest="' + q.get("contest").replace(/[^a-z0-9]/g, "") + '"]')) st.contest = q.get("contest").replace(/[^a-z0-9]/g, "");
+  if (/^\d{1,2}$/.test(q.get("grade") || "")) st.grade = q.get("grade");
+  paint();
 })();
