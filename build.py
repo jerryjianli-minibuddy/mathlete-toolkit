@@ -331,7 +331,7 @@ def grade_list(lessons, root):
                         f'<a class="gl-all" href="{root}grade-{g}/">See all {len(lessons)} key moves &rarr;</a></div></li>')
         else:
             rows.append(f'<li class="gl-row gl-off">{badge}<div class="gl-body"><h3>{grade_title(g)}</h3>'
-                        f'<p class="gl-inc">Coming soon. Many Grade 5 key moves carry over.</p></div></li>')
+                        f'<p class="gl-inc">Coming soon</p></div></li>')
     return f'<ol class="gradelist">{"".join(rows)}</ol>'
 
 def chips(l, root):
