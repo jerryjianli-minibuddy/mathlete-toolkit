@@ -460,3 +460,59 @@ main .hero :focus-visible, main .cta-band :focus-visible { outline-color: var(--
 .t-yt::before { background-color: #FF0033 !important; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 7l8 5-8 5z'/%3E%3C/svg%3E"); }
 .teacher-note { margin: 10px 0 0; display: inline-block; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); color: #DCE3F2; font-size: .92rem; padding: 8px 14px; border-radius: 12px; }
 .teacher-note b { color: var(--yellow); }
+
+/* Grade list and skill list (Nov 11): grades as rows with a coloured badge, skills grouped by lettered topic */
+.gradelist { list-style: none; padding: 0; margin: 0 0 28px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+.gl-row { display: flex; gap: 18px; align-items: flex-start; padding: 20px 22px; border-top: 1px solid var(--line); }
+.gl-row:first-child { border-top: 0; }
+.gl-badge { flex: none; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 14px; font-weight: 900; font-size: 1.15rem; color: #fff; letter-spacing: -.02em; }
+.gl-big { width: 76px; height: 76px; font-size: 2rem; border-radius: 18px; }
+.gl-teal { background: var(--teal); } .gl-pink { background: var(--pink); } .gl-navy { background: var(--navy2); }
+.gl-yellow { background: var(--yellow); color: var(--navy); } .gl-red { background: var(--red); }
+.gl-body { min-width: 0; }
+.gl-body h3 { margin: 2px 0 6px; font-size: 1.3rem; }
+.gl-body h3 a { text-decoration: none; }
+.gl-body h3 a:hover { color: var(--pink); }
+.gl-inc { margin: 0 0 8px; color: var(--muted); font-size: .97rem; line-height: 1.7; }
+.gl-lab { font-weight: 800; color: var(--ink); }
+.gl-inc a { color: var(--navy2); text-decoration: none; white-space: nowrap; }
+.gl-inc a:hover { color: var(--pink); text-decoration: underline; }
+.gl-sep { color: #C3BDB0; margin: 0 8px; }
+.gl-all { font-weight: 800; text-decoration: none; color: var(--pink); }
+.gl-all:hover { text-decoration: underline; }
+.gl-off .gl-badge { opacity: .45; }
+.gl-off h3 { color: #8A8F9C; }
+.gl-off .gl-inc { margin: 0; font-size: .92rem; }
+@media (max-width: 560px) { .gl-row { padding: 16px; gap: 14px; } .gl-badge { width: 46px; height: 46px; font-size: 1rem; border-radius: 12px; } .gl-inc a { white-space: normal; } }
+
+.ph-badge { display: flex; gap: 22px; align-items: center; }
+@media (max-width: 560px) { .ph-badge { gap: 14px; } .gl-big { width: 58px; height: 58px; font-size: 1.5rem; } }
+.sk-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
+.sk-count { margin: 0; color: var(--muted); }
+.sk-count b { color: var(--ink); font-size: 1.15rem; }
+.sk-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.sk-links .btn { padding: 10px 16px; font-size: .95rem; }
+.sk-jump { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 14px; margin-bottom: 18px; border-bottom: 1px solid var(--line); scrollbar-width: none; }
+.sk-jump::-webkit-scrollbar { display: none; }
+.sk-jump a { flex: none; text-decoration: none; font-size: .88rem; font-weight: 600; color: var(--navy2); background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
+.sk-jump a b { color: var(--pink); margin-right: 4px; }
+.sk-jump a:hover { border-color: var(--navy2); }
+.skills { columns: 3 290px; column-gap: 44px; }
+.sk-group { break-inside: avoid; margin: 0 0 30px; scroll-margin-top: 140px; }
+.sk-group h2 { display: flex; align-items: center; gap: 10px; font-size: 1.12rem; margin: 0 0 8px; padding-bottom: 8px; border-bottom: 3px solid currentColor; }
+.sk-group h2 { color: var(--navy); }
+.sk-letter { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; color: #fff; font-size: .95rem; font-weight: 900; flex: none; }
+.sk-teal h2 { border-color: var(--teal); } .sk-teal .sk-letter { background: var(--teal); }
+.sk-pink h2 { border-color: var(--pink); } .sk-pink .sk-letter { background: var(--pink); }
+.sk-navy h2 { border-color: var(--navy2); } .sk-navy .sk-letter { background: var(--navy2); }
+.sk-yellow h2 { border-color: var(--yellow); } .sk-yellow .sk-letter { background: var(--yellow); color: var(--navy); }
+.sk-red h2 { border-color: var(--red); } .sk-red .sk-letter { background: var(--red); }
+.sk-list { list-style: none; padding: 0; margin: 0; }
+.sk-list a { display: flex; align-items: baseline; gap: 10px; padding: 7px 6px; border-radius: 8px; text-decoration: none; color: var(--ink); }
+.sk-list a:hover { background: #fff; }
+.sk-list a:hover .sk-name { color: var(--pink); text-decoration: underline; }
+.sk-code { flex: none; min-width: 2.4em; font-weight: 800; font-size: .88rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.sk-name { flex: 1; font-weight: 600; }
+.sk-play { flex: none; align-self: center; width: 0; height: 0; border-left: 8px solid var(--pink); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+.sk-tag { flex: none; font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #8A8F9C; }
+.sk-soon .sk-name { color: var(--muted); font-weight: 500; }

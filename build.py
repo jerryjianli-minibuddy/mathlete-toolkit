@@ -35,6 +35,21 @@ CONTESTS = {
 }
 GRADES = [("1-2", False), ("3-4", False), ("5", True), ("6", False), ("7-8", False), ("9-10", False), ("11-12", False)]
 
+# Skill list layout (Nov 11, Jian: "something like ixl.com ... just the look and organization").
+# Lessons are grouped into lettered topics and numbered A.1, A.2 ... Groups join lesson "family" values.
+TOPICS = [
+    ("Number sense", ["Number sense"]),
+    ("Number theory and cycles", ["Number theory", "Cycles and mod"]),
+    ("Patterns", ["Patterns"]),
+    ("Bar models and word problems", ["Bar models", "Algebra", "Division word problems"]),
+    ("Algebra readiness", ["Algebra readiness"]),
+    ("Rates and averages", ["Rates", "Statistics"]),
+    ("Counting", ["Counting"]),
+    ("Geometry", ["Geometry: area", "Geometry: counting", "Geometry: circles"]),
+    ("Logic and reading the problem", ["Logic", "Problem reading"]),
+]
+GRADE_COLORS = ["teal", "pink", "navy", "yellow", "red", "teal", "pink"]
+
 e = html.escape
 
 
@@ -270,6 +285,55 @@ def foot(root, cta=True):
 """
 
 
+
+def grade_title(g):
+    return f"Grades {g.replace('-', ' to ')}" if "-" in g else f"Grade {g}"
+
+
+def topic_groups(lessons):
+    """[(letter, name, [lessons by tool number])]; a family not in TOPICS gets its own group at the end."""
+    known = {f for _, fams in TOPICS for f in fams}
+    groups = [(name, fams) for name, fams in TOPICS]
+    groups += [(f, [f]) for f in sorted({l["family"] for l in lessons} - known)]
+    out = []
+    for name, fams in groups:
+        items = sorted((l for l in lessons if l["family"] in fams), key=lambda l: l["tool_num"])
+        if items:
+            out.append((chr(ord("A") + len(out)), name, items))
+    return out
+
+
+def skill_list(lessons, root):
+    """Lettered topic blocks with numbered skills, in newspaper columns on wide screens."""
+    blocks = []
+    for i, (letter, name, items) in enumerate(topic_groups(lessons)):
+        lis = "".join(
+            f'<li class="{"" if l["live"] else "sk-soon"}"><a href="{root}lessons/{l["slug"]}/">'
+            f'<span class="sk-code">{letter}.{n}</span><span class="sk-name">{e(l["tool"])}</span>'
+            f'{"<span class=sk-play aria-label=Video></span>" if l["live"] else "<span class=sk-tag>soon</span>"}</a></li>'
+            for n, l in enumerate(items, 1))
+        blocks.append(f'<section class="sk-group sk-{GRADE_COLORS[i % len(GRADE_COLORS)]}" id="topic-{letter.lower()}">'
+                      f'<h2><span class="sk-letter">{letter}</span>{e(name)}</h2><ol class="sk-list">{lis}</ol></section>')
+    return f'<div class="skills">{"".join(blocks)}</div>'
+
+
+def grade_list(lessons, root):
+    """One row per grade: a coloured badge, the grade, a few of its skills and a link to all of them."""
+    groups = topic_groups(lessons)
+    rows = []
+    for i, (g, live) in enumerate(GRADES):
+        badge = f'<span class="gl-badge gl-{GRADE_COLORS[i % len(GRADE_COLORS)]}">{e(g)}</span>'
+        if live:
+            picks = [next((l for l in items if l["live"]), items[0]) for _, _, items in groups][:6]
+            inc = '<span class="gl-sep">|</span>'.join(f'<a href="{root}lessons/{l["slug"]}/">{e(l["tool"])}</a>' for l in picks)
+            rows.append(f'<li class="gl-row">{badge}<div class="gl-body"><h3><a href="{root}grade-{g}/">{grade_title(g)}</a></h3>'
+                        f'<p class="gl-inc"><span class="gl-lab">Includes:</span> {inc}</p>'
+                        f'<a class="gl-all" href="{root}grade-{g}/">See all {len(lessons)} key moves &rarr;</a></div></li>')
+        else:
+            rows.append(f'<li class="gl-row gl-off">{badge}<div class="gl-body"><h3>{grade_title(g)}</h3>'
+                        f'<p class="gl-inc">Coming soon. Many Grade 5 key moves carry over.</p></div></li>')
+    return f'<ol class="gradelist">{"".join(rows)}</ol>'
+
 def chips(l, root):
     out = []
     for c in l["contests"]:
@@ -418,9 +482,6 @@ def page_home(lessons):
         else:
             meta = f"{total} lessons" if n == total else f"{n} live, {total - n} on the way"
         cards.append(f'<a class="contest c-{k}{" is-soon" if C.get("soon") else ""}" href="{C["slug"]}/"><h3>{e(C["name"])}</h3><span>{meta}</span></a>')
-    grades = "".join(
-        f'<a class="grade on" href="grade-5/"><b>Grade {g}</b><span>{len(lessons)} tools</span></a>' if live_g
-        else f'<span class="grade"><b>Grade {g}</b><span>Coming</span></span>' for g, live_g in GRADES)
     ld = {"@context": "https://schema.org", "@type": "Organization", "name": NAME, "url": SITE + "/",
           "logo": SITE + "/assets/img/logo-512.png", "sameAs": [YT]}
     site_ld = {"@context": "https://schema.org", "@type": "WebSite", "name": NAME, "url": SITE + "/",
@@ -459,6 +520,14 @@ def page_home(lessons):
  </ul>
 </section>
 
+<section class="sec sec-grades" aria-labelledby="grades-h">
+ <div class="wrap">
+  <div class="sec-head"><h2 id="grades-h">Pick a grade</h2><a class="more" href="lessons/">All lessons &rarr;</a></div>
+  {grade_list(lessons, root)}
+  {search_form(root, "home-q", "Find a key move")}
+ </div>
+</section>
+
 <section class="how" aria-labelledby="how-h">
  <div class="wrap">
   <h2 id="how-h" class="center">How it works</h2>
@@ -478,21 +547,11 @@ def page_home(lessons):
  </div>
 </section>
 
-<section class="sec">
- <div class="wrap">
-  <div class="sec-head"><h2>Grade 5 key moves</h2><a class="more" href="grade-5/">See all {len(lessons)} &rarr;</a></div>
-  <p class="sec-lead">See the trap, learn the tool, climb easy to hard.</p>
-  {grid(first, root)}
-  {search_form(root, "home-q", "Find a key move")}
- </div>
-</section>
 
 <section class="sec sec-alt">
  <div class="wrap">
   <div class="sec-head"><h2>Pick your contest</h2></div>
   <div class="contests contests-short">{''.join(cards)}</div>
-  <h3 class="sub">Grades</h3>
-  <div class="grades">{grades}</div>
  </div>
 </section>
 <section class="sec" aria-label="Questions parents ask">
@@ -653,14 +712,20 @@ def page_lesson(l, lessons):
     write(f"lessons/{l['slug']}/index.html", body)
 
 
-def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None):
+def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, badge=None):
     root = "../"
+    n_live = sum(l["live"] for l in lessons)
+    top = (f'<div class="sk-top"><p class="sk-count"><b>{len(lessons)}</b> key moves in {len(topic_groups(lessons))} topics'
+           f'{f", {n_live} with a video now" if 0 < n_live < len(lessons) else ""}.</p>'
+           f'<div class="sk-links"><a class="btn btn-primary" href="{root}free/">Free diagnostic test</a>'
+           f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>'
+           f'<a class="btn btn-ghost-d" href="{root}lessons/">Watch as videos</a></div></div>'
+           f'<nav class="sk-jump" aria-label="Topics">' + "".join(
+               f'<a href="#topic-{L.lower()}"><b>{L}</b> {e(n)}</a>' for L, n, _ in topic_groups(lessons)) + '</nav>')
     body = head(title, desc, f"{slug}/", root)
     body += nav(root, active or slug)
-    if len(lessons) > 6:
-        inner = filter_box(lessons, contests=False) + grid(lessons, root, "h2", search=True, gid="lesson-grid")
-    elif lessons:
-        inner = grid(lessons, root, "h2")
+    if lessons:
+        inner = top + skill_list(lessons, root)
     else:
         inner = f"""<div class="empty">
   <h2>Lessons are on the way</h2>
@@ -668,9 +733,11 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None):
   <a class="btn btn-primary" href="{root}grade-5/">See the Grade 5 tools</a>
  </div>"""
     body += f"""<section class="page-head">
- <div class="wrap">
+ <div class="wrap{" ph-badge" if badge else ""}">
+  {f'<span class="gl-badge gl-navy gl-big">{e(badge)}</span>' if badge else ""}<div>
   <h1>{h1}</h1>
   <p class="lead">{lead}</p>
+  </div>
  </div>
 </section>
 <section class="sec sec-tight"><div class="wrap">{inner}</div></section>
@@ -926,9 +993,10 @@ def main():
     for l in lessons:
         page_lesson(l, lessons)
     urls = ["", "free/", "lessons/", "grade-5/", "mock-tests/", "about/"]
-    page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 tools",
-               f"{len(lessons)} tools for grade 5 contests, in the order we teach them. Start at Tool #1.", lessons,
-               "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.")
+    page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
+               "Every key move for grade 5 contests, grouped by topic. Each one is a short video lesson.", lessons,
+               "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.",
+               badge="5")
     for k, C in CONTESTS.items():
         sub = [l for l in lessons if k in l["contests"]]
         lead = (f"Grade 5 tools that come up on {C['name']}. {C['blurb']} Independent practice, not affiliated with {C['name']}."
