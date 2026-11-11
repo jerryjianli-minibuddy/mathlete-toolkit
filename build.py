@@ -1420,7 +1420,7 @@ def page_plan():
 </section>
 <section class="sec sec-tight"><div class="wrap">
  <p class="cs-print-head">{NAME} &middot; 4-week contest plan &middot; keymovemath.com/study-plan</p>
- <ol class="plan">{wk}</ol>
+ <ol class="wk-plan">{wk}</ol>
  <div class="pl-two">
   <section class="pl-tips"><h2>Four habits that help</h2><ul>{tp}</ul></section>
   <section class="pl-log"><h2>Miss log</h2>
