@@ -207,3 +207,45 @@
   var bar = document.querySelector(".cat-in");
   if (bar) bar.addEventListener("scroll", function () { closeAll(); }, { passive: true });
 })();
+
+// /free: the password from the form's thank-you screen downloads the test (Nov 11).
+(function () {
+  var f = document.querySelector("[data-unlock]");
+  if (!f || !window.crypto || !crypto.subtle || !window.TextEncoder) return;
+  var msg = f.querySelector(".unlock-msg"), input = f.querySelector("input");
+  function hex(buf) { return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ("0" + b.toString(16)).slice(-2); }).join(""); }
+  function sha(s) { return crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)); }
+  function unscramble(b64, pw) {
+    var data = Uint8Array.from(atob(b64), function (c) { return c.charCodeAt(0); });
+    var n = Math.floor(data.length / 32) + 1, parts = [];
+    for (var i = 0; i < n; i++) parts.push(sha(pw + ":" + i));
+    return Promise.all(parts).then(function (ks) {
+      var out = new Uint8Array(data.length);
+      for (var j = 0; j < data.length; j++) out[j] = data[j] ^ new Uint8Array(ks[Math.floor(j / 32)])[j % 32];
+      return new TextDecoder().decode(out);
+    });
+  }
+  f.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var pw = (input.value || "").trim().toLowerCase();
+    sha("keymovemath:" + pw).then(function (h) {
+      if (hex(h) !== f.getAttribute("data-check")) {
+        msg.className = "unlock-msg bad";
+        msg.textContent = "That password doesn't match. It's on the form's thank-you screen.";
+        return;
+      }
+      var files = JSON.parse(f.getAttribute("data-files")), grades = Object.keys(files);
+      Promise.all(grades.map(function (g) { return unscramble(files[g], pw); })).then(function (urls) {
+        msg.className = "unlock-msg ok";
+        msg.textContent = "";
+        msg.appendChild(document.createTextNode("Downloading. "));
+        urls.forEach(function (u, i) {
+          var a = document.createElement("a");
+          a.href = u; a.rel = "noopener"; a.textContent = "Grade " + grades[i] + " test (PDF)";
+          msg.appendChild(a); msg.appendChild(document.createTextNode(" "));
+        });
+        if (urls.length === 1) window.location.href = urls[0];
+      });
+    });
+  });
+})();

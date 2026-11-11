@@ -437,7 +437,7 @@ def faqs():
     live = SHOP.get("live")
     return {
         "free": ("Is the test really free?",
-                 "Yes. Fill in a short form and the PDF link shows right away. No payment."),
+                 "Yes. Fill in a short form, then download the PDF right away. No payment."),
         "who": ("Which grades?",
                 "Grade 5 is ready now. More grades are coming; pick yours on the free test page."),
         "misses": ("What do we do with the misses?",
@@ -857,6 +857,30 @@ def page_tests(lessons, shop):
 # Free diagnostic tests by grade (Nov 11, Jian: one landing page for every grade). A grade listed here
 # links to its sign-up; every other grade on /free shows Coming soon. Add a grade when its test ships.
 FREE_TESTS = {5: FORM}
+# Download after the form (Nov 11, Jian: "is there a way for people to just download the test after they fill out
+# the form? set a password keymove"). The form's thank-you screen gives the password; typing it on /free downloads
+# the PDF. The Drive link is stored scrambled with the password so it is not readable in the page source.
+FREE_PASSWORD = "keymove"
+FREE_FILES = {5: "1PReaxlTwr3zcN-xdEyVcYWJtY8c8Tc2p"}  # Drive id of each grade's diagnostic PDF (anyone with the link)
+
+
+def _scramble(text, pw):
+    data = text.encode()
+    ks = b"".join(hashlib.sha256(f"{pw}:{i}".encode()).digest() for i in range(len(data) // 32 + 1))
+    import base64
+    return base64.b64encode(bytes(a ^ b for a, b in zip(data, ks))).decode()
+
+
+def unlock_form():
+    check = hashlib.sha256(("keymovemath:" + FREE_PASSWORD).encode()).hexdigest()
+    files = json.dumps({str(g): _scramble(f"https://drive.google.com/uc?export=download&id={fid}", FREE_PASSWORD)
+                        for g, fid in FREE_FILES.items()})
+    return f"""<form class="qform unlock" data-unlock data-check="{check}" data-files='{e(files)}'>
+   <label for="pw">Filled in the form? Enter the password to download.</label>
+   <div class="qrow"><input id="pw" name="pw" type="text" placeholder="Password" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go">
+   <button class="btn btn-primary" type="submit">Download</button></div>
+   <p class="unlock-msg" aria-live="polite"></p>
+  </form>"""
 
 
 def page_free():
@@ -880,7 +904,8 @@ def page_free():
   <h1>Free diagnostic test</h1>
   <p class="lead">Pick your grade. Answer key included, and every miss opens its video lesson.</p>
   <div class="gpick" role="group" aria-label="Pick a grade">{"".join(tiles)}</div>
-  <p class="form-note">Fill in a short form and the PDF link shows right away.</p>
+  <p class="form-note">Fill in a short form. It shows the password, and the PDF downloads right here.</p>
+  {unlock_form()}
   <p class="teacher-note"><b>Teachers:</b> it is free to copy for your class.</p>
  </div>
 </section>

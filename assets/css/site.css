@@ -542,3 +542,10 @@ a.dd-i:hover, a.dd-i:focus-visible { background: var(--cream); color: var(--pink
 .dd-h { margin: 10px 10px 4px; font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
 .dd-letter { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; background: var(--navy2); color: #fff; font-size: .78rem; font-weight: 900; flex: none; }
 @media (max-width: 760px) { .dd-menu { min-width: 0; } .dd-i { white-space: normal; } }
+
+/* /free password download (Nov 11) */
+.unlock { margin: 18px 0 6px; }
+.unlock-msg { margin: 10px 4px 0; min-height: 1.4em; font-weight: 700; color: #C9D3E8; }
+.unlock-msg.bad { color: #FF9AB8; }
+.unlock-msg.ok { color: var(--yellow); }
+.unlock-msg a { color: #fff; }
