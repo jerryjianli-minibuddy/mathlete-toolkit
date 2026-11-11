@@ -269,6 +269,7 @@ def nav(root, active=""):
         for i, (name, _) in enumerate(TOPICS))
     lessons = (f'<a class="dd-i" href="{root}lessons/">All video lessons</a>'
                f'<a class="dd-i" href="{root}key-moves/">Cheat sheet (print it)</a>'
+               f'<a class="dd-i" href="{root}study-plan/">4-week contest plan</a>'
                f'<p class="dd-h">Grade 5 topics</p>{topics}')
     return f"""<header class="top">
  <div class="wrap top-in">
@@ -314,7 +315,7 @@ def foot(root, cta=True):
   <div>
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
-   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li>
+   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li>
    <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Free diagnostic test</a></li></ul>
   </div>
   <div>
@@ -586,7 +587,7 @@ def page_home(lessons):
  <div class="wrap">
   <h2 id="how-h" class="center">How it works</h2>
   <ol class="steps">
-   <li><span class="n n1">1</span><h3>Take the free test</h3><p>Pick your grade. Check with the answer key.</p><a class="go" href="free/">Get the free test &rarr;</a></li>
+   <li><span class="n n1">1</span><h3>Take the free test</h3><p>Pick your contest and grade. Check with the answer key.</p><a class="go" href="free/">Get the free test &rarr;</a></li>
    <li><span class="n n2">2</span><h3>Watch the key move</h3><p>Scan the QR beside each miss.</p><a class="go" href="lessons/">See all {len(lessons)} lessons &rarr;</a></li>
    <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten Noetic-style Grade 5 tests with worked answer keys.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
   </ol>
@@ -1314,6 +1315,53 @@ def page_cheatsheet(lessons):
     write("key-moves/index.html", body)
 
 
+def page_plan():
+    """/study-plan/: a 4-week plan a parent can run in 15 to 20 minutes a day, plus a printable miss log
+    (Nov 11 overnight, toward "insanely useful for parents and kids")."""
+    root = "../"
+    weeks = [
+        ("Week 1", "Find the gaps",
+         f'Take the <a href="{root}free/">free diagnostic</a> with a timer. Mark every miss, then watch the lesson for one miss a day.'),
+        ("Week 2", "One key move a day",
+         f'Watch one <a href="{root}lessons/">lesson</a>. Try each problem on pause. Then your child says the rule back in one sentence.'),
+        ("Week 3", "Mix and time",
+         f'Do one timed <a href="{root}mock-tests/">practice test</a>. The next day, redo every miss without looking at the key.'),
+        ("Week 4", "Test-day pace",
+         f'One more timed test at the contest\'s pace. Read the traps on the <a href="{root}key-moves/">cheat sheet</a>. Rest the day before.'),
+    ]
+    tips = ["Before any working, ask: what is the question asking?",
+            "Praise the method, not just the answer.",
+            "Stuck for 3 minutes? Skip it, and come back at the end.",
+            "Every miss goes in the miss log. Redo it a week later."]
+    wk = "".join(f'<li><span class="pl-wk">{a}</span><h3>{b}</h3><p>{c}</p></li>' for a, b, c in weeks)
+    tp = "".join(f"<li>{e(t)}</li>" for t in tips)
+    rows = "".join("<tr><td></td><td></td><td></td><td></td><td></td></tr>" for _ in range(10))
+    body = head(f"4-Week Math Contest Study Plan for Parents | {NAME}",
+                "A free 4-week plan to get ready for a math contest in 15 to 20 minutes a day, with a printable miss log.",
+                "study-plan/", root)
+    body += nav(root, "plan")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <h1>4-week contest plan</h1>
+  <p class="lead">15 to 20 minutes a day. It works for any contest.</p>
+  <p class="cs-actions"><button type="button" class="btn btn-primary" data-print>Print the plan and miss log</button></p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap">
+ <p class="cs-print-head">{NAME} &middot; 4-week contest plan &middot; keymovemath.com/study-plan</p>
+ <ol class="plan">{wk}</ol>
+ <div class="pl-two">
+  <section class="pl-tips"><h2>Four habits that help</h2><ul>{tp}</ul></section>
+  <section class="pl-log"><h2>Miss log</h2>
+   <table><thead><tr><th>Date</th><th>Problem</th><th>Trap</th><th>Key move</th><th>Redo</th></tr></thead><tbody>{rows}</tbody></table>
+  </section>
+ </div>
+</div></section>
+"""
+    body += test_cta(root, compact=True) + foot(root)
+    write("study-plan/index.html", body)
+
+
 def page_404():
     root = "/"
     body = head(f"Page not found | {NAME}", "This page does not exist.", "404.html", root, noindex=True)
@@ -1417,7 +1465,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "Every key move for grade 5 contests, grouped by topic. Each one is a short video lesson.", lessons,
                "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.",
@@ -1442,6 +1490,7 @@ def main():
     page_tests(lessons, SHOP)
     page_free()
     page_cheatsheet(lessons)
+    page_plan()
     page_about(lessons)
     page_404()
     for l in lessons:

@@ -711,3 +711,28 @@ a.pk:hover { border-color: var(--navy2); }
   .cs-trap { font-size: 8.5px; }
   @page { size: letter; margin: 0.5in; }
 }
+/* 4-week plan (Nov 11) */
+.plan { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 14px; }
+@media (min-width: 820px) { .plan { grid-template-columns: repeat(4, 1fr); } }
+.plan li { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; }
+.plan h3 { margin: 4px 0 6px; font-size: 1.05rem; }
+.plan p { margin: 0; color: var(--muted); font-size: .95rem; }
+.plan a { color: var(--navy2); font-weight: 700; }
+.pl-wk { display: inline-block; background: var(--yellow); color: var(--navy); font-weight: 800; font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; border-radius: 6px; padding: 2px 8px; }
+.pl-two { display: grid; gap: 18px; }
+@media (min-width: 900px) { .pl-two { grid-template-columns: .8fr 1.2fr; } }
+.pl-tips, .pl-log { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; }
+.pl-tips h2, .pl-log h2 { font-size: 1.1rem; margin: 0 0 8px; }
+.pl-tips ul { margin: 0; padding-left: 20px; } .pl-tips li { margin: 4px 0; }
+.pl-log table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.pl-log th { text-align: left; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 4px 6px; border-bottom: 2px solid var(--line); }
+.pl-log td { height: 30px; border-bottom: 1px solid var(--line); }
+.pl-log td + td, .pl-log th + th { border-left: 1px solid var(--line); }
+@media print {
+  .cta-band { display: none !important; }
+  .plan { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .plan li, .pl-tips, .pl-log { border: 1px solid #bbb; padding: 8px 10px; border-radius: 6px; }
+  .plan p, .pl-tips li { font-size: 10px; }
+  .pl-two { grid-template-columns: 1fr; gap: 8px; }
+  .pl-log td { height: 34px; }
+}
