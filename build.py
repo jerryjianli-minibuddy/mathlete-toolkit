@@ -428,15 +428,15 @@ def search_form(root, cls="", label="Find a lesson"):
   </form>"""
 
 
-def test_cta(root, compact=False):
+def test_cta(root, compact=False, contest=None, grade=None):
     """Free-test band at the foot of list pages. compact is kept for old calls; the band has no picture now."""
     return f"""<section class="cta-band">
  <div class="wrap cta-in">
   <div>
    <p class="eyebrow">Free</p>
    <h2>Free diagnostic test</h2>
-   <p>Pick your grade. Answer key included, and every miss opens its lesson.</p>
-   <a class="btn btn-primary btn-lg" href="{root}free/">Get the free test</a>
+   <p>Pick your contest and grade. Answer key included, and every miss opens its lesson.</p>
+   <a class="btn btn-primary btn-lg" href="{free_href(root, contest, grade)}">Get the free test</a>
   </div>
  </div>
 </section>"""
@@ -872,7 +872,7 @@ def page_combo(lessons, g, k):
 </section>
 <section class="sec sec-tight"><div class="wrap">{"".join(blocks)}{glance(k)}{inner}</div></section>
 """
-    body += test_cta(root, compact=True) + foot(root)
+    body += test_cta(root, compact=True, contest=k, grade=g) + foot(root)
     write(f"{slug}/index.html", body)
 
 
@@ -973,7 +973,7 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
 </section>
 <section class="sec sec-tight"><div class="wrap">{glance(tests) if isinstance(tests, str) else ""}{inner}</div></section>
 """
-    body += test_cta(root, compact=True) + foot(root)
+    body += test_cta(root, compact=True, contest=tests if isinstance(tests, str) else None) + foot(root)
     write(f"{slug}/index.html", body)
 
 
@@ -1287,12 +1287,12 @@ def page_cheatsheet(lessons):
     Built for the fridge or the pencil case (Nov 11 overnight)."""
     root = "../"
     blocks = []
-    for letter, name, items in topic_groups(lessons):
+    for i, (letter, name, items) in enumerate(topic_groups(lessons)):
         rows = "".join(
             f'<li><a href="{root}lessons/{l["slug"]}/"><b>{e(l["tool"])}</b></a>'
             f'<span class="cs-rule">{e(l["rule"])}</span><span class="cs-trap">Trap: {e(l["trap"])}</span></li>'
             for l in items)
-        blocks.append(f'<section class="cs-group"><h2><span class="sk-letter">{letter}</span>{e(name)}</h2><ol>{rows}</ol></section>')
+        blocks.append(f'<section class="cs-group sk-{GRADE_COLORS[i % len(GRADE_COLORS)]}"><h2><span class="sk-letter">{letter}</span>{e(name)}</h2><ol>{rows}</ol></section>')
     body = head(f"Key Moves Cheat Sheet: Every Competition Math Tool on One Page | {NAME}",
                 "Every competition math key move on one printable page: the tool, the rule and the trap to avoid. Free.",
                 "key-moves/", root)
@@ -1302,7 +1302,7 @@ def page_cheatsheet(lessons):
   <h1>Key moves cheat sheet</h1>
   <p class="lead">Every tool on one page: the rule, and the trap to avoid. Print it and keep it by the practice tests.</p>
   <p class="cs-actions"><button type="button" class="btn btn-primary" data-print>Print it</button>
-  <a class="btn btn-ghost-d cs-ghost" href="{root}lessons/">Watch the lessons</a></p>
+  <a class="btn btn-ghost-d" href="{root}lessons/">Watch the lessons</a></p>
  </div>
 </section>
 <section class="sec sec-tight"><div class="wrap cs">
