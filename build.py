@@ -945,8 +945,8 @@ def page_free():
   <p class="lead">Pick your grade. Answer key included, and every miss opens its video lesson.</p>
   <ol class="free-steps">
    <li><b>Pick your grade.</b></li>
-   <li><b>Fill in the short form below.</b> It then shows the password.</li>
-   <li><b>Type the password under the form.</b> The PDF downloads right away.</li>
+   <li><b>Fill in the short form.</b></li>
+   <li><b>Type the password it shows you.</b></li>
   </ol>
   <div class="gpick" role="group" aria-label="Pick a grade">{"".join(tiles)}</div>
   <div class="signup" id="signup">
