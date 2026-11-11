@@ -27,6 +27,51 @@
     watch.forEach(function (w) { io.observe(w); });
   }
 
+  // sample pages: tap one to read it full screen here, with previous and next (Nov 11). Without JS,
+  // or without <dialog>, the link simply opens the big image.
+  var lb = null, lbItems = [], lbAt = 0;
+  function lbShow(i) {
+    lbAt = (i + lbItems.length) % lbItems.length;
+    var it = lbItems[lbAt];
+    lb.querySelector("img").src = it.href;
+    lb.querySelector("img").alt = it.alt;
+    lb.querySelector(".lb-cap").textContent = it.cap;
+    lb.querySelector(".lb-n").textContent = (lbAt + 1) + " / " + lbItems.length;
+  }
+  function lbBuild() {
+    lb = document.createElement("dialog");
+    lb.className = "lb";
+    lb.setAttribute("aria-label", "Sample pages");
+    lb.innerHTML = '<div class="lb-bar"><button type="button" class="lb-btn lb-p" aria-label="Previous page">&lsaquo;</button>' +
+      '<span class="lb-n"></span><button type="button" class="lb-btn lb-nx" aria-label="Next page">&rsaquo;</button>' +
+      '<button type="button" class="lb-btn lb-x" aria-label="Close">&times;</button></div>' +
+      '<div class="lb-body"><img alt=""><p class="lb-cap"></p></div>';
+    document.body.appendChild(lb);
+    lb.querySelector(".lb-p").addEventListener("click", function () { lbShow(lbAt - 1); });
+    lb.querySelector(".lb-nx").addEventListener("click", function () { lbShow(lbAt + 1); });
+    lb.querySelector(".lb-x").addEventListener("click", function () { lb.close(); });
+    lb.addEventListener("click", function (ev) { if (ev.target === lb) lb.close(); });
+    lb.addEventListener("keydown", function (ev) {
+      if (ev.key === "ArrowLeft") lbShow(lbAt - 1);
+      if (ev.key === "ArrowRight") lbShow(lbAt + 1);
+    });
+  }
+  if (window.HTMLDialogElement) document.querySelectorAll(".samples").forEach(function (g) {
+    var links = Array.prototype.slice.call(g.querySelectorAll(".sample a"));
+    var items = links.map(function (a) {
+      var img = a.querySelector("img"), cap = a.parentNode.querySelector("figcaption");
+      return { href: a.href, alt: img ? img.alt : "", cap: cap ? cap.textContent.trim() : "" };
+    });
+    links.forEach(function (a, i) {
+      a.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        if (!lb) lbBuild();
+        lbItems = items; lbShow(i);
+        lb.showModal();
+      });
+    });
+  });
+
   // click-to-play YouTube (loads the player only when asked, so pages stay fast)
   document.querySelectorAll("button.player[data-id]").forEach(function (b) {
     b.addEventListener("click", function () {
