@@ -240,7 +240,7 @@ def foot(root):
  <div class="wrap foot-grid">
   <div>
    <a class="brand brand-foot" href="{root}">{mark(30)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
-   <p>Competition math, one tool at a time. Free video lessons for grades 1 to 12.</p>
+   <p>Competition math, one key at a time. Free video lessons and a free test, starting with Grade 5. More grades are on the way.</p>
    <a class="btn btn-yt" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe on YouTube</span></a>
   </div>
   <div>
@@ -353,57 +353,47 @@ def page_home(lessons):
         else f'<span class="grade"><b>Grade {g}</b><span>Coming</span></span>' for g, live_g in GRADES)
     ld = {"@context": "https://schema.org", "@type": "Organization", "name": NAME, "url": SITE + "/",
           "logo": SITE + "/assets/img/logo-512.png", "sameAs": [YT]}
-    body = head(f"{NAME}: Competition Math Lessons, One Tool at a Time",
-                "Free competition math video lessons for grades 1 to 12. Each lesson names one problem-solving tool, shows the common trap, and works problems from easy to hard. Free Grade 5 diagnostic test.",
+    body = head(f"{NAME}: Free Grade 5 Contest Math Test and Video Lessons",
+                "Free Grade 5 contest math test: 20 problems, 45 minutes, answer key included, and a QR code beside every problem that opens a short video lesson on the key move for it.",
                 "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script>')
     body += nav(root)
     body += f"""<section class="hero">
  <div class="wrap hero-in">
   <div class="hero-copy">
-   <p class="eyebrow eyebrow-y">Free video lessons &middot; Grades 1 to 12</p>
-   <h1>Competition math, <span>one key at a time.</span></h1>
-   <p class="lead">Hard contest problems get easy once you know the key move. Every lesson hands you one key (a tool with a name), shows the trap most kids fall into, then works problems from easy to hardest, so the next one is yours.</p>
-   <div class="hero-cta">
-    <a class="btn btn-primary btn-lg" href="{root}free/">Get the free Grade 5 test</a>
-    <a class="btn btn-ghost btn-lg" href="lessons/">Watch the lessons</a>
+   <p class="eyebrow eyebrow-y">Grade 5 &middot; Contest math</p>
+   <h1>A free Grade 5 contest test, <span>with a video for every miss.</span></h1>
+   <p class="lead">20 problems, 45 minutes, answer key included. Beside each problem is a QR code: scan the ones your child misses and the short lesson for that key move opens.</p>
+   <div class="hero-cta" data-cta-watch>
+    <a class="btn btn-primary btn-lg btn-wide" href="{root}free/">Get the free test</a>
+    <a class="hero-alt" href="lessons/{feat['slug']}/">or watch a {round(feat.get('seconds', 240) / 60)}-minute lesson first &rarr;</a>
    </div>
-   {search_form(root, "hero-q", "Know the topic? Find its key move.")}
-   <ul class="hero-stats"><li><b>{len(lessons)}</b> Grade 5 tools</li><li><b>{n_live}</b> live now</li>{"<li><b>2</b> new a day</li>" if n_live < len(lessons) else "<li><b>Free</b> to watch</li>"}</ul>
+   <ul class="hero-trust"><li>Free PDF</li><li>Answer key</li><li>Print or tablet</li><li>No payment</li></ul>
   </div>
   <div class="hero-media">
    {embed(feat, root, eager=True)}
-   <p class="now">{'New' if feat['live'] else 'First up'}: <a href="lessons/{feat['slug']}/">Tool #{feat['tool_num']}, {e(feat['tool'])}</a></p>
+   <p class="now">{'New' if feat['live'] else 'First up'}: <a href="lessons/{feat['slug']}/">Tool #{feat['tool_num']}, {e(feat['tool'])}</a> &middot; {n_live} of {len(lessons)} Grade 5 lessons live</p>
   </div>
  </div>
 </section>
 
-<section class="start" aria-labelledby="start-h">
+<section class="how" aria-labelledby="how-h">
  <div class="wrap">
-  <p class="eyebrow">New here?</p>
-  <h2 id="start-h">Start here</h2>
-  <ol class="start-steps">
-   <li><span class="n n1">1</span><div><h3>Take the free test</h3><p>Twenty Grade 5 contest problems in 45 minutes. Circle the ones you miss.</p><a class="go" href="free/">Get the free test &rarr;</a></div></li>
-   <li><span class="n n2">2</span><div><h3>Watch the lesson for each miss</h3><p>Every problem has a QR code that opens its key move. Each lesson is a few minutes long.</p><a class="go" href="lessons/">See all lessons &rarr;</a></div></li>
-   <li><span class="n n3">3</span><div><h3>Try the next problem alone</h3><p>Pause before the last problem in the video and solve it yourself. Now that key is yours.</p></div></li>
-  </ol>
- </div>
-</section>
-
-<section class="how">
- <div class="wrap">
-  <h2 class="center">How every lesson works</h2>
+  <p class="eyebrow center">How it works</p>
+  <h2 id="how-h" class="center">Three steps, one key at a time</h2>
   <ol class="steps">
-   <li><span class="n n1">1</span><h3>See the trap</h3><p>Every contest problem has an answer that looks right and isn't. We show it first, so it never catches you.</p></li>
-   <li><span class="n n2">2</span><h3>Learn the tool</h3><p>One short, named move, like <em>Find the Cycle</em> or <em>Keep the Gap</em>. Easy to remember when the clock is running.</p></li>
-   <li><span class="n n3">3</span><h3>Climb easy to hard</h3><p>The same tool on harder and harder problems, slower on the tough ones. Then pause and try one alone.</p></li>
+   <li><span class="n n1">1</span><h3>Take the free test</h3><p>Twenty Grade 5 contest problems, easy to hard, in 45 minutes. Check with the answer key and circle the misses.</p><a class="go" href="free/">Get the free test &rarr;</a></li>
+   <li><span class="n n2">2</span><h3>Watch the key move</h3><p>Scan the QR beside each miss. The lesson names one tool, shows the trap, then climbs from easy to hard in about four minutes.</p><a class="go" href="lessons/">See all {len(lessons)} lessons &rarr;</a></li>
+   <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten more full tests in the same format, each with a worked answer key and a lesson QR on every problem.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
   </ol>
  </div>
 </section>
 
 <section class="sec">
  <div class="wrap">
-  <div class="sec-head"><h2>Grade 5 tools</h2><a class="more" href="grade-5/">See all {len(lessons)} &rarr;</a></div>
+  <div class="sec-head"><h2>Grade 5 key moves</h2><a class="more" href="grade-5/">See all {len(lessons)} &rarr;</a></div>
+  <p class="sec-lead">Every lesson: see the trap, learn the tool, climb from easy to hard, then pause and try the last one alone.</p>
   {grid(first, root)}
+  {search_form(root, "home-q", "Know the topic? Find its key move.")}
  </div>
 </section>
 
