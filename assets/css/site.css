@@ -634,3 +634,9 @@ a.dd-i:hover, a.dd-i:focus-visible { background: var(--cream); color: var(--pink
 .soc-tt svg { filter: drop-shadow(1.5px 1px 0 #FE2C55) drop-shadow(-1.5px -1px 0 #25F4EE); }
 @media (max-width: 760px) { .soc { width: 34px; height: 34px; } .soc svg { width: 17px; height: 17px; } .socials { gap: 6px; } }
 @media (max-width: 400px) { .btn-sub span { display: none; } }
+/* /free after the form is sent: short frame, big password chip (Nov 11) */
+.signup-form.signup-done { height: 360px; }
+.pw-reveal { display: inline-block; margin: 0 0 12px; padding: 12px 18px; border-radius: 14px; background: var(--yellow); color: var(--navy); font-size: 1.15rem; font-weight: 700; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+.pw-reveal b { font-size: 1.5rem; font-weight: 900; letter-spacing: .08em; margin-left: 4px; }
+.pw-reveal[hidden] { display: none; }
+#unlock-step { scroll-margin-top: 140px; }

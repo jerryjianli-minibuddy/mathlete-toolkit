@@ -249,3 +249,21 @@
     });
   });
 })();
+
+/* /free: the embedded form loads once for the questions and again after Submit. On that second load,
+   shrink it to the thank-you screen, show the password in big type by step 3, fill it in and scroll there (Nov 11). */
+(function () {
+  var fr = document.querySelector(".signup-form"), chip = document.querySelector(".pw-reveal");
+  if (!fr || !chip) return;
+  var loads = 0;
+  fr.addEventListener("load", function () {
+    loads++;
+    if (loads < 2) return;
+    fr.classList.add("signup-done");
+    chip.hidden = false;
+    var input = document.getElementById("pw"), b = chip.querySelector("b");
+    if (input && b && !input.value) input.value = b.textContent;
+    var step = document.getElementById("unlock-step");
+    if (step) step.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+})();

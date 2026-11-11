@@ -954,7 +954,8 @@ def page_free():
    <iframe class="signup-form" src="{FORM_EMBED}" title="Free diagnostic test sign-up form" loading="lazy">Loading the form&hellip;</iframe>
    <p class="signup-alt">Form not showing? <a href="{e(FORM)}" rel="noopener">Open it in a new tab</a>.</p>
   </div>
-  <p class="signup-h signup-h3"><span>3</span>Type the password to download</p>
+  <p class="signup-h signup-h3" id="unlock-step"><span>3</span>Type the password to download</p>
+  <p class="pw-reveal" hidden>&#128273; Your password: <b>{FREE_PASSWORD.upper()}</b></p>
   {unlock_form()}
   <p class="teacher-note"><b>Teachers:</b> it is free to copy for your class.</p>
   <p class="test-note test-note-d">Every problem is our own. Not affiliated with any contest.</p>
