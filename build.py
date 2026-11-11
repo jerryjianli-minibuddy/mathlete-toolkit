@@ -587,7 +587,6 @@ def page_lesson(l, lessons):
     if l.get("short_live"):
         status += (f'<a class="btn btn-ghost-d" href="https://www.youtube.com/shorts/{l["short_id"]}" rel="noopener">'
                    f'1-minute Short</a>')
-    status += f'<a class="btn btn-primary" href="{root}free/">Free practice test</a>'
     if nxt:
         next_up = (f'<p class="next-up">Got this one? Next key: <a href="../{nxt["slug"]}/">Tool #{nxt["tool_num"]}, '
                    f'{e(nxt["tool"])} &rarr;</a></p>')
@@ -628,11 +627,19 @@ def page_lesson(l, lessons):
     {also}
    </aside>
   </div>
+  <aside class="test-box" data-cta-watch>
+   <div>
+    <p class="eyebrow">Free Grade 5 test</p>
+    <h2>Which keys does your child still need?</h2>
+    <p>Find out in 45 minutes: 20 contest problems, easy to hard, with the answer key. Each problem has a QR code to its lesson, so every miss shows the next key to learn.</p>
+   </div>
+   <a class="btn btn-primary btn-lg" href="{root}free/">Get the free test</a>
+  </aside>
   {pn}
  </div>
 </article>
 """
-    body += test_cta(root, compact=True) + foot(root)
+    body += foot(root)
     write(f"lessons/{l['slug']}/index.html", body)
 
 

@@ -382,3 +382,11 @@ main .hero :focus-visible, main .cta-band :focus-visible { outline-color: var(--
 .singles-box { max-width: 820px; margin-bottom: 34px; }
 .singles-box .singles { padding: 0 14px; margin-top: 0; }
 @media (min-width: 700px) { .singles-box .singles { grid-template-columns: 1fr; } }
+
+/* lesson pages: free test box under the lesson (Nov 11) */
+.test-box { margin-top: 30px; display: grid; gap: 18px; align-items: center; background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%); color: #fff; border-radius: var(--radius); padding: 24px 22px; box-shadow: var(--shadow); }
+.test-box h2 { color: #fff; font-size: clamp(1.35rem, 3vw, 1.75rem); }
+.test-box p { color: #C9D3E8; margin: 0; }
+.test-box .eyebrow { color: var(--yellow); margin-bottom: .5em; }
+.test-box :focus-visible { outline-color: var(--yellow); }
+@media (min-width: 820px) { .test-box { grid-template-columns: 1fr auto; padding: 28px 32px; gap: 30px; } }
