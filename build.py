@@ -17,7 +17,18 @@ OUT = os.path.join(ROOT, "_site")
 SITE = "https://keymovemath.com"
 YT = "https://www.youtube.com/@keymovemath"
 YT_SUB = YT + "?sub_confirmation=1"
+# Header socials beside YouTube (Nov 11, Jian: "also add our instagram and tiktok logo next to youtube")
+IG = "https://www.instagram.com/keymovemath/"
+TT = "https://www.tiktok.com/@keymovemath"
+IG_ICON = ('<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">'
+           '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/>'
+           '<circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" stroke="none"/></svg>')
+TT_ICON = ('<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="currentColor">'
+           '<path d="M14.2 2.5h3.1c.3 2.3 1.8 4 4.2 4.2v3.2c-1.6 0-3-.5-4.2-1.3v6.6a6.3 6.3 0 1 1-6.3-6.3c.3 0 .6 0 '
+           '.9.1v3.3a3 3 0 1 0 2.3 2.9z"/></svg>')
 FORM = "https://forms.gle/83Bkot9sWTyZDhpj8"
+# Same form, embeddable, shown right on /free (Nov 11, Jian: "where is the form?" ... "do forms then")
+FORM_EMBED = "https://docs.google.com/forms/d/e/1FAIpQLSeY2xBicN38Pyy0swQS7LFQ6yd4mv8P0Zr3ur6HJFg9CxbO7Q/viewform?embedded=true"
 NAME = "Key Move Math"
 UPLOADED = "2026-11-09"
 
@@ -258,7 +269,11 @@ def nav(root, active=""):
     return f"""<header class="top">
  <div class="wrap top-in">
   <a class="brand" href="{root}" aria-label="{NAME} home">{mark(34)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
-  <a class="btn btn-yt btn-sub" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe</span></a>
+  <div class="socials">
+   <a class="soc soc-ig" href="{IG}" rel="noopener" aria-label="Key Move Math on Instagram">{IG_ICON}</a>
+   <a class="soc soc-tt" href="{TT}" rel="noopener" aria-label="Key Move Math on TikTok">{TT_ICON}</a>
+   <a class="btn btn-yt btn-sub" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe</span></a>
+  </div>
  </div>
  <nav class="catbar" aria-label="Browse">
   <div class="wrap cat-in">
@@ -901,7 +916,7 @@ def unlock_form():
     files = json.dumps({str(g): _scramble(f"https://drive.google.com/uc?export=download&id={fid}", FREE_PASSWORD)
                         for g, fid in FREE_FILES.items()})
     return f"""<form class="qform unlock" data-unlock data-check="{check}" data-files='{e(files)}'>
-   <label for="pw">Step 3: enter the password from the form to download.</label>
+   <label for="pw">The password is on the last screen of the form.</label>
    <div class="qrow"><input id="pw" name="pw" type="text" placeholder="Password" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go">
    <button class="btn btn-primary" type="submit">Download</button></div>
    <p class="unlock-msg" aria-live="polite"></p>
@@ -916,7 +931,7 @@ def page_free():
     tiles = []
     for g in range(1, 13):
         if g in FREE_TESTS:
-            tiles.append(f'<a class="gp gp-on" href="{e(FREE_TESTS[g])}" rel="noopener"><b>Grade {g}</b><span>Noetic-style test</span></a>')
+            tiles.append(f'<a class="gp gp-on" href="#signup"><b>Grade {g}</b><span>Noetic-style test</span></a>')
         else:
             tiles.append(f'<span class="gp" aria-disabled="true"><b>Grade {g}</b><span>Coming soon</span></span>')
     body = head(f"Free Diagnostic Test | {NAME}",
@@ -929,12 +944,17 @@ def page_free():
   <h1>Free diagnostic test</h1>
   <p class="lead">Pick your grade. Answer key included, and every miss opens its video lesson.</p>
   <ol class="free-steps">
-   <li><b>Pick your grade.</b> It opens a short form.</li>
-   <li><b>Fill in the form.</b> The last screen shows the password.</li>
-   <li><b>Come back and type the password.</b> The PDF downloads right away.</li>
+   <li><b>Pick your grade.</b></li>
+   <li><b>Fill in the short form below.</b> It then shows the password.</li>
+   <li><b>Type the password under the form.</b> The PDF downloads right away.</li>
   </ol>
   <div class="gpick" role="group" aria-label="Pick a grade">{"".join(tiles)}</div>
-  <p class="form-go"><a class="btn btn-primary btn-lg" href="{e(FREE_TESTS[5])}" rel="noopener">Open the Grade 5 form</a></p>
+  <div class="signup" id="signup">
+   <p class="signup-h"><span>2</span>Fill in the short form</p>
+   <iframe class="signup-form" src="{FORM_EMBED}" title="Free diagnostic test sign-up form" loading="lazy">Loading the form&hellip;</iframe>
+   <p class="signup-alt">Form not showing? <a href="{e(FORM)}" rel="noopener">Open it in a new tab</a>.</p>
+  </div>
+  <p class="signup-h signup-h3"><span>3</span>Type the password to download</p>
   {unlock_form()}
   <p class="teacher-note"><b>Teachers:</b> it is free to copy for your class.</p>
   <p class="test-note test-note-d">The Grade 5 test is Noetic-style. Kangaroo-style tests for Grades 5 and 6 are coming. {TEST_NOTE}</p>

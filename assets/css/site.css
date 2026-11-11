@@ -616,3 +616,21 @@ a.dd-i:hover, a.dd-i:focus-visible { background: var(--cream); color: var(--pink
 .free-steps li::before { content: counter(fs); flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--yellow); color: var(--navy); font-weight: 900; display: grid; place-items: center; }
 .free-steps b { color: #fff; }
 .form-go { margin: 18px 0 6px; }
+.signup { margin: 22px 0 8px; background: #fff; border-radius: 18px; padding: 16px 10px 10px; box-shadow: 0 20px 50px rgba(0,0,0,.3); scroll-margin-top: 140px; }
+.signup-h { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; margin: 0 6px 10px; color: var(--navy); }
+.signup-h span { width: 28px; height: 28px; border-radius: 50%; background: var(--yellow); color: var(--navy); display: grid; place-items: center; font-weight: 900; flex: none; }
+.signup-h3 { color: #fff; margin: 22px 0 8px; }
+.signup-form { display: block; width: 100%; height: 1180px; border: 0; border-radius: 10px; background: #fff; }
+@media (min-width: 760px) { .signup-form { height: 1080px; } }
+.signup-alt { margin: 6px 6px 0; font-size: .88rem; color: var(--muted); }
+.signup-alt a { color: var(--navy2); font-weight: 700; }
+
+/* header socials (Nov 11) */
+.socials { display: flex; align-items: center; gap: 8px; }
+.soc { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: #fff; text-decoration: none; transition: transform .15s; }
+.soc:hover { transform: translateY(-2px); }
+.soc-ig { background: radial-gradient(circle at 30% 107%, #FDD86C 0%, #F8B14A 18%, #E7425F 45%, #C13584 65%, #6E3FC5 100%); }
+.soc-tt { background: #000; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.25); }
+.soc-tt svg { filter: drop-shadow(1.5px 1px 0 #FE2C55) drop-shadow(-1.5px -1px 0 #25F4EE); }
+@media (max-width: 760px) { .soc { width: 34px; height: 34px; } .soc svg { width: 17px; height: 17px; } .socials { gap: 6px; } }
+@media (max-width: 400px) { .btn-sub span { display: none; } }
