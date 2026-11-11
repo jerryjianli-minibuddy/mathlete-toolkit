@@ -742,3 +742,19 @@ a.pk:hover { border-color: var(--navy2); }
 .freebie:hover { border-color: var(--navy2); }
 .freebie b { display: block; } .freebie b::after { content: " \2192"; color: var(--pink); }
 .freebie span { color: var(--muted); font-size: .92rem; }
+/* Contests compared (Nov 11) */
+.cmp { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; font-size: .95rem; }
+.cmp th, .cmp td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.cmp thead th { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); background: var(--cream); }
+.cmp tbody tr:last-child th, .cmp tbody tr:last-child td { border-bottom: 0; }
+.cmp tbody th a { color: var(--navy); font-weight: 800; }
+@media (max-width: 640px) {
+  .cmp thead { display: none; }
+  .cmp, .cmp tbody, .cmp tr, .cmp th, .cmp td { display: block; }
+  .cmp tr { border-bottom: 1px solid var(--line); padding: 10px 14px; }
+  .cmp tbody tr:last-child { border-bottom: 0; }
+  .cmp th, .cmp td { border: 0; padding: 2px 0; }
+  .cmp th { font-size: 1.05rem; margin-bottom: 4px; }
+  .cmp td::before { content: attr(data-l) ": "; color: var(--muted); font-weight: 700; font-size: .85rem; }
+}
+.dd-more { border-top: 1px solid var(--line); font-weight: 800; }

@@ -256,6 +256,7 @@ def nav(root, active=""):
     contests = "".join(
         f'<a class="dd-i" href="{root}{C["slug"]}/">{e(C["name"])}{"<small>soon</small>" if C.get("soon") else ""}</a>'
         for C in CONTESTS.values())
+    contests += f'<a class="dd-i dd-more" href="{root}contests/">Compare all contests</a>'
     tests = ""
     for t in TEST_SETS:
         who = grade_title(f'{t["grades"][0]}-{t["grades"][-1]}') if len(t["grades"]) > 1 else f'Grade {t["grades"][0]}'
@@ -284,7 +285,7 @@ def nav(root, active=""):
   <div class="wrap cat-in">
    <a class="cat cat-free" href="{root}free/"{cur(("free",))}>Free test</a>
    {dd("grades", "Grades", "#grades-h", ("grade-5",), grades, "dd-grades")}
-   {dd("contests", "Contests", "#contests-h", tuple(C["slug"] for C in CONTESTS.values()), contests)}
+   {dd("contests", "Contests", "#contests-h", tuple(C["slug"] for C in CONTESTS.values()) + ("contests",), contests)}
    {dd("tests", "Tests", "mock-tests/", ("tests",), tests)}
    {dd("lessons", "Lessons", "lessons/", ("lessons",), lessons)}
    <a class="cat" href="{root}about/"{cur(("about",))}>About</a>
@@ -609,7 +610,7 @@ def page_home(lessons):
 
 <section class="sec sec-alt">
  <div class="wrap">
-  <div class="sec-head"><h2 id="contests-h">Pick your contest</h2></div>
+  <div class="sec-head"><h2 id="contests-h">Pick your contest</h2><a class="go" href="contests/">Compare all contests &rarr;</a></div>
   <div class="contests contests-short">{''.join(cards)}</div>
  </div>
 </section>
@@ -1366,6 +1367,44 @@ def page_plan():
     write("study-plan/index.html", body)
 
 
+COMPARE = [  # contest, grades, questions, time, answers (same source as CONTEST_FACTS)
+    ("kangaroo", "1 to 12", "24 or 30", "75 min", "Multiple choice"),
+    ("noetic", "2 to 8", "20", "45 min", "Short answer"),
+    ("mathcounts", "6 to 8", "Sprint: 30", "Sprint: 40 min", "Short answer, 4 rounds"),
+    ("amc8", "8 and below", "25", "40 min", "Multiple choice"),
+    ("amc10", "10 and below", "25", "75 min", "Multiple choice"),
+    ("amc12", "12 and below", "25", "75 min", "Multiple choice"),
+    ("olympiad", "4 to 8 (MOEMS)", "5 per contest", "A few min each", "Short answer, 5 contests a year"),
+]
+
+
+def page_compare():
+    """/contests/: every contest side by side, so a parent can see which ones fit their child's grade."""
+    root = "../"
+    rows = "".join(
+        f'<tr><th scope="row"><a href="{root}{CONTESTS[k]["slug"]}/">{e(CONTESTS[k]["name"])}</a></th>'
+        f'<td data-l="Grades">{g}</td><td data-l="Questions">{q}</td><td data-l="Time">{t}</td><td data-l="Answers">{a}</td></tr>'
+        for k, g, q, t, a in COMPARE)
+    body = head(f"Math Contests Compared: Grades, Questions and Time | {NAME}",
+                "Math Kangaroo, Noetic, MATHCOUNTS, AMC 8, AMC 10, AMC 12 and MOEMS side by side: who can take each, how many questions, and how long.",
+                "contests/", root)
+    body += nav(root, "contests")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <h1>Contests compared</h1>
+  <p class="lead">Who can take each one, and what test day looks like. Tap a contest for its lessons.</p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap">
+ <table class="cmp"><thead><tr><th scope="col">Contest</th><th scope="col">Grades</th><th scope="col">Questions</th><th scope="col">Time</th><th scope="col">Answers</th></tr></thead>
+ <tbody>{rows}</tbody></table>
+ <p class="glance-note">Formats can change. Check each contest's own site for dates and rules. We are not affiliated with any of them.</p>
+</div></section>
+"""
+    body += test_cta(root, compact=True) + foot(root)
+    write("contests/index.html", body)
+
+
 def page_404():
     root = "/"
     body = head(f"Page not found | {NAME}", "This page does not exist.", "404.html", root, noindex=True)
@@ -1469,7 +1508,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "contests/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "Every key move for grade 5 contests, grouped by topic. Each one is a short video lesson.", lessons,
                "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.",
@@ -1495,6 +1534,7 @@ def main():
     page_free()
     page_cheatsheet(lessons)
     page_plan()
+    page_compare()
     page_about(lessons)
     page_404()
     for l in lessons:
