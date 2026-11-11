@@ -246,7 +246,7 @@ def foot(root, cta=True):
  <div class="wrap foot-grid">
   <div>
    <a class="brand brand-foot" href="{root}">{mark(30)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
-   <p>Competition math, one key at a time. Free video lessons and a free test, starting with Grade 5. More grades are on the way.</p>
+   <p>Competition math, one key at a time. Free video lessons and a free diagnostic test.</p>
    <a class="btn btn-yt" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe on YouTube</span></a>
   </div>
   <div>
@@ -417,7 +417,7 @@ def page_home(lessons):
             meta = "Coming soon"
         else:
             meta = f"{total} lessons" if n == total else f"{n} live, {total - n} on the way"
-        cards.append(f'<a class="contest c-{k}{" is-soon" if C.get("soon") else ""}" href="{C["slug"]}/"><h3>{e(C["name"])}</h3><p>{e(C["blurb"])}</p><span>{meta}</span></a>')
+        cards.append(f'<a class="contest c-{k}{" is-soon" if C.get("soon") else ""}" href="{C["slug"]}/"><h3>{e(C["name"])}</h3><span>{meta}</span></a>')
     grades = "".join(
         f'<a class="grade on" href="grade-5/"><b>Grade {g}</b><span>{len(lessons)} tools</span></a>' if live_g
         else f'<span class="grade"><b>Grade {g}</b><span>Coming</span></span>' for g, live_g in GRADES)
@@ -426,46 +426,44 @@ def page_home(lessons):
     site_ld = {"@context": "https://schema.org", "@type": "WebSite", "name": NAME, "url": SITE + "/",
                "potentialAction": {"@type": "SearchAction", "target": SITE + "/lessons/?q={search_term_string}",
                                    "query-input": "required name=search_term_string"}}
-    faq_html, faq_ld = faq(("free", "who", "misses", "original", "lessons", "pack", "when", "independent"))
-    body = head(f"{NAME}: Free Grade 5 Contest Math Test and Video Lessons",
-                "Free Grade 5 contest math test: 20 problems, 45 minutes, answer key included, and a QR code beside every problem that opens a short video lesson on the key move for it.",
+    faq_html, faq_ld = faq(("free", "who", "misses", "original", "when", "independent"))
+    body = head(f"{NAME}: Free Diagnostic Test and Contest Math Video Lessons",
+                "Free contest math diagnostic test. Pick your grade: answer key included, and a QR code beside every problem opens a short video lesson on its key move.",
                 "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script><script type="application/ld+json">{json.dumps(site_ld)}</script>' + faq_ld)
     body += nav(root)
     body += f"""<section class="hero">
  <div class="wrap hero-in">
   <div class="hero-copy">
-   <p class="eyebrow eyebrow-y">Grade 5 &middot; Contest math</p>
-   <h1>A free Grade 5 contest test, <span>with a video for every miss.</span></h1>
-   <p class="lead">20 problems, 45 minutes, answer key included. Beside each problem is a QR code: scan the ones your child misses and the short lesson for that key move opens.</p>
+   <p class="eyebrow eyebrow-y">Free &middot; Contest math</p>
+   <h1>Free diagnostic test. <span>A video for every miss.</span></h1>
+   <p class="lead">Find the key moves your child still needs.</p>
    <div class="hero-cta" data-cta-watch>
     <a class="btn btn-primary btn-lg btn-wide" href="{root}free/">Get the free test</a>
-    <a class="hero-alt" href="lessons/{feat['slug']}/">or watch a {round(feat.get('seconds', 240) / 60)}-minute lesson first &rarr;</a>
+    <a class="hero-alt" href="lessons/{feat['slug']}/">or watch a lesson first &rarr;</a>
    </div>
-   <ul class="hero-trust"><li>Free PDF</li><li>Answer key</li><li>Print or tablet</li><li>No payment</li></ul>
+   <ul class="hero-trust"><li>Free PDF</li><li>Answer key</li><li>No payment</li></ul>
   </div>
   <div class="hero-media">
    {embed(feat, root, eager=True)}
-   <p class="now">{'New' if feat['live'] else 'First up'}: <a href="lessons/{feat['slug']}/">Tool #{feat['tool_num']}, {e(feat['tool'])}</a> &middot; {n_live} of {len(lessons)} Grade 5 lessons live</p>
+   <p class="now">{'New' if feat['live'] else 'First up'}: <a href="lessons/{feat['slug']}/">Tool #{feat['tool_num']}, {e(feat['tool'])}</a></p>
   </div>
  </div>
 </section>
 
 <section class="how" aria-labelledby="how-h">
  <div class="wrap">
-  <p class="eyebrow center">How it works</p>
-  <h2 id="how-h" class="center">Three steps, one key at a time</h2>
+  <h2 id="how-h" class="center">How it works</h2>
   <ol class="steps">
-   <li><span class="n n1">1</span><h3>Take the free test</h3><p>Twenty Grade 5 contest problems, easy to hard, in 45 minutes. Check with the answer key and circle the misses.</p><a class="go" href="free/">Get the free test &rarr;</a></li>
-   <li><span class="n n2">2</span><h3>Watch the key move</h3><p>Scan the QR beside each miss. The lesson names one tool, shows the trap, then climbs from easy to hard in about four minutes.</p><a class="go" href="lessons/">See all {len(lessons)} lessons &rarr;</a></li>
-   <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten more full tests in the same format, each with a worked answer key and a lesson QR on every problem.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
+   <li><span class="n n1">1</span><h3>Take the free test</h3><p>Pick your grade. Check with the answer key.</p><a class="go" href="free/">Get the free test &rarr;</a></li>
+   <li><span class="n n2">2</span><h3>Watch the key move</h3><p>Scan the QR beside each miss.</p><a class="go" href="lessons/">See all {len(lessons)} lessons &rarr;</a></li>
+   <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten Grade 5 tests with worked answer keys.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
   </ol>
  </div>
 </section>
 
 <section class="sec sec-alt" aria-labelledby="inside-h">
  <div class="wrap">
-  <h2 id="inside-h">See inside the test</h2>
-  <p class="sec-lead">Real pages from the PDFs. Tap any page to see it full size.</p>
+  <h2 id="inside-h">See inside</h2>
   {samples(root)}
   <p class="sec-cta" data-cta-watch><a class="btn btn-primary btn-lg btn-wide" href="{root}free/">Get the free test</a></p>
  </div>
@@ -474,16 +472,16 @@ def page_home(lessons):
 <section class="sec">
  <div class="wrap">
   <div class="sec-head"><h2>Grade 5 key moves</h2><a class="more" href="grade-5/">See all {len(lessons)} &rarr;</a></div>
-  <p class="sec-lead">Every lesson: see the trap, learn the tool, climb from easy to hard, then pause and try the last one alone.</p>
+  <p class="sec-lead">See the trap, learn the tool, climb easy to hard.</p>
   {grid(first, root)}
-  {search_form(root, "home-q", "Know the topic? Find its key move.")}
+  {search_form(root, "home-q", "Find a key move")}
  </div>
 </section>
 
 <section class="sec sec-alt">
  <div class="wrap">
   <div class="sec-head"><h2>Pick your contest</h2></div>
-  <div class="contests">{''.join(cards)}</div>
+  <div class="contests contests-short">{''.join(cards)}</div>
   <h3 class="sub">Grades</h3>
   <div class="grades">{grades}</div>
  </div>
