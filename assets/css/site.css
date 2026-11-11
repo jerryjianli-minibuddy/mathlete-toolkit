@@ -362,3 +362,23 @@ main .hero :focus-visible, main .cta-band :focus-visible { outline-color: var(--
 .next-steps li { counter-increment: s; position: relative; padding-left: 44px; color: var(--muted); }
 .next-steps li b { color: var(--ink); }
 .next-steps li::before { content: counter(s); position: absolute; left: 0; top: -2px; width: 30px; height: 30px; border-radius: 9px; background: var(--navy); color: var(--yellow); font-weight: 900; display: grid; place-items: center; }
+
+/* mock tests pricing (Nov 11) */
+.plans { display: grid; gap: 18px; align-items: stretch; }
+@media (min-width: 900px) { .plans { grid-template-columns: repeat(3, 1fr); } }
+.plan { position: relative; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 22px; box-shadow: var(--shadow); }
+.plan h2 { font-size: 1.5rem; margin-bottom: .2em; }
+.plan .price { margin: 0 0 14px; }
+.plan .price s { color: var(--muted); font-size: 1rem; margin-left: 6px; }
+.plan .ticks { flex: 1; }
+.plan .btn { align-self: stretch; }
+.plan-free { border-top: 6px solid var(--yellow); }
+.plan-pack { border: 2px solid var(--pink); }
+.ribbon { position: absolute; top: -13px; right: 18px; margin: 0; background: var(--pink); color: #fff; font-weight: 800; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; }
+.eyebrow-n { color: var(--navy2); }
+.btn-disabled { box-shadow: none; }
+.ticks-2 { margin-bottom: 28px; }
+@media (min-width: 760px) { .ticks-2 { grid-template-columns: 1fr 1fr; column-gap: 28px; } }
+.singles-box { max-width: 820px; margin-bottom: 34px; }
+.singles-box .singles { padding: 0 14px; margin-top: 0; }
+@media (min-width: 700px) { .singles-box .singles { grid-template-columns: 1fr; } }

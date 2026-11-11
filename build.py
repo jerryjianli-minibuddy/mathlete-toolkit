@@ -663,58 +663,85 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None):
 
 
 def page_tests(lessons, shop):
+    """Mock tests as a pricing page (Nov 11): free vs single vs pack, what every test holds, sample pages, FAQ.
+    Buy buttons link to Payhip only when shop["live"]; until then they say Coming soon and the free test is the action."""
     root = "../"
     live = shop["live"]
-    pack_btn = (f'<a class="btn btn-primary btn-lg" href="{e(shop["pack"])}">Buy all 10 for $19.99</a>' if live else
-                f'<a class="btn btn-ghost-d btn-lg" href="{root}free/">Coming soon: get the free test</a>')
+    faq_html, _ = faq(("pack", "when", "time", "misses", "original", "independent"))
+    if live:
+        pack_btn = f'<a class="btn btn-primary btn-lg" href="{e(shop["pack"])}">Buy all 10 for $19.99</a>'
+        single_btn = '<a class="btn btn-ghost-d btn-lg" href="#singles">Choose a test</a>'
+    else:
+        pack_btn = '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>'
+        single_btn = '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>'
+    soon_note = "" if live else f'<p class="small">Checkout opens soon. <a href="{root}free/">Start with the free test</a>: same format.</p>'
     singles = "\n".join(
         f'    <li><span><b>Grade 5 Practice Test {n}</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em>'
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(shop["tests"], 1))
-    body = head(f"Grade 5 Math Contest Mock Tests | {NAME}",
-                "Grade 5 competition math mock tests: a free 20-problem diagnostic test, 10 practice tests at $3.99 each or $19.99 for all 10, each with an answer key and a lesson QR beside every problem.",
+    body = head(f"Grade 5 Math Contest Practice Tests | {NAME}",
+                "Grade 5 competition math practice tests: a free 20-problem diagnostic test, then 10 full practice tests at $3.99 each or $19.99 for all 10, each with a worked answer key and a lesson QR beside every problem.",
                 "mock-tests/", root)
     body += nav(root, "tests")
     body += f"""<section class="page-head">
  <div class="wrap">
-  <h1>Mock tests</h1>
-  <p class="lead">Practice at real contest length, then fix every miss with the matching video.</p>
+  <h1>Grade 5 practice tests</h1>
+  <p class="lead">Practice at real contest length, then fix every miss with its key move. Start free, then keep going with the pack.</p>
  </div>
 </section>
 <section class="sec sec-tight">
- <div class="wrap tests">
-  <div class="test-card test-free">
-   <p class="eyebrow">Free</p>
-   <h2>Grade 5 Diagnostic Test</h2>
-   <ul class="ticks">
-    <li>20 original contest-style problems, easy to hard</li>
-    <li>45 minutes, no calculator</li>
-    <li>Answer key on the last page</li>
-    <li>A QR code beside every problem opens its video lesson</li>
-   </ul>
-   <a class="btn btn-primary btn-lg" href="{root}free/">Get the free test</a>
-   <p class="small">Fill in a short form (email, grade, contest) and the PDF link comes right up.</p>
+ <div class="wrap">
+  <div class="plans">
+   <div class="plan plan-free">
+    <p class="eyebrow">Start here</p>
+    <h2>Diagnostic Test</h2>
+    <p class="price"><b>Free</b></p>
+    <ul class="ticks"><li>1 full test, 20 problems</li><li>Answer key</li><li>Lesson QR on every problem</li></ul>
+    <a class="btn btn-primary btn-lg" href="{root}free/" data-cta-watch>Get the free test</a>
+   </div>
+   <div class="plan">
+    <p class="eyebrow eyebrow-n">One test</p>
+    <h2>Single test</h2>
+    <p class="price"><b>$3.99</b> each</p>
+    <ul class="ticks"><li>1 full test, 20 problems</li><li>Worked answer key</li><li>Lesson QR on every problem</li></ul>
+    {single_btn}
+   </div>
+   <div class="plan plan-pack">
+    <p class="ribbon">Best value</p>
+    <p class="eyebrow">All 10 tests</p>
+    <h2>Practice Pack</h2>
+    <p class="price"><b>$19.99</b> <s>$39.90</s></p>
+    <ul class="ticks"><li>10 full tests, 200 problems</li><li>Worked answer key after every test</li><li>Lesson QR on every problem</li><li>Half the price of ten singles</li></ul>
+    {pack_btn}
+   </div>
   </div>
-  <div class="test-card test-pack">
-   <p class="eyebrow eyebrow-p">{"Best deal" if live else "Coming soon"}</p>
-   <h2>Grade 5 Practice Pack</h2>
-   <p class="price"><b>$19.99</b> for all 10 tests</p>
-   <ul class="ticks">
-    <li>10 more tests in the same format</li>
-    <li>200 new problems, every one checked by computer</li>
-    <li>Answer keys, plus a lesson QR on every problem</li>
-   </ul>
-   {pack_btn}
-  </div>
-  <div class="test-singles">
-   <h2>Single tests, $3.99 each</h2>
-   <p class="small">Each one is a full 20-problem test with its answer key. Ten singles cost $39.90, so the pack is half price.</p>
+  {soon_note}
+ </div>
+</section>
+<section class="sec sec-alt">
+ <div class="wrap">
+  <h2>What every test holds</h2>
+  <ul class="ticks ticks-2">
+   <li>20 original problems, easy to hard, at real contest length</li>
+   <li>45 minutes, no calculator, an answer box for each problem</li>
+   <li>A worked answer key that names the tool behind every answer</li>
+   <li>A QR code beside every problem that opens its free video lesson</li>
+   <li>Difficulty and tool mix matched to real Grade 5 contest tests</li>
+   <li>Every answer checked by computer; print it or use a tablet</li>
+  </ul>
+  {samples(root, ("practice", "key", "diagnostic"))}
+ </div>
+</section>
+<section class="sec">
+ <div class="wrap">
+  <details class="qa singles-box" id="singles"{" open" if live else ""}>
+   <summary>All 10 single tests, $3.99 each</summary>
    <ul class="singles">
 {singles}
    </ul>
-   <a class="btn btn-primary" href="{root}free/">Start with the free test</a>
-  </div>
-  <figure class="paper paper-lg"><img src="{root}assets/img/diagnostic-page1.webp" alt="First page of the Grade 5 Diagnostic Test" width="1105" height="1430" loading="lazy"><figcaption>Page 1 of the free Grade 5 Diagnostic Test</figcaption></figure>
+  </details>
+  {faq_html}
+  <p class="sec-cta"><a class="btn btn-primary btn-lg btn-wide" href="{root}free/">Start with the free test</a></p>
  </div>
 </section>
 """
