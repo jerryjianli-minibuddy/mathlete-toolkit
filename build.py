@@ -184,12 +184,14 @@ def head(title, desc, path, root, image=None, noindex=False, extra=""):
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:url" content="{e(url)}">
 <meta property="og:image" content="{e(img)}">
+<meta property="og:image:width" content="{1280 if image else 1200}">
+<meta property="og:image:height" content="{720 if image else 630}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0E1A32">
 <link rel="icon" href="{root}assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{root}assets/css/site.css?v={ASSET_V}">
 {extra}
 </head>
@@ -423,10 +425,13 @@ def page_home(lessons):
         else f'<span class="grade"><b>Grade {g}</b><span>Coming</span></span>' for g, live_g in GRADES)
     ld = {"@context": "https://schema.org", "@type": "Organization", "name": NAME, "url": SITE + "/",
           "logo": SITE + "/assets/img/logo-512.png", "sameAs": [YT]}
+    site_ld = {"@context": "https://schema.org", "@type": "WebSite", "name": NAME, "url": SITE + "/",
+               "potentialAction": {"@type": "SearchAction", "target": SITE + "/lessons/?q={search_term_string}",
+                                   "query-input": "required name=search_term_string"}}
     faq_html, faq_ld = faq(("free", "who", "time", "misses", "original", "lessons", "pack", "when", "independent"))
     body = head(f"{NAME}: Free Grade 5 Contest Math Test and Video Lessons",
                 "Free Grade 5 contest math test: 20 problems, 45 minutes, answer key included, and a QR code beside every problem that opens a short video lesson on the key move for it.",
-                "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script>' + faq_ld)
+                "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script><script type="application/ld+json">{json.dumps(site_ld)}</script>' + faq_ld)
     body += nav(root)
     body += f"""<section class="hero">
  <div class="wrap hero-in">
@@ -843,8 +848,14 @@ def page_about(lessons):
   </ul>
   <h2>Who it is for</h2>
   <p>Students getting ready for Math Kangaroo, the Noetic Math Contest, MATHCOUNTS, AMC 8, 10 and 12, and math olympiads. The Grade 5 tools are out now. Other grades follow.</p>
-  <h2>Our problems</h2>
-  <p>Every problem in our videos and tests is written by us and checked by computer. We study past contests to learn which tools come up and how hard they get, but we never copy their problems.</p>
+  <h2>How we make every test</h2>
+  <ul class="ticks">
+   <li>Every problem is our own. None is copied from a past contest.</li>
+   <li>Every answer is checked by computer before a test is built.</li>
+   <li>We worked through full past Grade 5 contest tests, question by question, to match their difficulty curve (easy first, hardest last) and how often each tool comes up.</li>
+   <li>Every answer key shows the working and names the tool, and every problem has a QR code to its lesson.</li>
+  </ul>
+  <p><a class="btn btn-primary" href="{root}free/">See for yourself: get the free test</a></p>
   <p class="note">{NAME} is an independent practice channel. It is not affiliated with or endorsed by Math Kangaroo, Noetic Learning, MATHCOUNTS, the MAA (AMC) or any math olympiad.</p>
   <p><a class="btn btn-yt" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe on YouTube</span></a></p>
  </div>
@@ -934,6 +945,10 @@ def main():
         page_qr(l)
     urls += [f"lessons/{l['slug']}/" for l in lessons if l["live"]]
     extras(lessons, urls)
+    missing = [l["slug"] for l in lessons for x in (".webp", "-lg.webp", ".jpg")
+               if not os.path.exists(os.path.join(ROOT, "assets/covers", l["slug"] + x))]
+    if missing:  # a missing cover shows as a broken image on the site (Nov 11: 11 were missing)
+        print("WARNING missing covers:", ", ".join(sorted(set(missing))))
     print(f"built {OUT}: {sum(l['live'] for l in lessons)} of {len(lessons)} lessons live")
 
 
