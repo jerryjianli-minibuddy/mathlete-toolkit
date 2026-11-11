@@ -146,7 +146,14 @@ def load_shop():
             req = urllib.request.Request(shop["pack"], headers={"User-Agent": "Mozilla/5.0 keymovemath-site"})
             with urllib.request.urlopen(req, timeout=20) as r:
                 page = r.read().decode("utf-8", "replace")
-            ok = r.status == 200 and "unable to receive payments" not in page and "19.99" in page
+            # Only Payhip's own notice turns buttons off; a bot-check page (no price on it) changes nothing.
+            # Jian switched checkout on Nov 11 ("Make the payment work on the website. Payhip has been set up").
+            if "unable to receive payments" in page:
+                ok = False
+            elif r.status == 200 and "19.99" in page:
+                ok = True
+            else:
+                ok = shop["live"]
             if ok != shop["live"]:
                 shop["live"] = ok
                 json.dump(shop, open(p, "w"), indent=1)
