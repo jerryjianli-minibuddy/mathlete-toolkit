@@ -609,3 +609,10 @@ a.dd-i:hover, a.dd-i:focus-visible { background: var(--cream); color: var(--pink
 .ab-note { margin-top: 22px; text-align: center; }
 .foot-mail { font-size: .95rem; }
 .foot-mail a { color: var(--yellow); font-weight: 700; }
+
+/* /free: form, then password, then download (Nov 11) */
+.free-steps { list-style: none; counter-reset: fs; margin: 6px 0 20px; padding: 0; display: grid; gap: 8px; }
+.free-steps li { counter-increment: fs; display: flex; gap: 12px; align-items: baseline; color: #D5DCEC; }
+.free-steps li::before { content: counter(fs); flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--yellow); color: var(--navy); font-weight: 900; display: grid; place-items: center; }
+.free-steps b { color: #fff; }
+.form-go { margin: 18px 0 6px; }

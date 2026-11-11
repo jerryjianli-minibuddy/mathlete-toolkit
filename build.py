@@ -465,7 +465,7 @@ def faqs():
         "misses": ("What do we do with the misses?",
                    "Scan the QR beside the problem to open its lesson. Try the problem again the next day."),
         "original": ("Are the problems copied from real contests?",
-                     "No. Every problem is our own and checked by computer. We match real contest difficulty but never copy."),
+                     "No. Every problem is our own. We match real contest difficulty but never copy."),
         "share": ("Can I share the free test?",
                   "Yes. It is free for home and classroom use."),
         "lessons": ("Do the video lessons cost anything?",
@@ -548,7 +548,7 @@ def page_home(lessons):
 <section class="trust" aria-label="About our tests">
  <ul class="wrap trust-in">
   <li class="t-orig">Original problems</li>
-  <li class="t-check">Answers checked by computer</li>
+  <li class="t-check">Worked answer keys</li>
   <li class="t-qr">A lesson for every problem</li>
   <li class="t-yt">Lessons free on YouTube</li>
  </ul>
@@ -859,7 +859,6 @@ def page_tests(lessons, shop):
     </tbody>
    </table>
   </div>
-  <p class="small cmp-note">Every answer is checked by computer.</p>
   {samples(root, ("practice", "key", "diagnostic"))}
  </div>
 </section>
@@ -902,7 +901,7 @@ def unlock_form():
     files = json.dumps({str(g): _scramble(f"https://drive.google.com/uc?export=download&id={fid}", FREE_PASSWORD)
                         for g, fid in FREE_FILES.items()})
     return f"""<form class="qform unlock" data-unlock data-check="{check}" data-files='{e(files)}'>
-   <label for="pw">Filled in the form? Enter the password to download.</label>
+   <label for="pw">Step 3: enter the password from the form to download.</label>
    <div class="qrow"><input id="pw" name="pw" type="text" placeholder="Password" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go">
    <button class="btn btn-primary" type="submit">Download</button></div>
    <p class="unlock-msg" aria-live="polite"></p>
@@ -929,8 +928,13 @@ def page_free():
   <p class="eyebrow eyebrow-y">Free</p>
   <h1>Free diagnostic test</h1>
   <p class="lead">Pick your grade. Answer key included, and every miss opens its video lesson.</p>
+  <ol class="free-steps">
+   <li><b>Pick your grade.</b> It opens a short form.</li>
+   <li><b>Fill in the form.</b> The last screen shows the password.</li>
+   <li><b>Come back and type the password.</b> The PDF downloads right away.</li>
+  </ol>
   <div class="gpick" role="group" aria-label="Pick a grade">{"".join(tiles)}</div>
-  <p class="form-note">Fill in a short form. It shows the password, and the PDF downloads right here.</p>
+  <p class="form-go"><a class="btn btn-primary btn-lg" href="{e(FREE_TESTS[5])}" rel="noopener">Open the Grade 5 form</a></p>
   {unlock_form()}
   <p class="teacher-note"><b>Teachers:</b> it is free to copy for your class.</p>
   <p class="test-note test-note-d">The Grade 5 test is Noetic-style. Kangaroo-style tests for Grades 5 and 6 are coming. {TEST_NOTE}</p>
@@ -1007,7 +1011,7 @@ def page_about(lessons):
         f'alt="{e(l["tool"])} lesson cover" loading="lazy" width="640" height="360"><span>{e(l["tool"])}</span></a>'
         for l in live[:6])
     made = [("own", "Every problem is our own", "None is copied from a past contest."),
-            ("check", "Every answer is checked", "By computer, before a test is built."),
+            ("check", "A worked answer key", "Every test ends with the working for each answer."),
             ("curve", "Matched to real tests", "Same difficulty curve as full Grade 5 contest tests: easy first, hardest last."),
             ("qr", "A lesson for every miss", "The answer key names the tool, and a QR code opens its lesson.")]
     made_html = "".join(f'<li><span class="ab-ic">{icon(k)}</span><h3>{e(t)}</h3><p>{e(x)}</p></li>' for k, t, x in made)
