@@ -556,3 +556,4 @@ a.dd-i:hover, a.dd-i:focus-visible { background: var(--cream); color: var(--pink
 .next-tests { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; padding: 14px 18px; border: 1.5px dashed #CFC8B9; border-radius: 14px; color: var(--muted); }
 .next-tests b { color: var(--ink); }
 .next-tests span { font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; background: var(--yellow); color: var(--navy); padding: 3px 9px; border-radius: 999px; }
+.soon-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }

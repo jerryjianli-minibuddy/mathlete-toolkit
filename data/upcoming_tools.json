@@ -1,0 +1,7 @@
+{
+ "_note": "QR short links (t/N) for tools whose lesson isn't on the site yet. Add \"video_id\" when the YouTube lesson exists and t/N starts opening it. Move a tool to lessons.json once it has a full lesson page.",
+ "tools": [
+  {"tool_num": 41, "tool": "Pair the Opposites", "style": "Kangaroo-style", "grades": "Grades 5 and 6"},
+  {"tool_num": 42, "tool": "Mirror Each Fold", "style": "Kangaroo-style", "grades": "Grades 5 and 6"}
+ ]
+}

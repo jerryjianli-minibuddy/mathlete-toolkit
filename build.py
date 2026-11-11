@@ -1021,6 +1021,49 @@ def page_qr(l):
 """)
 
 
+def load_upcoming():
+    p = os.path.join(ROOT, "data", "upcoming_tools.json")
+    return json.load(open(p))["tools"] if os.path.exists(p) else []
+
+
+def page_qr_upcoming(t):
+    """t/N for a tool printed on a test before its lesson exists (Nov 11: Kangaroo-style Grades 5-6 diagnostic
+    QRs t/41, t/42). Opens the YouTube lesson once video_id is set; until then a short "lesson coming soon" page."""
+    n = int(t["tool_num"])
+    if t.get("video_id"):
+        target = f"https://youtu.be/{t['video_id']}"
+        write(f"t/{n}/index.html", f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tool #{n}: {e(t['tool'])} | {NAME}</title>
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url={e(target)}">
+<script>location.replace({json.dumps(target)});</script>
+</head>
+<body style="font-family:system-ui,sans-serif;padding:24px">
+<p>Opening Tool #{n}, {e(t['tool'])}&hellip;</p>
+<p><a href="{e(target)}">Tap here if it does not open.</a></p>
+</body>
+</html>
+""")
+        return
+    root = "/"
+    body = head(f"Tool #{n}: {e(t['tool'])} | {NAME}", f"Key move #{n}, {t['tool']}. Video lesson coming soon.",
+                f"t/{n}/", root, noindex=True)
+    body += nav(root)
+    body += f"""<section class="page-head"><div class="wrap">
+  <p class="eyebrow">{e(t['style'])} &middot; {e(t['grades'])} &middot; Tool #{n}</p>
+  <h1>{e(t['tool'])}</h1>
+  <p class="lead">The video lesson for this key move is coming soon. Subscribe and it will show up in your feed.</p>
+  <p class="soon-ctas"><a class="btn btn-primary btn-lg" href="https://www.youtube.com/@keymovemath?sub_confirmation=1" rel="noopener">Subscribe on YouTube</a>
+  <a class="btn btn-ghost-d btn-lg" href="{root}lessons/">See the lessons out now</a></p>
+</div></section>"""
+    body += foot(root)
+    write(f"t/{n}/index.html", body)
+
+
 def extras(lessons, urls):
     today = date.today().isoformat()
     sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
@@ -1062,6 +1105,10 @@ def main():
     page_404()
     for l in lessons:
         page_qr(l)
+    taken = {int(l["tool_num"]) for l in lessons}
+    for t in load_upcoming():
+        if int(t["tool_num"]) not in taken:  # a real lesson always wins the short link
+            page_qr_upcoming(t)
     urls += [f"lessons/{l['slug']}/" for l in lessons if l["live"]]
     extras(lessons, urls)
     missing = [l["slug"] for l in lessons for x in (".webp", "-lg.webp", ".jpg")
