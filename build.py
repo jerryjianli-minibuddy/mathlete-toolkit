@@ -259,8 +259,7 @@ def nav(root, active=""):
     contests += f'<a class="dd-i dd-more" href="{root}contests/">Compare all contests</a>'
     tests = ""
     for t in TEST_SETS:
-        who = grade_title(f'{t["grades"][0]}-{t["grades"][-1]}') if len(t["grades"]) > 1 else f'Grade {t["grades"][0]}'
-        tests += f'<p class="dd-h">{t["label"]}, {who.replace(" to ", " and ")}</p>'
+        tests += f'<p class="dd-h">{t["label"]}, {grades_label(t["grades"])}</p>'
         tests += (f'<a class="dd-i" href="{free_href(root, t["contest"], t["grades"][0])}">Free diagnostic test<small class="dd-free">free</small></a>'
                   if t["diag"] else '<span class="dd-i dd-off">Free diagnostic test<small>soon</small></span>')
         tests += (f'<a class="dd-i" href="{root}mock-tests/">Practice tests</a>' if t["practice"]
@@ -338,6 +337,14 @@ def foot(root, cta=True):
 
 def grade_title(g):
     return f"Grades {g.replace('-', ' to ')}" if "-" in g else f"Grade {g}"
+
+
+def grades_label(gs):
+    """[5] -> Grade 5, [5, 6] -> Grades 5 and 6, [6, 7, 8] -> Grades 6 to 8."""
+    gs = list(gs)
+    if len(gs) == 1:
+        return f"Grade {gs[0]}"
+    return f"Grades {gs[0]} and {gs[1]}" if len(gs) == 2 else f"Grades {gs[0]} to {gs[-1]}"
 
 
 def topic_groups(lessons):
@@ -781,9 +788,15 @@ def page_lesson(l, lessons):
 TEST_SETS = [
     dict(key="noetic-5", contest="noetic", grades=[5], label="Noetic-style", diag=True, practice=True),
     dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=False, practice=False),
+    # Nov 11: Jian shared these three (anyone with the link, viewer).
+    dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=False),
+    dict(key="amc8-6-8", contest="amc8", grades=[6, 7, 8], label="AMC 8-style", diag=True, practice=False),
+    dict(key="mathcounts-6-8", contest="mathcounts", grades=[6, 7, 8], label="MATHCOUNTS-style", diag=True, practice=False),
 ]
 # Drive id of each diagnostic PDF (must be shared as anyone with the link).
-DIAG_FILES = {"noetic-5": "1PReaxlTwr3zcN-xdEyVcYWJtY8c8Tc2p", "kangaroo-5-6": "1ggmbBeozrqJopzf2vQNeLZS5msb5WJ4W"}
+DIAG_FILES = {"noetic-5": "1PReaxlTwr3zcN-xdEyVcYWJtY8c8Tc2p", "kangaroo-5-6": "1ggmbBeozrqJopzf2vQNeLZS5msb5WJ4W",
+              "moems-4-6": "1KDVtXFGi7G55y8vQWjZlL2nxNMfDa5L7", "amc8-6-8": "1JnvSg9DMUwY6cukqIYqlf8cWYDRfJy_i",
+              "mathcounts-6-8": "1BlwY33l8g6RpS8qLU9rNscYm1cphoDwl"}
 
 
 def test_live(t):
@@ -810,7 +823,7 @@ def combo_live(lessons, g, k):
 
 def contest_picker(lessons, g, root, current=None):
     on = lambda x: ' pk-on" aria-current="page' if x == current else ""
-    items = [f'<a class="pk{on(None)}" href="{root}grade-{g}/">All contests</a>']
+    items = [f'<a class="pk{on(None)}" href="{root}grade-{g}/">All contests</a>'] if dict(GRADES).get(str(g)) else []
     for k, C in CONTESTS.items():
         if combo_live(lessons, g, k):
             items.append(f'<a class="pk{on(k)}" href="{root}grade-{g}/{k}/">{e(C["name"])}</a>')
@@ -833,18 +846,14 @@ def grade_picker(lessons, k, root, current=None):
             f'<div class="pk-row pk-grades">{"".join(items)}</div></div>')
 
 
-def page_combo(lessons, g, k):
-    """grade-N/<contest>/: the lessons and tests for one grade and one contest, with both pickers on top."""
-    root = "../../"
-    C = CONTESTS[k]
-    sub = combo_lessons(lessons, g, k)
-    tests = combo_tests(g, k)
-    slug = f"grade-{g}/{k}"
+def test_blocks(root, tests, g=None):
+    """One box per test set: its free diagnostic and practice tests, or Coming soon. g preselects the grade on /free."""
     blocks = []
     for t in tests:
-        who = grade_title(f'{t["grades"][0]}-{t["grades"][-1]}').replace(" to ", " and ") if len(t["grades"]) > 1 else f"Grade {g}"
+        who = grades_label(t["grades"])
         if test_live(t):
-            btns = (f'<a class="btn btn-primary" href="{free_href(root, k, g)}">Free diagnostic test</a>' if t["diag"] else "")
+            btns = (f'<a class="btn btn-primary" href="{free_href(root, t["contest"], g or t["grades"][0])}">Free diagnostic test</a>'
+                    if t["diag"] else "")
             btns += (f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>' if t["practice"]
                      else '<span class="btn btn-ghost-d btn-off">Practice tests soon</span>')
             blocks.append(f'<div class="combo-tests"><div><p class="eyebrow">Tests</p><h2>{t["label"]} tests, {who}</h2>'
@@ -853,6 +862,17 @@ def page_combo(lessons, g, k):
         else:
             blocks.append(f'<div class="combo-tests combo-soon"><div><p class="eyebrow">Tests</p>'
                           f'<h2>{t["label"]} tests, {who}</h2><p>Coming soon.</p></div></div>')
+    return blocks
+
+
+def page_combo(lessons, g, k):
+    """grade-N/<contest>/: the lessons and tests for one grade and one contest, with both pickers on top."""
+    root = "../../"
+    C = CONTESTS[k]
+    sub = combo_lessons(lessons, g, k)
+    tests = combo_tests(g, k)
+    slug = f"grade-{g}/{k}"
+    blocks = test_blocks(root, tests, g)
     if sub:
         n_live = sum(l["live"] for l in sub)
         inner = (f'<div class="sk-top"><p class="sk-count"><b>{len(sub)}</b> key moves in {len(topic_groups(sub))} topics'
@@ -945,7 +965,7 @@ def glance(k):
             f'<dl>{dl}</dl><p class="glance-note">Formats can change. Check the contest\'s own site before test day.</p></section>')
 
 
-def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, badge=None, picker="", tests=True):
+def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, badge=None, picker="", tests=True, extra=""):
     root = "../"
     n_live = sum(l["live"] for l in lessons)
     top = (f'<div class="sk-top"><p class="sk-count"><b>{len(lessons)}</b> key moves in {len(topic_groups(lessons))} topics'
@@ -977,7 +997,7 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
  </div>
  {f'<div class="wrap pickers">{picker}</div>' if picker else ""}
 </section>
-<section class="sec sec-tight"><div class="wrap">{glance(tests) if isinstance(tests, str) else ""}{inner}</div></section>
+<section class="sec sec-tight"><div class="wrap">{extra}{glance(tests) if isinstance(tests, str) else ""}{inner}</div></section>
 """
     body += test_cta(root, compact=True, contest=tests if isinstance(tests, str) else None) + foot(root)
     write(f"{slug}/index.html", body)
@@ -1118,7 +1138,7 @@ def page_free():
     ready = {}  # contest -> {grade: [test key, label, who]}
     for t in TEST_SETS:
         if t["diag"]:
-            who = grade_title(f'{t["grades"][0]}-{t["grades"][-1]}').replace(" to ", " and ") if len(t["grades"]) > 1 else f'Grade {t["grades"][0]}'
+            who = grades_label(t["grades"])
             for g in t["grades"]:
                 ready.setdefault(t["contest"], {})[str(g)] = [t["key"], f'{t["label"]} test, {who}']
     cbtn = "".join(f'<button type="button" class="pk" data-contest="{k}">{e(C["name"])}</button>' for k, C in CONTESTS.items())
@@ -1501,6 +1521,9 @@ def extras(lessons, urls):
 def main():
     lessons = load()
     SHOP.update(load_shop())
+    # A grade is live once it has lessons or a free/practice test (Nov 11: MOEMS 4-6, AMC 8 and MATHCOUNTS 6-8).
+    GRADES[:] = [(g, any(str(l["grade"]) == g for l in lessons) or any(int(g) in t["grades"] and test_live(t) for t in TEST_SETS))
+                 for g, _ in GRADES]
     if os.path.exists(OUT):
         shutil.rmtree(OUT)
     shutil.copytree(os.path.join(ROOT, "assets"), os.path.join(OUT, "assets"))
@@ -1513,6 +1536,15 @@ def main():
                "Every key move for grade 5 contests, grouped by topic. Each one is a short video lesson.", lessons,
                "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.",
                badge="5", picker=contest_picker(lessons, 5, "../"))
+    for g, live in GRADES:
+        if live and g != "5":
+            gt = [t for t in TEST_SETS if int(g) in t["grades"] and test_live(t)]
+            page_group(f"grade-{g}", f"Grade {g} Competition Math: Free Tests and Lessons | {NAME}", f"Grade {g} math",
+                       "Pick a contest for its free diagnostic test. Video lessons for this grade are on the way.", [],
+                       f"Free Grade {g} competition math diagnostic tests, by contest.",
+                       badge=g, picker=contest_picker(lessons, g, "../"), tests=False,
+                       extra="".join(test_blocks("../", gt, g)))
+            urls.append(f"grade-{g}/")
     for g, _ in GRADES:
         for k in CONTESTS:
             if combo_live(lessons, g, k):
@@ -1525,7 +1557,8 @@ def main():
         page_group(C["slug"], f"{C['name']} Prep: Free Video Lessons | {NAME}", f"{C['name']} prep", lead, sub,
                    f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.",
                    picker=grade_picker(lessons, k, "../"),
-                   tests=k)  # each contest page links only its own tests
+                   tests=k,  # each contest page links only its own tests
+                   extra="" if sub else "".join(test_blocks("../", [t for t in TEST_SETS if t["contest"] == k])))
         if sub:
             urls.append(C["slug"] + "/")
     write("amc-prep/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
