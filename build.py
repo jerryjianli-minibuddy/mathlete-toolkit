@@ -646,7 +646,7 @@ def page_lessons(lessons):
     body += f"""<section class="page-head">
  <div class="wrap">
   <h1>All lessons</h1>
-  <p class="lead">One tool per video. {f"{n_live} live now, 2 new lessons a day until all {len(lessons)} Grade 5 tools are out." if n_live < len(lessons) else f"All {len(lessons)} Grade 5 tools are live."}</p>
+  <p class="lead">One tool per video. {f"{n_live} live now, with 2 new lessons a day and more grades on the way." if n_live < len(lessons) else f"All {len(lessons)} tools are live, with more grades on the way."}</p>
  </div>
 </section>
 <section class="sec sec-tight">
@@ -694,7 +694,7 @@ def page_lesson(l, lessons):
         next_up = (f'<p class="next-up">Got this one? Next key: <a href="../{nxt["slug"]}/">Tool #{nxt["tool_num"]}, '
                    f'{e(nxt["tool"])} &rarr;</a></p>')
     else:
-        next_up = f'<p class="next-up">That was the last Grade 5 tool. <a href="{root}lessons/">Pick another lesson &rarr;</a></p>'
+        next_up = f'<p class="next-up">That was the last tool in this set. <a href="{root}lessons/">Pick another lesson &rarr;</a></p>'
     also = f'<p class="also">Also called: {e(l["also_called"])}</p>' if l["also_called"] else ""
     pn = '<nav class="pn" aria-label="More lessons">'
     if prev:
@@ -763,8 +763,8 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
     else:
         inner = f"""<div class="empty">
   <h2>Lessons are on the way</h2>
-  <p>We are building this set now. Many Grade 5 tools already carry over, so start there.</p>
-  <a class="btn btn-primary" href="{root}grade-5/">See the Grade 5 tools</a>
+  <p>We are building this set now. Meanwhile, the key moves that are out already help on most contests.</p>
+  <a class="btn btn-primary" href="{root}lessons/">See all lessons</a>
  </div>"""
     body += f"""<section class="page-head">
  <div class="wrap{" ph-badge" if badge else ""}">
@@ -993,7 +993,7 @@ def page_about(lessons):
                 "about/", root)
     body += nav(root, "about")
     live = [l for l in lessons if l["live"]]
-    stats = [(str(len(lessons)), "key moves for Grade 5"), (str(len(live)), "video lessons out now"),
+    stats = [(str(len(lessons)), "key moves so far"), (str(len(live)), "video lessons out now"),
              ("10", "Noetic-style practice tests"), ("1 to 12", "grades on the way")]
     stat_html = "".join(f'<li><b>{e(n)}</b><span>{e(t)}</span></li>' for n, t in stats)
     steps = [("find", "Spot the clue", "Every contest problem has clue words. We teach kids to see them first."),
@@ -1012,7 +1012,7 @@ def page_about(lessons):
         for l in live[:6])
     made = [("own", "Every problem is our own", "None is copied from a past contest."),
             ("check", "A worked answer key", "Every test ends with the working for each answer."),
-            ("curve", "Matched to real tests", "Same difficulty curve as full Grade 5 contest tests: easy first, hardest last."),
+            ("curve", "Matched to real tests", "Same difficulty curve as the real contest: easy first, hardest last."),
             ("qr", "A lesson for every miss", "The answer key names the tool, and a QR code opens its lesson.")]
     made_html = "".join(f'<li><span class="ab-ic">{icon(k)}</span><h3>{e(t)}</h3><p>{e(x)}</p></li>' for k, t, x in made)
     body += f"""<section class="hero ab-hero">
@@ -1180,7 +1180,7 @@ def main():
                badge="5")
     for k, C in CONTESTS.items():
         sub = [l for l in lessons if k in l["contests"]]
-        lead = (f"Grade 5 tools that come up on {C['name']}. {C['blurb']} Independent practice, not affiliated with {C['name']}."
+        lead = (f"Key moves that come up on {C['name']}. {C['blurb']} Independent practice, not affiliated with {C['name']}."
                 if sub else f"{C['blurb']} Independent practice, not affiliated with the {C['name']} organizers.")
         page_group(C["slug"], f"{C['name']} Prep: Free Video Lessons | {NAME}", f"{C['name']} prep", lead, sub,
                    f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.")
