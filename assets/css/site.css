@@ -933,3 +933,5 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .mc-fig img { display: block; max-width: 100%; width: auto; height: auto; max-height: 460px; margin: 0 auto; border-radius: 14px; background: var(--navy); }
 .mc-fig figcaption { margin-top: 8px; font-size: .8rem; color: var(--muted); text-align: center; line-height: 1.4; }
 .mc-fig figcaption a { color: var(--muted); }
+.nw-page { max-width: 980px; }
+.nw-all { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); align-items: start; }
