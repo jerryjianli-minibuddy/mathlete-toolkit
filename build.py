@@ -1011,9 +1011,9 @@ def page_combo(lessons, g, k):
   <span class="gl-badge gc-{g} gl-big">{g}</span><div>
   <h1>Grade {g} <span class="ph-sep">&middot;</span> {e(C['name'])}</h1>
   <p class="lead">Lessons and tests for {e(C['name'])}, Grade {g}. Independent practice, not affiliated with {e(C['name'])}.</p>
-  {playlist_links(g, k)}
   </div>
  </div>
+ {f'<div class="wrap">{playlist_links(g, k)}</div>' if playlist_links(g, k) else ""}
  <div class="wrap pickers">{contest_picker(lessons, g, root, k)}{grade_picker(lessons, k, root, g)}</div>
 </section>
 <section class="sec sec-tight"><div class="wrap">{"".join(blocks)}{glance(k)}{inner}</div></section>
@@ -1113,9 +1113,9 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
   {f'<span class="gl-badge gc-{e(badge)} gl-big">{e(badge)}</span>' if badge else ""}<div>
   <h1>{h1}</h1>
   <p class="lead">{lead}</p>
-  {pl}
   </div>
  </div>
+ {f'<div class="wrap">{pl}</div>' if pl else ""}
  {f'<div class="wrap pickers">{picker}</div>' if picker else ""}
 </section>
 <section class="sec sec-tight"><div class="wrap">{extra}{glance(tests) if isinstance(tests, str) else ""}{inner}</div></section>

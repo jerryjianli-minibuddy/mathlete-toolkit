@@ -814,7 +814,7 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 @media (prefers-reduced-motion: reduce) { .cdx-live::before { animation: none; } }
 
 /* YouTube playlist buttons on grade and contest pages (Nov 12) */
-.pl-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.pl-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 .pl-btn { display: inline-flex; align-items: center; gap: 12px; background: #fff; color: var(--ink); text-decoration: none; border: 2px solid var(--navy); border-radius: 14px; padding: 9px 16px 9px 10px; box-shadow: 0 4px 0 var(--navy); transition: transform .15s ease, box-shadow .15s; max-width: 100%; }
 .pl-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--navy); }
 .pl-ic { flex: none; width: 36px; height: 26px; border-radius: 8px; background: #FF0033; display: grid; place-items: center; }
