@@ -1011,6 +1011,7 @@ def page_combo(lessons, g, k):
   <span class="gl-badge gc-{g} gl-big">{g}</span><div>
   <h1>Grade {g} <span class="ph-sep">&middot;</span> {e(C['name'])}</h1>
   <p class="lead">Lessons and tests for {e(C['name'])}, Grade {g}. Independent practice, not affiliated with {e(C['name'])}.</p>
+  {playlist_links(g, k)}
   </div>
  </div>
  <div class="wrap pickers">{contest_picker(lessons, g, root, k)}{grade_picker(lessons, k, root, g)}</div>
@@ -1084,7 +1085,7 @@ def glance(k):
             f'<dl>{dl}</dl><p class="glance-note">Formats can change. Check the contest\'s own site before test day.</p></section>')
 
 
-def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, badge=None, picker="", tests=True, extra=""):
+def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, badge=None, picker="", tests=True, extra="", pl=""):
     root = "../"
     n_live = sum(l["live"] for l in lessons)
     top = (f'<div class="sk-top"><p class="sk-count"><b>{len(lessons)}</b> key moves in {len(topic_groups(lessons))} topics'
@@ -1112,6 +1113,7 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
   {f'<span class="gl-badge gc-{e(badge)} gl-big">{e(badge)}</span>' if badge else ""}<div>
   <h1>{h1}</h1>
   <p class="lead">{lead}</p>
+  {pl}
   </div>
  </div>
  {f'<div class="wrap pickers">{picker}</div>' if picker else ""}
@@ -1120,6 +1122,30 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
 """
     body += test_cta(root, compact=True, contest=tests if isinstance(tests, str) else None) + foot(root)
     write(f"{slug}/index.html", body)
+
+
+_PL_PATH = os.path.join(ROOT, "data/playlists.json")
+PLAYLISTS = [p for p in (json.load(open(_PL_PATH))["playlists"] if os.path.exists(_PL_PATH) else []) if p.get("public")]
+
+
+def playlist_links(grade=None, contest=None):
+    """'Watch the playlist' buttons for a grade, a contest, or both (Nov 12). Only public playlists show.
+    Grade + contest: that contest's playlist for the grade, else the grade's all-contests one."""
+    g = int(grade) if grade else None
+    if g and contest:
+        pls = [p for p in PLAYLISTS if p["contest"] == contest and g in p["grades"]] or \
+              [p for p in PLAYLISTS if p["contest"] is None and g in p["grades"]]
+    elif g:
+        pls = sorted((p for p in PLAYLISTS if g in p["grades"]), key=lambda p: p["contest"] is not None)
+    else:
+        pls = [p for p in PLAYLISTS if p["contest"] == contest]
+    if not pls:
+        return ""
+    return '<div class="pl-row">' + "".join(
+        f'<a class="pl-btn" href="https://www.youtube.com/playlist?list={e(p["id"])}" rel="noopener">'
+        f'<span class="pl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>'
+        f'<span class="pl-tx"><b>Watch the playlist</b><small>{e(p["title"])}. Save it on YouTube.</small></span></a>'
+        for p in pls) + '</div>'
 
 
 YES = '<span class="yes" role="img" aria-label="Yes"></span>'
@@ -1706,7 +1732,7 @@ def main():
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
                grade_lessons(lessons, 5),
                "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.",
-               badge="5", picker=contest_picker(lessons, 5, "../"))
+               badge="5", picker=contest_picker(lessons, 5, "../"), pl=playlist_links(5))
     for g, live in GRADES:
         if live and g != "5":
             gt = [t for t in TEST_SETS if int(g) in t["grades"] and test_live(t)]
@@ -1715,7 +1741,7 @@ def main():
                        grade_lessons(lessons, g),
                        f"Free Grade {g} competition math diagnostic tests, by contest.",
                        badge=g, picker=contest_picker(lessons, g, "../"), tests=False,
-                       extra="".join(test_blocks("../", gt, g)))
+                       extra="".join(test_blocks("../", gt, g)), pl=playlist_links(g))
             urls.append(f"grade-{g}/")
     for g, _ in GRADES:
         for k in CONTESTS:
@@ -1730,6 +1756,7 @@ def main():
                    f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.",
                    picker=grade_picker(lessons, k, "../"),
                    tests=k,  # each contest page links only its own tests
+                   pl=playlist_links(contest=k),
                    extra="" if sub else "".join(test_blocks("../", [t for t in TEST_SETS if t["contest"] == k])))
         if sub:
             urls.append(C["slug"] + "/")

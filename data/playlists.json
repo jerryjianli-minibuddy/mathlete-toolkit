@@ -1,0 +1,11 @@
+{
+ "_note": "YouTube playlists linked from grade, contest and grade+contest pages (Nov 12, Jian: link the playlists so parents can find and save them). Set public to true once a playlist is public on the channel; only public ones show.",
+ "playlists": [
+  {"id": "PLVHY03ZOsuk8", "title": "Grade 5, all contests", "grades": [5], "contest": null, "public": true},
+  {"id": "PLMFv3DlRTDxk", "title": "Math Kangaroo, Grades 5 and 6", "grades": [5, 6], "contest": "kangaroo", "public": true},
+  {"id": "PLSnFBMfEdDTc", "title": "Noetic, Grade 5", "grades": [5], "contest": "noetic", "public": true},
+  {"id": "PLYY8CX7n_aI4", "title": "Math Kangaroo, Grades 3 and 4", "grades": [3, 4], "contest": "kangaroo", "public": false},
+  {"id": "PLF56bxA5se2Y", "title": "Noetic, Grade 4", "grades": [4], "contest": "noetic", "public": false},
+  {"id": "PLEFLeUiqcV1o", "title": "MATHCOUNTS, Grades 6 to 8", "grades": [6, 7, 8], "contest": "mathcounts", "public": false}
+ ]
+}
