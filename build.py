@@ -295,8 +295,9 @@ def nav(root, active=""):
    <a class="cat cat-free" href="{root}free/"{cur(("free",))}>Free test</a>
    {dd("grades", "Grades", "#grades-h", ("grade-5",), grades, "dd-grades")}
    {dd("contests", "Contests", "#contests-h", tuple(C["slug"] for C in CONTESTS.values()) + ("contests",), contests)}
-   {dd("tests", "Tests", "mock-tests/", ("tests", "teachers"), tests)}
+   {dd("tests", "Tests", "mock-tests/", ("tests",), tests)}
    {dd("lessons", "Lessons", "lessons/", ("lessons",), lessons)}
+   <a class="cat" href="{root}teachers/"{cur(("teachers",))}>Teachers</a>
    <a class="cat" href="{root}about/"{cur(("about",))}>About</a>
   </div>
  </nav>
@@ -687,6 +688,7 @@ def page_home(lessons):
   <div class="freebies">
    <a class="freebie" href="key-moves/"><b>Key moves cheat sheet</b><span>Every rule and trap on one printable page</span></a>
    <a class="freebie" href="study-plan/"><b>4-week contest plan</b><span>15 to 20 minutes a day, with a miss log</span></a>
+   <a class="freebie" href="teachers/"><b>For teachers and clubs</b><span>Run contest practice with a whole class or team</span></a>
   </div>
  </div>
 </section>
@@ -1360,7 +1362,7 @@ def page_free():
   <p class="lead">Pick your contest and grade, then download. No sign-up.</p>
   {picker}
   <div class="fres-list">{"".join(free_result(root, t) for t in TEST_SETS if t["diag"])}</div>
-  <p class="teacher-note"><b>Teachers:</b> copy it for your class. <a href="{root}teachers/">Running a club?</a></p>
+  <p class="teacher-note"><b>Teachers:</b> copy it for your class. <a href="{root}teachers/">See our page for teachers and clubs</a>.</p>
   <p class="test-note test-note-d">Every problem is our own. Not affiliated with any contest.</p>
  </div>
 </section>
@@ -1718,6 +1720,7 @@ def page_compare():
   <p>No contest guarantees admission, and most strong applicants never take the AIME. A result is an achievement a student can list on applications, and reaching the AIME or beyond is rare by design.</p>
   <p>The lasting gain is the skill: reading a problem carefully, trying a plan and checking it. That carries into school math and later STEM classes.</p>
  </div>
+ <p class="cg-teach">Teach a class or coach a team? See <a href="{root}teachers/">For teachers and clubs</a>.</p>
  <p class="glance-note">Facts are from each contest's own site, checked November 12, 2026. Rules and dates can change, so check there before you register. Difficulty is our own view. We are not affiliated with any contest.</p>
 </div></section>
 """

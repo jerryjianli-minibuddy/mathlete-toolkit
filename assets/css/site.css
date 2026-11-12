@@ -726,7 +726,7 @@ a.pk:hover { border-color: var(--navy2); }
   .pl-log td { height: 34px; }
 }
 .freebies { display: grid; gap: 12px; margin: 18px 0 0; }
-@media (min-width: 720px) { .freebies { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 720px) { .freebies { grid-template-columns: repeat(3, 1fr); } }
 .freebie { display: block; background: #fff; border: 2px dashed var(--line); border-radius: 14px; padding: 14px 18px; color: var(--ink); text-decoration: none; }
 .freebie:hover { border-color: var(--navy2); }
 .freebie b { display: block; } .freebie b::after { content: " \2192"; color: var(--pink); }
@@ -813,6 +813,8 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 /* one quiet diagnostic line at the foot of a few pages (Nov 12, Jian: "free" was everywhere) */
 .quiet-cta { margin: 8px auto 36px; text-align: center; color: var(--muted); font-size: .98rem; }
 .quiet-cta a { color: var(--navy); font-weight: 800; }
+.cg-teach { margin: 18px 0 6px; font-weight: 600; }
+.cg-teach a { color: var(--navy); font-weight: 800; }
 
 /* /contests/ parents' guide (Nov 12) */
 .cg-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; }
