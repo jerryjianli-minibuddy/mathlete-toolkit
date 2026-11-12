@@ -1213,7 +1213,7 @@ def page_tests(lessons, shop):
         single_btn = '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>'
     soon_note = "" if live else f'<p class="small">Checkout opens soon. <a href="{root}free/">Start with the free test</a>.</p>'
     singles = "\n".join(
-        f'    <li><span><b>Noetic-style Grade 5 Practice Test {n}</b><small>20 problems, 45 minutes, answer key</small></span><em>$3.99</em>'
+        f'    <li><span><b>Noetic-style Grade 5 Practice Test {n}</b><small>20 problems, 50 minutes, answer key</small></span><em>$3.99</em>'
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(shop["tests"], 1))
     body = head(f"Practice Tests: Noetic-style and MOEMS-style | {NAME}",
@@ -1244,7 +1244,7 @@ def page_tests(lessons, shop):
     <p class="eyebrow eyebrow-n">One test</p>
     <h2>Noetic-style Grade 5 test</h2>
     <p class="price"><b>$3.99</b> each</p>
-    <ul class="facts-row"><li>Noetic-style</li><li>Grade 5</li><li>PDF</li><li>45 min</li></ul>
+    <ul class="facts-row"><li>Noetic-style</li><li>Grade 5</li><li>PDF</li><li>50 min</li></ul>
     {single_btn}
    </div>
    <div class="plan plan-pack">
@@ -1270,7 +1270,7 @@ def page_tests(lessons, shop):
     <thead><tr><th scope="col"><span class="vh">Feature</span></th><th scope="col">Diagnostic</th><th scope="col">One test</th><th scope="col" class="cmp-best">Pack</th></tr></thead>
     <tbody>
      <tr><th scope="row">Problems</th><td>20</td><td>20</td><td class="cmp-best">200</td></tr>
-     <tr><th scope="row">Easy to hard, 45 min</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
+     <tr><th scope="row">Easy to hard, 50 min</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
      <tr><th scope="row">Worked answer key</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
      <tr><th scope="row">Lesson QR on every problem</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
      <tr><th scope="row">Contest style</th><td>Noetic</td><td>Noetic</td><td class="cmp-best">Noetic</td></tr>
