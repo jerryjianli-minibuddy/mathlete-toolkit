@@ -15,10 +15,18 @@
  ],
  "live": true,
  "moems": {
-  "pack": null,
+  "pack": "https://payhip.com/b/Et35g",
   "tests": [
    "https://payhip.com/b/wHacF",
-   "https://payhip.com/b/nOB8K"
+   "https://payhip.com/b/nOB8K",
+   "https://payhip.com/b/oTAEx",
+   "https://payhip.com/b/liBDa",
+   "https://payhip.com/b/0shfV",
+   "https://payhip.com/b/cfeRN",
+   "https://payhip.com/b/0SzU6",
+   "https://payhip.com/b/ueSvx",
+   "https://payhip.com/b/dB1XG",
+   "https://payhip.com/b/qNfFQ"
   ]
  }
 }

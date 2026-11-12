@@ -1103,7 +1103,7 @@ def moems_section(root, shop):
     m, live = shop.get("moems"), shop["live"]
     if not m:
         return ""
-    # Nov 12: Payhip shows only Tests 1 and 2 (each a full season); the pack returns when Seasons 3-10 are built.
+    # Nov 12: all 10 seasons and the pack are live on Payhip again.
     pack = ""
     if m.get("pack"):
         pack_btn = (f'<a class="btn btn-primary btn-lg" href="{e(m["pack"])}">Buy all 10 for {PACK_PRICE}</a>' if live
