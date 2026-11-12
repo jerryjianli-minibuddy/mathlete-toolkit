@@ -54,6 +54,14 @@
    "tool": "Take the Same Off Both Sides",
    "style": "Kangaroo-style",
    "grades": "Grades 5 and 6"
+  },
+  {
+   "tool_num": 54,
+   "tool": "Straights Plus One Circle",
+   "style": "AMC 8-style",
+   "grades": "Grades 6 to 8",
+   "video_id": "u8EdXwOwISU",
+   "short_id": "T3XAvtRsogI"
   }
  ]
 }
