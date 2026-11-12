@@ -944,3 +944,15 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .mc-fig figcaption { margin-top: 8px; font-size: .8rem; color: var(--muted); text-align: center; line-height: 1.4; }
 .mc-fig figcaption a { color: var(--muted); }
 .nw-page { max-width: 980px; }
+/* Math Corner page on phones: compact rows, picture on the left, so the list reads like a blog feed */
+@media (max-width: 599px) {
+  .nw-all { grid-template-columns: 1fr; gap: 12px; }
+  .nw-all .nw-card { flex-direction: row; align-items: stretch; border-radius: 16px; }
+  .nw-all .nw-pic { flex: 0 0 36%; aspect-ratio: auto; min-height: 118px; }
+  .nw-all .nw-tag { top: 8px; left: 8px; font-size: .58rem; padding: 3px 7px; }
+  .nw-all .nw-body { padding: 10px 12px 11px; min-width: 0; }
+  .nw-all .nw-card h3 { font-size: .95rem; -webkit-line-clamp: 3; margin-bottom: 4px; }
+  .nw-all .nw-sum { font-size: .82rem; }
+  .nw-all .nw-links { padding-top: 6px; }
+  .nw-all .nw-links a { font-size: .8rem; }
+}
