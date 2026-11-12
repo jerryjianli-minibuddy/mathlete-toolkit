@@ -275,6 +275,7 @@ def nav(root, active=""):
                   if t["diag"] else '<span class="dd-i dd-off">Diagnostic test<small>soon</small></span>')
         tests += (f'<a class="dd-i" href="{root}mock-tests/{t.get("anchor", "")}">Practice tests</a>' if t["practice"]
                   else '<span class="dd-i dd-off">Practice tests<small>soon</small></span>')
+    tests += f'<a class="dd-i dd-more" href="{root}teachers/">For teachers and clubs</a>'
     topics = "".join(
         f'<a class="dd-i" href="{root}grade-5/#topic-{chr(97 + i)}"><span class="dd-letter">{chr(65 + i)}</span>{e(name)}</a>'
         for i, (name, _) in enumerate(TOPICS))
@@ -294,7 +295,7 @@ def nav(root, active=""):
    <a class="cat cat-free" href="{root}free/"{cur(("free",))}>Free test</a>
    {dd("grades", "Grades", "#grades-h", ("grade-5",), grades, "dd-grades")}
    {dd("contests", "Contests", "#contests-h", tuple(C["slug"] for C in CONTESTS.values()) + ("contests",), contests)}
-   {dd("tests", "Tests", "mock-tests/", ("tests",), tests)}
+   {dd("tests", "Tests", "mock-tests/", ("tests", "teachers"), tests)}
    {dd("lessons", "Lessons", "lessons/", ("lessons",), lessons)}
    <a class="cat" href="{root}about/"{cur(("about",))}>About</a>
   </div>
@@ -324,7 +325,7 @@ def foot(root, cta=True):
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
    <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li>
-   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li></ul>
+   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li></ul>
   </div>
   <div>
    <h3>By contest</h3>
@@ -1359,7 +1360,7 @@ def page_free():
   <p class="lead">Pick your contest and grade, then download. No sign-up.</p>
   {picker}
   <div class="fres-list">{"".join(free_result(root, t) for t in TEST_SETS if t["diag"])}</div>
-  <p class="teacher-note"><b>Teachers:</b> copy it for your class.</p>
+  <p class="teacher-note"><b>Teachers:</b> copy it for your class. <a href="{root}teachers/">Running a club?</a></p>
   <p class="test-note test-note-d">Every problem is our own. Not affiliated with any contest.</p>
  </div>
 </section>
@@ -1724,6 +1725,63 @@ def page_compare():
     write("contests/index.html", body)
 
 
+def page_teachers():
+    """/teachers/: for teachers and club coaches (Nov 12, Jian approved the growth idea, then "Sell it" for the
+    Club & Coach License). Diagnostics download straight away, a one-period plan, then the $99 license. Its Buy button
+    shows only once shop.json has "club" (the Payhip link), which waits on Jian's yes to list it."""
+    root = "../"
+    club = SHOP.get("club")
+    rows = "".join(
+        f'<li><span><b>{e(t["label"])} diagnostic</b><small>{grades_label(t["grades"])}</small></span>'
+        f'<a class="btn btn-primary" href="{diag_url(t)}" rel="noopener">Download PDF</a></li>'
+        for t in TEST_SETS if t["diag"])
+    steps = [("Print one per student.", "Keep the answer key, the last page, for yourself."),
+             ("Time it like the contest.", "One class period is enough."),
+             ("Grade with the key.", "Each answer names the key move that solves it."),
+             ("Send misses home.", "A QR code beside every problem opens a short video lesson on that move."),
+             ("Warm up on the top miss.", "Next meeting, start with the key move most students missed.")]
+    plan = "".join(f'<li><b>{e(a)}</b> {e(b)}</li>' for a, b in steps)
+    buy = (f'<a class="btn btn-primary btn-lg" href="{e(club)}" rel="noopener">Get the Club License, $99</a>' if club
+           else f'<p class="tc-soon"><b>Coming soon.</b> Want it when it opens? <a href="mailto:{CONTACT}?subject=Club%20License">Email us</a>.</p>')
+    body = head(f"For Teachers and Math Clubs: Classroom Contest Tests | {NAME}",
+                "Printable contest math diagnostic tests for your class, with answer keys and a video lesson for every problem, plus a Club License to copy 30 practice tests for your team.",
+                "teachers/", root)
+    body += nav(root, "teachers")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <h1>For teachers and clubs</h1>
+  <p class="lead">Run contest practice in one class period. Everything prints, and every problem links to a short video lesson.</p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap tc">
+ <div class="tc-box">
+  <h2>Start with a diagnostic</h2>
+  <p>Free to copy for your whole class. No sign-up. Answer key on the last page.</p>
+  <ul class="tc-list">{rows}</ul>
+ </div>
+ <div class="tc-box">
+  <h2>How to run it</h2>
+  <ol class="tc-steps">{plan}</ol>
+ </div>
+ <div class="tc-box tc-club" id="club">
+  <p class="eyebrow">Club &amp; Coach License &middot; $99</p>
+  <h2>Running a club or team?</h2>
+  <p>A whole season of practice, licensed to copy for your group.</p>
+  <ul class="ticks">
+   <li>30 practice tests for grades 4 to 6: Noetic-style Grade 5 Tests 1 to 20 and MOEMS-style Seasons 1 to 10</li>
+   <li>Copy for every student in one club, team, class or program at one location, with no yearly renewal</li>
+   <li>Coach kit: a 10-week season plan, team score trackers and every answer key in one booklet</li>
+  </ul>
+  {buy}
+  <p class="small">Teaching one class? A <a href="{root}mock-tests/">10-test pack</a> covers one classroom.</p>
+ </div>
+ <p class="glance-note">Every problem is our own. Not affiliated with any contest. Questions: <a href="mailto:{CONTACT}">{CONTACT}</a></p>
+</div></section>
+"""
+    body += foot(root)
+    write("teachers/index.html", body)
+
+
 def page_404():
     root = "/"
     body = head(f"Page not found | {NAME}", "This page does not exist.", "404.html", root, noindex=True)
@@ -1832,7 +1890,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "contests/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "contests/", "teachers/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
                grade_lessons(lessons, 5),
@@ -1869,6 +1927,7 @@ def main():
           '<meta http-equiv="refresh" content="0; url=/#contests-h"><a href="/#contests-h">AMC 8, AMC 10 and AMC 12</a>')
     page_tests(lessons, SHOP)
     page_free()
+    page_teachers()
     page_cheatsheet(lessons)
     page_plan()
     page_compare()

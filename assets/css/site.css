@@ -864,3 +864,21 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 @media (max-width: 420px) {
   .cg-dl div, .cg-gl li { grid-template-columns: 1fr; gap: 2px; }
 }
+
+/* /teachers/ (Nov 12) */
+.tc-box { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin-bottom: 18px; }
+.tc-box h2 { font-size: 1.3rem; margin: 0 0 8px; }
+.tc-box > p { margin: 0 0 12px; }
+.tc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.tc-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px dashed var(--line); }
+.tc-list span { min-width: 0; }
+.tc-list b { display: block; color: var(--navy); }
+.tc-list small { color: var(--muted); }
+.tc-list .btn { flex: none; }
+.tc-steps { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; }
+.tc-steps b { color: var(--navy); }
+.tc-club { border: 2px solid var(--navy); box-shadow: 0 5px 0 var(--navy); }
+.tc-club .ticks { margin: 0 0 16px; }
+.tc-soon { background: var(--cream); border-radius: 12px; padding: 12px 14px; margin: 0 0 12px; }
+.tc-soon a, .tc-club .small a { color: var(--navy); font-weight: 800; }
+.tc-club .small { margin: 0; color: var(--muted); }
