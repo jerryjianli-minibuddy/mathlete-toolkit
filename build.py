@@ -379,18 +379,27 @@ def skill_list(lessons, root):
     return f'<div class="skills">{"".join(blocks)}</div>'
 
 
+def grade_picks(sub, g, n=6):
+    """Six key moves that mark this grade out: the ones its tests use well above the other grades, then the most used."""
+    bg = GRADE_TOOLS.get("by_grade", {})
+    others = [set(v) for k, v in bg.items() if k != str(g) and dict(GRADES).get(k)]
+    common = {t for t in set().union(*others) if all(t in o for o in others)} if others else set()
+    first = [l for l in sub if int(l["tool_num"]) not in common]
+    return (first + [l for l in sub if l not in first])[:n]
+
+
 def grade_list(lessons, root):
     """One row per grade: a coloured badge, the grade, a few of its skills and a link to all of them."""
-    groups = topic_groups(lessons)
     rows = []
     for i, (g, live) in enumerate(GRADES):
         badge = f'<span class="gl-badge gc-{g}">{e(g)}</span>'
-        if live:
-            picks = [next((l for l in items if l["live"]), items[0]) for _, _, items in groups][:6]
+        sub = grade_lessons(lessons, g) if live else []
+        if sub:
+            picks = grade_picks(sub, g)
             inc = '<span class="gl-sep">|</span>'.join(f'<a href="{root}lessons/{l["slug"]}/">{e(l["tool"])}</a>' for l in picks)
             rows.append(f'<li class="gl-row">{badge}<div class="gl-body"><h3><a href="{root}grade-{g}/">{grade_title(g)}</a></h3>'
                         f'<p class="gl-inc"><span class="gl-lab">Includes:</span> {inc}</p>'
-                        f'<a class="gl-all" href="{root}grade-{g}/">See all {len(lessons)} key moves &rarr;</a></div></li>')
+                        f'<a class="gl-all" href="{root}grade-{g}/">See all {len(sub)} key moves &rarr;</a></div></li>')
         else:
             rows.append(f'<li class="gl-row gl-off">{badge}<div class="gl-body"><h3>{grade_title(g)}</h3>'
                         f'<p class="gl-inc">Coming soon</p></div></li>')
@@ -818,8 +827,25 @@ def free_href(root, k=None, g=None):
     return f"{root}free/" + (f"?{q}" if q else "")
 
 
+# Which key moves each grade (and each grade and contest) really needs (Nov 12, Jian: "Why they have all have 40 key
+# moves?"). Built from the tools tagged on the real past tests in the Past Test Database; see "source" in the file.
+_GT_PATH = os.path.join(ROOT, "data/grade_tools.json")
+GRADE_TOOLS = json.load(open(_GT_PATH)) if os.path.exists(_GT_PATH) else {}
+
+
+def grade_lessons(lessons, g, k=None):
+    """The lessons for a grade (or a grade and contest), most-used first, only those with a video out."""
+    nums = (GRADE_TOOLS.get("by_combo", {}).get(f"{g}|{k}") if k else GRADE_TOOLS.get("by_grade", {}).get(str(g)))
+    if nums is None and GRADE_TOOLS:
+        return []  # no real tests logged for this grade and contest
+    if nums is None:
+        return [l for l in lessons if str(l["grade"]) == str(g) and (k is None or k in l["contests"]) and l["live"]]
+    by = {int(l["tool_num"]): l for l in lessons}
+    return [by[n] for n in nums if n in by and by[n]["live"]]
+
+
 def combo_lessons(lessons, g, k):
-    return [l for l in lessons if str(l["grade"]) == str(g) and k in l["contests"]]
+    return grade_lessons(lessons, g, k) if offered(k, g) else []
 
 
 def combo_tests(g, k):
@@ -1596,14 +1622,16 @@ def main():
         page_lesson(l, lessons)
     urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "contests/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
-               "Every key move for grade 5 contests, grouped by topic. Each one is a short video lesson.", lessons,
+               "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
+               grade_lessons(lessons, 5),
                "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.",
                badge="5", picker=contest_picker(lessons, 5, "../"))
     for g, live in GRADES:
         if live and g != "5":
             gt = [t for t in TEST_SETS if int(g) in t["grades"] and test_live(t)]
             page_group(f"grade-{g}", f"Grade {g} Competition Math: Free Tests and Lessons | {NAME}", f"Grade {g} math",
-                       "Pick a contest for its free diagnostic test. Video lessons for this grade are on the way.", [],
+                       f"The key moves that come up most on Grade {g} contests, grouped by topic. Pick a contest for its free test.",
+                       grade_lessons(lessons, g),
                        f"Free Grade {g} competition math diagnostic tests, by contest.",
                        badge=g, picker=contest_picker(lessons, g, "../"), tests=False,
                        extra="".join(test_blocks("../", gt, g)))
