@@ -1679,7 +1679,7 @@ def page_compare():
            ("AMC 10 or AMC 12", "Every November."),
            ("AIME", "Top 2.5% on the AMC 10 or top 5% on the AMC 12. 15 questions in 3 hours, answers 0 to 999."),
            ("USAJMO or USAMO", "Picked by AMC and AIME scores together. Six proof problems over two days."),
-           ("Summer program and US team", "Top scorers go to the MAA's summer program, which picks the team for the International Math Olympiad.")]
+           ("Summer program and US team", "Top scorers are invited to a summer program, where selection tests pick the US team for the International Math Olympiad.")]
     mc = [("School", "Up to 14 students per school."), ("Chapter", "February."), ("State", "March."),
           ("National", "Top 4 per state. May 9 to 10, 2027, in Washington, DC.")]
     ladder = lambda xs: "".join(f'<li><b>{e(a)}</b><span>{e(b)}</span></li>' for a, b in xs)
