@@ -262,3 +262,34 @@
     b.addEventListener("click", function () { window.print(); });
   });
 })();
+
+/* Home page contest countdown (Nov 12). Each row carries its events [start, end, label] as local dates; a window
+   counts down to its first day, then shows how long it stays open, then moves on to the row's next event. */
+(function () {
+  var list = document.querySelector("[data-countdown]");
+  if (!list) return;
+  var rows = Array.prototype.slice.call(list.querySelectorAll(".cd-row"));
+  function day(s, end) { var p = s.split("-"); return end ? new Date(+p[0], p[1] - 1, +p[2], 23, 59, 59) : new Date(+p[0], p[1] - 1, +p[2]); }
+  function span(ms) {
+    var m = Math.max(0, Math.floor(ms / 60000)), d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60);
+    return d ? d + "d " + h + "h " + (m % 60) + "m" : h + "h " + (m % 60) + "m";
+  }
+  function tick() {
+    var now = new Date(), keyed = [];
+    rows.forEach(function (r) {
+      var evs = JSON.parse(r.getAttribute("data-events") || "[]");
+      var ev = evs.filter(function (x) { return day(x[1], true) >= now; })[0];
+      if (!ev) { r.hidden = true; return; }
+      var s = day(ev[0]), e = day(ev[1], true), left = r.querySelector(".cd-left");
+      r.querySelector(".cd-when").textContent = ev[2];
+      var open = s <= now;
+      r.classList.toggle("cd-open", open);
+      left.innerHTML = open ? (ev[0] === ev[1] ? "<b>Today</b>" : "<b>Open now</b><small>ends in " + span(e - now) + "</small>")
+                            : "<small>starts in</small><b>" + span(s - now) + "</b>";
+      keyed.push([open ? 0 : s.getTime(), r]);
+    });
+    keyed.sort(function (a, b) { return a[0] - b[0]; }).forEach(function (k) { list.appendChild(k[1]); });
+  }
+  tick();
+  setInterval(tick, 30000);
+})();

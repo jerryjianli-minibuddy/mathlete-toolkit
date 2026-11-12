@@ -544,6 +544,57 @@ def write(path, text):
 
 # ---------- pages ----------
 
+# Contest countdown on the home page (Nov 12, Jian: "Live competition count down on home page is a great feature!").
+# Dates read on 2026-11-12 from each contest's own site. A window means the school, center or chapter picks the day.
+# (start, end, label); end = start for a single day.
+COUNTDOWN = [
+    dict(key="amc8", name="AMC 8", grade="8", note="Window: your school picks the day",
+         src="maa.org/AMC", events=[("2027-01-21", "2027-01-27", "Jan 21 to 27, 2027")]),
+    dict(key="mathcounts", name="MATHCOUNTS Chapter", grade="7", note="Window: your chapter sets the day",
+         src="mathcounts.org critical dates", events=[("2027-02-01", "2027-02-28", "Feb 1 to 28, 2027")]),
+    dict(key="kangaroo", name="Math Kangaroo", grade="5", note="One set date",
+         src="mathkangaroo.org 2027 flyer", events=[("2027-03-18", "2027-03-18", "Thu, Mar 18, 2027")]),
+    dict(key="noetic", name="Noetic", grade="5", note="Window: your school or center picks the day",
+         src="noetic-learning.com/mathcontest", events=[("2026-11-12", "2026-11-25", "Fall: Nov 12 to 25, 2026"),
+                                                        ("2027-04-01", "2027-04-15", "Spring: Apr 1 to 15, 2027")]),
+    dict(key="olympiad", name="MOEMS", grade="5", note="Window: your school picks the day",
+         src="moems.org about the program", events=[
+             ("2026-11-09", "2026-11-30", "Contest 1: Nov 9 to 30, 2026"), ("2026-12-07", "2026-12-28", "Contest 2: Dec 7 to 28, 2026"),
+             ("2027-01-04", "2027-01-25", "Contest 3: Jan 4 to 25, 2027"), ("2027-02-01", "2027-02-22", "Contest 4: Feb 1 to 22, 2027"),
+             ("2027-03-01", "2027-03-29", "Contest 5: Mar 1 to 29, 2027")]),
+]
+
+
+def countdown(root):
+    """Compact list of the next contests, soonest first, each with a live countdown (assets/js/site.js) and its free test."""
+    import datetime
+    today = datetime.date.today().isoformat()
+    rows = []
+    for c in COUNTDOWN:
+        nxt = next((ev for ev in c["events"] if ev[1] >= today), None)
+        if not nxt:
+            continue
+        s0, e0, label = nxt
+        static = "Open now" if s0 <= today else "Coming up"
+        rows.append((s0 if s0 > today else "0", f'<li class="cd-row" data-events=\'{e(json.dumps(c["events"]))}\'>'
+                     f'<div class="cd-main"><b class="cd-name">{e(c["name"])}</b><span class="cd-when">{e(label)}</span>'
+                     f'<span class="cd-note">{e(c["note"])}</span></div>'
+                     f'<div class="cd-side"><span class="cd-left" aria-live="off">{e(static)}</span>'
+                     f'<a class="cd-go" href="{free_href(root, c["key"], c["grade"])}">Free test &rarr;</a></div></li>'))
+    if not rows:
+        return ""
+    rows.sort(key=lambda r: r[0])
+    return f"""<section class="sec sec-cd" aria-labelledby="cd-h">
+ <div class="wrap">
+  <h2 id="cd-h">Contest countdown</h2>
+  <ol class="cd-list" data-countdown>{"".join(r for _, r in rows)}</ol>
+  <p class="cd-src">Dates from each contest's official site. Not affiliated with any contest.</p>
+ </div>
+</section>
+"""
+
+
+
 def page_home(lessons):
     root = ""
     live = [l for l in lessons if l["live"]]
@@ -597,6 +648,7 @@ def page_home(lessons):
  </ul>
 </section>
 
+{countdown(root)}
 <section class="sec sec-grades" aria-labelledby="grades-h">
  <div class="wrap">
   <div class="sec-head"><h2 id="grades-h">Pick a grade</h2><a class="more" href="lessons/">All lessons &rarr;</a></div>

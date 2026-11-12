@@ -774,3 +774,23 @@ a.pk:hover { border-color: var(--navy2); }
 .pt-jump a { font-weight: 700; font-size: .92rem; text-decoration: none; padding: 7px 13px; border-radius: 999px; background: #fff; color: var(--navy); box-shadow: inset 0 0 0 2px var(--line); }
 #moems .plans { margin-top: 16px; }
 @media (min-width: 900px) { .plans.plans-2 { grid-template-columns: repeat(2, 1fr); max-width: 760px; } }
+
+/* Contest countdown (home) */
+.sec-cd { padding-top: 28px; padding-bottom: 8px; }
+.sec-cd h2 { margin: 0 0 12px; font-size: 1.35rem; }
+.cd-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+@media (min-width: 900px) { .cd-list { grid-template-columns: repeat(2, 1fr); } }
+.cd-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); }
+.cd-row.cd-open { border-color: var(--teal); box-shadow: inset 4px 0 0 var(--teal), var(--shadow); }
+.cd-main { display: flex; flex-direction: column; min-width: 0; }
+.cd-name { font-size: 1.02rem; }
+.cd-when { font-size: .86rem; color: var(--ink); }
+.cd-note { font-size: .76rem; color: var(--muted); }
+.cd-side { display: flex; flex-direction: column; align-items: flex-end; text-align: right; flex: none; gap: 4px; }
+.cd-left { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.15; }
+.cd-left b { font-size: 1.05rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cd-left small { font-size: .72rem; color: var(--muted); }
+.cd-open .cd-left b { color: var(--teal); }
+.cd-go { font-size: .84rem; font-weight: 800; color: var(--pink); text-decoration: none; white-space: nowrap; }
+.cd-go:hover { text-decoration: underline; }
+.cd-src { font-size: .76rem; color: var(--muted); margin: 10px 0 0; }
