@@ -220,6 +220,10 @@
   var res = document.querySelectorAll(".fres");
   function paint() {
     var r = ready[st.contest] || {};
+    /* Nov 12, Jian: Kangaroo and Noetic only up to Grade 5, so higher grade tiles hide for them. */
+    var cb = st.contest && box.querySelector('[data-contest="' + st.contest + '"]');
+    var max = cb ? +(cb.getAttribute("data-max") || 12) : 12;
+    if (st.grade && +st.grade > max) st.grade = null;
     Array.prototype.forEach.call(cbs, function (b) {
       var on = b.getAttribute("data-contest") === st.contest;
       b.classList.toggle("pk-on", on); b.setAttribute("aria-pressed", on ? "true" : "false");
@@ -227,6 +231,7 @@
     });
     Array.prototype.forEach.call(gbs, function (b) {
       var g = b.getAttribute("data-grade"), ok = !!r[g], on = g === st.grade;
+      b.style.display = +g > max ? "none" : "";
       b.classList.toggle("gp-on", ok); b.classList.toggle("gp-sel", on);
       b.setAttribute("aria-pressed", on ? "true" : "false");
       b.querySelector("span").textContent = !st.contest ? "Pick a contest" : ok ? "Free test" : "Coming soon";
