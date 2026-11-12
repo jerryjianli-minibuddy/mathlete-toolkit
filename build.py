@@ -1015,18 +1015,29 @@ def moems_section(root, shop):
     m, live = shop.get("moems"), shop["live"]
     if not m:
         return ""
-    pack = (f'<a class="btn btn-primary btn-lg" href="{e(m["pack"])}">Buy all 10 for {PACK_PRICE}</a>' if live
-            else '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>')
+    # Nov 12: Payhip shows only Tests 1 and 2 (each a full season); the pack returns when Seasons 3-10 are built.
+    pack = ""
+    if m.get("pack"):
+        pack_btn = (f'<a class="btn btn-primary btn-lg" href="{e(m["pack"])}">Buy all 10 for {PACK_PRICE}</a>' if live
+                    else '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>')
+        pack = f"""<div class="plan plan-pack">
+    <p class="ribbon">Best value</p>
+    <p class="eyebrow">All 10 tests</p>
+    <h2>MOEMS-style Practice Pack</h2>
+    <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
+    <ul class="facts-row"><li>Grades 4 to 6</li><li>10 tests</li></ul>
+    {pack_btn}
+   </div>"""
     singles = "\n".join(
-        f'    <li><span><b>MOEMS-style Practice Test {n}</b><small>5 problems, 30 minutes, answer key</small></span><em>{SINGLE_PRICE}</em>'
+        f'    <li><span><b>MOEMS-style Practice Test {n}</b><small>Full season: 25 problems, answer key</small></span><em>{SINGLE_PRICE}</em>'
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(m["tests"], 1))
     return f"""<section class="sec sec-alt" id="moems">
  <div class="wrap">
   <p class="eyebrow">MOEMS-style &middot; Grades 4 to 6</p>
   <h2>MOEMS-style practice tests</h2>
-  <p class="lead">5 problems in 30 minutes, written answers, no calculator. Worked answer key in every test.</p>
-  <div class="plans">
+  <p class="lead">Each test is a full season: 5 contests of 5 problems, 30 minutes per contest, written answers, no calculator. Worked answer key.</p>
+  <div class="plans{"" if pack else " plans-2"}">
    <div class="plan plan-free">
     <p class="eyebrow">Start here</p>
     <h2>MOEMS-style diagnostic</h2>
@@ -1038,20 +1049,13 @@ def moems_section(root, shop):
     <p class="eyebrow eyebrow-n">One test</p>
     <h2>MOEMS-style test</h2>
     <p class="price"><b>{SINGLE_PRICE}</b> each</p>
-    <ul class="facts-row"><li>Grades 4 to 6</li><li>PDF</li><li>30 min</li></ul>
+    <ul class="facts-row"><li>Grades 4 to 6</li><li>PDF</li><li>25 problems</li></ul>
     <a class="btn btn-ghost-d btn-lg" href="#moems-singles">Choose a test</a>
    </div>
-   <div class="plan plan-pack">
-    <p class="ribbon">Best value</p>
-    <p class="eyebrow">All 10 tests</p>
-    <h2>MOEMS-style Practice Pack</h2>
-    <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
-    <ul class="facts-row"><li>Grades 4 to 6</li><li>10 tests</li><li>50 problems</li></ul>
-    {pack}
-   </div>
+   {pack}
   </div>
   <details class="qa singles-box" id="moems-singles"{" open" if live else ""}>
-   <summary>All 10 MOEMS-style single tests, {SINGLE_PRICE} each</summary>
+   <summary>MOEMS-style tests, {SINGLE_PRICE} each</summary>
    <ul class="singles">
 {singles}
    </ul>
@@ -1079,7 +1083,7 @@ def page_tests(lessons, shop):
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(shop["tests"], 1))
     body = head(f"Practice Tests: Noetic-style and MOEMS-style | {NAME}",
-                "Noetic-style Grade 5 and MOEMS-style Grades 4 to 6 practice tests at $3.99 each or $24.99 for 10, each with a worked answer key. Start with the free diagnostic test.",
+                "Noetic-style Grade 5 and MOEMS-style Grades 4 to 6 practice tests from $3.99, each with a worked answer key. Start with the free diagnostic test.",
                 "mock-tests/", root)
     body += nav(root, "tests")
     body += f"""<section class="page-head">
@@ -1175,8 +1179,10 @@ def free_result(root, t):
     """One result panel on /free: the free download next to the paid practice tests for that test set."""
     if t["practice"] and SHOP.get("live"):
         paid = (f'<p>Printable practice tests, each with a worked answer key.</p>'
-                f'<div class="fres-btns"><a class="btn btn-primary" href="{e(store_of(t)["pack"])}" rel="noopener">Get the 10-test pack, {PACK_PRICE}</a>'
-                f'<a class="btn btn-ghost-d" href="{root}mock-tests/{t.get("anchor", "")}">Buy one test, {SINGLE_PRICE}</a></div>')
+                f'<div class="fres-btns">'
+                + (f'<a class="btn btn-primary" href="{e(store_of(t)["pack"])}" rel="noopener">Get the 10-test pack, {PACK_PRICE}</a>'
+                   if store_of(t).get("pack") else "")
+                + f'<a class="btn {"btn-ghost-d" if store_of(t).get("pack") else "btn-primary"}" href="{root}mock-tests/{t.get("anchor", "")}">Buy one test, {SINGLE_PRICE}</a></div>')
     else:
         paid = '<p>Practice tests coming soon.</p>'
     return f"""<div class="fres" data-key="{t['key']}">
