@@ -1136,11 +1136,16 @@ def playlist_links(grade=None, contest=None):
         pls = [p for p in PLAYLISTS if p["contest"] == contest and g in p["grades"]] or \
               [p for p in PLAYLISTS if p["contest"] is None and g in p["grades"]]
     elif g:
-        pls = sorted((p for p in PLAYLISTS if g in p["grades"]), key=lambda p: p["contest"] is not None)
+        pls = [p for p in PLAYLISTS if g in p["grades"]]
     else:
         pls = [p for p in PLAYLISTS if p["contest"] == contest]
     if not pls:
         return ""
+    # Nov 12, Jian: "all contests close to each other together, like noetic grade 4, noetic grade 5".
+    # Grouped by contest (site order), lowest grade first; the all-contests playlist goes last.
+    order = list(CONTESTS)
+    pls = sorted(pls, key=lambda p: (p["contest"] is None, order.index(p["contest"]) if p["contest"] in order else 99,
+                                     min(p["grades"])))
     return '<div class="pl-row">' + "".join(
         f'<a class="pl-btn" href="https://www.youtube.com/playlist?list={e(p["id"])}" rel="noopener">'
         f'<span class="pl-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>'
