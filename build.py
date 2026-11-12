@@ -575,6 +575,20 @@ def mc_date(d):
     return f'{x.strftime("%b")} {x.day}, {x.year}'
 
 
+def mc_pic(n, card=False):
+    """(path, width, height, alt) of a post's picture (Nov 12, Jian 'Do that': a picture on every post). Photos are
+    free-license ones with a credit line; the rest is our own art. A missing file falls back to math-corner.svg."""
+    img = n.get("img") or ""
+    w, h = n.get("img_w", 640), n.get("img_h", 360)
+    if not img or not os.path.exists(os.path.join(ROOT, "assets/img/mc", img)):
+        return "assets/img/mc/math-corner.svg", 640, 360, "Math Corner"
+    if card and img.endswith(".webp"):
+        cimg = img[:-5] + "-card.webp"
+        if os.path.exists(os.path.join(ROOT, "assets/img/mc", cimg)):
+            return "assets/img/mc/" + cimg, 480, 270, n.get("img_alt", "")
+    return "assets/img/mc/" + img, w, h, n.get("img_alt", "")
+
+
 def mc_card(n, root, cls="nw-card"):
     """One Math Corner card. The headline opens our post page; a news card also links straight to the original article
     (Nov 12, Jian: news should take people to the original article)."""
@@ -585,7 +599,9 @@ def mc_card(n, root, cls="nw-card"):
                  f'<span class="nw-src">{e(n["source"])}</span></p>')
     else:
         foot_ = f'<p class="nw-links"><a href="{href}">See why it works &rarr;</a></p>'
-    return (f'<li class="{cls}"><p class="nw-meta"><span class="nw-tag nw-{e(n["tag"].lower())}">{e(n["tag"])}</span>'
+    src, w, h, alt = mc_pic(n, card=True)
+    pic = f'<img class="nw-img" src="{root}{src}" alt="{e(alt)}" width="{w}" height="{h}" loading="lazy" decoding="async">'
+    return (f'<li class="{cls}">{pic}<p class="nw-meta"><span class="nw-tag nw-{e(n["tag"].lower())}">{e(n["tag"])}</span>'
             f'<time datetime="{n["date"]}">{mc_date(n["date"])}</time></p>'
             f'<h3><a href="{href}">{e(n["title"])}</a></h3><p>{e(n["summary"])}</p>{foot_}</li>')
 
@@ -666,6 +682,16 @@ def page_mc_post(n):
           "publisher": {"@type": "Organization", "name": NAME, "logo": {"@type": "ImageObject", "url": SITE + "/assets/img/logo-512.png"}}}
     if n["kind"] == "news":
         ld["isBasedOn"] = n["url"]
+    psrc, pw, ph, palt = mc_pic(n)
+    ld["image"] = SITE + "/" + psrc
+    credit = ""
+    if n.get("img_credit"):
+        lic = (f'<a href="{e(n["img_license_url"])}" rel="noopener license" target="_blank">{e(n["img_license"])}</a>'
+               if n.get("img_license_url") else e(n.get("img_license", "")))
+        credit = (f'<figcaption>Image: {e(n["img_credit"])}, {lic}, via '
+                  f'<a href="{e(n["img_page"])}" rel="noopener" target="_blank">Wikimedia Commons</a></figcaption>')
+    fig = (f'<figure class="mc-fig{" mc-photo" if credit else ""}"><img src="{root}{psrc}" alt="{e(palt)}" width="{pw}" height="{ph}" '
+           f'fetchpriority="high" decoding="async">{credit}</figure>')
     body = head(f'{n["title"]} | Math Corner | {NAME}', n["desc"], path, root,
                 extra=f'<script type="application/ld+json">{json.dumps(ld)}</script>')
     body += nav(root, "math-corner")
@@ -687,7 +713,7 @@ def page_mc_post(n):
  <p class="nw-meta"><span class="nw-tag nw-{e(n["tag"].lower())}">{e(n["tag"])}</span><time datetime="{n["date"]}">{mc_date(n["date"])}</time></p>
  <h1>{e(n["title"])}</h1>
  <p class="lead">{e(n["summary"])}</p>
- {formula}{paras}{src}{rel}
+ {fig}{formula}{paras}{src}{rel}
  <div class="mc-more"><h2>More from Math Corner</h2><ul>{more}</ul></div>
 </div></article>
 """

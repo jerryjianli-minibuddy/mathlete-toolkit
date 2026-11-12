@@ -1,5 +1,5 @@
 {
- "_note": "Math Corner (Nov 12, Jian): news plus math facts, blog style. Each post gets /math-corner/<slug>/. kind news: url is the original article we read, shown as 'Read the original article'. kind fact: check the math before adding. lesson: a lesson slug, linked only once that lesson is live. Home strip: newest 2 news (last ~2 months) plus newest 2 facts. Our own words only; reputable sources; nothing political or scary.",
+ "_note": "Math Corner (Nov 12, Jian): news plus math facts, blog style. Each post gets /math-corner/<slug>/. kind news: url is the original article we read, shown as 'Read the original article'. kind fact: check the math before adding. lesson: a lesson slug, linked only once that lesson is live. Home strip: newest 2 news (last ~2 months) plus newest 2 facts. Our own words only; reputable sources; nothing political or scary. PICTURES (Nov 12, Jian 'Do that'): every post gets one, in assets/img/mc/. Use a photo only when its own Wikimedia Commons (or NASA / university) page shows public domain, CC0, CC BY or CC BY-SA; save it as <slug>.webp (max 960 wide) plus a 480x270 <slug>-card.webp, and fill img_credit, img_license, img_license_url, img_page (the file page). Never use news-site or organizer photos. Otherwise draw our own <slug>.svg (640x360, brand colors) with no credit fields. Always set img_alt, img_w, img_h. A post with no picture falls back to math-corner.svg.",
  "posts": [
   {
    "slug": "ai-proves-piece-of-riemann-hypothesis",
@@ -16,7 +16,15 @@
    ],
    "url": "https://www.quantamagazine.org/ai-proved-the-quasi-riemann-hypothesis-what-happens-now-20261019/",
    "source": "Quanta Magazine",
-   "lesson": "prime-factor-split"
+   "lesson": "prime-factor-split",
+   "img": "ai-proves-piece-of-riemann-hypothesis.webp",
+   "img_w": 782,
+   "img_h": 992,
+   "img_alt": "Portrait of Bernhard Riemann, the mathematician who posed the Riemann hypothesis, from 1863",
+   "img_credit": "Smithsonian Institution",
+   "img_license": "No known copyright restrictions",
+   "img_license_url": "",
+   "img_page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Bernhard_Riemann_(1826-1866),_Mathematician_(2551069295).jpg"
   },
   {
    "slug": "google-quantum-magic-states",
@@ -32,7 +40,11 @@
     "Google says it is the first time this cheaper method has worked on real hardware, and that bigger tests still need to come. Behind it all is a lot of math: error-correcting codes, probability and clever counting."
    ],
    "url": "https://blog.google/innovation-and-ai/models-and-research/quantum-computing/magic-state-cultivation-quantum-computing/",
-   "source": "Google Quantum AI"
+   "source": "Google Quantum AI",
+   "img": "google-quantum-magic-states.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "Drawing of a quantum computer chip with a grid of glowing qubits"
   },
   {
    "slug": "nobel-prize-physics-2026-neutrinos",
@@ -48,7 +60,15 @@
     "Because neutrinos fly in a straight line without slowing down, they point back to where they came from. Scientists use where and when the light flashes appear to work out each neutrino's direction. On October 6, 2026, Halzen won the Nobel Prize in Physics for this new way of looking at the universe."
    ],
    "url": "https://www.nobelprize.org/prizes/physics/2026/press-release/",
-   "source": "NobelPrize.org"
+   "source": "NobelPrize.org",
+   "img": "nobel-prize-physics-2026-neutrinos.webp",
+   "img_w": 960,
+   "img_h": 656,
+   "img_alt": "The IceCube Lab building on the snow at the South Pole",
+   "img_credit": "Christopher Michel",
+   "img_license": "CC BY-SA 4.0",
+   "img_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+   "img_page": "https://commons.wikimedia.org/wiki/File:IceCube_Neutrino_Observatory_in_2023_02.jpg"
   },
   {
    "slug": "fields-medal-2026",
@@ -64,7 +84,15 @@
     "The other winners work on how gases flow from colliding particles, on counting curves in strange spaces, and on deep questions joining geometry and numbers."
    ],
    "url": "https://www.simonsfoundation.org/2026/07/23/2026-fields-medals-awarded-to-four-of-worlds-top-mathematicians/",
-   "source": "Simons Foundation"
+   "source": "Simons Foundation",
+   "img": "fields-medal-2026.webp",
+   "img_w": 960,
+   "img_h": 924,
+   "img_alt": "The gold Fields Medal, showing the Greek mathematician Archimedes",
+   "img_credit": "Stefan Zachow for the International Mathematical Union",
+   "img_license": "Public domain",
+   "img_license_url": "",
+   "img_page": "https://commons.wikimedia.org/wiki/File:FieldsMedalFront.jpg"
   },
   {
    "slug": "team-usa-imo-2026",
@@ -80,7 +108,11 @@
     "The US team is picked through a ladder of contests: the AMC 10 or 12, then the AIME, then the USA Math Olympiad and a summer training program. Our parents' guide to contests shows every step."
    ],
    "url": "https://maa.org/news/team-usa-takes-second-place-at-67th-imo/",
-   "source": "MAA"
+   "source": "MAA",
+   "img": "team-usa-imo-2026.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "Six contest medals in a row: four gold, one silver and one bronze"
   },
   {
    "slug": "abel-prize-2026-faltings",
@@ -96,7 +128,15 @@
     "Faltings proved it in 1983, sixty years later, and it is now called Faltings' theorem. He had already won the Fields Medal in 1986."
    ],
    "url": "https://euromathsoc.org/news/gerd-faltings-awarded-the-2026-abel-prize-206",
-   "source": "European Mathematical Society"
+   "source": "European Mathematical Society",
+   "img": "abel-prize-2026-faltings.webp",
+   "img_w": 400,
+   "img_h": 300,
+   "img_alt": "Mathematician Gerd Faltings standing in a garden",
+   "img_credit": "Renate Schmid, Oberwolfach Photo Collection",
+   "img_license": "CC BY-SA 2.0 DE",
+   "img_license_url": "https://creativecommons.org/licenses/by-sa/2.0/de/deed.en",
+   "img_page": "https://commons.wikimedia.org/wiki/File:Gerd_Faltings_MFO.jpg"
   },
   {
    "slug": "add-1-to-100-in-seconds",
@@ -112,7 +152,11 @@
     "There are 100 numbers, so there are 50 pairs. 50 × 101 = 5050. The same idea works for any run of numbers: n numbers make n ÷ 2 pairs, and each pair adds to n + 1.",
     "Show a friend: ask them to add 1 to 50 while you answer right away. 25 pairs of 51 is 1275."
    ],
-   "lesson": "add-all-the-pairs"
+   "lesson": "add-all-the-pairs",
+   "img": "add-1-to-100-in-seconds.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "Numbers 1 to 100 paired up as 1 and 100, 2 and 99, 3 and 98, each pair making 101, so the sum is 50 times 101, or 5050"
   },
   {
    "slug": "the-1089-trick",
@@ -128,7 +172,11 @@
     "Why always 1089? When you subtract a number from its reverse, the middle digits cancel and the result is always 99 times the difference of the first and last digits. So you can only get 198, 297, 396, 495, 594, 693, 792 or 891.",
     "Each of those has a 9 in the middle and outer digits that add to 9. Adding one to its reverse gives 9 hundreds, 18 tens and 9 ones, which is 1089 every time. Write 1089 on paper before they start and reveal it at the end."
    ],
-   "lesson": "reverse-the-digits"
+   "lesson": "reverse-the-digits",
+   "img": "the-1089-trick.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "The 1089 trick worked out: 532 minus 235 is 297, and 297 plus 792 is 1089"
   },
   {
    "slug": "birthday-paradox",
@@ -144,7 +192,11 @@
     "The trick is to count pairs, not people. 23 people make 253 different pairs, and every pair is a chance for a match. It is easier to work out the chance of no match at all: the second person must miss 1 birthday, the third must miss 2, and so on. Multiply those chances for 23 people and you get about 49.3% for no match, so about 50.7% for at least one match.",
     "With 70 people the chance of a shared birthday is over 99.9%. Try it with your class or team, ignoring leap days."
    ],
-   "lesson": "count-each-pair-once"
+   "lesson": "count-each-pair-once",
+   "img": "birthday-paradox.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "23 dots in a circle for 23 people, with two of them joined by a line because they share a birthday"
   },
   {
    "slug": "odd-numbers-make-squares",
@@ -160,7 +212,11 @@
     "So the first 10 odd numbers add to 10 × 10 = 100, and the first 50 add to 2500. No adding needed.",
     "Show a friend: ask them to add 1 + 3 + 5 + ... + 19 while you answer 100 instantly. Count the numbers (10) and square it."
    ],
-   "lesson": "find-the-rule"
+   "lesson": "find-the-rule",
+   "img": "odd-numbers-make-squares.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "A 5 by 5 square built from L-shaped layers of 1, 3, 5, 7 and 9 tiles, showing 1+3+5+7+9 = 25"
   },
   {
    "slug": "divisible-by-9-digit-trick",
@@ -175,7 +231,11 @@
     "To test whether a number divides evenly by 9, add its digits. If the digit sum is a multiple of 9, so is the number. 4,572 has digit sum 18, and 4,572 ÷ 9 = 508. The same test works for 3.",
     "Why? 10 is 9 + 1, 100 is 99 + 1, and 1000 is 999 + 1. So 4,572 is 4 × (999 + 1) + 5 × (99 + 1) + 7 × (9 + 1) + 2. Every 999, 99 and 9 part is already a multiple of 9, and what is left over is 4 + 5 + 7 + 2.",
     "Show a friend: have them write any big number, then scramble its digits and subtract the smaller from the bigger. The answer is always divisible by 9."
-   ]
+   ],
+   "img": "divisible-by-9-digit-trick.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "The digit test for 9: 4 plus 5 plus 3 plus 6 is 18, a multiple of 9, so 4536 is divisible by 9"
   },
   {
    "slug": "why-primes-never-run-out",
@@ -191,7 +251,11 @@
     "The new number leaves remainder 1 when divided by any prime on the list, so none of them divide it. But every whole number bigger than 1 has some prime factor. That factor is a prime missing from the list, so no list can ever hold them all.",
     "Try it: 2 × 3 × 5 × 7 × 11 × 13 + 1 = 30031. It isn't prime itself, but it equals 59 × 509, and both are new primes that were not on the list. That is the power of a proof: it works for every list, even ones too long to write."
    ],
-   "lesson": "prime-factor-split"
+   "lesson": "prime-factor-split",
+   "img": "why-primes-never-run-out.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "Euclid's idea: 2 times 3 times 5 times 7 times 11 times 13, plus 1, is 30031, which is 59 times 509, two new primes"
   }
  ]
 }
