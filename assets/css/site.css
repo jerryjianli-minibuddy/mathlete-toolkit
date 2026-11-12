@@ -884,3 +884,25 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .tc-soon { background: var(--cream); border-radius: 12px; padding: 12px 14px; margin: 0 0 12px; }
 .tc-soon a, .tc-club .small a { color: var(--navy); font-weight: 800; }
 .tc-club .small { margin: 0; color: var(--muted); }
+
+/* Math news strip under the countdown, and /news (Nov 12) */
+.nw { background: #fff; border-bottom: 1px solid var(--line); padding: 14px 0 16px; }
+.nw-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.nw-top h2 { margin: 0; font-size: 1.05rem; font-weight: 900; letter-spacing: .02em; text-transform: uppercase; color: var(--navy); }
+.nw-top a { color: var(--navy); font-weight: 800; font-size: .92rem; text-decoration: none; white-space: nowrap; }
+.nw-top a:hover { text-decoration: underline; }
+.nw-list { list-style: none; margin: 0; padding: 0 0 4px; display: grid; grid-auto-flow: column; grid-auto-columns: 82%; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+.nw-card, .nw-row { background: var(--cream); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; scroll-snap-align: start; }
+.nw-card h3, .nw-row h3 { margin: 4px 0 6px; font-size: 1rem; line-height: 1.3; }
+.nw-card h3 a, .nw-row h3 a { color: var(--navy); text-decoration: none; }
+.nw-card h3 a:hover, .nw-row h3 a:hover { text-decoration: underline; }
+.nw-card p, .nw-row p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+.nw-meta { display: flex; align-items: center; gap: 8px; font-size: .78rem !important; font-weight: 700; }
+.nw-tag { font-size: .68rem; font-weight: 900; text-transform: uppercase; letter-spacing: .07em; padding: 2px 8px; border-radius: 6px; color: #fff; background: var(--navy2); }
+.nw-prize { background: var(--pink); } .nw-discovery { background: var(--teal); } .nw-quantum { background: #6B4FD8; } .nw-contest { background: var(--navy2); }
+.nw-src { margin-top: 6px !important; font-size: .78rem !important; font-weight: 700; }
+@media (min-width: 900px) { .nw-list { grid-auto-columns: 1fr; overflow: visible; } }
+.nw-page { max-width: 760px; }
+.nw-month { font-size: 1.1rem; margin: 26px 0 10px; color: var(--navy); }
+.nw-all { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.nw-all .nw-card { scroll-snap-align: none; }

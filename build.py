@@ -326,7 +326,7 @@ def foot(root, cta=True):
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
    <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li>
-   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li></ul>
+   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}news/">Math news</a></li></ul>
   </div>
   <div>
    <h3>By contest</h3>
@@ -563,6 +563,76 @@ COUNTDOWN = [
 ]
 
 
+_NEWS_PATH = os.path.join(ROOT, "data/news.json")
+NEWS = sorted(json.load(open(_NEWS_PATH))["items"] if os.path.exists(_NEWS_PATH) else [],
+              key=lambda n: n["date"], reverse=True)
+
+
+def news_date(d):
+    import datetime
+    x = datetime.date.fromisoformat(d)
+    return f'{x.strftime("%b")} {x.day}, {x.year}'
+
+
+def news_card(n, cls="nw-card"):
+    return (f'<li class="{cls}"><p class="nw-meta"><span class="nw-tag nw-{e(n["tag"].lower())}">{e(n["tag"])}</span>'
+            f'<time datetime="{n["date"]}">{news_date(n["date"])}</time></p>'
+            f'<h3><a href="{e(n["url"])}" rel="noopener" target="_blank">{e(n["title"])}</a></h3>'
+            f'<p>{e(n["why"])}</p><p class="nw-src">{e(n["source"])}</p></li>')
+
+
+def news_strip(root):
+    """Math news strip under the countdown on the home page (Nov 12, Jian: a news section near the top so the site feels
+    constantly updated; inspiring math and science for parents and kids). data/news.json holds the items, newest first.
+    The strip shows up to 4 items from the last ~2 months (topped up with the newest if fewer than 3); /news keeps all."""
+    import datetime
+    cut = (datetime.date.today() - datetime.timedelta(days=62)).isoformat()
+    recent = [n for n in NEWS if n["date"] >= cut][:4]
+    if len(recent) < 3:
+        recent = NEWS[:3]
+    if not recent:
+        return ""
+    cards = "".join(news_card(n) for n in recent)
+    return f"""<section class="nw" aria-labelledby="nw-h">
+ <div class="wrap">
+  <div class="nw-top"><h2 id="nw-h">Math news</h2><a href="{root}news/">More news &rarr;</a></div>
+  <ul class="nw-list">{cards}</ul>
+ </div>
+</section>
+"""
+
+
+def page_news():
+    """/news/: every item from data/news.json, newest first, grouped by month (Nov 12)."""
+    root = "../"
+    body = head(f"Math News for Kids and Parents | {NAME}",
+                "Inspiring math and science news for contest kids and their parents: prizes, discoveries, olympiad results and quantum computing, in plain words.",
+                "news/", root)
+    body += nav(root, "news")
+    groups, order = {}, []
+    for n in NEWS:
+        k = n["date"][:7]
+        if k not in groups:
+            groups[k] = []
+            order.append(k)
+        groups[k].append(n)
+    import datetime
+    sections = ""
+    for k in order:
+        label = datetime.date.fromisoformat(k + "-01").strftime("%B %Y")
+        sections += f'<h2 class="nw-month">{label}</h2><ul class="nw-all">{"".join(news_card(n) for n in groups[k])}</ul>'
+    body += f"""<section class="sec page-hero"><div class="wrap">
+  <h1>Math news</h1>
+  <p class="lead">Big prizes, new discoveries and contest results, in plain words for kids and parents.</p>
+</div></section>
+<section class="sec"><div class="wrap nw-page">{sections}
+ <p class="glance-note">Each headline links to the page we read it on. Summaries are our own.</p>
+</div></section>
+"""
+    body += foot(root)
+    write("news/index.html", body)
+
+
 def countdown(root):
     """Contest countdown strip at the very top of the home page (Nov 12, Jian: "put it on the top... more visual and
     striking"). The soonest contest gets big ticking day/hour/min/sec tiles; the rest are small cards. Only the soonest
@@ -641,6 +711,7 @@ def page_home(lessons):
                 "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script><script type="application/ld+json">{json.dumps(site_ld)}</script>' + faq_ld)
     body += nav(root)
     body += countdown(root)
+    body += news_strip(root)
     body += f"""<section class="hero">
  <div class="wrap hero-in">
   <div class="hero-copy">
@@ -1893,7 +1964,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "contests/", "teachers/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "contests/", "teachers/", "news/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
                grade_lessons(lessons, 5),
@@ -1931,6 +2002,7 @@ def main():
     page_tests(lessons, SHOP)
     page_free()
     page_teachers()
+    page_news()
     page_cheatsheet(lessons)
     page_plan()
     page_compare()

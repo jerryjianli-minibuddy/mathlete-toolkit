@@ -1,0 +1,53 @@
+{
+  "_note": "Math news for the home strip and /news (Nov 12, Jian). Newest items show on the home page; items older than about 2 months drop off the strip but stay on /news. Each url is the page the summary was written from. Summaries are our own words. Reputable sources only; nothing political or scary.",
+  "items": [
+    {
+      "date": "2026-10-19",
+      "tag": "Discovery",
+      "title": "An AI proves a new piece of a famous prime number puzzle",
+      "why": "The Riemann hypothesis, about how prime numbers are spread out, is still unsolved, but an AI proved a weaker version and mathematicians are now checking every step.",
+      "url": "https://www.quantamagazine.org/ai-proved-the-quasi-riemann-hypothesis-what-happens-now-20261019/",
+      "source": "Quanta Magazine"
+    },
+    {
+      "date": "2026-10-15",
+      "tag": "Quantum",
+      "title": "Google cuts errors 40 times in a key quantum computer step",
+      "why": "Quantum computers need special ingredients called magic states, and Google showed a cheaper way to make them with far fewer mistakes.",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/quantum-computing/magic-state-cultivation-quantum-computing/",
+      "source": "Google Quantum AI"
+    },
+    {
+      "date": "2026-10-06",
+      "tag": "Prize",
+      "title": "Nobel Prize in Physics for catching ghost particles in Antarctic ice",
+      "why": "Francis Halzen turned a cubic kilometer of South Pole ice into a giant detector for neutrinos, tiny particles that fly through Earth from deep space.",
+      "url": "https://www.nobelprize.org/prizes/physics/2026/press-release/",
+      "source": "NobelPrize.org"
+    },
+    {
+      "date": "2026-07-23",
+      "tag": "Prize",
+      "title": "Four mathematicians win the 2026 Fields Medal",
+      "why": "Hong Wang, one of the four, solved the Kakeya needle problem in 3D, a puzzle about turning a needle in every direction inside the smallest space.",
+      "url": "https://www.simonsfoundation.org/2026/07/23/2026-fields-medals-awarded-to-four-of-worlds-top-mathematicians/",
+      "source": "Simons Foundation"
+    },
+    {
+      "date": "2026-07-21",
+      "tag": "Contest",
+      "title": "Team USA takes second at the Math Olympiad with four golds",
+      "why": "Six high school students went to Shanghai and came home with four gold medals, one silver and one bronze out of 117 teams.",
+      "url": "https://maa.org/news/team-usa-takes-second-place-at-67th-imo/",
+      "source": "MAA"
+    },
+    {
+      "date": "2026-03-19",
+      "tag": "Prize",
+      "title": "Gerd Faltings wins the Abel Prize",
+      "why": "He proved that a huge family of equations can only have a limited number of fraction answers, a puzzle that stumped mathematicians for 60 years.",
+      "url": "https://euromathsoc.org/news/gerd-faltings-awarded-the-2026-abel-prize-206",
+      "source": "European Mathematical Society"
+    }
+  ]
+}
