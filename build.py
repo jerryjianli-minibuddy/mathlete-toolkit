@@ -1730,7 +1730,7 @@ def page_teachers():
     Club & Coach License). Diagnostics download straight away, a one-period plan, then the $99 license. Its Buy button
     shows only once shop.json has "club" (the Payhip link), which waits on Jian's yes to list it."""
     root = "../"
-    club = SHOP.get("club")
+    club = SHOP.get("club") if SHOP.get("live") else None  # Nov 12: listed on Payhip after Jian's "List it on Payhip"
     rows = "".join(
         f'<li><span><b>{e(t["label"])} diagnostic</b><small>{grades_label(t["grades"])}</small></span>'
         f'<a class="btn btn-primary" href="{diag_url(t)}" rel="noopener">Download PDF</a></li>'
