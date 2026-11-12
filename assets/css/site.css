@@ -900,10 +900,30 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .nw-meta { display: flex; align-items: center; gap: 8px; font-size: .78rem !important; font-weight: 700; }
 .nw-tag { font-size: .68rem; font-weight: 900; text-transform: uppercase; letter-spacing: .07em; padding: 2px 8px; border-radius: 6px; color: #fff; background: var(--navy2); }
 .nw-prize { background: var(--pink); } .nw-discovery { background: var(--teal); } .nw-quantum { background: #6B4FD8; } .nw-contest { background: var(--navy2); }
-.nw-src { margin-top: 6px !important; font-size: .78rem !important; font-weight: 700; }
+.nw-src { font-size: .78rem !important; font-weight: 700; color: var(--muted); }
 @media (min-width: 900px) { .nw-list { grid-auto-columns: 1fr; overflow: visible; } }
 .nw-page { max-width: 760px; }
 .nw-month:first-child { margin-top: 0; }
 .nw-month { font-size: 1.1rem; margin: 26px 0 10px; color: var(--navy); }
 .nw-all { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .nw-all .nw-card { scroll-snap-align: none; }
+/* Math Corner (Nov 12): blog page and posts */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.nw-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 8px !important; }
+.nw-links a { color: var(--navy); font-weight: 800; font-size: .88rem; text-decoration: none; }
+.nw-links a:hover { text-decoration: underline; }
+.nw-links .nw-src { margin: 0 !important; }
+.nw-proof { background: var(--navy2); } .nw-trick { background: #D9822B; } .nw-pattern { background: var(--teal); } .nw-surprise { background: var(--pink); }
+.nw-page h2 { font-size: 1.3rem; color: var(--navy); margin: 0 0 12px; }
+.nw-page .nw-h2 { margin-top: 34px; }
+.mc-post { max-width: 720px; }
+.mc-post h1 { margin: 6px 0 10px; font-size: clamp(1.6rem, 4.5vw, 2.3rem); line-height: 1.15; color: var(--navy); }
+.mc-post > p { font-size: 1.05rem; line-height: 1.65; }
+.mc-crumb { margin: 0 0 8px; font-weight: 800; } .mc-crumb a { color: var(--navy); text-decoration: none; }
+.mc-crumb a::before { content: "\2190  "; }
+.mc-formula { background: var(--navy); color: #fff; font-weight: 800; font-size: 1.15rem !important; text-align: center; border-radius: 14px; padding: 16px; margin: 18px 0; }
+.mc-src { background: var(--cream); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-weight: 700; }
+.mc-src a, .mc-rel a { color: var(--navy); font-weight: 800; }
+.mc-more { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 18px; }
+.mc-more h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--navy); }
+.mc-more ul { margin: 0; padding-left: 18px; } .mc-more li { margin: 6px 0; } .mc-more a { color: var(--navy); font-weight: 700; }

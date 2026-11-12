@@ -326,7 +326,7 @@ def foot(root, cta=True):
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
    <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li>
-   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}news/">Math news</a></li></ul>
+   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
   </div>
   <div>
    <h3>By contest</h3>
@@ -563,74 +563,136 @@ COUNTDOWN = [
 ]
 
 
-_NEWS_PATH = os.path.join(ROOT, "data/news.json")
-NEWS = sorted(json.load(open(_NEWS_PATH))["items"] if os.path.exists(_NEWS_PATH) else [],
-              key=lambda n: n["date"], reverse=True)
+_MC_PATH = os.path.join(ROOT, "data/math_corner.json")
+MC = sorted(json.load(open(_MC_PATH))["posts"] if os.path.exists(_MC_PATH) else [],
+            key=lambda n: (n["date"], n["kind"] == "news"), reverse=True)
+LIVE_SLUGS = {}  # set in main(): live lesson slug -> tool name, for Math Corner "related lesson" links
 
 
-def news_date(d):
+def mc_date(d):
     import datetime
     x = datetime.date.fromisoformat(d)
     return f'{x.strftime("%b")} {x.day}, {x.year}'
 
 
-def news_card(n, cls="nw-card"):
+def mc_card(n, root, cls="nw-card"):
+    """One Math Corner card. The headline opens our post page; a news card also links straight to the original article
+    (Nov 12, Jian: news should take people to the original article)."""
+    href = f'{root}math-corner/{n["slug"]}/'
+    if n["kind"] == "news":
+        foot_ = (f'<p class="nw-links"><a class="nw-out" href="{e(n["url"])}" rel="noopener" target="_blank">'
+                 f'Read the article<span class="sr-only"> (opens {e(n["source"])})</span> &#8599;</a>'
+                 f'<span class="nw-src">{e(n["source"])}</span></p>')
+    else:
+        foot_ = f'<p class="nw-links"><a href="{href}">See why it works &rarr;</a></p>'
     return (f'<li class="{cls}"><p class="nw-meta"><span class="nw-tag nw-{e(n["tag"].lower())}">{e(n["tag"])}</span>'
-            f'<time datetime="{n["date"]}">{news_date(n["date"])}</time></p>'
-            f'<h3><a href="{e(n["url"])}" rel="noopener" target="_blank">{e(n["title"])}</a></h3>'
-            f'<p>{e(n["why"])}</p><p class="nw-src">{e(n["source"])}</p></li>')
+            f'<time datetime="{n["date"]}">{mc_date(n["date"])}</time></p>'
+            f'<h3><a href="{href}">{e(n["title"])}</a></h3><p>{e(n["summary"])}</p>{foot_}</li>')
 
 
-def news_strip(root):
-    """Math news strip under the countdown on the home page (Nov 12, Jian: a news section near the top so the site feels
-    constantly updated; inspiring math and science for parents and kids). data/news.json holds the items, newest first.
-    The strip shows up to 4 items from the last ~2 months (topped up with the newest if fewer than 3); /news keeps all."""
+def mc_strip(root):
+    """Math Corner strip under the countdown on the home page (Nov 12, Jian: news near the top so the site feels
+    updated; then "mix in some interesting math facts... call it math corner"). Newest 2 news posts from the last ~2
+    months plus the newest 2 fact posts; data/math_corner.json holds them all."""
     import datetime
     cut = (datetime.date.today() - datetime.timedelta(days=62)).isoformat()
-    recent = [n for n in NEWS if n["date"] >= cut][:4]
-    if len(recent) < 3:
-        recent = NEWS[:3]
-    if not recent:
+    news = [n for n in MC if n["kind"] == "news" and n["date"] >= cut][:2]
+    facts = [n for n in MC if n["kind"] == "fact"][:4 - len(news)]
+    pick = sorted(news + facts, key=lambda n: n["kind"] != "news")
+    if len(pick) < 3:
+        pick = MC[:3]
+    if not pick:
         return ""
-    cards = "".join(news_card(n) for n in recent)
+    cards = "".join(mc_card(n, root) for n in pick)
     return f"""<section class="nw" aria-labelledby="nw-h">
  <div class="wrap">
-  <div class="nw-top"><h2 id="nw-h">Math news</h2><a href="{root}news/">More news &rarr;</a></div>
+  <div class="nw-top"><h2 id="nw-h">Math Corner</h2><a href="{root}math-corner/">More math news and facts &rarr;</a></div>
   <ul class="nw-list">{cards}</ul>
  </div>
 </section>
 """
 
 
-def page_news():
-    """/news/: every item from data/news.json, newest first, grouped by month (Nov 12)."""
+def page_math_corner():
+    """/math-corner/: blog index of every post, and one page per post (Nov 12). /news/ redirects here."""
+    import datetime
     root = "../"
-    body = head(f"Math News for Kids and Parents | {NAME}",
-                "Inspiring math and science news for contest kids and their parents: prizes, discoveries, olympiad results and quantum computing, in plain words.",
-                "news/", root)
-    body += nav(root, "news")
+    body = head(f"Math Corner: Math News and Cool Math Facts for Kids | {NAME}",
+                "Math news and cool math facts for kids and parents: prize winners, new discoveries, olympiad results, number tricks and short proofs to show your friends.",
+                "math-corner/", root)
+    body += nav(root, "math-corner")
+    facts = "".join(mc_card(n, root) for n in MC if n["kind"] == "fact")
     groups, order = {}, []
-    for n in NEWS:
+    for n in MC:
+        if n["kind"] != "news":
+            continue
         k = n["date"][:7]
         if k not in groups:
             groups[k] = []
             order.append(k)
         groups[k].append(n)
-    import datetime
-    sections = ""
+    news = ""
     for k in order:
         label = datetime.date.fromisoformat(k + "-01").strftime("%B %Y")
-        sections += f'<h2 class="nw-month">{label}</h2><ul class="nw-all">{"".join(news_card(n) for n in groups[k])}</ul>'
+        news += f'<h3 class="nw-month">{label}</h3><ul class="nw-all">{"".join(mc_card(n, root) for n in groups[k])}</ul>'
     body += f"""<section class="page-head"><div class="wrap">
-  <h1>Math news</h1>
-  <p class="lead">Big prizes, new discoveries and contest results, in plain words for kids and parents.</p>
+  <h1>Math Corner</h1>
+  <p class="lead">Math news and facts you can show off to your friends, in plain words for kids and parents.</p>
+  <p class="cg-jump"><a href="#facts-h">Cool math facts</a><a href="#news-h">Math news</a></p>
 </div></section>
-<section class="sec sec-tight"><div class="wrap nw-page">{sections}
- <p class="glance-note">Each headline links to the page we read it on. Summaries are our own.</p>
+<section class="sec sec-tight"><div class="wrap nw-page">
+ <h2 id="facts-h">Cool math facts</h2>
+ <ul class="nw-all">{facts}</ul>
+ <h2 id="news-h" class="nw-h2">Math news</h2>
+ {news}
+ <p class="glance-note">News summaries are our own, and each links to the article we read. Not affiliated with any of the sources.</p>
 </div></section>
 """
     body += foot(root)
-    write("news/index.html", body)
+    write("math-corner/index.html", body)
+    for n in MC:
+        page_mc_post(n)
+    write("news/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
+          f'<link rel="canonical" href="{SITE}/math-corner/"><meta http-equiv="refresh" content="0; url=/math-corner/">'
+          '<a href="/math-corner/">Math Corner</a>')
+
+
+def page_mc_post(n):
+    root = "../../"
+    path = f'math-corner/{n["slug"]}/'
+    ld = {"@context": "https://schema.org", "@type": "BlogPosting", "headline": n["title"], "description": n["desc"],
+          "datePublished": n["date"], "mainEntityOfPage": SITE + "/" + path,
+          "author": {"@type": "Organization", "name": NAME, "url": SITE + "/"},
+          "publisher": {"@type": "Organization", "name": NAME, "logo": {"@type": "ImageObject", "url": SITE + "/assets/img/logo-512.png"}}}
+    if n["kind"] == "news":
+        ld["isBasedOn"] = n["url"]
+    body = head(f'{n["title"]} | Math Corner | {NAME}', n["desc"], path, root,
+                extra=f'<script type="application/ld+json">{json.dumps(ld)}</script>')
+    body += nav(root, "math-corner")
+    paras = "".join(f"<p>{e(x)}</p>" for x in n["body"])
+    formula = f'<p class="mc-formula">{e(n["formula"])}</p>' if n.get("formula") else ""
+    if n["kind"] == "news":
+        src = (f'<p class="mc-src">Source: <a href="{e(n["url"])}" rel="noopener" target="_blank">Read the original article at '
+               f'{e(n["source"])} &#8599;</a></p>')
+    else:
+        src = ""
+    rel = ""
+    if n.get("lesson") in LIVE_SLUGS:
+        rel = (f'<p class="mc-rel">Related key move: <a href="{root}lessons/{n["lesson"]}/">'
+               f'{e(LIVE_SLUGS[n["lesson"]])} video lesson</a></p>')
+    more = "".join(f'<li><a href="{root}math-corner/{m["slug"]}/">{e(m["title"])}</a></li>'
+                   for m in [m for m in MC if m["slug"] != n["slug"]][:4])
+    body += f"""<article class="sec sec-tight"><div class="wrap mc-post">
+ <p class="mc-crumb"><a href="{root}math-corner/">Math Corner</a></p>
+ <p class="nw-meta"><span class="nw-tag nw-{e(n["tag"].lower())}">{e(n["tag"])}</span><time datetime="{n["date"]}">{mc_date(n["date"])}</time></p>
+ <h1>{e(n["title"])}</h1>
+ <p class="lead">{e(n["summary"])}</p>
+ {formula}{paras}{src}{rel}
+ <div class="mc-more"><h2>More from Math Corner</h2><ul>{more}</ul></div>
+</div></article>
+"""
+    body += foot(root)
+    write(path + "index.html", body)
 
 
 def countdown(root):
@@ -711,7 +773,7 @@ def page_home(lessons):
                 "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script><script type="application/ld+json">{json.dumps(site_ld)}</script>' + faq_ld)
     body += nav(root)
     body += countdown(root)
-    body += news_strip(root)
+    body += mc_strip(root)
     body += f"""<section class="hero">
  <div class="wrap hero-in">
   <div class="hero-copy">
@@ -1964,7 +2026,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "contests/", "teachers/", "news/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "contests/", "teachers/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
                grade_lessons(lessons, 5),
@@ -2002,7 +2064,8 @@ def main():
     page_tests(lessons, SHOP)
     page_free()
     page_teachers()
-    page_news()
+    LIVE_SLUGS.update({l['slug']: l['tool'] for l in lessons if l['live']})
+    page_math_corner()
     page_cheatsheet(lessons)
     page_plan()
     page_compare()
@@ -2015,6 +2078,7 @@ def main():
         if int(t["tool_num"]) not in taken:  # a real lesson always wins the short link
             page_qr_upcoming(t)
     urls += [f"lessons/{l['slug']}/" for l in lessons if l["live"]]
+    urls += [f"math-corner/{n['slug']}/" for n in MC]
     extras(lessons, urls)
     missing = [l["slug"] for l in lessons for x in (".webp", "-lg.webp", ".jpg")
                if not os.path.exists(os.path.join(ROOT, "assets/covers", l["slug"] + x))]

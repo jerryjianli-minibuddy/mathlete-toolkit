@@ -1,0 +1,197 @@
+{
+ "_note": "Math Corner (Nov 12, Jian): news plus math facts, blog style. Each post gets /math-corner/<slug>/. kind news: url is the original article we read, shown as 'Read the original article'. kind fact: check the math before adding. lesson: a lesson slug, linked only once that lesson is live. Home strip: newest 2 news (last ~2 months) plus newest 2 facts. Our own words only; reputable sources; nothing political or scary.",
+ "posts": [
+  {
+   "slug": "ai-proves-piece-of-riemann-hypothesis",
+   "date": "2026-10-19",
+   "kind": "news",
+   "tag": "Discovery",
+   "title": "An AI proves a new piece of a famous prime number puzzle",
+   "desc": "An AI proved a weaker version of the Riemann hypothesis, the 167-year-old puzzle about how prime numbers are spread out. What it means, in plain words.",
+   "summary": "The Riemann hypothesis, about how prime numbers are spread out, is still unsolved, but an AI proved a weaker version and mathematicians are now checking every step.",
+   "body": [
+    "Prime numbers like 2, 3, 5, 7 and 11 look scattered at random, yet they follow hidden patterns. In 1859 Bernhard Riemann linked those patterns to a special function, now called the zeta function, and guessed exactly where its most important zeros sit. That guess, the Riemann hypothesis, is still unproved and is one of the million-dollar Millennium Prize Problems.",
+    "Mathematicians have long known those zeros lie inside a band. In October 2026 an AI system from OpenAI produced a proof that they lie inside a narrower band than anyone had shown before. It is not the full Riemann hypothesis, but it is a real step toward it.",
+    "Quanta Magazine reports that mathematicians largely agree the result is correct, and some are still checking every detail. The bigger story is that AI is starting to help with research-level math, and checking each proof carefully matters more than ever."
+   ],
+   "url": "https://www.quantamagazine.org/ai-proved-the-quasi-riemann-hypothesis-what-happens-now-20261019/",
+   "source": "Quanta Magazine",
+   "lesson": "prime-factor-split"
+  },
+  {
+   "slug": "google-quantum-magic-states",
+   "date": "2026-10-15",
+   "kind": "news",
+   "tag": "Quantum",
+   "title": "Google cuts errors 40 times in a key quantum computer step",
+   "desc": "Google's Willow quantum chip made magic states with about 40 times fewer errors. What magic states are and why they matter, explained simply.",
+   "summary": "Quantum computers need special ingredients called magic states, and Google showed a cheaper way to make them with far fewer mistakes.",
+   "body": [
+    "Quantum computers store information in qubits, which are powerful but fragile: a tiny bit of noise can flip them. To do their hardest calculations, quantum computers also need a special ingredient called a magic state, and making good ones is so costly that most of a future machine's effort could go into it.",
+    "On October 15, 2026, Google Quantum AI reported in the journal Science that its Willow chip used a method called magic state cultivation. It cut errors about 40 times and made magic states that were right at least 99.99% of the time.",
+    "Google says it is the first time this cheaper method has worked on real hardware, and that bigger tests still need to come. Behind it all is a lot of math: error-correcting codes, probability and clever counting."
+   ],
+   "url": "https://blog.google/innovation-and-ai/models-and-research/quantum-computing/magic-state-cultivation-quantum-computing/",
+   "source": "Google Quantum AI"
+  },
+  {
+   "slug": "nobel-prize-physics-2026-neutrinos",
+   "date": "2026-10-06",
+   "kind": "news",
+   "tag": "Prize",
+   "title": "Nobel Prize in Physics for catching ghost particles in Antarctic ice",
+   "desc": "Francis Halzen won the 2026 Nobel Prize in Physics for IceCube, a giant detector in South Pole ice that catches neutrinos from deep space.",
+   "summary": "Francis Halzen turned a cubic kilometer of South Pole ice into a giant detector for neutrinos, tiny particles that fly through Earth from deep space.",
+   "body": [
+    "Neutrinos are tiny particles that are everywhere. Trillions pass through your body every second, and through the whole Earth, without anyone noticing. Very rarely one bumps into an atom and gives off a flash of light.",
+    "In 1988 Francis Halzen of the University of Wisconsin-Madison had an idea: use the clear, quiet ice at the South Pole as a detector. The result, IceCube, is a cubic kilometer of ice with light sensors frozen inside, finished in 2011. It found high-energy neutrinos that come from far outside our solar system.",
+    "Because neutrinos fly in a straight line without slowing down, they point back to where they came from. Scientists use where and when the light flashes appear to work out each neutrino's direction. On October 6, 2026, Halzen won the Nobel Prize in Physics for this new way of looking at the universe."
+   ],
+   "url": "https://www.nobelprize.org/prizes/physics/2026/press-release/",
+   "source": "NobelPrize.org"
+  },
+  {
+   "slug": "fields-medal-2026",
+   "date": "2026-07-23",
+   "kind": "news",
+   "tag": "Prize",
+   "title": "Four mathematicians win the 2026 Fields Medal",
+   "desc": "Yu Deng, John Pardon, Jacob Tsimerman and Hong Wang won the 2026 Fields Medals. Meet the winners and the Kakeya needle problem.",
+   "summary": "Hong Wang, one of the four, solved the Kakeya needle problem in 3D, a puzzle about turning a needle in every direction inside the smallest space.",
+   "body": [
+    "The Fields Medal is one of the highest honors in math. It is given every four years to mathematicians under 40. On July 23, 2026, at the International Congress of Mathematicians in Philadelphia, four winners were named: Yu Deng (University of Chicago), John Pardon (Stony Brook University), Jacob Tsimerman (University of Toronto) and Hong Wang (New York University and IHES in France).",
+    "Hong Wang is known for the Kakeya needle problem. Picture a needle you want to turn so it points in every direction. How little room do you need? Surprisingly, a clever shape can use almost no area at all. The Kakeya conjecture says such shapes still can't be truly thin in a deeper sense, and Wang, with Joshua Zahl, proved it in three dimensions.",
+    "The other winners work on how gases flow from colliding particles, on counting curves in strange spaces, and on deep questions joining geometry and numbers."
+   ],
+   "url": "https://www.simonsfoundation.org/2026/07/23/2026-fields-medals-awarded-to-four-of-worlds-top-mathematicians/",
+   "source": "Simons Foundation"
+  },
+  {
+   "slug": "team-usa-imo-2026",
+   "date": "2026-07-21",
+   "kind": "news",
+   "tag": "Contest",
+   "title": "Team USA takes second at the Math Olympiad with four golds",
+   "desc": "Team USA placed second of 117 teams at the 67th International Mathematical Olympiad in Shanghai, with four gold medals, one silver and one bronze.",
+   "summary": "Six high school students went to Shanghai and came home with four gold medals, one silver and one bronze out of 117 teams.",
+   "body": [
+    "The International Mathematical Olympiad (IMO) is the world's top math contest for high school students. Each country sends six students, who solve six very hard proof problems over two days.",
+    "The 67th IMO took place in Shanghai, China, from July 10 to 20, 2026. Team USA placed second of 117 teams. Liam Reddy, Alexander Wang, Ruilin (Calvin) Wang and Royce Yao won gold medals, Feodor Yevtushenko won silver, and Oron Wang won bronze.",
+    "The US team is picked through a ladder of contests: the AMC 10 or 12, then the AIME, then the USA Math Olympiad and a summer training program. Our parents' guide to contests shows every step."
+   ],
+   "url": "https://maa.org/news/team-usa-takes-second-place-at-67th-imo/",
+   "source": "MAA"
+  },
+  {
+   "slug": "abel-prize-2026-faltings",
+   "date": "2026-03-19",
+   "kind": "news",
+   "tag": "Prize",
+   "title": "Gerd Faltings wins the Abel Prize",
+   "desc": "Gerd Faltings won the 2026 Abel Prize. He proved the Mordell conjecture: many equations have only a limited number of fraction solutions.",
+   "summary": "He proved that a huge family of equations can only have a limited number of fraction answers, a puzzle that stumped mathematicians for 60 years.",
+   "body": [
+    "The Abel Prize is one of the biggest prizes in math. On March 19, 2026, it went to Gerd Faltings of the Max Planck Institute for Mathematics in Bonn, Germany.",
+    "His most famous result is about fraction solutions to equations. The equation x² + y² = 1 has infinitely many: x = 3/5 and y = 4/5 is one, and there are endless more. In 1922 Louis Mordell guessed that for more twisted equations, such as x⁴ + y⁴ = 1, the list of fraction solutions is always finite.",
+    "Faltings proved it in 1983, sixty years later, and it is now called Faltings' theorem. He had already won the Fields Medal in 1986."
+   ],
+   "url": "https://euromathsoc.org/news/gerd-faltings-awarded-the-2026-abel-prize-206",
+   "source": "European Mathematical Society"
+  },
+  {
+   "slug": "add-1-to-100-in-seconds",
+   "date": "2026-11-12",
+   "kind": "fact",
+   "tag": "Trick",
+   "title": "Add 1 to 100 in five seconds",
+   "desc": "How to add the numbers from 1 to 100 in your head, the pairing trick behind the formula n(n+1)/2, explained for kids.",
+   "summary": "1 + 2 + 3 + ... + 100 = 5050. Pair the first and last numbers and the whole sum takes one multiplication.",
+   "formula": "1 + 2 + ... + n = n × (n + 1) ÷ 2",
+   "body": [
+    "Write the numbers forward and backward: 1 + 100, 2 + 99, 3 + 98 and so on. Every pair adds to 101.",
+    "There are 100 numbers, so there are 50 pairs. 50 × 101 = 5050. The same idea works for any run of numbers: n numbers make n ÷ 2 pairs, and each pair adds to n + 1.",
+    "Show a friend: ask them to add 1 to 50 while you answer right away. 25 pairs of 51 is 1275."
+   ],
+   "lesson": "add-all-the-pairs"
+  },
+  {
+   "slug": "the-1089-trick",
+   "date": "2026-11-12",
+   "kind": "fact",
+   "tag": "Trick",
+   "title": "The 1089 trick: always the same answer",
+   "desc": "Pick a three-digit number, reverse it, subtract, reverse again and add. The answer is always 1089. Here is why.",
+   "summary": "Pick a three-digit number, reverse it, subtract, then reverse and add. You always land on 1089, and the reason is pure place value.",
+   "formula": "532 − 235 = 297, and 297 + 792 = 1089",
+   "body": [
+    "Ask a friend to pick a three-digit number whose first and last digits differ by at least 2, like 532. Reverse it (235) and subtract the smaller from the bigger: 532 − 235 = 297. Now reverse that (792) and add: 297 + 792 = 1089.",
+    "Why always 1089? When you subtract a number from its reverse, the middle digits cancel and the result is always 99 times the difference of the first and last digits. So you can only get 198, 297, 396, 495, 594, 693, 792 or 891.",
+    "Each of those has a 9 in the middle and outer digits that add to 9. Adding one to its reverse gives 9 hundreds, 18 tens and 9 ones, which is 1089 every time. Write 1089 on paper before they start and reveal it at the end."
+   ],
+   "lesson": "reverse-the-digits"
+  },
+  {
+   "slug": "birthday-paradox",
+   "date": "2026-11-12",
+   "kind": "fact",
+   "tag": "Surprise",
+   "title": "23 people, a 50% chance of a shared birthday",
+   "desc": "In a group of just 23 people, the chance that two share a birthday is over 50%. With 70 people it is over 99.9%. The birthday paradox explained.",
+   "summary": "In a class of 23, it is more likely than not that two people share a birthday. With 70 people it is almost certain.",
+   "formula": "23 people make 23 × 22 ÷ 2 = 253 pairs",
+   "body": [
+    "Most people guess you would need about 183 people, half of 365. The surprise is that you only need 23 to pass a 50% chance.",
+    "The trick is to count pairs, not people. 23 people make 253 different pairs, and every pair is a chance for a match. It is easier to work out the chance of no match at all: the second person must miss 1 birthday, the third must miss 2, and so on. Multiply those chances for 23 people and you get about 49.3% for no match, so about 50.7% for at least one match.",
+    "With 70 people the chance of a shared birthday is over 99.9%. Try it with your class or team, ignoring leap days."
+   ],
+   "lesson": "count-each-pair-once"
+  },
+  {
+   "slug": "odd-numbers-make-squares",
+   "date": "2026-11-12",
+   "kind": "fact",
+   "tag": "Pattern",
+   "title": "Add the odd numbers and you always get a square",
+   "desc": "1 + 3 + 5 + 7 = 16 = 4². Adding the first n odd numbers always gives n². A picture proof kids can draw.",
+   "summary": "1 + 3 = 4, 1 + 3 + 5 = 9, 1 + 3 + 5 + 7 = 16. Adding odd numbers in order always lands on a perfect square, and a picture shows why.",
+   "formula": "1 + 3 + 5 + ... + (2n − 1) = n²",
+   "body": [
+    "Start with 1 dot. Add 3 dots in an L shape around it and you have a 2 by 2 square. Add 5 more in a bigger L and you have a 3 by 3 square. Each new L adds one row and one column plus a corner dot, which is always the next odd number.",
+    "So the first 10 odd numbers add to 10 × 10 = 100, and the first 50 add to 2500. No adding needed.",
+    "Show a friend: ask them to add 1 + 3 + 5 + ... + 19 while you answer 100 instantly. Count the numbers (10) and square it."
+   ],
+   "lesson": "find-the-rule"
+  },
+  {
+   "slug": "divisible-by-9-digit-trick",
+   "date": "2026-11-12",
+   "kind": "fact",
+   "tag": "Trick",
+   "title": "Is it divisible by 9? Just add the digits",
+   "desc": "A number is divisible by 9 exactly when its digits add to a multiple of 9. The same works for 3. Why the digit-sum trick works.",
+   "summary": "4,572 is divisible by 9 because 4 + 5 + 7 + 2 = 18. Adding the digits tells you, and the reason is that 10 is one more than 9.",
+   "formula": "4 + 5 + 7 + 2 = 18, so 9 divides 4572",
+   "body": [
+    "To test whether a number divides evenly by 9, add its digits. If the digit sum is a multiple of 9, so is the number. 4,572 has digit sum 18, and 4,572 ÷ 9 = 508. The same test works for 3.",
+    "Why? 10 is 9 + 1, 100 is 99 + 1, and 1000 is 999 + 1. So 4,572 is 4 × (999 + 1) + 5 × (99 + 1) + 7 × (9 + 1) + 2. Every 999, 99 and 9 part is already a multiple of 9, and what is left over is 4 + 5 + 7 + 2.",
+    "Show a friend: have them write any big number, then scramble its digits and subtract the smaller from the bigger. The answer is always divisible by 9."
+   ]
+  },
+  {
+   "slug": "why-primes-never-run-out",
+   "date": "2026-11-12",
+   "kind": "fact",
+   "tag": "Proof",
+   "title": "Why prime numbers never run out",
+   "desc": "Euclid's 2,300-year-old proof that there are infinitely many prime numbers, explained in a few steps a kid can follow.",
+   "summary": "Over 2,000 years ago Euclid proved there is no biggest prime, with an argument short enough to explain in a minute.",
+   "formula": "2 × 3 × 5 × 7 × 11 × 13 + 1 = 30031 = 59 × 509",
+   "body": [
+    "Suppose someone hands you a list of primes and claims it has all of them. Multiply every prime on the list together and add 1.",
+    "The new number leaves remainder 1 when divided by any prime on the list, so none of them divide it. But every whole number bigger than 1 has some prime factor. That factor is a prime missing from the list, so no list can ever hold them all.",
+    "Try it: 2 × 3 × 5 × 7 × 11 × 13 + 1 = 30031. It isn't prime itself, but it equals 59 × 509, and both are new primes that were not on the list. That is the power of a proof: it works for every list, even ones too long to write."
+   ],
+   "lesson": "prime-factor-split"
+  }
+ ]
+}
