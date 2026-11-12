@@ -267,12 +267,12 @@ def nav(root, active=""):
     contests = "".join(
         f'<a class="dd-i" href="{root}{C["slug"]}/">{e(C["name"])}{"<small>soon</small>" if C.get("soon") else ""}</a>'
         for C in CONTESTS.values())
-    contests += f'<a class="dd-i dd-more" href="{root}contests/">Compare all contests</a>'
+    contests += f'<a class="dd-i dd-more" href="{root}contests/">Parents&rsquo; guide to contests</a>'
     tests = ""
     for t in TEST_SETS:
         tests += f'<p class="dd-h">{t["label"]}, {grades_label(t["grades"])}</p>'
-        tests += (f'<a class="dd-i" href="{free_href(root, t["contest"], t["grades"][0])}">Free diagnostic test<small class="dd-free">free</small></a>'
-                  if t["diag"] else '<span class="dd-i dd-off">Free diagnostic test<small>soon</small></span>')
+        tests += (f'<a class="dd-i" href="{free_href(root, t["contest"], t["grades"][0])}">Diagnostic test</a>'
+                  if t["diag"] else '<span class="dd-i dd-off">Diagnostic test<small>soon</small></span>')
         tests += (f'<a class="dd-i" href="{root}mock-tests/{t.get("anchor", "")}">Practice tests</a>' if t["practice"]
                   else '<span class="dd-i dd-off">Practice tests<small>soon</small></span>')
     topics = "".join(
@@ -308,8 +308,7 @@ def foot(root, cta=True):
     """cta: the phone-only bar pinned to the bottom of the screen with the free test button (Nov 11).
     Left off on /free, where the page itself is the sign-up."""
     yr = date.today().year
-    bar = (f'<div class="mcta" id="mcta"><p><b>Free diagnostic test</b><small>Answer key, and a lesson for every miss</small></p>'
-           f'<a class="btn btn-primary" href="{root}free/">Get it free</a></div>\n') if cta else ""
+    bar = ""  # Nov 12, Jian: "free diagnostic" was on the site too many times. The pinned phone bar is gone.
     contest_links = "".join(
         f'<li><a href="{root}{c["slug"]}/">{e(c["name"])}{" (soon)" if c.get("soon") else ""}</a></li>' for c in CONTESTS.values())
     return f"""</main>
@@ -317,7 +316,7 @@ def foot(root, cta=True):
  <div class="wrap foot-grid">
   <div>
    <a class="brand brand-foot" href="{root}">{mark(30)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
-   <p>Competition math, one key at a time. Free video lessons and a free diagnostic test.</p>
+   <p>Competition math, one key at a time.</p>
    <p class="foot-mail">Stuck on a problem? <a href="mailto:{CONTACT}">{CONTACT}</a></p>
    <a class="btn btn-yt" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe on YouTube</span></a>
   </div>
@@ -325,7 +324,7 @@ def foot(root, cta=True):
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
    <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li>
-   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Free diagnostic test</a></li></ul>
+   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li></ul>
   </div>
   <div>
    <h3>By contest</h3>
@@ -457,23 +456,16 @@ def search_form(root, cls="", label="Find a lesson"):
 
 def test_cta(root, compact=False, contest=None, grade=None):
     """Free-test band at the foot of list pages. compact is kept for old calls; the band has no picture now."""
-    return f"""<section class="cta-band">
- <div class="wrap cta-in">
-  <div>
-   <p class="eyebrow">Free</p>
-   <h2>Free diagnostic test</h2>
-   <p>Pick your contest and grade. Answer key included, and every miss opens its lesson.</p>
-   <a class="btn btn-primary btn-lg" href="{free_href(root, contest, grade)}">Get the free test</a>
-  </div>
- </div>
-</section>"""
+    # Nov 12, Jian: too many "free diagnostic" mentions. One quiet line instead of a band.
+    return (f'<div class="wrap"><p class="quiet-cta">Not sure where to start? '
+            f'<a href="{free_href(root, contest, grade)}">Try the diagnostic test</a>.</p></div>')
 
 
 # ---------- sample pages and parent FAQ (Nov 11) ----------
 
 # Real pages from the PDFs (mock-tests/preview/), small for phones and full size on tap.
 SAMPLES = {
-    "diagnostic": ("diagnostic-page1-sm.webp", "diagnostic-page1.webp", "Free Noetic-style test, page 1",
+    "diagnostic": ("diagnostic-page1-sm.webp", "diagnostic-page1.webp", "Noetic-style diagnostic, page 1",
                    "A QR code beside every problem opens its lesson."),
     "practice": ("sample-test-page1.webp", "sample-test-page1-lg.webp", "Noetic-style practice test, page 1",
                  "Every test in the pack has the same format."),
@@ -508,22 +500,22 @@ def faqs():
         "free": ("Is the test really free?",
                  "Yes. Download the PDF right away. No sign-up and no payment."),
         "who": ("Which grades?",
-                "Pick your grade on the free test page. New grades are added as they are ready."),
+                "Pick your contest and grade on the test page. New grades are added as they are ready."),
         "misses": ("What do we do with the misses?",
                    "Scan the QR beside the problem to open its lesson. Try the problem again the next day."),
         "original": ("Are the problems copied from real contests?",
                      "No. Every problem is our own. We match real contest difficulty but never copy."),
-        "share": ("Can I share the free test?",
-                  "Yes. It is free for home and classroom use."),
+        "share": ("Can I share the test?",
+                  "Yes, with your family or your class."),
         "lessons": ("Do the video lessons cost anything?",
                     "No. Every lesson is free on YouTube, one named tool in about four minutes."),
         "pack": ("What is in the practice pack?",
-                 "Ten tests in the free test's format, each with a worked answer key. One PDF for one family or classroom."),
+                 "Ten tests in the diagnostic's format, each with a worked answer key. One PDF for one family or classroom."),
         "when": (("How do I buy the practice tests?",
                   "$3.99 for one test or $24.99 for a pack of 10. The PDF downloads right after checkout.")
                  if live else
                  ("When can I buy the practice tests?",
-                  "Checkout opens soon: $3.99 for one test or $24.99 for a pack of 10. Start with the free test meanwhile.")),
+                  "Checkout opens soon: $3.99 for one test or $24.99 for a pack of 10. Start with the diagnostic meanwhile.")),
         "independent": ("Is Key Move Math run by a contest organizer?",
                         "No. It is an independent practice channel, not affiliated with or endorsed by any contest organizer."),
     }
@@ -571,8 +563,8 @@ COUNTDOWN = [
 
 def countdown(root):
     """Contest countdown strip at the very top of the home page (Nov 12, Jian: "put it on the top... more visual and
-    striking"). The soonest contest gets big ticking day/hour/min/sec tiles; the rest are small cards. Every one has
-    its free diagnostic. assets/js/site.js re-sorts and ticks live; the build only fills the order and dates."""
+    striking"). The soonest contest gets big ticking day/hour/min/sec tiles; the rest are small cards. Only the soonest
+    one links to its diagnostic (Nov 12, Jian: too many "free" mentions). assets/js/site.js re-sorts and ticks live; the build only fills the order and dates."""
     import datetime
     today = datetime.date.today().isoformat()
     items = []
@@ -602,13 +594,12 @@ def countdown(root):
     <p class="cdx-cap" data-f="cap">{"window closes in" if open0 else "starts in"}</p>
     <div class="cdx-units">{tiles}</div>
    </div>
-   <a class="cdx-btn" data-f="href" href="{free_href(root, c0["key"], c0["grade"])}">Free diagnostic &rarr;</a>
+   <a class="cdx-btn" data-f="href" href="{free_href(root, c0["key"], c0["grade"])}">Take the diagnostic &rarr;</a>
   </div>"""
     cards = "".join(
         f'<li class="cdx-card{" cdx-open" if ev[0] <= today else ""}" {data(c)}><b class="cdx-cn" data-f="name">{e(c["name"])}</b>'
         f'<span class="cdx-cw" data-f="when">{e(ev[2])}</span>'
-        f'<span class="cdx-cl" data-f="left">{"Open now" if ev[0] <= today else "Coming up"}</span>'
-        f'<a class="cdx-cg" data-f="href" href="{free_href(root, c["key"], c["grade"])}">Free diagnostic &rarr;</a></li>'
+        f'<span class="cdx-cl" data-f="left">{"Open now" if ev[0] <= today else "Coming up"}</span></li>'
         for _, c, ev in items[1:])
     return f"""<section class="cdx" aria-labelledby="cdx-h" data-countdown>
  <div class="wrap">
@@ -642,7 +633,7 @@ def page_home(lessons):
     site_ld = {"@context": "https://schema.org", "@type": "WebSite", "name": NAME, "url": SITE + "/",
                "potentialAction": {"@type": "SearchAction", "target": SITE + "/lessons/?q={search_term_string}",
                                    "query-input": "required name=search_term_string"}}
-    faq_html, faq_ld = faq(("free", "who", "misses", "original", "when", "independent"))
+    faq_html, faq_ld = faq(("who", "misses", "original", "when", "independent"))
     body = head(f"{NAME}: Free Diagnostic Test and Contest Math Video Lessons",
                 "Free contest math diagnostic test. Pick your grade: answer key included, and a QR code beside every problem opens a short video lesson on its key move.",
                 "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script><script type="application/ld+json">{json.dumps(site_ld)}</script>' + faq_ld)
@@ -651,14 +642,14 @@ def page_home(lessons):
     body += f"""<section class="hero">
  <div class="wrap hero-in">
   <div class="hero-copy">
-   <p class="eyebrow eyebrow-y">Free &middot; Contest math</p>
+   <p class="eyebrow eyebrow-y">Contest math</p>
    <h1>Free diagnostic test. <span>A video for every miss.</span></h1>
    <p class="lead">Find the key moves your child still needs.</p>
-   <div class="hero-cta" data-cta-watch>
-    <a class="btn btn-primary btn-lg btn-wide" href="{root}free/">Get the free test</a>
+   <div class="hero-cta">
+    <a class="btn btn-primary btn-lg btn-wide" href="{root}free/">Get the test</a>
     <a class="hero-alt" href="lessons/{feat['slug']}/">or watch a lesson first &rarr;</a>
    </div>
-   <ul class="hero-trust"><li>Free PDF</li><li>Answer key</li><li>No payment</li></ul>
+   <ul class="hero-trust"><li>PDF</li><li>Answer key</li><li>No sign-up</li></ul>
   </div>
   <div class="hero-media">
    {embed(feat, root, eager=True)}
@@ -672,7 +663,7 @@ def page_home(lessons):
   <li class="t-orig">Original problems</li>
   <li class="t-check">Worked answer keys</li>
   <li class="t-qr">A lesson for every problem</li>
-  <li class="t-yt">Lessons free on YouTube</li>
+  <li class="t-yt">Lessons on YouTube</li>
  </ul>
 </section>
 
@@ -688,7 +679,7 @@ def page_home(lessons):
  <div class="wrap">
   <h2 id="how-h" class="center">How it works</h2>
   <ol class="steps">
-   <li><span class="n n1">1</span><h3>Take the free test</h3><p>Pick your contest and grade. Check with the answer key.</p><a class="go" href="free/">Get the free test &rarr;</a></li>
+   <li><span class="n n1">1</span><h3>Take the diagnostic</h3><p>Pick your contest and grade. Check with the answer key.</p></li>
    <li><span class="n n2">2</span><h3>Watch the key move</h3><p>Scan the QR beside each miss.</p><a class="go" href="lessons/">See all {len(lessons)} lessons &rarr;</a></li>
    <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten Noetic-style Grade 5 tests with worked answer keys.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
   </ol>
@@ -703,21 +694,19 @@ def page_home(lessons):
  <div class="wrap">
   <h2 id="inside-h">See inside</h2>
   {samples(root)}
-  <p class="sec-cta" data-cta-watch><a class="btn btn-primary btn-lg btn-wide" href="{root}free/">Get the free test</a></p>
  </div>
 </section>
 
 
 <section class="sec sec-alt">
  <div class="wrap">
-  <div class="sec-head"><h2 id="contests-h">Pick your contest</h2><a class="go" href="contests/">Compare all contests &rarr;</a></div>
+  <div class="sec-head"><h2 id="contests-h">Pick your contest</h2><a class="go" href="contests/">Parents' guide to contests &rarr;</a></div>
   <div class="contests contests-short">{''.join(cards)}</div>
  </div>
 </section>
 <section class="sec" aria-label="Questions parents ask">
  <div class="wrap">{faq_html}</div>
 </section>
-{test_cta(root, compact=True)}
 """
     body += foot(root)
     write("index.html", body)
@@ -856,13 +845,13 @@ def page_lesson(l, lessons):
     {also}
    </aside>
   </div>
-  <aside class="test-box" data-cta-watch>
+  <aside class="test-box">
    <div>
-    <p class="eyebrow">Free diagnostic test</p>
+    <p class="eyebrow">Diagnostic test</p>
     <h2>Which keys does your child still need?</h2>
-    <p>Find out free. Every miss links to its lesson.</p>
+    <p>Every miss links to its lesson.</p>
    </div>
-   <a class="btn btn-primary btn-lg" href="{root}free/">Get the free test</a>
+   <a class="btn btn-primary btn-lg" href="{root}free/">Get the test</a>
   </aside>
   {pn}
  </div>
@@ -1018,7 +1007,7 @@ def page_combo(lessons, g, k):
 </section>
 <section class="sec sec-tight"><div class="wrap">{"".join(blocks)}{glance(k)}{inner}</div></section>
 """
-    body += test_cta(root, compact=True, contest=k, grade=g) + foot(root)
+    body += foot(root)
     write(f"{slug}/index.html", body)
 
 
@@ -1032,10 +1021,10 @@ CONTEST_FACTS = {
                      q=30, mins=75, pace_label="Pace, grades 5 and 6"),
     "noetic": dict(who="Grades 2 to 5, one test for each grade",
                    rows=[("Questions", "20 short-answer problems"),
-                         ("Time", "45 minutes, no calculator"),
+                         ("Time", "50 minutes online, no calculator"),
                          ("When", "Fall and Spring"),
                          ("Difficulty", "Problems 1 to 6 easy, 7 to 14 medium, 15 to 20 hard")],
-                   q=20, mins=45),
+                   q=20, mins=50),
     "mathcounts": dict(who="Grades 6 to 8",
                        rows=[("Sprint round", "30 problems in 40 minutes, no calculator"),
                              ("Target round", "8 problems, given in pairs"),
@@ -1091,8 +1080,6 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
     top = (f'<div class="sk-top"><p class="sk-count"><b>{len(lessons)}</b> key moves in {len(topic_groups(lessons))} topics'
            f'{f", {n_live} with a video now" if 0 < n_live < len(lessons) else ""}.</p>'
            f'<div class="sk-links">'
-           + (f'<a class="btn btn-primary" href="{free_href(root, tests if isinstance(tests, str) else None)}">Free diagnostic test</a>'
-              if tests is True or any(t["diag"] and t["contest"] == tests for t in TEST_SETS) else "")
            + (f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>'
               if tests is True or any(t["practice"] and t["contest"] == tests for t in TEST_SETS) else "")
            + f'<a class="btn btn-ghost-d" href="{root}lessons/">Watch as videos</a></div></div>'
@@ -1120,7 +1107,8 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
 </section>
 <section class="sec sec-tight"><div class="wrap">{extra}{glance(tests) if isinstance(tests, str) else ""}{inner}</div></section>
 """
-    body += test_cta(root, compact=True, contest=tests if isinstance(tests, str) else None) + foot(root)
+    has_box = isinstance(tests, str) and any(t["diag"] and t["contest"] == tests for t in TEST_SETS)
+    body += ("" if has_box else test_cta(root, contest=tests if isinstance(tests, str) else None)) + foot(root)
     write(f"{slug}/index.html", body)
 
 
@@ -1188,8 +1176,8 @@ def moems_section(root, shop):
     <p class="eyebrow">Start here</p>
     <h2>MOEMS-style diagnostic</h2>
     <p class="price"><b>Free</b></p>
-    <ul class="facts-row"><li>PDF</li><li>Answer key</li><li>Free to share</li></ul>
-    <a class="btn btn-primary btn-lg" href="{free_href(root, "olympiad", 5)}">Get the free test</a>
+    <ul class="facts-row"><li>PDF</li><li>Answer key</li><li>Share with your class</li></ul>
+    <a class="btn btn-primary btn-lg" href="{free_href(root, "olympiad", 5)}">Get the diagnostic</a>
    </div>
    <div class="plan">
     <p class="eyebrow eyebrow-n">One test</p>
@@ -1236,7 +1224,7 @@ def page_tests(lessons, shop):
  <div class="wrap">
   <p class="eyebrow">Practice tests</p>
   <h1>Practice tests</h1>
-  <p class="lead">Real contest length, with a worked answer key. Start free.</p>
+  <p class="lead">Real contest length, with a worked answer key.</p>
   <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a></p>
  </div>
 </section>
@@ -1249,8 +1237,8 @@ def page_tests(lessons, shop):
     <p class="eyebrow">Start here</p>
     <h2>Noetic-style diagnostic</h2>
     <p class="price"><b>Free</b></p>
-    <ul class="facts-row"><li>PDF</li><li>Answer key</li><li>Free to share</li></ul>
-    <a class="btn btn-primary btn-lg" href="{root}free/" data-cta-watch>Get the free test</a>
+    <ul class="facts-row"><li>PDF</li><li>Answer key</li><li>Share with your class</li></ul>
+    <a class="btn btn-primary btn-lg" href="{root}free/">Get the diagnostic</a>
    </div>
    <div class="plan">
     <p class="eyebrow eyebrow-n">One test</p>
@@ -1279,7 +1267,7 @@ def page_tests(lessons, shop):
   <h2>Compare</h2>
   <div class="cmp-wrap">
    <table class="cmp">
-    <thead><tr><th scope="col"><span class="vh">Feature</span></th><th scope="col">Free test</th><th scope="col">One test</th><th scope="col" class="cmp-best">Pack</th></tr></thead>
+    <thead><tr><th scope="col"><span class="vh">Feature</span></th><th scope="col">Diagnostic</th><th scope="col">One test</th><th scope="col" class="cmp-best">Pack</th></tr></thead>
     <tbody>
      <tr><th scope="row">Problems</th><td>20</td><td>20</td><td class="cmp-best">200</td></tr>
      <tr><th scope="row">Easy to hard, 45 min</th><td>{YES}</td><td>{YES}</td><td class="cmp-best">{YES}</td></tr>
@@ -1303,7 +1291,6 @@ def page_tests(lessons, shop):
    </ul>
   </details>
   {faq_html}
-  <p class="sec-cta"><a class="btn btn-primary btn-lg btn-wide" href="{root}free/">Start with the free test</a></p>
  </div>
 </section>
 """
@@ -1332,9 +1319,9 @@ def free_result(root, t):
     else:
         paid = '<p>Practice tests coming soon.</p>'
     return f"""<div class="fres" data-key="{t['key']}">
-   <div class="fres-card fres-free"><p class="eyebrow">Free</p><h2>{t['label']} diagnostic, {grades_label(t['grades'])}</h2>
+   <div class="fres-card fres-free"><h2>{t['label']} diagnostic, {grades_label(t['grades'])}</h2>
     <p>Printable PDF with the answer key.</p>
-    <div class="fres-btns"><a class="btn btn-primary btn-lg" href="{diag_url(t)}" rel="noopener">Download free test</a></div></div>
+    <div class="fres-btns"><a class="btn btn-primary btn-lg" href="{diag_url(t)}" rel="noopener">Download PDF</a></div></div>
    <div class="fres-card fres-paid"><p class="eyebrow">Practice tests</p><h2>{t['label']} practice tests</h2>{paid}</div>
   </div>"""
 
@@ -1344,7 +1331,7 @@ def page_free():
     a ready diagnostic downloads that test after the form, every other pick says Coming soon (assets/js/site.js).
     ?contest=noetic&grade=5 preselects, so grade and contest pages link straight to their own test."""
     root = "../"
-    faq_html, _ = faq(("free", "misses", "share", "original"), title="Questions")
+    faq_html, _ = faq(("misses", "share", "original"), title="Questions")
     ready = {}  # contest -> {grade: [test key, label, who]}
     for t in TEST_SETS:
         if t["diag"]:
@@ -1368,12 +1355,11 @@ def page_free():
     body += nav(root, "free")
     body += f"""<section class="hero hero-free">
  <div class="wrap">
-  <p class="eyebrow eyebrow-y">Free</p>
   <h1>Free diagnostic test</h1>
   <p class="lead">Pick your contest and grade, then download. No sign-up.</p>
   {picker}
   <div class="fres-list">{"".join(free_result(root, t) for t in TEST_SETS if t["diag"])}</div>
-  <p class="teacher-note"><b>Teachers:</b> it is free to copy for your class.</p>
+  <p class="teacher-note"><b>Teachers:</b> copy it for your class.</p>
   <p class="test-note test-note-d">Every problem is our own. Not affiliated with any contest.</p>
  </div>
 </section>
@@ -1382,7 +1368,7 @@ def page_free():
   <ul class="ticks ticks-3">
    <li>Contest-style problems, easy to hard</li>
    <li>Answer key on the last page</li>
-   <li>Free for home and classroom use</li>
+   <li>For home or the classroom</li>
   </ul>
   {samples(root, ("diagnostic", "key"))}
  </div>
@@ -1490,7 +1476,7 @@ def page_about(lessons):
   <div>
    <h2>How we make every test</h2>
    <ul class="ab-cards">{made_html}</ul>
-   <p><a class="btn btn-primary" href="{root}free/">See for yourself: get the free test</a></p>
+   <p><a class="btn btn-primary" href="{root}free/">See for yourself: try the diagnostic</a></p>
   </div>
   <img class="ab-sheet" src="{root}assets/img/sample-test-page1.webp" alt="Page 1 of a Key Move Math practice test" width="560" height="725" loading="lazy">
  </div>
@@ -1503,7 +1489,7 @@ def page_about(lessons):
  </div>
 </section>
 """
-    body += test_cta(root, compact=True) + foot(root)
+    body += foot(root)
     write("about/index.html", body)
 
 
@@ -1545,7 +1531,7 @@ def page_plan():
     root = "../"
     weeks = [
         ("Week 1", "Find the gaps",
-         f'Take the <a href="{root}free/">free diagnostic</a> with a timer. Mark every miss, then watch the lesson for one miss a day.'),
+         f'Take the <a href="{root}free/">diagnostic test</a> with a timer. Mark every miss, then watch the lesson for one miss a day.'),
         ("Week 2", "One key move a day",
          f'Watch one <a href="{root}lessons/">lesson</a>. Try each problem on pause. Then your child says the rule back in one sentence.'),
         ("Week 3", "Mix and time",
@@ -1582,42 +1568,156 @@ def page_plan():
  </div>
 </div></section>
 """
-    body += test_cta(root, compact=True) + foot(root)
+    body += foot(root)
     write("study-plan/index.html", body)
 
 
-COMPARE = [  # contest, grades, questions, time, answers (same source as CONTEST_FACTS)
-    ("kangaroo", "1 to 6", "24 or 30", "75 min", "Multiple choice"),
-    ("noetic", "2 to 5", "20", "45 min", "Short answer"),
-    ("mathcounts", "6 to 8", "Sprint: 30", "Sprint: 40 min", "Short answer, 4 rounds"),
-    ("amc8", "8 and below", "25", "40 min", "Multiple choice"),
-    ("amc10", "10 and below", "25", "75 min", "Multiple choice"),
-    ("amc12", "12 and below", "25", "75 min", "Multiple choice"),
-    ("olympiad", "4 to 8 (MOEMS)", "5 per contest", "30 min per contest", "Short answer, 5 contests a year"),
+# /contests/ parents' guide (Nov 12, Jian: "more informative, like what the contests are for, difficulty, path to
+# college, why we take those"). Facts checked Nov 12, 2026 on each contest's own site: maa.org (AMC page and
+# maa-invitational-competitions), mathcounts.org (competition series, critical dates), mathkangaroo.org (logistics,
+# FAQ, about), noetic-learning.com/mathcontest (home, FAQ, procedures), moems.org (home, about, contests).
+# Difficulty is our own 1 to 5 view and the page says so.
+GUIDE = [
+    dict(k="kangaroo", name="Math Kangaroo", grades="Grades 1 to 12", ours="Our lessons: grades 1 to 6", diff=2,
+         dl="Easy start, hard finish",
+         what="An international contest of picture puzzles, logic and counting. A friendly first contest.",
+         rows=[("Run by", "Math Kangaroo USA, a nonprofit. An international committee writes the questions."),
+               ("Test day", "24 questions (grades 1 to 4) or 30 (grade 5 and up) in 75 minutes. Multiple choice, no calculator, no penalty for a wrong answer."),
+               ("When", "Once a year, the third Thursday in March. Next: March 18, 2027."),
+               ("How to enter", "Sign up yourself and test at a registered center."),
+               ("Why take it", "Low pressure and open to any child who reads on their own. Every child gets a certificate."),
+               ("Where it leads", "It stands alone. The top 20 in the country and top 3 in each state are recognized.")]),
+    dict(k="noetic", name="Noetic Math Contest", grades="Grades 2 to 8", ours="Our lessons: grades 2 to 5", diff=2,
+         dl="Gentle to medium",
+         what="A school contest, twice a year, with word problems that reward a clean method.",
+         rows=[("Run by", "Noetic Learning."),
+               ("Test day", "20 problems with number answers, no calculator. The online version gives 50 minutes."),
+               ("When", "Fall (Nov 12 to 25, 2026) and spring (Apr 1 to 15, 2027)."),
+               ("How to enter", "Through a school team, or the At-Home edition, which gives an unofficial score."),
+               ("Why take it", "Two tries a year, so you can see growth. The top half nationally get a ribbon, the top 10% a medal."),
+               ("Where it leads", "It stands alone. A good step toward MOEMS and MATHCOUNTS.")]),
+    dict(k="olympiad", name="MOEMS (Math Olympiad)", grades="Grades 4 to 8", ours="Our tests: grades 4 to 6", diff=3,
+         dl="Few problems, deep thinking",
+         what="Five short contests, one a month, that teach out-of-the-box problem solving.",
+         rows=[("Run by", "MOEMS, a nonprofit running since 1979."),
+               ("Test day", "5 problems in 30 minutes. Division E is grades 4 to 6, Division M grades 6 to 8."),
+               ("When", "One contest a month, November to March."),
+               ("How to enter", "Through a school or homeschool team of up to 35 students."),
+               ("Why take it", "A whole season builds steady habits. Patches for the top half, pins for the top 10%."),
+               ("Where it leads", "It stands alone. Strong practice for MATHCOUNTS and the AMC 8.")]),
+    dict(k="mathcounts", name="MATHCOUNTS", grades="Grades 6 to 8", ours="Our lessons: grades 6 to 8", diff=4,
+         dl="Speed and accuracy, harder at each level",
+         what="The big middle school contest, with individual rounds, a team round and a fast head-to-head finale.",
+         rows=[("Run by", "The MATHCOUNTS Foundation."),
+               ("Test day", "Four rounds over about 3 hours. The Sprint round is 30 problems in 40 minutes with no calculator."),
+               ("When", "Chapter contests in February 2027, state in March, national May 9 to 10, 2027."),
+               ("How to enter", "Through a school team. If the school doesn't take part, a student can enter on their own."),
+               ("Why take it", "Team spirit and a clear ladder to climb."),
+               ("Where it leads", "School, then chapter, state and national. The top 4 in each state go to nationals, all expenses paid.")]),
+    dict(k="amc8", name="AMC 8", grades="Grade 8 and below", ours="Lessons coming soon", diff=3,
+         dl="It climbs: the last problems are hard",
+         what="The first contest on the AMC ladder, with problems beyond the school curriculum.",
+         rows=[("Run by", "The Mathematical Association of America (MAA)."),
+               ("Test day", "25 questions in 40 minutes. Students must be under 15.5 on test day."),
+               ("When", "Once a year. Next: January 21 to 27, 2027."),
+               ("How to enter", "Through a school or a host site such as a college, math circle or learning center. Parents can't register with the MAA directly."),
+               ("Why take it", "A great first look at real contest math, and a goal for the middle school years."),
+               ("Where it leads", "To the AMC 10 in high school. The AMC 8 itself doesn't lead to the AIME.")]),
+    dict(k="amc10", name="AMC 10", grades="Grade 10 and below", ours="Lessons coming soon", diff=4,
+         dl="Hard",
+         what="High school algebra, geometry, counting and number theory, with no precalculus.",
+         rows=[("Run by", "The MAA."),
+               ("Test day", "25 multiple choice questions in 75 minutes. Students must be under 17.5 on test day."),
+               ("When", "Every November, on an A date and a B date. A student can take both."),
+               ("How to enter", "Through a school or host site, like the AMC 8."),
+               ("Why take it", "The MAA calls it the first step toward the US team for the International Math Olympiad."),
+               ("Where it leads", "At least the top 2.5% are invited to the AIME.")]),
+    dict(k="amc12", name="AMC 12", grades="Grade 12 and below", ours="Lessons coming soon", diff=5,
+         dl="The hardest here",
+         what="Everything on the AMC 10, plus trig, logarithms and complex numbers.",
+         rows=[("Run by", "The MAA."),
+               ("Test day", "25 multiple choice questions in 75 minutes. Students must be under 19.5 on test day."),
+               ("When", "Every November, on the same dates as the AMC 10."),
+               ("How to enter", "Through a school or host site."),
+               ("Why take it", "The main road to the AIME and the USAMO for juniors and seniors."),
+               ("Where it leads", "At least the top 5% are invited to the AIME.")]),
+]
+GUIDE_GRADES = [
+    ("Grades 1 to 3", ["kangaroo", "noetic"], "Noetic starts in grade 2."),
+    ("Grades 4 and 5", ["kangaroo", "noetic", "olympiad"], ""),
+    ("Grade 6", ["kangaroo", "noetic", "olympiad", "mathcounts", "amc8"], ""),
+    ("Grades 7 and 8", ["mathcounts", "amc8", "olympiad", "kangaroo", "noetic"], ""),
+    ("High school", ["amc10", "amc12", "kangaroo"], ""),
 ]
 
 
 def page_compare():
-    """/contests/: every contest side by side, so a parent can see which ones fit their child's grade."""
+    """/contests/: a parents' guide to the contests (Nov 12). One card per contest, then the AMC and MATHCOUNTS
+    ladders and an honest note on college. Kept short enough to skim on a phone."""
     root = "../"
-    rows = "".join(
-        f'<tr><th scope="row"><a href="{root}{CONTESTS[k]["slug"]}/">{e(CONTESTS[k]["name"])}</a></th>'
-        f'<td data-l="Grades">{g}</td><td data-l="Questions">{q}</td><td data-l="Time">{t}</td><td data-l="Answers">{a}</td></tr>'
-        for k, g, q, t, a in COMPARE)
-    body = head(f"Math Contests Compared: Grades, Questions and Time | {NAME}",
-                "Math Kangaroo, Noetic, MATHCOUNTS, AMC 8, AMC 10, AMC 12 and MOEMS side by side: the grades we cover, how many questions, and how long.",
+    by_k = {g["k"]: g for g in GUIDE}
+    jump = "".join(f'<a href="#c-{g["k"]}">{e(g["name"])}</a>' for g in GUIDE)
+    def glink(k):
+        return f'<a href="#c-{k}">{e(by_k[k]["name"])}</a>'
+    grade_rows = "".join(
+        f'<li><b>{e(lab)}</b><span>{", ".join(glink(k) for k in ks)}'
+        + (f'<small>{e(note)}</small>' if note else "") + '</span></li>'
+        for lab, ks, note in GUIDE_GRADES)
+
+    def meter(n):
+        return (f'<span class="cg-meter" role="img" aria-label="Difficulty {n} of 5">'
+                + "".join(f'<i class="{"on" if i < n else ""}"></i>' for i in range(5)) + "</span>")
+
+    cards = "".join(f"""<article class="cg-card" id="c-{g['k']}">
+   <header class="cg-hd"><h2>{e(g['name'])}</h2><p class="cg-gr">{e(g['grades'])}</p></header>
+   <p class="cg-what">{e(g['what'])}</p>
+   <p class="cg-diff"><b>Difficulty</b>{meter(g['diff'])}<span>{e(g['dl'])}</span></p>
+   <dl class="cg-dl">{"".join(f"<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in g['rows'])}</dl>
+   <p class="cg-ft"><a href="{root}{CONTESTS[g['k']]['slug']}/">{e(CONTESTS[g['k']]['short'])} prep &rarr;</a><small>{e(g['ours'])}</small></p>
+  </article>""" for g in GUIDE)
+    amc = [("AMC 8", "Grade 8 and below. Practice for what comes next."),
+           ("AMC 10 or AMC 12", "Every November."),
+           ("AIME", "Top 2.5% on the AMC 10 or top 5% on the AMC 12. 15 questions in 3 hours, answers 0 to 999."),
+           ("USAJMO or USAMO", "Picked by AMC and AIME scores together. Six proof problems over two days."),
+           ("Summer program and US team", "Top scorers go to the MAA's summer program, which picks the team for the International Math Olympiad.")]
+    mc = [("School", "Up to 14 students per school."), ("Chapter", "February."), ("State", "March."),
+          ("National", "Top 4 per state. May 9 to 10, 2027, in Washington, DC.")]
+    ladder = lambda xs: "".join(f'<li><b>{e(a)}</b><span>{e(b)}</span></li>' for a, b in xs)
+    body = head(f"A Parents' Guide to Math Contests: Kangaroo, Noetic, MOEMS, MATHCOUNTS, AMC | {NAME}",
+                "What each math contest is for, who runs it, how hard it is, how to enter and where it leads, from Math Kangaroo and Noetic to MATHCOUNTS, the AMC and the AIME.",
                 "contests/", root)
     body += nav(root, "contests")
     body += f"""<section class="page-head">
  <div class="wrap">
-  <h1>Contests compared</h1>
-  <p class="lead">The grades we cover for each one, and what test day looks like. Tap a contest for its lessons.</p>
+  <h1>A parents' guide to math contests</h1>
+  <p class="lead">What each contest is for, how hard it is, how to enter and where it leads.</p>
+  <p class="cg-jump">{jump}</p>
  </div>
 </section>
-<section class="sec sec-tight"><div class="wrap">
- <table class="cmp"><thead><tr><th scope="col">Contest</th><th scope="col">Grades</th><th scope="col">Questions</th><th scope="col">Time</th><th scope="col">Answers</th></tr></thead>
- <tbody>{rows}</tbody></table>
- <p class="glance-note">Formats can change. Check each contest's own site for dates and rules. We are not affiliated with any of them.</p>
+<section class="sec sec-tight"><div class="wrap cg">
+ <div class="cg-why">
+  <h2>Why kids take contests</h2>
+  <ul class="ticks">
+   <li>The problems are more interesting than homework, at the right stretch.</li>
+   <li>A date on the calendar makes practice stick.</li>
+   <li>Certificates, ribbons and team days build confidence.</li>
+  </ul>
+ </div>
+ <div class="cg-grades">
+  <h2>Which contests fit which grade</h2>
+  <ul class="cg-gl">{grade_rows}</ul>
+ </div>
+ <div class="cg-cards">{cards}</div>
+ <div class="cg-paths">
+  <div class="cg-path"><h2>The AMC ladder</h2><ol class="cg-ladder">{ladder(amc)}</ol></div>
+  <div class="cg-path"><h2>The MATHCOUNTS ladder</h2><ol class="cg-ladder">{ladder(mc)}</ol></div>
+ </div>
+ <div class="cg-college">
+  <h2>Do contests help with college?</h2>
+  <p>No contest guarantees admission, and most strong applicants never take the AIME. A result is an achievement a student can list on applications, and reaching the AIME or beyond is rare by design.</p>
+  <p>The lasting gain is the skill: reading a problem carefully, trying a plan and checking it. That carries into school math and later STEM classes.</p>
+ </div>
+ <p class="glance-note">Facts are from each contest's own site, checked November 12, 2026. Rules and dates can change, so check there before you register. Difficulty is our own view. We are not affiliated with any contest.</p>
 </div></section>
 """
     body += test_cta(root, compact=True) + foot(root)
@@ -1742,7 +1842,7 @@ def main():
         if live and g != "5":
             gt = [t for t in TEST_SETS if int(g) in t["grades"] and test_live(t)]
             page_group(f"grade-{g}", f"Grade {g} Competition Math: Free Tests and Lessons | {NAME}", f"Grade {g} math",
-                       f"The key moves that come up most on Grade {g} contests, grouped by topic. Pick a contest for its free test.",
+                       f"The key moves that come up most on Grade {g} contests, grouped by topic. Pick a contest for its tests.",
                        grade_lessons(lessons, g),
                        f"Free Grade {g} competition math diagnostic tests, by contest.",
                        badge=g, picker=contest_picker(lessons, g, "../"), tests=False,

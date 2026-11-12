@@ -16,17 +16,6 @@
   window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   if (top) top.addEventListener("focusin", function () { top.classList.remove("top-hide"); });
 
-  // phones: the bottom free-test bar hides while the page's own free-test button is on screen
-  var bar = document.getElementById("mcta"), watch = document.querySelectorAll("[data-cta-watch]");
-  if (bar && watch.length && "IntersectionObserver" in window) {
-    var seen = new Set();
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (en) { if (en.isIntersecting) seen.add(en.target); else seen.delete(en.target); });
-      bar.classList.toggle("mcta-off", seen.size > 0);
-    });
-    watch.forEach(function (w) { io.observe(w); });
-  }
-
   // sample pages: tap one to read it full screen here, with previous and next (Nov 11). Without JS,
   // or without <dialog>, the link simply opens the big image.
   var lb = null, lbItems = [], lbAt = 0;
@@ -307,7 +296,6 @@
       c.classList.toggle("cdx-open", x.open);
       set(c, "name", x.it.name); set(c, "when", x.ev[2]);
       set(c, "left", x.open ? "Open now, " + short(x.target - now) + " left" : "Starts in " + short(x.target - now));
-      c.querySelector('[data-f="href"]').setAttribute("href", x.it.href);
     });
     for (var k = live.length - 1; k < cards.length; k++) cards[k].hidden = true;
   }
