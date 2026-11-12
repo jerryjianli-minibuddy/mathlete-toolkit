@@ -854,7 +854,7 @@ def combo_tests(g, k):
 
 def combo_live(lessons, g, k):
     """A grade and contest pair gets its own page once it has a lesson or a live test."""
-    return offered(k, g) and bool(combo_lessons(lessons, g, k)) or any(test_live(t) for t in combo_tests(g, k))
+    return offered(k, g) and bool(dict(GRADES).get(str(g))) and bool(combo_lessons(lessons, g, k)) or any(test_live(t) for t in combo_tests(g, k))
 
 
 def contest_picker(lessons, g, root, current=None):
