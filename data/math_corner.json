@@ -139,6 +139,26 @@
    "img_page": "https://commons.wikimedia.org/wiki/File:Gerd_Faltings_MFO.jpg"
   },
   {
+   "slug": "multiply-by-11-trick",
+   "date": "2026-11-12",
+   "kind": "fact",
+   "tag": "Trick",
+   "title": "Multiply by 11 in your head",
+   "desc": "A quick trick to multiply any two-digit number by 11 in your head, why it works, and what to do when the middle digits carry. Explained for kids.",
+   "summary": "34 × 11 = 374. Split the two digits apart and put their sum in the middle.",
+   "formula": "34 × 11 → 3 (3 + 4) 4 = 374",
+   "body": [
+    "To multiply a two-digit number by 11, pull its digits apart and write their sum in between. For 34 × 11, the digits are 3 and 4, and 3 + 4 = 7, so the answer is 374.",
+    "Why it works: 34 × 11 is 34 × 10 plus 34, which is 340 + 34. The 3 from 340 and the 4 from 34 land in the same tens column, so that column becomes 3 + 4.",
+    "If the sum is 10 or more, write only its ones digit in the middle and add 1 to the first digit. For 78 × 11, 7 + 8 = 15, so the middle is 5 and the 7 becomes 8: the answer is 858.",
+    "Show a friend: ask them to pick any two-digit number, then say the answer before they reach for a calculator. Try 45 × 11 = 495 and 99 × 11 = 1089."
+   ],
+   "img": "multiply-by-11-trick.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "34 times 11: the digits 3 and 4 split apart with their sum 7 in a yellow box between them, making 374"
+  },
+  {
    "slug": "add-1-to-100-in-seconds",
    "date": "2026-11-12",
    "kind": "fact",
