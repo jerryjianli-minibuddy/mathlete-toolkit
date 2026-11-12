@@ -957,3 +957,11 @@ main .cdx :focus-visible { outline-color: var(--navy); }
   .nw-all .nw-links a { font-size: .8rem; }
 }
 @media (max-width: 599px) { .nw-all .nw-art img { object-fit: contain; } }
+/* Black Friday banner (shown Nov 27 to Dec 1 only, by a date check in the page) */
+.sale { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; background: var(--navy); color: #fff; border-radius: 14px; padding: 11px 14px; margin: 0 0 12px; box-shadow: 0 4px 0 rgba(14, 26, 50, .18); }
+.sale[hidden] { display: none; }
+.sale p { margin: 0; font-size: .92rem; line-height: 1.4; }
+.sale b { color: var(--yellow); }
+.sale code { background: var(--yellow); color: var(--navy); font-weight: 900; padding: 1px 7px; border-radius: 6px; font-family: inherit; letter-spacing: .04em; }
+.sale a { background: var(--pink); color: #fff; font-weight: 900; text-decoration: none; border-radius: 999px; padding: 7px 14px; font-size: .88rem; white-space: nowrap; }
+.sale-page { margin: 16px 0 0; }

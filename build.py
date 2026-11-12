@@ -721,6 +721,24 @@ def page_mc_post(n):
     write(path + "index.html", body)
 
 
+# Black Friday sale (Nov 12, Jian approved: 25% off every Payhip test, Nov 27 to Dec 1, 2026 PT). The banner is in the
+# page but hidden; a small script shows it only inside the window, so it appears and disappears on its own.
+# "code" is the Payhip coupon; with no code the banner is not built at all.
+SALE = dict(code="BLACKFRIDAY25", start="2026-11-27T00:00:00-08:00", end="2026-12-01T23:59:59-08:00",
+            when="Nov 27 to Dec 1", off="25% off")
+
+
+def sale_banner(root, cls=""):
+    if not SALE["code"]:
+        return ""
+    return (f'<div class="sale{cls}" data-sale-start="{SALE["start"]}" data-sale-end="{SALE["end"]}" hidden>'
+            f'<p><b>Black Friday:</b> {SALE["off"]} every practice test, {SALE["when"]}. '
+            f'Use code <code>{e(SALE["code"])}</code> at checkout.</p>'
+            f'<a href="{root}mock-tests/">Shop tests &rarr;</a></div>'
+            '<script>(function(){var b=document.currentScript.previousElementSibling,n=Date.now();'
+            'if((n>=Date.parse(b.dataset.saleStart)&&n<=Date.parse(b.dataset.saleEnd))||/[?&]salepreview/.test(location.search))b.hidden=false;})();</script>')
+
+
 def countdown(root):
     """Contest countdown strip at the very top of the home page (Nov 12, Jian: "put it on the top... more visual and
     striking"). The soonest contest gets big ticking day/hour/min/sec tiles; the rest are small cards. Only the soonest
@@ -763,6 +781,7 @@ def countdown(root):
         for _, c, ev in items[1:])
     return f"""<section class="cdx" aria-labelledby="cdx-h" data-countdown>
  <div class="wrap">
+  {sale_banner(root)}
   <div class="cdx-top"><h2 id="cdx-h">Contest countdown</h2><span class="cdx-live">Live</span></div>
   {feat}
   <ol class="cdx-list">{cards}</ol>
@@ -1388,6 +1407,7 @@ def page_tests(lessons, shop):
   <h1>Practice tests</h1>
   <p class="lead">Real contest length, with a worked answer key.</p>
   <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a></p>
+  {sale_banner(root, " sale-page")}
  </div>
 </section>
 <section class="sec sec-tight" id="noetic">
