@@ -885,34 +885,45 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .tc-soon a, .tc-club .small a { color: var(--navy); font-weight: 800; }
 .tc-club .small { margin: 0; color: var(--muted); }
 
-/* Math news strip under the countdown, and /news (Nov 12) */
-.nw { background: #fff; border-bottom: 1px solid var(--line); padding: 14px 0 16px; }
-.nw-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-.nw-top h2 { margin: 0; font-size: 1.05rem; font-weight: 900; letter-spacing: .02em; text-transform: uppercase; color: var(--navy); }
-.nw-top a { color: var(--navy); font-weight: 800; font-size: .92rem; text-decoration: none; white-space: nowrap; }
+/* Math Corner strip on the home page and cards (restyled Nov 12 PM: softer cards, same crop on every picture) */
+.nw { background: #fff; border-bottom: 1px solid var(--line); padding: 22px 0 24px; }
+.nw-top { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+.nw-top h2 { margin: 0; font-size: 1.1rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; color: var(--navy); }
+.nw-top a { margin-left: auto; color: var(--navy); font-weight: 800; font-size: .9rem; text-decoration: none; white-space: nowrap; }
 .nw-top a:hover { text-decoration: underline; }
-.nw-list { list-style: none; margin: 0; padding: 0 0 4px; display: grid; grid-auto-flow: column; grid-auto-columns: 82%; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
-.nw-card, .nw-row { background: var(--cream); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; scroll-snap-align: start; }
-.nw-card h3, .nw-row h3 { margin: 4px 0 6px; font-size: 1rem; line-height: 1.3; }
-.nw-card h3 a, .nw-row h3 a { color: var(--navy); text-decoration: none; }
-.nw-card h3 a:hover, .nw-row h3 a:hover { text-decoration: underline; }
-.nw-card p, .nw-row p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
-.nw-meta { display: flex; align-items: center; gap: 8px; font-size: .78rem !important; font-weight: 700; }
-.nw-tag { font-size: .68rem; font-weight: 900; text-transform: uppercase; letter-spacing: .07em; padding: 2px 8px; border-radius: 6px; color: #fff; background: var(--navy2); }
+.nw-swipe { font-size: .78rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.nw-scroll { position: relative; margin: 0 -16px; }
+.nw-scroll::after { content: ""; position: absolute; top: 0; right: 0; bottom: 8px; width: 28px; pointer-events: none; background: linear-gradient(90deg, rgba(255,255,255,0), #fff); }
+.nw-list { list-style: none; margin: 0; padding: 4px 16px 12px; display: grid; grid-auto-flow: column; grid-auto-columns: min(74%, 300px); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; scrollbar-width: none; }
+.nw-list::-webkit-scrollbar { display: none; }
+.nw-card { position: relative; display: flex; flex-direction: column; background: #fff; border: 1px solid rgba(14, 26, 50, .07); border-radius: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(14, 26, 50, .05), 0 8px 22px rgba(14, 26, 50, .08); scroll-snap-align: start; transition: transform .18s ease, box-shadow .18s ease; }
+.nw-card:hover { transform: translateY(-3px); box-shadow: 0 2px 4px rgba(14, 26, 50, .06), 0 14px 32px rgba(14, 26, 50, .13); }
+.nw-pic { position: relative; display: block; aspect-ratio: 16 / 9; background: var(--navy); overflow: hidden; }
+.nw-pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.nw-pic::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14, 26, 50, .28) 0%, rgba(14, 26, 50, 0) 38%, rgba(14, 26, 50, 0) 70%, rgba(14, 26, 50, .18) 100%); }
+.nw-tag { position: absolute; top: 10px; left: 10px; z-index: 1; font-size: .64rem; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; padding: 4px 9px; border-radius: 999px; color: #fff; background: var(--navy2); box-shadow: 0 2px 6px rgba(0, 0, 0, .18); }
 .nw-prize { background: var(--pink); } .nw-discovery { background: var(--teal); } .nw-quantum { background: #6B4FD8; } .nw-contest { background: var(--navy2); }
-.nw-src { font-size: .78rem !important; font-weight: 700; color: var(--muted); }
-@media (min-width: 900px) { .nw-list { grid-auto-columns: 1fr; overflow: visible; } }
-.nw-page { max-width: 760px; }
+.nw-body { display: flex; flex-direction: column; flex: 1; padding: 12px 15px 14px; }
+.nw-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 6px; margin: 0 0 4px !important; font-size: .74rem !important; font-weight: 700; color: var(--muted); letter-spacing: .02em; }
+.nw-src::before { content: "\00B7"; margin-right: 6px; }
+.nw-card h3 { margin: 0 0 6px; font-size: 1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.nw-card h3 a { color: var(--navy); text-decoration: none; }
+.nw-card h3 a::after { content: ""; position: absolute; inset: 0; z-index: 0; }
+.nw-card h3 a:hover { text-decoration: underline; }
+.nw-sum { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.nw-links { position: relative; z-index: 1; margin-top: auto !important; padding-top: 10px; }
+@media (min-width: 900px) {
+  .nw-scroll { margin: 0; } .nw-scroll::after, .nw-swipe { display: none; }
+  .nw-list { grid-auto-columns: 1fr; overflow: visible; padding: 4px 0 8px; }
+}
 .nw-month:first-child { margin-top: 0; }
-.nw-month { font-size: 1.1rem; margin: 26px 0 10px; color: var(--navy); }
-.nw-all { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.nw-month { font-size: .82rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; margin: 26px 0 12px; color: var(--muted); }
+.nw-all { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
 .nw-all .nw-card { scroll-snap-align: none; }
 /* Math Corner (Nov 12): blog page and posts */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.nw-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 8px !important; }
-.nw-links a { color: var(--navy); font-weight: 800; font-size: .88rem; text-decoration: none; }
+.nw-links a { color: var(--navy); font-weight: 800; font-size: .85rem; text-decoration: none; }
 .nw-links a:hover { text-decoration: underline; }
-.nw-links .nw-src { margin: 0 !important; }
 .nw-proof { background: var(--navy2); } .nw-trick { background: #D9822B; } .nw-pattern { background: var(--teal); } .nw-surprise { background: var(--pink); }
 .nw-page h2 { font-size: 1.3rem; color: var(--navy); margin: 0 0 12px; }
 .nw-page .nw-h2 { margin-top: 34px; }
@@ -928,10 +939,8 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .mc-more h2 { font-size: 1.1rem; margin: 0 0 8px; color: var(--navy); }
 .mc-more ul { margin: 0; padding-left: 18px; } .mc-more li { margin: 6px 0; } .mc-more a { color: var(--navy); font-weight: 700; }
 /* Math Corner pictures (Nov 12): card thumbnail on top, figure with credit on each post */
-.nw-img { display: block; width: calc(100% + 28px); max-width: none; height: auto; aspect-ratio: 16 / 9; object-fit: cover; margin: -12px -14px 10px; border-radius: 13px 13px 0 0; background: var(--navy); }
 .mc-fig { margin: 18px 0 22px; }
 .mc-fig img { display: block; max-width: 100%; width: auto; height: auto; max-height: 460px; margin: 0 auto; border-radius: 14px; background: var(--navy); }
 .mc-fig figcaption { margin-top: 8px; font-size: .8rem; color: var(--muted); text-align: center; line-height: 1.4; }
 .mc-fig figcaption a { color: var(--muted); }
 .nw-page { max-width: 980px; }
-.nw-all { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); align-items: start; }

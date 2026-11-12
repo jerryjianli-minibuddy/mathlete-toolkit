@@ -593,17 +593,17 @@ def mc_card(n, root, cls="nw-card"):
     """One Math Corner card. The headline opens our post page; a news card also links straight to the original article
     (Nov 12, Jian: news should take people to the original article)."""
     href = f'{root}math-corner/{n["slug"]}/'
+    foot_ = f'<p class="nw-links"><a href="{href}" aria-hidden="true" tabindex="-1">See why it works &rarr;</a></p>'
+    src, w, h, alt = mc_pic(n, card=True)
+    tag = f'<span class="nw-tag nw-{e(n["tag"].lower())}">{e(n["tag"])}</span>'
+    src_name = f'<span class="nw-src">{e(n["source"])}</span>' if n["kind"] == "news" else ""
     if n["kind"] == "news":
         foot_ = (f'<p class="nw-links"><a class="nw-out" href="{e(n["url"])}" rel="noopener" target="_blank">'
-                 f'Read the article<span class="sr-only"> (opens {e(n["source"])})</span> &#8599;</a>'
-                 f'<span class="nw-src">{e(n["source"])}</span></p>')
-    else:
-        foot_ = f'<p class="nw-links"><a href="{href}">See why it works &rarr;</a></p>'
-    src, w, h, alt = mc_pic(n, card=True)
-    pic = f'<img class="nw-img" src="{root}{src}" alt="{e(alt)}" width="{w}" height="{h}" loading="lazy" decoding="async">'
-    return (f'<li class="{cls}">{pic}<p class="nw-meta"><span class="nw-tag nw-{e(n["tag"].lower())}">{e(n["tag"])}</span>'
-            f'<time datetime="{n["date"]}">{mc_date(n["date"])}</time></p>'
-            f'<h3><a href="{href}">{e(n["title"])}</a></h3><p>{e(n["summary"])}</p>{foot_}</li>')
+                 f'Read the article<span class="sr-only"> (opens {e(n["source"])})</span> &#8599;</a></p>')
+    return (f'<li class="{cls}"><a class="nw-pic" href="{href}" tabindex="-1" aria-hidden="true">'
+            f'<img src="{root}{src}" alt="{e(alt)}" width="{w}" height="{h}" loading="lazy" decoding="async"></a>{tag}'
+            f'<div class="nw-body"><p class="nw-meta"><time datetime="{n["date"]}">{mc_date(n["date"])}</time>{src_name}</p>'
+            f'<h3><a href="{href}">{e(n["title"])}</a></h3><p class="nw-sum">{e(n["summary"])}</p>{foot_}</div></li>')
 
 
 def mc_strip(root):
@@ -622,8 +622,8 @@ def mc_strip(root):
     cards = "".join(mc_card(n, root) for n in pick)
     return f"""<section class="nw" aria-labelledby="nw-h">
  <div class="wrap">
-  <div class="nw-top"><h2 id="nw-h">Math Corner</h2><a href="{root}math-corner/">More math news and facts &rarr;</a></div>
-  <ul class="nw-list">{cards}</ul>
+  <div class="nw-top"><h2 id="nw-h">Math Corner</h2><span class="nw-swipe" aria-hidden="true">Swipe for more &rarr;</span><a href="{root}math-corner/">See all<span class="sr-only"> math news and facts</span> &rarr;</a></div>
+  <div class="nw-scroll"><ul class="nw-list">{cards}</ul></div>
  </div>
 </section>
 """
