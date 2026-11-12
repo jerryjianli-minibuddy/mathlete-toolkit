@@ -235,7 +235,7 @@
    "img": "divisible-by-9-digit-trick.svg",
    "img_w": 640,
    "img_h": 360,
-   "img_alt": "The digit test for 9: 4 plus 5 plus 3 plus 6 is 18, a multiple of 9, so 4536 is divisible by 9"
+   "img_alt": "The digit test for 9: 4 plus 5 plus 7 plus 2 is 18, a multiple of 9, so 4572 is divisible by 9"
   },
   {
    "slug": "why-primes-never-run-out",
