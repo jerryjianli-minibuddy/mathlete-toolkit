@@ -263,33 +263,54 @@
   });
 })();
 
-/* Home page contest countdown (Nov 12). Each row carries its events [start, end, label] as local dates; a window
-   counts down to its first day, then shows how long it stays open, then moves on to the row's next event. */
+/* Contest countdown at the top of the home page (Nov 12). Each contest carries its events; the soonest one
+   (open windows first) fills the big tiles and ticks every second; the rest are small cards, soonest first. */
 (function () {
-  var list = document.querySelector("[data-countdown]");
-  if (!list) return;
-  var rows = Array.prototype.slice.call(list.querySelectorAll(".cd-row"));
+  var box = document.querySelector("[data-countdown]");
+  if (!box) return;
+  var feat = box.querySelector("[data-cd-feat]"), list = box.querySelector(".cdx-list");
+  var all = [feat].concat(Array.prototype.slice.call(list.querySelectorAll(".cdx-card")));
+  var items = all.map(function (el) {
+    return { name: el.getAttribute("data-name"), note: el.getAttribute("data-note"), href: el.getAttribute("data-href"),
+             evs: JSON.parse(el.getAttribute("data-events") || "[]") };
+  });
   function day(s, end) { var p = s.split("-"); return end ? new Date(+p[0], p[1] - 1, +p[2], 23, 59, 59) : new Date(+p[0], p[1] - 1, +p[2]); }
-  function span(ms) {
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function short(ms) {
     var m = Math.max(0, Math.floor(ms / 60000)), d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60);
-    return d ? d + "d " + h + "h " + (m % 60) + "m" : h + "h " + (m % 60) + "m";
+    return d ? d + "d " + h + "h" : h + "h " + (m % 60) + "m";
   }
+  function set(el, f, v, attr) { var t = el.querySelector('[data-f="' + f + '"]'); if (t) { if (attr) t.setAttribute(attr, v); else t.textContent = v; } }
   function tick() {
-    var now = new Date(), keyed = [];
-    rows.forEach(function (r) {
-      var evs = JSON.parse(r.getAttribute("data-events") || "[]");
-      var ev = evs.filter(function (x) { return day(x[1], true) >= now; })[0];
-      if (!ev) { r.hidden = true; return; }
-      var s = day(ev[0]), e = day(ev[1], true), left = r.querySelector(".cd-left");
-      r.querySelector(".cd-when").textContent = ev[2];
-      var open = s <= now;
-      r.classList.toggle("cd-open", open);
-      left.innerHTML = open ? (ev[0] === ev[1] ? "<b>Today</b>" : "<b>Open now</b><small>ends in " + span(e - now) + "</small>")
-                            : "<small>starts in</small><b>" + span(s - now) + "</b>";
-      keyed.push([open ? 0 : s.getTime(), r]);
+    var now = new Date(), live = [];
+    items.forEach(function (it) {
+      var ev = it.evs.filter(function (x) { return day(x[1], true) >= now; })[0];
+      if (!ev) return;
+      var s = day(ev[0]), e = day(ev[1], true), open = s <= now;
+      live.push({ it: it, ev: ev, open: open, target: open ? e : s, key: open ? 0 : s.getTime(), single: ev[0] === ev[1] });
     });
-    keyed.sort(function (a, b) { return a[0] - b[0]; }).forEach(function (k) { list.appendChild(k[1]); });
+    live.sort(function (a, b) { return a.key - b.key; });
+    if (!live.length) { box.hidden = true; return; }
+    var f = live[0], left = Math.max(0, Math.floor((f.target - now) / 1000));
+    feat.classList.toggle("cdx-open", f.open);
+    set(feat, "badge", f.open ? (f.single ? "Today" : "Open now") : "Next up");
+    set(feat, "name", f.it.name); set(feat, "when", f.ev[2]); set(feat, "note", f.it.note);
+    set(feat, "cap", f.open ? (f.single ? "ends in" : "window closes in") : "starts in");
+    feat.querySelector('[data-f="href"]').setAttribute("href", f.it.href);
+    var u = { d: Math.floor(left / 86400), h: Math.floor(left % 86400 / 3600), m: Math.floor(left % 3600 / 60), s: left % 60 };
+    ["d", "h", "m", "s"].forEach(function (k) { feat.querySelector('[data-u="' + k + '"]').textContent = k === "d" ? u.d : pad(u[k]); });
+    var cards = list.querySelectorAll(".cdx-card");
+    live.slice(1).forEach(function (x, i) {
+      var c = cards[i];
+      if (!c) return;
+      c.hidden = false;
+      c.classList.toggle("cdx-open", x.open);
+      set(c, "name", x.it.name); set(c, "when", x.ev[2]);
+      set(c, "left", x.open ? "Open now, " + short(x.target - now) + " left" : "Starts in " + short(x.target - now));
+      c.querySelector('[data-f="href"]').setAttribute("href", x.it.href);
+    });
+    for (var k = live.length - 1; k < cards.length; k++) cards[k].hidden = true;
   }
   tick();
-  setInterval(tick, 30000);
+  setInterval(tick, 1000);
 })();

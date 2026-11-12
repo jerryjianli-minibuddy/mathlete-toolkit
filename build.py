@@ -570,29 +570,52 @@ COUNTDOWN = [
 
 
 def countdown(root):
-    """Compact list of the next contests, soonest first, each with a live countdown (assets/js/site.js) and its free test."""
+    """Contest countdown strip at the very top of the home page (Nov 12, Jian: "put it on the top... more visual and
+    striking"). The soonest contest gets big ticking day/hour/min/sec tiles; the rest are small cards. Every one has
+    its free diagnostic. assets/js/site.js re-sorts and ticks live; the build only fills the order and dates."""
     import datetime
     today = datetime.date.today().isoformat()
-    rows = []
+    items = []
     for c in COUNTDOWN:
         nxt = next((ev for ev in c["events"] if ev[1] >= today), None)
         if not nxt:
             continue
-        s0, e0, label = nxt
-        static = "Open now" if s0 <= today else "Coming up"
-        rows.append((s0 if s0 > today else "0", f'<li class="cd-row" data-events=\'{e(json.dumps(c["events"]))}\'>'
-                     f'<div class="cd-main"><b class="cd-name">{e(c["name"])}</b><span class="cd-when">{e(label)}</span>'
-                     f'<span class="cd-note">{e(c["note"])}</span></div>'
-                     f'<div class="cd-side"><span class="cd-left" aria-live="off">{e(static)}</span>'
-                     f'<a class="cd-go" href="{free_href(root, c["key"], c["grade"])}">Free test &rarr;</a></div></li>'))
-    if not rows:
+        items.append(("0" if nxt[0] <= today else nxt[0], c, nxt))
+    if not items:
         return ""
-    rows.sort(key=lambda r: r[0])
-    return f"""<section class="sec sec-cd" aria-labelledby="cd-h">
+    items.sort(key=lambda r: r[0])
+
+    def data(c):
+        return (f'data-events=\'{e(json.dumps(c["events"]))}\' data-name="{e(c["name"])}" data-note="{e(c["note"])}" '
+                f'data-href="{free_href(root, c["key"], c["grade"])}"')
+    _, c0, ev0 = items[0]
+    open0 = ev0[0] <= today
+    tiles = "".join(f'<div class="cdx-u"><b data-u="{u}">--</b><small>{lab}</small></div>'
+                    for u, lab in (("d", "days"), ("h", "hours"), ("m", "min"), ("s", "sec")))
+    feat = f"""<div class="cdx-feat{' cdx-open' if open0 else ''}" data-cd-feat {data(c0)}>
+   <div class="cdx-info">
+    <p class="cdx-badge" data-f="badge">{"Open now" if open0 else "Next up"}</p>
+    <h3 class="cdx-name" data-f="name">{e(c0["name"])}</h3>
+    <p class="cdx-when"><span data-f="when">{e(ev0[2])}</span><small data-f="note">{e(c0["note"])}</small></p>
+   </div>
+   <div class="cdx-clock" role="timer" aria-live="off">
+    <p class="cdx-cap" data-f="cap">{"window closes in" if open0 else "starts in"}</p>
+    <div class="cdx-units">{tiles}</div>
+   </div>
+   <a class="cdx-btn" data-f="href" href="{free_href(root, c0["key"], c0["grade"])}">Free diagnostic &rarr;</a>
+  </div>"""
+    cards = "".join(
+        f'<li class="cdx-card{" cdx-open" if ev[0] <= today else ""}" {data(c)}><b class="cdx-cn" data-f="name">{e(c["name"])}</b>'
+        f'<span class="cdx-cw" data-f="when">{e(ev[2])}</span>'
+        f'<span class="cdx-cl" data-f="left">{"Open now" if ev[0] <= today else "Coming up"}</span>'
+        f'<a class="cdx-cg" data-f="href" href="{free_href(root, c["key"], c["grade"])}">Free diagnostic &rarr;</a></li>'
+        for _, c, ev in items[1:])
+    return f"""<section class="cdx" aria-labelledby="cdx-h" data-countdown>
  <div class="wrap">
-  <h2 id="cd-h">Contest countdown</h2>
-  <ol class="cd-list" data-countdown>{"".join(r for _, r in rows)}</ol>
-  <p class="cd-src">Dates from each contest's official site. Not affiliated with any contest.</p>
+  <div class="cdx-top"><h2 id="cdx-h">Contest countdown</h2><span class="cdx-live">Live</span></div>
+  {feat}
+  <ol class="cdx-list">{cards}</ol>
+  <p class="cdx-src">Dates from each contest's official site. Not affiliated with any contest.</p>
  </div>
 </section>
 """
@@ -624,6 +647,7 @@ def page_home(lessons):
                 "Free contest math diagnostic test. Pick your grade: answer key included, and a QR code beside every problem opens a short video lesson on its key move.",
                 "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script><script type="application/ld+json">{json.dumps(site_ld)}</script>' + faq_ld)
     body += nav(root)
+    body += countdown(root)
     body += f"""<section class="hero">
  <div class="wrap hero-in">
   <div class="hero-copy">
@@ -652,7 +676,6 @@ def page_home(lessons):
  </ul>
 </section>
 
-{countdown(root)}
 <section class="sec sec-grades" aria-labelledby="grades-h">
  <div class="wrap">
   <div class="sec-head"><h2 id="grades-h">Pick a grade</h2><a class="more" href="lessons/">All lessons &rarr;</a></div>
