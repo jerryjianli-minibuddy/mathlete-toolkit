@@ -621,11 +621,11 @@ def page_news():
     for k in order:
         label = datetime.date.fromisoformat(k + "-01").strftime("%B %Y")
         sections += f'<h2 class="nw-month">{label}</h2><ul class="nw-all">{"".join(news_card(n) for n in groups[k])}</ul>'
-    body += f"""<section class="sec page-hero"><div class="wrap">
+    body += f"""<section class="page-head"><div class="wrap">
   <h1>Math news</h1>
   <p class="lead">Big prizes, new discoveries and contest results, in plain words for kids and parents.</p>
 </div></section>
-<section class="sec"><div class="wrap nw-page">{sections}
+<section class="sec sec-tight"><div class="wrap nw-page">{sections}
  <p class="glance-note">Each headline links to the page we read it on. Summaries are our own.</p>
 </div></section>
 """
