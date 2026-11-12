@@ -47,8 +47,8 @@ CONTESTS = {
                      blurb="Short answer, deep thinking. Lessons are on the way."),
 }
 GRADES = [(str(n), n == 5) for n in range(1, 13)]  # one row and one colour per grade (Jian, Nov 10: "Don't group grades")
-# Nov 12, Jian: "I only offer noetic math and kangaroo math up to 5th grade." No Grade 6 and up for these two anywhere.
-MAX_GRADE = {"kangaroo": 5, "noetic": 5}
+# Nov 12, Jian: Noetic only up to Grade 5; Kangaroo up to the Grades 5-6 level ("kangaroo is supposed to be 5 to 6").
+MAX_GRADE = {"kangaroo": 6, "noetic": 5}
 
 
 def offered(k, g):
@@ -792,7 +792,7 @@ def page_lesson(l, lessons):
 # and grade gets its own diagnostic, and a pick without one says Coming soon (never the Noetic test as a stand-in).
 TEST_SETS = [
     dict(key="noetic-5", contest="noetic", grades=[5], label="Noetic-style", diag=True, practice=True, store=None, anchor=""),
-    dict(key="kangaroo-5-6", contest="kangaroo", grades=[5], label="Kangaroo-style", diag=True, practice=False),
+    dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=True, practice=False),
     # Nov 11: Jian shared these three (anyone with the link, viewer).
     dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=True, store="moems", anchor="#moems"),
     dict(key="amc8-6-8", contest="amc8", grades=[6, 7, 8], label="AMC 8-style", diag=True, practice=False),
@@ -919,11 +919,11 @@ def page_combo(lessons, g, k):
 # Contest format at a glance (Nov 11 overnight, toward "insanely useful for parents"). Source: the Contests tab of the
 # Past Test Database, which Jian's tests were logged against. Dates are left out on purpose: they move every year.
 CONTEST_FACTS = {
-    "kangaroo": dict(who="Grades 1 to 5",
-                     rows=[("Questions", "24 for grades 1 to 4, 30 for grade 5. Multiple choice, 5 options."),
+    "kangaroo": dict(who="Grades 1 to 6, one test for each pair of grades (1-2, 3-4, 5-6)",
+                     rows=[("Questions", "24 for grades 1 to 4, 30 for grades 5 and 6. Multiple choice, 5 options."),
                            ("Time", "75 minutes"),
                            ("Scoring", "3, 4 and 5-point sections. The later problems are harder and worth more.")],
-                     q=30, mins=75, pace_label="Pace, grade 5"),
+                     q=30, mins=75, pace_label="Pace, grades 5 and 6"),
     "noetic": dict(who="Grades 2 to 5, one test for each grade",
                    rows=[("Questions", "20 short-answer problems"),
                          ("Time", "45 minutes, no calculator"),
@@ -1134,7 +1134,7 @@ def page_tests(lessons, shop):
   </div>
   {soon_note}
   <p class="test-note">{TEST_NOTE}</p>
-  <div class="next-tests"><b>Kangaroo-style tests, Grade 5</b><span>Coming soon</span></div>
+  <div class="next-tests"><b>Kangaroo-style tests, Grades 5 and 6</b><span>Coming soon</span></div>
  </div>
 </section>
 {moems_section(root, shop)}
@@ -1451,7 +1451,7 @@ def page_plan():
 
 
 COMPARE = [  # contest, grades, questions, time, answers (same source as CONTEST_FACTS)
-    ("kangaroo", "1 to 5", "24 or 30", "75 min", "Multiple choice"),
+    ("kangaroo", "1 to 6", "24 or 30", "75 min", "Multiple choice"),
     ("noetic", "2 to 5", "20", "45 min", "Short answer"),
     ("mathcounts", "6 to 8", "Sprint: 30", "Sprint: 40 min", "Short answer, 4 rounds"),
     ("amc8", "8 and below", "25", "40 min", "Multiple choice"),
@@ -1532,7 +1532,7 @@ def load_upcoming():
 
 
 def page_qr_upcoming(t):
-    """t/N for a tool printed on a test before its lesson exists (Nov 11: Kangaroo-style Grade 5 diagnostic
+    """t/N for a tool printed on a test before its lesson exists (Nov 11: Kangaroo-style Grades 5-6 diagnostic
     QRs t/41, t/42). Opens the YouTube lesson once video_id is set; until then a short "lesson coming soon" page."""
     n = int(t["tool_num"])
     if t.get("video_id"):
