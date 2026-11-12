@@ -600,7 +600,7 @@ def mc_card(n, root, cls="nw-card"):
     if n["kind"] == "news":
         foot_ = (f'<p class="nw-links"><a class="nw-out" href="{e(n["url"])}" rel="noopener" target="_blank">'
                  f'Read the article<span class="sr-only"> (opens {e(n["source"])})</span> &#8599;</a></p>')
-    return (f'<li class="{cls}"><a class="nw-pic" href="{href}" tabindex="-1" aria-hidden="true">'
+    return (f'<li class="{cls}"><a class="nw-pic{' nw-art' if src.endswith('.svg') else ''}" href="{href}" tabindex="-1" aria-hidden="true">'
             f'<img src="{root}{src}" alt="{e(alt)}" width="{w}" height="{h}" loading="lazy" decoding="async"></a>{tag}'
             f'<div class="nw-body"><p class="nw-meta"><time datetime="{n["date"]}">{mc_date(n["date"])}</time>{src_name}</p>'
             f'<h3><a href="{href}">{e(n["title"])}</a></h3><p class="nw-sum">{e(n["summary"])}</p>{foot_}</div></li>')

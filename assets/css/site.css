@@ -956,3 +956,4 @@ main .cdx :focus-visible { outline-color: var(--navy); }
   .nw-all .nw-links { padding-top: 6px; }
   .nw-all .nw-links a { font-size: .8rem; }
 }
+@media (max-width: 599px) { .nw-all .nw-art img { object-fit: contain; } }
