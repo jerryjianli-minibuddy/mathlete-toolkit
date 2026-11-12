@@ -141,7 +141,11 @@ def load():
         # Shorts go public an hour after their lesson; a lesson page links its Short only once it plays (Nov 10).
         shorts = {l["short_id"] for l in lessons if l.get("short_id") and is_public(l["short_id"], l["short_id"] in shorts)}
         sids = [l["short_id"] for l in lessons if l.get("short_id") in shorts]
-        json.dump({"live": ids, "shorts": sids}, open(live_path, "w"), indent=1)
+        # Nov 12: an upcoming tool's t/N opens its video only once YouTube plays it for anyone; until then "coming soon".
+        up_prev = set(saved.get("upcoming", []))
+        upcoming = [t["video_id"] for t in load_upcoming()
+                    if t.get("video_id") and is_public(t["video_id"], t["video_id"] in up_prev)]
+        json.dump({"live": ids, "shorts": sids, "upcoming": upcoming}, open(live_path, "w"), indent=1)
         print(f"live: {len(ids)} of {len(lessons)}, shorts: {len(sids)}")
     for l in lessons:
         l["live"] = l["video_id"] in live
@@ -1611,9 +1615,11 @@ def load_upcoming():
 
 def page_qr_upcoming(t):
     """t/N for a tool printed on a test before its lesson exists (Nov 11: Kangaroo-style Grades 5-6 diagnostic
-    QRs t/41, t/42). Opens the YouTube lesson once video_id is set; until then a short "lesson coming soon" page."""
+    QRs t/41, t/42). Opens the YouTube lesson once video_id is set and YouTube plays it; until then a short "lesson coming soon" page."""
     n = int(t["tool_num"])
-    if t.get("video_id"):
+    live_path = os.path.join(ROOT, "data/live.json")
+    playable = set(json.load(open(live_path)).get("upcoming", [])) if os.path.exists(live_path) else set()
+    if t.get("video_id") in playable:
         target = f"https://youtu.be/{t['video_id']}"
         write(f"t/{n}/index.html", f"""<!doctype html>
 <html lang="en">
