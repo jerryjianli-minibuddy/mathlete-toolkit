@@ -956,7 +956,7 @@ CONTEST_FACTS = {
     "olympiad": dict(who="MOEMS: Division E for grades 4 to 6, Division M for grades 6 to 8",
                      rows=[("Contests", "5 a year, from November to March"),
                            ("Questions", "5 short-answer problems in each contest"),
-                           ("Time", "Each problem has its own time limit, a few minutes each")]),
+                           ("Time", "30 minutes for each contest, no calculator")]),
 }
 
 
@@ -1457,7 +1457,7 @@ COMPARE = [  # contest, grades, questions, time, answers (same source as CONTEST
     ("amc8", "8 and below", "25", "40 min", "Multiple choice"),
     ("amc10", "10 and below", "25", "75 min", "Multiple choice"),
     ("amc12", "12 and below", "25", "75 min", "Multiple choice"),
-    ("olympiad", "4 to 8 (MOEMS)", "5 per contest", "A few min each", "Short answer, 5 contests a year"),
+    ("olympiad", "4 to 8 (MOEMS)", "5 per contest", "30 min per contest", "Short answer, 5 contests a year"),
 ]
 
 
