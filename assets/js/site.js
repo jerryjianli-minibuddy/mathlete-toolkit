@@ -82,6 +82,7 @@
   if (!filters) return;
   var cards = Array.prototype.slice.call(document.querySelectorAll(".grid .card"));
   var cBtns = Array.prototype.slice.call(filters.querySelectorAll("button[data-contest]"));
+  var gBtns = Array.prototype.slice.call(filters.querySelectorAll("button[data-grade]"));
   var fam = document.getElementById("fam"), liveOnly = document.getElementById("liveonly");
   var q = document.getElementById("q"), form = filters.querySelector("form.f-search");
   var count = document.querySelector(".count"), empty = document.querySelector(".f-empty");
@@ -103,13 +104,14 @@
   }
   // end search helpers
 
-  var state = { contest: "", fam: "", q: "", live: false };
+  var state = { contest: "", grade: "", fam: "", q: "", live: false };
   try {
     var p = new URLSearchParams(location.search);
-    state.contest = p.get("contest") || ""; state.fam = p.get("topic") || "";
+    state.contest = p.get("contest") || ""; state.grade = p.get("grade") || ""; state.fam = p.get("topic") || "";
     state.q = p.get("q") || ""; state.live = p.get("live") === "1";
   } catch (e) {}
   if (!cBtns.some(function (b) { return b.dataset.contest === state.contest; })) state.contest = "";
+  if (!gBtns.some(function (b) { return b.dataset.grade === state.grade; })) state.grade = "";
   if (state.fam && !Array.prototype.some.call(fam.options, function (o) { return o.value === state.fam; })) state.fam = "";
   q.value = state.q; liveOnly.checked = state.live;
 
@@ -117,6 +119,7 @@
     try {
       var p = new URLSearchParams();
       if (state.q.trim()) p.set("q", state.q.trim());
+      if (state.grade) p.set("grade", state.grade);
       if (state.contest) p.set("contest", state.contest);
       if (state.fam) p.set("topic", state.fam);
       if (state.live) p.set("live", "1");
@@ -128,12 +131,14 @@
     var n = 0, toks = tokens(state.q);
     cards.forEach(function (c) {
       var ok = (!state.contest || (" " + c.dataset.contests + " ").indexOf(" " + state.contest + " ") > -1)
+        && (!state.grade || (" " + (c.dataset.grades || "") + " ").indexOf(" " + state.grade + " ") > -1)
         && (!state.fam || c.dataset.family === state.fam)
         && (!state.live || !c.classList.contains("is-soon"))
         && (!toks.length || matches(c.dataset.search || "", toks));
       c.hidden = !ok; if (ok) n++;
     });
     cBtns.forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.contest === state.contest ? "true" : "false"); });
+    gBtns.forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.grade === state.grade ? "true" : "false"); });
     fam.value = state.fam;
     var filtered = n < total;
     count.textContent = filtered ? n + " of " + total + " lessons" : n + (n === 1 ? " lesson" : " lessons");
@@ -141,6 +146,7 @@
     syncUrl();
   }
   cBtns.forEach(function (b) { b.addEventListener("click", function () { state.contest = b.dataset.contest; apply(); }); });
+  gBtns.forEach(function (b) { b.addEventListener("click", function () { state.grade = b.dataset.grade; apply(); }); });
   fam.addEventListener("change", function () { state.fam = fam.value; apply(); });
   liveOnly.addEventListener("change", function () { state.live = liveOnly.checked; apply(); });
   q.addEventListener("input", function () { state.q = q.value; apply(); });
@@ -150,7 +156,7 @@
   });
   document.querySelectorAll("[data-clear]").forEach(function (b) {
     b.addEventListener("click", function () {
-      state = { contest: "", fam: "", q: "", live: false };
+      state = { contest: "", grade: "", fam: "", q: "", live: false };
       q.value = ""; liveOnly.checked = false;
       apply(); q.focus();
     });

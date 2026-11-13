@@ -432,7 +432,7 @@ def card(l, root, h="h3", search=False):
     else:
         badge = '<span class="soon">Coming soon</span>'
         cls = "card is-soon"
-    return f"""<article class="{cls}" data-contests="{data}" data-family="{e(l['family'])}"{hay}>
+    return f"""<article class="{cls}" data-contests="{data}" data-grades="{' '.join(str(g) for g in title_grades(l))}" data-family="{e(l['family'])}"{hay}>
  <a class="thumb" href="{href}" tabindex="-1" aria-hidden="true"><img src="{root}assets/covers/{l['slug']}.webp" alt="" width="640" height="360" loading="lazy">{badge}</a>
  <div class="card-body">
   <p class="tool-num">Tool #{l['tool_num']} &middot; {e(l['family'])}</p>
@@ -912,7 +912,9 @@ def filter_box(lessons, contests=True, placeholder="Try: digits, area, speed"):
         contest_btns = "".join(
             f'<button class="f" data-contest="{k}" aria-pressed="false">{e(C["short"])}</button>'
             for k, C in CONTESTS.items() if not C.get("soon"))
-        contest_row = (f'<div class="f-row"><span class="f-label">Grade</span><button class="f" aria-pressed="true" disabled>Grade 5</button><span class="f-note">More grades coming</span></div>\n'
+        gs = sorted({g for l in lessons for g in title_grades(l)})  # Nov 13: a real grade filter once lessons span grades
+        grade_btns = "".join(f'<button class="f" data-grade="{g}" aria-pressed="false" aria-label="Grade {g}">{g}</button>' for g in gs)
+        contest_row = (f'<div class="f-row"><span class="f-label">Grade</span><button class="f" data-grade="" aria-pressed="true">All</button>{grade_btns}</div>\n'
                        f'   <div class="f-row"><span class="f-label">Contest</span><button class="f" data-contest="" aria-pressed="true">All</button>{contest_btns}</div>\n')
     return f"""  <div class="filters" role="group" aria-label="Find and filter lessons">
    <form class="f-row f-search" role="search" action="./" method="get">
@@ -961,8 +963,9 @@ def page_lesson(l, lessons):
     prev = lessons[i - 1] if i > 0 else None
     nxt = lessons[i + 1] if i + 1 < len(lessons) else None
     contests_txt = ", ".join(CONTESTS[c]["name"] for c in l["contests"])
+    gl = grades_label(title_grades(l))  # Nov 13: lessons now span Grades 1 to 8
     desc = (f"{l['hook']}. Learn the {l['tool']} tool for {l['search'].lower() or 'contest math'}: the trap, the rule, "
-            f"and problems from easy to hard. Free Grade 5 competition math lesson.")
+            f"and problems from easy to hard. Free {gl} competition math lesson.")
     ld = ""
     if l["live"]:
         ld = json.dumps({"@context": "https://schema.org", "@type": "VideoObject", "name": l["youtube_title"],
@@ -970,7 +973,7 @@ def page_lesson(l, lessons):
                          "uploadDate": UPLOADED,
                          "embedUrl": f"https://www.youtube.com/embed/{l['video_id']}",
                          "contentUrl": f"https://www.youtube.com/watch?v={l['video_id']}",
-                         "educationalLevel": "Grade 5", "learningResourceType": "Video lesson"})
+                         "educationalLevel": gl, "learningResourceType": "Video lesson"})
         ld = f'<script type="application/ld+json">{ld}</script>'
     crumb_name = f"Tool #{l['tool_num']}: {l['tool']}"
     crumbs_ld = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
@@ -978,7 +981,7 @@ def page_lesson(l, lessons):
         {"@type": "ListItem", "position": 2, "name": "Lessons", "item": SITE + "/lessons/"},
         {"@type": "ListItem", "position": 3, "name": crumb_name, "item": f"{SITE}/lessons/{l['slug']}/"}]}
     ld += f'<script type="application/ld+json">{json.dumps(crumbs_ld)}</script>'
-    body = head(f"{l['tool']}: {l['hook']} | Grade 5 | {NAME}", desc, f"lessons/{l['slug']}/", root,
+    body = head(f"{l['tool']}: {l['hook']} | {gl} | {NAME}", desc, f"lessons/{l['slug']}/", root,
                 image=f"assets/covers/{l['slug']}.jpg", noindex=not l["live"], extra=ld)
     body += nav(root, "lessons")
     status = (f'<a class="btn btn-yt" href="https://www.youtube.com/watch?v={l["video_id"]}" rel="noopener">{YT_ICON}<span>Watch on YouTube</span></a>'
@@ -1014,7 +1017,7 @@ def page_lesson(l, lessons):
     {next_up}
    </div>
    <aside class="lesson-side">
-    <p class="tool-num">Tool #{l['tool_num']} &middot; Grade 5 &middot; {e(l['family'])}</p>
+    <p class="tool-num">Tool #{l['tool_num']} &middot; {gl} &middot; {e(l['family'])}</p>
     <h1>{e(l['tool'])}</h1>
     <p class="lesson-hook">{e(l['hook'])}</p>
     <div class="chips">{chips(l, root)}</div>
