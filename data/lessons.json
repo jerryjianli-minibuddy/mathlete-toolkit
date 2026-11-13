@@ -1847,5 +1847,29 @@
    "kangaroo"
   ],
   "seconds": 206
+ },
+ {
+  "id": "L3-46",
+  "tool_num": 77,
+  "tool": "Follow the Loops",
+  "slug": "follow-the-loops",
+  "video_id": "uxVInS_eEPU",
+  "short_id": "Iwd2qBfEoRI",
+  "hook": "5 Books in the Wrong Spot: 5 Swaps?",
+  "search": "Fewest Swaps",
+  "youtube_title": "5 Books in the Wrong Spot: 5 Swaps? | Follow the Loops | Fewest Swaps | 3rd & 4th Grade Math",
+  "problem": "Six books sit as 4, 1, 6, 2, 5, 3. What is the fewest swaps to put them in order?",
+  "rule": "Follow the arrows into loops. Each loop takes one less swap than its size.",
+  "move": "Arrow each one home, find the loops, then add one less than each loop's size",
+  "trap": "Counting the books in the wrong spot",
+  "family": "Logic",
+  "topic": "Fewest swaps to sort a row",
+  "also_called": "Cycles in a permutation",
+  "grade": 3,
+  "contests": [
+   "kangaroo",
+   "noetic"
+  ],
+  "seconds": 307
  }
 ]
