@@ -37,8 +37,9 @@ CONTESTS = {
     "mathcounts": dict(name="MATHCOUNTS", slug="mathcounts-prep", short="MATHCOUNTS",
                        blurb="Fast, exact answers: counting, rates, number theory and geometry."),
     # AMC split three ways (Nov 11, Jian: "People taking AMC 10 shouldn't be learning AMC 12 material").
-    "amc8": dict(name="AMC 8", slug="amc-8-prep", short="AMC 8", soon=True,
-                 blurb="Middle school, 25 questions in 40 minutes. Lessons are on the way."),
+    # Nov 13: AMC 8 lessons are out and its practice tests are on Payhip, so it is no longer "soon".
+    "amc8": dict(name="AMC 8", slug="amc-8-prep", short="AMC 8",
+                 blurb="Middle school, 25 questions in 40 minutes."),
     "amc10": dict(name="AMC 10", slug="amc-10-prep", short="AMC 10", soon=True,
                   blurb="High school algebra, geometry and counting, no precalculus. Lessons are on the way."),
     "amc12": dict(name="AMC 12", slug="amc-12-prep", short="AMC 12", soon=True,
@@ -1056,7 +1057,8 @@ TEST_SETS = [
     dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=True, practice=False),
     # Nov 11: Jian shared these three (anyone with the link, viewer).
     dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=True, store="moems", anchor="#moems"),
-    dict(key="amc8-6-8", contest="amc8", grades=[6, 7, 8], label="AMC 8-style", diag=True, practice=False),
+    # Nov 13: Jian, "List them" -- AMC 8-style Countdown Pack and Tests 1-10 live on Payhip.
+    dict(key="amc8-6-8", contest="amc8", grades=[6, 7, 8], label="AMC 8-style", diag=True, practice=True, store="amc8", anchor="#amc8"),
     dict(key="mathcounts-6-8", contest="mathcounts", grades=[6, 7, 8], label="MATHCOUNTS-style", diag=True, practice=False),
 ]
 # Drive id of each diagnostic PDF (must be shared as anyone with the link).
@@ -1278,7 +1280,7 @@ def page_group(slug, title, h1, lead, lessons, desc, soon=False, active=None, ba
     top = (f'<div class="sk-top"><p class="sk-count"><b>{len(lessons)}</b> key moves in {len(topic_groups(lessons))} topics'
            f'{f", {n_live} with a video now" if 0 < n_live < len(lessons) else ""}.</p>'
            f'<div class="sk-links">'
-           + (f'<a class="btn btn-ghost-d" href="{root}mock-tests/">Practice tests</a>'
+           + (f'<a class="btn btn-ghost-d" href="{root}mock-tests/{next((t.get("anchor", "") for t in TEST_SETS if t["practice"] and t["contest"] == tests), "")}">Practice tests</a>'
               if tests is True or any(t["practice"] and t["contest"] == tests for t in TEST_SETS) else "")
            + f'<a class="btn btn-ghost-d" href="{root}lessons/">Watch as videos</a></div></div>'
            f'<nav class="sk-jump" aria-label="Topics">' + "".join(
@@ -1397,6 +1399,57 @@ def moems_section(root, shop):
 </section>"""
 
 
+def amc8_section(root, shop):
+    """AMC 8-style Grades 6 to 8 practice tests (Payhip, Nov 13): Countdown Pack and singles, same layout as MOEMS."""
+    m, live = shop.get("amc8"), shop["live"]
+    if not m:
+        return ""
+    pack_btn = (f'<a class="btn btn-primary btn-lg" href="{e(m["pack"])}">Buy all 10 for {PACK_PRICE}</a>' if live
+                else '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>')
+    singles = "\n".join(
+        f'    <li><span><b>AMC 8-style Practice Test {n}</b><small>25 problems, 40 minutes, answer key</small></span><em>{SINGLE_PRICE}</em>'
+        + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
+        for n, u in enumerate(m["tests"], 1))
+    return f"""<section class="sec" id="amc8">
+ <div class="wrap">
+  <p class="eyebrow">AMC 8-style &middot; Grades 6 to 8</p>
+  <h2>AMC 8-style practice tests</h2>
+  <p class="lead">25 multiple-choice problems in 40 minutes, no calculator, with an answer key. Every problem has a QR code to its lesson.</p>
+  <div class="plans">
+   <div class="plan plan-free">
+    <p class="eyebrow">Start here</p>
+    <h2>AMC 8-style diagnostic</h2>
+    <p class="price"><b>Free</b></p>
+    <ul class="facts-row"><li>PDF</li><li>Answer key</li><li>Share with your class</li></ul>
+    <a class="btn btn-primary btn-lg" href="{free_href(root, "amc8", 7)}">Get the diagnostic</a>
+   </div>
+   <div class="plan">
+    <p class="eyebrow eyebrow-n">One test</p>
+    <h2>AMC 8-style test</h2>
+    <p class="price"><b>{SINGLE_PRICE}</b> each</p>
+    <ul class="facts-row"><li>Grades 6 to 8</li><li>PDF</li><li>40 min</li></ul>
+    <a class="btn btn-ghost-d btn-lg" href="#amc8-singles">Choose a test</a>
+   </div>
+   <div class="plan plan-pack">
+    <p class="ribbon">Best value</p>
+    <p class="eyebrow">All 10 tests</p>
+    <h2>AMC 8-style Countdown Pack</h2>
+    <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
+    <ul class="facts-row"><li>Grades 6 to 8</li><li>10 tests</li><li>Week-by-week plan</li></ul>
+    {pack_btn}
+   </div>
+  </div>
+  <details class="qa singles-box" id="amc8-singles"{" open" if live else ""}>
+   <summary>AMC 8-style tests, {SINGLE_PRICE} each</summary>
+   <ul class="singles">
+{singles}
+   </ul>
+  </details>
+  <p class="test-note">"AMC 8-style" tests are written in the style of the AMC 8. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.</p>
+ </div>
+</section>"""
+
+
 def page_tests(lessons, shop):
     """Mock tests as a pricing page (Nov 11): free vs single vs pack, what every test holds, sample pages, FAQ.
     Buy buttons link to Payhip only when shop["live"]; until then they say Coming soon and the free test is the action."""
@@ -1414,8 +1467,8 @@ def page_tests(lessons, shop):
         f'    <li><span><b>Noetic-style Grade 5 Practice Test {n}</b><small>20 problems, 50 minutes, answer key</small></span><em>$3.99</em>'
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(shop["tests"], 1))
-    body = head(f"Practice Tests: Noetic-style and MOEMS-style | {NAME}",
-                "Noetic-style Grade 5 and MOEMS-style Grades 4 to 6 practice tests from $3.99, each with a worked answer key. Start with the free diagnostic test.",
+    body = head(f"Practice Tests: Noetic, MOEMS and AMC 8-style | {NAME}",
+                "Noetic-style Grade 5, MOEMS-style Grades 4 to 6 and AMC 8-style Grades 6 to 8 practice tests from $3.99, each with a worked answer key. Start with the free diagnostic test.",
                 "mock-tests/", root)
     body += nav(root, "tests")
     body += f"""<section class="page-head">
@@ -1423,7 +1476,7 @@ def page_tests(lessons, shop):
   <p class="eyebrow">Practice tests</p>
   <h1>Practice tests</h1>
   <p class="lead">Real contest length, with a worked answer key.</p>
-  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a></p>
+  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a></p>
   {sale_banner(root, " sale-page")}
  </div>
 </section>
@@ -1461,6 +1514,7 @@ def page_tests(lessons, shop):
  </div>
 </section>
 {moems_section(root, shop)}
+{amc8_section(root, shop)}
 <section class="sec sec-alt">
  <div class="wrap">
   <h2>Compare</h2>
@@ -1813,7 +1867,7 @@ GUIDE = [
                ("How to enter", "Through a school team. If the school doesn't take part, a student can enter on their own."),
                ("Why take it", "Team spirit and a clear ladder to climb."),
                ("Where it leads", "School, then chapter, state and national. The top 4 in each state go to nationals, all expenses paid.")]),
-    dict(k="amc8", name="AMC 8", grades="Grade 8 and below", ours="Lessons coming soon", diff=3,
+    dict(k="amc8", name="AMC 8", grades="Grade 8 and below", ours="Our lessons and tests: grades 6 to 8", diff=3,
          dl="It climbs: the last problems are hard",
          what="The first contest on the AMC ladder, with problems beyond the school curriculum.",
          rows=[("Run by", "The Mathematical Association of America (MAA)."),
@@ -2119,7 +2173,9 @@ def main():
                    picker=grade_picker(lessons, k, "../"),
                    tests=k,  # each contest page links only its own tests
                    pl=playlist_links(contest=k),
-                   extra="" if sub else "".join(test_blocks("../", [t for t in TEST_SETS if t["contest"] == k])))
+                   # Nov 13: a contest with practice tests on sale shows its test box above the lessons too.
+                   extra="" if sub and not any(t["practice"] for t in TEST_SETS if t["contest"] == k)
+                   else "".join(test_blocks("../", [t for t in TEST_SETS if t["contest"] == k])))
         if sub:
             urls.append(C["slug"] + "/")
     write("amc-prep/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
