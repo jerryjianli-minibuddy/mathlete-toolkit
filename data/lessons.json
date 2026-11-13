@@ -1498,5 +1498,97 @@
    "kangaroo"
   ],
   "seconds": 229
+ },
+ {
+  "id": "L3-75",
+  "tool_num": 69,
+  "tool": "Count Then Fit",
+  "slug": "count-then-fit",
+  "video_id": "lbiO7lGVMHI",
+  "short_id": "LlbFHsQ13QA",
+  "hook": "7 Squares, 5 Pieces. Pick Just 2",
+  "search": "Tiling Puzzles",
+  "youtube_title": "7 Squares, 5 Pieces. Pick Just 2 | Count Then Fit | Tiling Puzzles | 3rd & 4th Grade Math",
+  "problem": "A 7-square hole and 5 pieces you can turn but not flip. Which 2 fill it exactly?",
+  "rule": "Count the squares first. Then fit the tricky spot.",
+  "move": "Count squares to rule pieces out, then fit the hardest corner",
+  "trap": "Turning every piece in, one by one, until time runs out",
+  "family": "Geometry: spatial",
+  "topic": "Tiling and fill-the-hole puzzles",
+  "also_called": "Shape fitting",
+  "grade": 3,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 300
+ },
+ {
+  "id": "L3-76",
+  "tool_num": 70,
+  "tool": "Mirror Swap",
+  "slug": "mirror-swap",
+  "video_id": "2uC-16y_ARE",
+  "short_id": "mOeutUe5qoY",
+  "hook": "What Does Dad See From Outside?",
+  "search": "Mirror Image Puzzles",
+  "youtube_title": "What Does Dad See From Outside? | Mirror Swap | Mirror Image Puzzles | 3rd & 4th Grade Math",
+  "problem": "A picture stuck on a window faces out. What does Dad see from outside?",
+  "rule": "In a mirror, left and right swap. Top and bottom stay put.",
+  "move": "Swap left and right, keep top and bottom",
+  "trap": "Turning the picture upside down instead of flipping it",
+  "family": "Geometry: spatial",
+  "topic": "Mirror image puzzles",
+  "also_called": "Reflections",
+  "grade": 3,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 304
+ },
+ {
+  "id": "L3-77",
+  "tool_num": 71,
+  "tool": "Unfold Step by Step",
+  "slug": "unfold-step-by-step",
+  "video_id": "gg0FRsuaGuE",
+  "short_id": "V14moWDxsuc",
+  "hook": "Fold, Punch, Snip. How Many Holes?",
+  "search": "Paper Folding Puzzles",
+  "youtube_title": "Fold, Punch, Snip. How Many Holes? | Unfold Step by Step | Paper Folding | 3rd & 4th Grade Math",
+  "problem": "Fold a square twice, punch one hole, snip the folded corner. How many holes opened?",
+  "rule": "Undo the folds one at a time. Every cut gets a twin across the fold.",
+  "move": "Unfold one fold at a time, doubling every cut across the line",
+  "trap": "Multiplying cuts by folds and guessing",
+  "family": "Geometry: spatial",
+  "topic": "Paper folding and hole punch puzzles",
+  "also_called": "Line symmetry",
+  "grade": 3,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 309
+ },
+ {
+  "id": "L3-78",
+  "tool_num": 72,
+  "tool": "Label Every Side",
+  "slug": "label-every-side",
+  "video_id": "y2pEUmS7GEM",
+  "short_id": "LG2ubYbMc80",
+  "hook": "L-Shaped Garden: 9 + 7 + 5 + 4 Is Not It",
+  "search": "Perimeter Problems",
+  "youtube_title": "L-Shaped Garden: 9 + 7 + 5 + 4 Is Not It | Label Every Side | Perimeter | 3rd & 4th Grade Math",
+  "problem": "An L-shaped garden shows 9, 7, 5 and 4 m, with two sides unmarked. How much fence?",
+  "rule": "Write a number on every side. Then add all the way around.",
+  "move": "Find the missing sides first, then add every side",
+  "trap": "Adding only the sides that show numbers",
+  "family": "Geometry: area",
+  "topic": "Perimeter of L-shapes",
+  "also_called": "Missing side lengths",
+  "grade": 3,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 330
  }
 ]
