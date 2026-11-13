@@ -229,12 +229,12 @@
       b.style.display = +g > max ? "none" : "";
       b.classList.toggle("gp-on", ok); b.classList.toggle("gp-sel", on);
       b.setAttribute("aria-pressed", on ? "true" : "false");
-      b.querySelector("span").textContent = !st.contest ? "Pick a contest" : ok ? "Free test" : "Coming soon";
+      b.querySelector("span").textContent = !st.contest ? "Pick a contest" : ok ? (r[g][2] === "practice" ? "Practice tests" : "Free test") : "Coming soon";
     });
     var hit = r[st.grade];
     st.key = hit ? hit[0] : null; st.label = hit ? hit[1] : "";
     msg.className = "fpick-msg" + (hit ? " ok" : st.contest && st.grade ? " soon" : "");
-    msg.textContent = hit ? "Your test: " + hit[1] + "."
+    msg.textContent = hit ? (hit[2] === "practice" ? "No diagnostic for this grade yet. Here are the " + hit[1] + "." : "Your test: " + hit[1] + ".")
       : st.contest && st.grade ? "This test is coming soon. Pick another contest or grade."
       : st.contest ? "Now pick a grade." : "Pick a contest and a grade.";
     Array.prototype.forEach.call(res, function (d) { d.hidden = d.getAttribute("data-key") !== st.key; });

@@ -1084,6 +1084,8 @@ TEST_SETS = [
     dict(key="amc8-6-8", contest="amc8", grades=[6, 7, 8], label="AMC 8-style", diag=True, practice=True, store="amc8", anchor="#amc8"),
     # Nov 13: MATHCOUNTS-style Practice Pack and Tests 1-10 live on Payhip (Jian said yes to the listing).
     dict(key="mathcounts-6-8", contest="mathcounts", grades=[6, 7, 8], label="MATHCOUNTS-style", diag=True, practice=True, store="mathcounts", anchor="#mathcounts"),
+    # Nov 13: Kangaroo-style Grades 3-4 Practice Pack and Tests 1-10 live on Payhip (Jian said yes). Diagnostic waits on Jian.
+    dict(key="kangaroo-3-4", contest="kangaroo", grades=[3, 4], label="Kangaroo-style", diag=False, practice=True, store="kangaroo34", anchor="#kangaroo34"),
 ]
 # Drive id of each diagnostic PDF (must be shared as anyone with the link).
 DIAG_FILES = {"noetic-5": "1PReaxlTwr3zcN-xdEyVcYWJtY8c8Tc2p", "kangaroo-5-6": "1ggmbBeozrqJopzf2vQNeLZS5msb5WJ4W",
@@ -1395,6 +1397,7 @@ def moems_section(root, shop):
   <p class="eyebrow">MOEMS-style &middot; Grades 4 to 6</p>
   <h2>MOEMS-style practice tests</h2>
   <p class="lead">Each test is a full season: 5 contests of 5 problems, 30 minutes per contest, written answers, no calculator. Worked answer key.</p>
+  {QR_LINE}
   <div class="plans{"" if pack else " plans-2"}">
    <div class="plan plan-free">
     <p class="eyebrow">Start here</p>
@@ -1423,7 +1426,10 @@ def moems_section(root, shop):
 </section>"""
 
 
-def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, lead, single_small, single_facts, pack_name, pack_facts, note, alt=False):
+QR_LINE = '<p class="qr-line"><span class="qr-ico" aria-hidden="true"></span>A QR code next to every question opens a short video on its key move.</p>'
+
+
+def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, lead, single_small, single_facts, pack_name, pack_facts, note, alt=False, diag=True):
     """A contest's practice tests on /mock-tests (pack and singles), the MOEMS layout: AMC 8-style and MATHCOUNTS-style (Nov 13)."""
     m, live = shop.get(key), shop["live"]
     if not m:
@@ -1440,14 +1446,15 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
   <p class="eyebrow">{label} &middot; {grades}</p>
   <h2>{label} practice tests</h2>
   <p class="lead">{lead}</p>
-  <div class="plans">
+  {QR_LINE}
+  <div class="plans{"" if diag else " plans-2"}">{f"""
    <div class="plan plan-free">
     <p class="eyebrow">Start here</p>
     <h2>{label} diagnostic</h2>
     <p class="price"><b>Free</b></p>
     <ul class="facts-row"><li>PDF</li><li>Answer key</li><li>Share with your class</li></ul>
     <a class="btn btn-primary btn-lg" href="{free_href(root, contest, diag_grade)}">Get the diagnostic</a>
-   </div>
+   </div>""" if diag else ""}
    <div class="plan">
     <p class="eyebrow eyebrow-n">One test</p>
     <h2>{label} test</h2>
@@ -1478,7 +1485,7 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
 def amc8_section(root, shop):
     return contest_tests_section(
         root, shop, "amc8", "AMC 8-style", "Grades 6 to 8", "amc8", 7,
-        "25 multiple-choice problems in 40 minutes, no calculator, with an answer key. Every problem has a QR code to its lesson.",
+        "25 multiple-choice problems in 40 minutes, no calculator, with an answer key.",
         "25 problems, 40 minutes, answer key", ["Grades 6 to 8", "PDF", "40 min"],
         "AMC 8-style Countdown Pack", ["Grades 6 to 8", "10 tests", "Week-by-week plan"],
         '"AMC 8-style" tests are written in the style of the AMC 8. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.')
@@ -1488,11 +1495,22 @@ def mathcounts_section(root, shop):
     """MATHCOUNTS-style Grades 6 to 8 (Payhip, Nov 13): Sprint + Target rounds."""
     return contest_tests_section(
         root, shop, "mathcounts", "MATHCOUNTS-style", "Grades 6 to 8", "mathcounts", 7,
-        "Each test has a Sprint round (30 problems, 40 minutes, no calculator) and a Target round (8 problems in pairs, calculator allowed), with an answer key. Every problem has a QR code to its lesson.",
+        "Each test has a Sprint round (30 problems, 40 minutes, no calculator) and a Target round (8 problems in pairs, calculator allowed), with an answer key.",
         "Sprint + Target rounds, answer key", ["Grades 6 to 8", "PDF", "Sprint + Target"],
         "MATHCOUNTS-style Practice Pack", ["Grades 6 to 8", "10 tests"],
         '"MATHCOUNTS-style" tests are written in the style of MATHCOUNTS competitions. Key Move Math is not affiliated with or endorsed by the MATHCOUNTS Foundation. Every problem is our own.',
         alt=True)
+
+
+def kangaroo34_section(root, shop):
+    """Kangaroo-style Grades 3-4 (Payhip, Nov 13). No diagnostic card until Jian shares the 3-4 diagnostic."""
+    return contest_tests_section(
+        root, shop, "kangaroo34", "Kangaroo-style", "Grades 3 and 4", "kangaroo", 3,
+        "24 multiple-choice problems in three parts (3, 4 and 5 points), easy to hard, 75 minutes, no calculator, with an answer key. Plenty of picture puzzles: mirrors, cube nets, folding, views from above.",
+        "24 problems, 75 minutes, answer key", ["Grades 3 and 4", "PDF", "75 min"],
+        "Kangaroo-style Grades 3-4 Practice Pack", ["Grades 3 and 4", "10 tests"],
+        '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
+        diag=False)
 
 def page_tests(lessons, shop):
     """Mock tests as a pricing page (Nov 11): free vs single vs pack, what every test holds, sample pages, FAQ.
@@ -1511,8 +1529,8 @@ def page_tests(lessons, shop):
         f'    <li><span><b>Noetic-style Grade 5 Practice Test {n}</b><small>20 problems, 50 minutes, answer key</small></span><em>$3.99</em>'
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(shop["tests"], 1))
-    body = head(f"Practice Tests: Noetic, MOEMS, AMC 8 and MATHCOUNTS-style | {NAME}",
-                "Noetic-style Grade 5, MOEMS-style Grades 4 to 6, AMC 8-style and MATHCOUNTS-style Grades 6 to 8 practice tests from $3.99, each with a worked answer key. Start with the free diagnostic test.",
+    body = head(f"Practice Tests: Kangaroo, Noetic, MOEMS, AMC 8, MATHCOUNTS-style | {NAME}",
+                "Kangaroo-style Grades 3-4, Noetic-style Grade 5, MOEMS-style Grades 4 to 6, AMC 8-style and MATHCOUNTS-style Grades 6 to 8 practice tests from $3.99, each with an answer key and a QR code by every question.",
                 "mock-tests/", root)
     body += nav(root, "tests")
     body += f"""<section class="page-head">
@@ -1520,7 +1538,7 @@ def page_tests(lessons, shop):
   <p class="eyebrow">Practice tests</p>
   <h1>Practice tests</h1>
   <p class="lead">Real contest length, with a worked answer key.</p>
-  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a></p>
+  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a></p>
   {sale_banner(root, " sale-page")}
  </div>
 </section>
@@ -1529,6 +1547,7 @@ def page_tests(lessons, shop):
  <div class="wrap">
   <p class="eyebrow">Noetic-style &middot; Grade 5</p>
   <h2>Noetic-style Grade 5 practice tests</h2>
+  {QR_LINE}
   <div class="plans">
    <div class="plan plan-free">
     <p class="eyebrow">Start here</p>
@@ -1561,7 +1580,8 @@ def page_tests(lessons, shop):
 {moems_section(root, shop)}
 {amc8_section(root, shop)}
 {mathcounts_section(root, shop)}
-<section class="sec">
+{kangaroo34_section(root, shop)}
+<section class="sec sec-alt">
  <div class="wrap">
   <h2>Compare</h2>
   <div class="cmp-wrap">
@@ -1581,7 +1601,7 @@ def page_tests(lessons, shop):
   {samples(root, ("practice", "key", "diagnostic"))}
  </div>
 </section>
-<section class="sec sec-alt">
+<section class="sec">
  <div class="wrap">
   <details class="qa singles-box" id="singles"{" open" if live else ""}>
    <summary>All 10 Noetic-style single tests, $3.99 each</summary>
@@ -1617,6 +1637,10 @@ def free_result(root, t):
                 + f'<a class="btn {"btn-ghost-d" if store_of(t).get("pack") else "btn-primary"}" href="{root}mock-tests/{t.get("anchor", "")}">Buy one test, {SINGLE_PRICE}</a></div>')
     else:
         paid = '<p>Practice tests coming soon.</p>'
+    if not t["diag"]:
+        return f"""<div class="fres fres-1" data-key="{t['key']}">
+   <div class="fres-card fres-paid"><p class="eyebrow">Practice tests</p><h2>{t['label']} practice tests, {grades_label(t['grades'])}</h2>{paid}</div>
+  </div>"""
     return f"""<div class="fres" data-key="{t['key']}">
    <div class="fres-card fres-free"><h2>{t['label']} diagnostic, {grades_label(t['grades'])}</h2>
     <p>Printable PDF with the answer key.</p>
@@ -1633,10 +1657,13 @@ def page_free():
     faq_html, _ = faq(("misses", "share", "original"), title="Questions")
     ready = {}  # contest -> {grade: [test key, label, who]}
     for t in TEST_SETS:
-        if t["diag"]:
-            who = grades_label(t["grades"])
-            for g in t["grades"]:
+        who = grades_label(t["grades"])
+        for g in t["grades"]:
+            if t["diag"]:
                 ready.setdefault(t["contest"], {})[str(g)] = [t["key"], f'{t["label"]} test, {who}']
+            elif t["practice"] and SHOP.get("live") and str(g) not in ready.get(t["contest"], {}):
+                # Nov 13: Kangaroo-style 3-4 has practice tests but no diagnostic yet; the pick shows the tests.
+                ready.setdefault(t["contest"], {})[str(g)] = [t["key"], f'{t["label"]} practice tests, {who}', "practice"]
     cbtn = "".join(f'<button type="button" class="pk" data-contest="{k}" data-max="{MAX_GRADE.get(k, 12)}">{e(C["name"])}</button>'
                    for k, C in CONTESTS.items())
     tiles = "".join(f'<button type="button" class="gp" data-grade="{g}"><b>Grade {g}</b><span>Coming soon</span></button>'
@@ -1657,7 +1684,7 @@ def page_free():
   <h1>Free diagnostic test</h1>
   <p class="lead">Pick your contest and grade, then download. No sign-up.</p>
   {picker}
-  <div class="fres-list">{"".join(free_result(root, t) for t in TEST_SETS if t["diag"])}</div>
+  <div class="fres-list">{"".join(free_result(root, t) for t in TEST_SETS if t["diag"] or (t["practice"] and SHOP.get("live")))}</div>
   <p class="teacher-note"><b>Teachers:</b> copy it for your class. <a href="{root}teachers/">See our page for teachers and clubs</a>.</p>
   <p class="test-note test-note-d">Every problem is our own. Not affiliated with any contest.</p>
  </div>

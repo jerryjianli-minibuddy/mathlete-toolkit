@@ -990,3 +990,10 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .qrf-phone small { color: #9FB0CF; font-size: .75rem; }
 .qrf-play { position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); width: 46px; height: 32px; border-radius: 9px; background: #FF0033; }
 .qrf-play::after { content: ""; position: absolute; left: 18px; top: 9px; border-left: 13px solid #fff; border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+
+/* QR line on every test section (Nov 13, Jian: QR next to every question is the selling point) */
+.qr-line { display: flex; align-items: center; gap: 10px; margin: 6px 0 18px; padding: 10px 14px; border-radius: 12px; background: #FFF6D6; border: 2px solid var(--yellow); color: var(--navy); font-weight: 800; font-size: 1.02rem; line-height: 1.35; }
+.qr-ico { flex: 0 0 26px; width: 26px; height: 26px; border-radius: 4px; background:
+  linear-gradient(var(--navy),var(--navy)) 0 0/10px 10px no-repeat, linear-gradient(var(--navy),var(--navy)) 100% 0/10px 10px no-repeat,
+  linear-gradient(var(--navy),var(--navy)) 0 100%/10px 10px no-repeat, linear-gradient(var(--navy),var(--navy)) 15px 15px/5px 5px no-repeat, #fff; outline: 2px solid var(--navy); outline-offset: -2px; }
+.fres.fres-1 { grid-template-columns: 1fr; max-width: 520px; }
