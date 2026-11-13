@@ -1429,7 +1429,7 @@ def moems_section(root, shop):
 QR_LINE = '<p class="qr-line"><span class="qr-ico" aria-hidden="true"></span>A QR code next to every question opens a short video on its key move.</p>'
 
 
-def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, lead, single_small, single_facts, pack_name, pack_facts, note, alt=False, diag=True):
+def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, lead, single_small, single_facts, pack_name, pack_facts, note, alt=False, diag=True, single_name=None):
     """A contest's practice tests on /mock-tests (pack and singles), the MOEMS layout: AMC 8-style and MATHCOUNTS-style (Nov 13)."""
     m, live = shop.get(key), shop["live"]
     if not m:
@@ -1437,7 +1437,7 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
     pack_btn = (f'<a class="btn btn-primary btn-lg" href="{e(m["pack"])}">Buy all 10 for {PACK_PRICE}</a>' if live
                 else '<span class="btn btn-disabled btn-lg" aria-disabled="true">Coming soon</span>')
     singles = "\n".join(
-        f'    <li><span><b>{label} Practice Test {n}</b><small>{single_small}</small></span><em>{SINGLE_PRICE}</em>'
+        f'    <li><span><b>{single_name or label} Practice Test {n}</b><small>{single_small}</small></span><em>{SINGLE_PRICE}</em>'
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(m["tests"], 1))
     li = lambda xs: "".join(f"<li>{x}</li>" for x in xs)
@@ -1510,7 +1510,7 @@ def kangaroo34_section(root, shop):
         "24 problems, 75 minutes, answer key", ["Grades 3 and 4", "PDF", "75 min"],
         "Kangaroo-style Grades 3-4 Practice Pack", ["Grades 3 and 4", "10 tests"],
         '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
-        diag=False)
+        diag=False, single_name="Kangaroo-style Grades 3-4")
 
 def page_tests(lessons, shop):
     """Mock tests as a pricing page (Nov 11): free vs single vs pack, what every test holds, sample pages, FAQ.
