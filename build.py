@@ -1090,7 +1090,21 @@ def grade_lessons(lessons, g, k=None):
     if nums is None:
         return [l for l in lessons if str(l["grade"]) == str(g) and (k is None or k in l["contests"]) and l["live"]]
     by = {int(l["tool_num"]): l for l in lessons}
-    return [by[n] for n in nums if n in by and by[n]["live"]]
+    out = [by[n] for n in nums if n in by and by[n]["live"]]
+    # Nov 13: lessons the test database hasn't tagged yet (Tools #41 on) join the grades in their own title.
+    tagged = {int(t) for v in GRADE_TOOLS.get("by_grade", {}).values() for t in v}
+    out += [l for l in lessons if int(l["tool_num"]) not in tagged and l["live"] and int(g) in title_grades(l)
+            and (k is None or k in l["contests"])]
+    return out
+
+
+def title_grades(l):
+    """Grades named at the end of a lesson's YouTube title: 'Grade 5-6', '4th Grade', '1st & 2nd Grade', 'Middle School'."""
+    tail = l.get("youtube_title", "").split("|")[-1]
+    if "Middle School" in tail:
+        return range(6, 9)
+    nums = [int(x) for x in re.findall(r"\d+", tail)]
+    return range(min(nums), max(nums) + 1) if nums else [int(l["grade"])]
 
 
 def combo_lessons(lessons, g, k):
