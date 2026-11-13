@@ -66,6 +66,7 @@ TOPICS = [
     ("Rates and averages", ["Rates", "Statistics"]),
     ("Counting and probability", ["Counting", "Probability"]),
     ("Geometry", ["Geometry: area", "Geometry: counting", "Geometry: circles", "Geometry: spatial", "Geometry"]),
+    ("Trigonometry and complex numbers", ["Trigonometry", "Complex numbers"]),
     ("Logic and reading the problem", ["Logic", "Problem reading", "Visual puzzles"]),
 ]
 GRADE_COLORS = ["teal", "pink", "navy", "yellow", "red", "teal", "pink"]

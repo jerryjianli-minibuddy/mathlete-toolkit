@@ -2147,5 +2147,97 @@
    "noetic"
   ],
   "seconds": 266
+ },
+ {
+  "id": "L3-95",
+  "tool_num": 90,
+  "tool": "Use Log Rules",
+  "slug": "use-log-rules",
+  "video_id": "TKWL5xWex_Q",
+  "short_id": "pz6e8i6MiUA",
+  "hook": "One Answer Here Is Fake",
+  "search": "Logarithm Rules",
+  "youtube_title": "One Answer Here Is Fake | Use Log Rules | Logarithm Rules | High School Math",
+  "problem": "What is the sum of all real x with log₄(x²) + log₂(x − 6) = 4?",
+  "rule": "Logs don't match? Make them match. One base, combine, undo, check the insides.",
+  "move": "Switch to one base, combine the logs, undo the log, check the insides",
+  "trap": "Keeping x = −2 too: 8 + (−2) = 6, but log₂(−8) doesn't exist",
+  "family": "Algebra",
+  "topic": "Log equations with different bases",
+  "also_called": "Logarithm rules",
+  "grade": 11,
+  "contests": [
+   "amc12"
+  ],
+  "seconds": 322
+ },
+ {
+  "id": "L3-96",
+  "tool_num": 91,
+  "tool": "Use Trig Identities",
+  "slug": "use-trig-identities",
+  "video_id": "QIFzI-g1DjQ",
+  "short_id": "TzqSrsJA7ec",
+  "hook": "sin θ + cos θ = 4/3. Find tan θ + cot θ",
+  "search": "Trigonometry",
+  "youtube_title": "sin θ + cos θ = 4/3. Find tan θ + cot θ | Use Trig Identities | Trigonometry | High School Math",
+  "problem": "sin θ + cos θ = 4/3. What is tan θ + cot θ?",
+  "rule": "Don't hunt for the angle. Let an identity do the work.",
+  "move": "Write it in sin and cos, pick the identity, plug in what you know, simplify",
+  "trap": "Squaring as sin² + cos² and dropping the 2 sin cos: 9/7",
+  "family": "Trigonometry",
+  "topic": "sin + cos given, tan + cot wanted",
+  "also_called": "Trigonometric identities",
+  "grade": 11,
+  "contests": [
+   "amc12"
+  ],
+  "seconds": 321
+ },
+ {
+  "id": "L3-97",
+  "tool_num": 92,
+  "tool": "Plot the Complex Numbers",
+  "slug": "plot-the-complex-numbers",
+  "video_id": "2yRJ1C0_JDM",
+  "short_id": "CJO70yXBJNU",
+  "hook": "Closest Point to Zero? Not the Middle",
+  "search": "Complex Plane",
+  "youtube_title": "Closest Point to Zero? Not the Middle | Plot the Complex Numbers | Complex Plane | High School Math",
+  "problem": "A complex number z has |z − 6| + |z − 8i| = 10. What is the smallest possible |z|?",
+  "rule": "Complex numbers are points. Absolute values are distances.",
+  "move": "Plot the points, turn it into distance, draw the shape, read the picture",
+  "trap": "Taking the middle of the segment, 3 + 4i, so |z| = 5",
+  "family": "Complex numbers",
+  "topic": "Distances in the complex plane",
+  "also_called": "Complex plane",
+  "grade": 11,
+  "contests": [
+   "amc12"
+  ],
+  "seconds": 348
+ },
+ {
+  "id": "L3-98",
+  "tool_num": 93,
+  "tool": "Use Vieta's Formulas",
+  "slug": "use-vietas-formulas",
+  "video_id": "QRt2YX3rJQs",
+  "short_id": "5XlDIrwevhY",
+  "hook": "Ugly Roots, Clean Answer",
+  "search": "Polynomial Roots",
+  "youtube_title": "Ugly Roots, Clean Answer | Use Vieta's Formulas | Polynomial Roots | High School Math",
+  "problem": "The roots of x³ + 2x² − 5x − 3 are r, s and t. What is 1/r + 1/s + 1/t?",
+  "rule": "Don't solve for the roots. Read their sums right off the equation.",
+  "move": "Rewrite the ask, read the coefficients, set the signs (flip, keep, flip), plug in",
+  "trap": "Reading the product of the roots as −3 instead of +3: 5/3",
+  "family": "Algebra",
+  "topic": "Sums of roots without the roots",
+  "also_called": "Sum and product of roots",
+  "grade": 11,
+  "contests": [
+   "amc12"
+  ],
+  "seconds": 302
  }
 ]
