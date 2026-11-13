@@ -64,7 +64,7 @@ TOPICS = [
     ("Algebra readiness", ["Algebra readiness"]),
     ("Rates and averages", ["Rates", "Statistics"]),
     ("Counting", ["Counting"]),
-    ("Geometry", ["Geometry: area", "Geometry: counting", "Geometry: circles"]),
+    ("Geometry", ["Geometry: area", "Geometry: counting", "Geometry: circles", "Geometry: spatial"]),
     ("Logic and reading the problem", ["Logic", "Problem reading"]),
 ]
 GRADE_COLORS = ["teal", "pink", "navy", "yellow", "red", "teal", "pink"]
