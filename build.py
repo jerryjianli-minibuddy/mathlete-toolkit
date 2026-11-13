@@ -1086,6 +1086,7 @@ TEST_SETS = [
     dict(key="mathcounts-6-8", contest="mathcounts", grades=[6, 7, 8], label="MATHCOUNTS-style", diag=True, practice=True, store="mathcounts", anchor="#mathcounts"),
     # Nov 13: Kangaroo-style Grades 3-4 Practice Pack and Tests 1-10 live on Payhip (Jian said yes). Diagnostic waits on Jian.
     dict(key="kangaroo-3-4", contest="kangaroo", grades=[3, 4], label="Kangaroo-style", diag=False, practice=True, store="kangaroo34", anchor="#kangaroo34"),
+    dict(key="kangaroo-1-2", contest="kangaroo", grades=[1, 2], label="Kangaroo-style", diag=False, practice=True, store="kangaroo12", anchor="#kangaroo12"),
 ]
 # Drive id of each diagnostic PDF (must be shared as anyone with the link).
 DIAG_FILES = {"noetic-5": "1PReaxlTwr3zcN-xdEyVcYWJtY8c8Tc2p", "kangaroo-5-6": "1ggmbBeozrqJopzf2vQNeLZS5msb5WJ4W",
@@ -1517,6 +1518,17 @@ def kangaroo34_section(root, shop):
         '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
         diag=False, single_name="Kangaroo-style Grades 3-4")
 
+def kangaroo12_section(root, shop):
+    """Kangaroo-style Grades 1-2 (Payhip, Nov 13). Practice tests only."""
+    return contest_tests_section(
+        root, shop, "kangaroo12", "Kangaroo-style", "Grades 1 and 2", "kangaroo", 1,
+        "24 multiple-choice problems in three parts (3, 4 and 5 points), easy to hard, 75 minutes, no calculator, with an answer key. Lots of pictures: shapes, patterns, counting and simple puzzles.",
+        "24 problems, 75 minutes, answer key", ["Grades 1 and 2", "PDF", "75 min"],
+        "Kangaroo-style Grades 1-2 Practice Pack", ["Grades 1 and 2", "10 tests"],
+        '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
+        alt=True, diag=False, single_name="Kangaroo-style Grades 1-2")
+
+
 def page_tests(lessons, shop):
     """Mock tests as a pricing page (Nov 11): free vs single vs pack, what every test holds, sample pages, FAQ.
     Buy buttons link to Payhip only when shop["live"]; until then they say Coming soon and the free test is the action."""
@@ -1543,7 +1555,7 @@ def page_tests(lessons, shop):
   <p class="eyebrow">Practice tests</p>
   <h1>Practice tests</h1>
   <p class="lead">Real contest length, with a worked answer key.</p>
-  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a></p>
+  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a></p>
   {sale_banner(root, " sale-page")}
  </div>
 </section>
@@ -1586,7 +1598,8 @@ def page_tests(lessons, shop):
 {amc8_section(root, shop)}
 {mathcounts_section(root, shop)}
 {kangaroo34_section(root, shop)}
-<section class="sec sec-alt">
+{kangaroo12_section(root, shop)}
+<section class="sec">
  <div class="wrap">
   <h2>Compare</h2>
   <div class="cmp-wrap">
@@ -1606,7 +1619,7 @@ def page_tests(lessons, shop):
   {samples(root, ("practice", "key", "diagnostic"))}
  </div>
 </section>
-<section class="sec">
+<section class="sec sec-alt">
  <div class="wrap">
   <details class="qa singles-box" id="singles"{" open" if live else ""}>
    <summary>All 10 Noetic-style single tests, $3.99 each</summary>
