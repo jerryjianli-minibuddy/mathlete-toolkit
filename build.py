@@ -838,12 +838,12 @@ def page_home(lessons):
   </div>
  </div>
 </section>
-
+{qr_feature(root)}
 <section class="trust" aria-label="About our tests">
  <ul class="wrap trust-in">
   <li class="t-orig">Original problems</li>
   <li class="t-check">Worked answer keys</li>
-  <li class="t-qr">A lesson for every problem</li>
+  <li class="t-qr">QR code by every question</li>
   <li class="t-yt">Lessons on YouTube</li>
  </ul>
 </section>
@@ -892,6 +892,29 @@ def page_home(lessons):
 """
     body += foot(root)
     write("index.html", body)
+
+
+
+def qr_feature(root, cta=True):
+    """Nov 13, Jian: "Our selling point is that we have a QR code next to each question. I want to make that abundantly
+    clear for parents." A real problem and its QR from a test page, beside the lesson it opens."""
+    return f"""<section class="qrf" aria-labelledby="qrf-h">
+ <div class="wrap qrf-in">
+  <div class="qrf-copy">
+   <p class="eyebrow">Only on our tests</p>
+   <h2 id="qrf-h">A QR code next to every question</h2>
+   <p class="lead">Stuck or got it wrong? Scan the code with a phone. A short video teaches the key move behind that problem.</p>
+   <ol class="qrf-steps"><li>Scan the code</li><li>Watch the key move</li><li>Try the problem again</li></ol>
+   {f'<a class="btn btn-primary" href="{root}mock-tests/">See the tests</a>' if cta else ""}
+  </div>
+  <div class="qrf-demo" aria-hidden="true">
+   <div class="qrf-q"><span class="qrf-n">1</span><p>A string of beads repeats this pattern: red, blue, blue, green, yellow, red, blue, blue, green, yellow, and so on. What color is the 87th bead?</p><img src="{root}assets/img/qr-scan.webp" alt="" width="130" height="150" loading="lazy"></div>
+   <span class="qrf-arrow"></span>
+   <div class="qrf-phone"><img src="{root}assets/covers/find-the-cycle.webp" alt="" width="640" height="360" loading="lazy"><span class="qrf-play"></span><b>Find the Cycle</b><small>Key move lesson</small></div>
+  </div>
+ </div>
+</section>
+"""
 
 
 def embed(l, root, eager=False):
@@ -1501,6 +1524,7 @@ def page_tests(lessons, shop):
   {sale_banner(root, " sale-page")}
  </div>
 </section>
+{qr_feature(root, cta=False)}
 <section class="sec sec-tight" id="noetic">
  <div class="wrap">
   <p class="eyebrow">Noetic-style &middot; Grade 5</p>
