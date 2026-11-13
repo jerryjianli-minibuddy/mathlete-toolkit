@@ -1008,3 +1008,7 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .stf-steps b { font-size: 1.05rem; color: var(--yellow); }
 .stf-steps span { font-size: .82rem; line-height: 1.3; color: #D6DEEE; }
 .stf-1 { min-height: 120px; } .stf-2 { min-height: 160px; } .stf-3 { min-height: 200px; background: #0F2A55 !important; outline: 3px solid var(--yellow); }
+
+/* Nov 13: no-refund line under Buy buttons */
+.final-sale { margin: 8px 0 0; font-size: 13px; color: #5B6478; }
+.plan .final-sale { text-align: center; }

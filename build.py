@@ -337,6 +337,7 @@ def foot(root, cta=True):
  </div>
  <div class="wrap fine">
   <p>{NAME} is an independent practice channel. It is not affiliated with or endorsed by Math Kangaroo, Noetic Learning, MATHCOUNTS, the MAA (AMC) or any math olympiad. Contest names are used only to describe what each lesson helps with. Every problem in our videos and tests is our own.</p>
+  <p>All sales are final. No refunds on digital downloads.</p>
   <p>&copy; {yr} {NAME}</p>
  </div>
 </footer>
@@ -1418,6 +1419,7 @@ def moems_section(root, shop):
     <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
     <ul class="facts-row"><li>Grades 4 to 6</li><li>10 tests</li></ul>
     {pack_btn}
+    {FINAL_SALE}
    </div>"""
     singles = "\n".join(
         f'    <li><span><b>MOEMS-style Practice Test {n}</b><small>Full season: 25 problems, answer key</small></span><em>{SINGLE_PRICE}</em>'
@@ -1451,12 +1453,15 @@ def moems_section(root, shop):
    <ul class="singles">
 {singles}
    </ul>
+   {FINAL_SALE}
   </details>
   <p class="test-note">"MOEMS-style" tests are written in the style of the Math Olympiads for Elementary and Middle Schools. Key Move Math is not affiliated with or endorsed by MOEMS. Every problem is our own.</p>
  </div>
 </section>"""
 
 
+# Nov 13, Jian: "Make sure the refund policy is clear. There's no refund." Shown under every Buy button and in the footer.
+FINAL_SALE = '<p class="final-sale">All sales are final. No refunds on digital downloads.</p>'
 # Nov 13, Jian approved affiliates. Signup link copied from his Payhip Marketing > Affiliates page.
 AFFILIATE_SIGNUP = "https://payhip.com/auth/register/af6af2be89010ee"
 QR_LINE = '<p class="qr-line"><span class="qr-ico" aria-hidden="true"></span>A QR code next to every question opens a short video on its key move.</p>'
@@ -1502,6 +1507,7 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
     <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
     <ul class="facts-row">{li(pack_facts)}</ul>
     {pack_btn}
+    {FINAL_SALE}
    </div>
   </div>
   <details class="qa singles-box" id="{key}-singles"{" open" if live else ""}>
@@ -1509,6 +1515,7 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
    <ul class="singles">
 {singles}
    </ul>
+   {FINAL_SALE}
   </details>
   <p class="test-note">{note}</p>
  </div>
@@ -1615,6 +1622,7 @@ def page_tests(lessons, shop):
     <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
     <ul class="facts-row"><li>Noetic-style</li><li>Grade 5</li><li>10 tests</li><li>60 pages</li></ul>
     {pack_btn}
+    {FINAL_SALE}
    </div>
   </div>
   {soon_note}
@@ -1654,6 +1662,7 @@ def page_tests(lessons, shop):
    <ul class="singles">
 {singles}
    </ul>
+   {FINAL_SALE}
   </details>
   {faq_html}
  </div>
@@ -1680,7 +1689,7 @@ def free_result(root, t):
                 f'<div class="fres-btns">'
                 + (f'<a class="btn btn-primary" href="{e(store_of(t)["pack"])}" rel="noopener">Get the 10-test pack, {PACK_PRICE}</a>'
                    if store_of(t).get("pack") else "")
-                + f'<a class="btn {"btn-ghost-d" if store_of(t).get("pack") else "btn-primary"}" href="{root}mock-tests/{t.get("anchor", "")}">Buy one test, {SINGLE_PRICE}</a></div>')
+                + f'<a class="btn {"btn-ghost-d" if store_of(t).get("pack") else "btn-primary"}" href="{root}mock-tests/{t.get("anchor", "")}">Buy one test, {SINGLE_PRICE}</a></div>' + FINAL_SALE)
     else:
         paid = '<p>Practice tests coming soon.</p>'
     if not t["diag"]:
@@ -2145,6 +2154,7 @@ def page_teachers():
    <li>Coach kit: a 10-week season plan, team score trackers and every answer key in one booklet</li>
   </ul>
   {buy}
+  {FINAL_SALE}
   <p class="small">Teaching one class? A <a href="{root}mock-tests/">10-test pack</a> covers one classroom.</p>
  </div>
  <p class="glance-note">Every problem is our own. Not affiliated with any contest. Questions: <a href="mailto:{CONTACT}">{CONTACT}</a></p>
