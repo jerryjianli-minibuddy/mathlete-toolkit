@@ -1103,6 +1103,8 @@ def page_lesson(l, lessons):
 # and grade gets its own diagnostic, and a pick without one says Coming soon (never the Noetic test as a stand-in).
 TEST_SETS = [
     dict(key="noetic-5", contest="noetic", grades=[5], label="Noetic-style", diag=True, practice=True, store=None, anchor=""),
+    # Nov 13: Jian, "List Grade 4 tests" -- Noetic-style Grade 4 pack and Tests 1-10 live on Payhip. Diagnostic hosted on the site.
+    dict(key="noetic-4", contest="noetic", grades=[4], label="Noetic-style", diag=True, practice=True, store="noetic4", anchor="#noetic4"),
     dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=True, practice=False),
     # Nov 11: Jian shared these three (anyone with the link, viewer).
     dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=True, store="moems", anchor="#moems"),
@@ -1124,8 +1126,14 @@ def test_live(t):
     return t["diag"] or t["practice"]
 
 
+# Diagnostics served from this site instead of Drive (path from the site root).
+DIAG_LOCAL = {"noetic-4": "/assets/pdf/noetic-style-grade-4-diagnostic.pdf"}
+
+
 def diag_url(t):
     """Direct download of a free diagnostic (Nov 11, Jian: "People can just download. I don't need form. No need for password")."""
+    if t["key"] in DIAG_LOCAL:
+        return DIAG_LOCAL[t["key"]]
     return f"https://drive.google.com/uc?export=download&id={DIAG_FILES[t['key']]}"
 
 
@@ -1552,6 +1560,16 @@ def kangaroo34_section(root, shop):
         '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
         diag=False, single_name="Kangaroo-style Grades 3-4")
 
+def noetic4_section(root, shop):
+    """Noetic-style Grade 4 (Payhip, Nov 13), with its free diagnostic."""
+    return contest_tests_section(
+        root, shop, "noetic4", "Noetic-style", "Grade 4", "noetic", 4,
+        "20 problems, easy to hard, 50 minutes, no calculator, with a worked answer key.",
+        "20 problems, 50 minutes, answer key", ["Grade 4", "PDF", "50 min"],
+        "Noetic-style Grade 4 Practice Pack", ["Grade 4", "10 tests", "60 pages"],
+        TEST_NOTE, single_name="Noetic-style Grade 4")
+
+
 def kangaroo12_section(root, shop):
     """Kangaroo-style Grades 1-2 (Payhip, Nov 13). Practice tests only."""
     return contest_tests_section(
@@ -1581,7 +1599,7 @@ def page_tests(lessons, shop):
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(shop["tests"], 1))
     body = head(f"Practice Tests: Kangaroo, Noetic, MOEMS, AMC 8, MATHCOUNTS-style | {NAME}",
-                "Kangaroo-style Grades 3-4, Noetic-style Grade 5, MOEMS-style Grades 4 to 6, AMC 8-style and MATHCOUNTS-style Grades 6 to 8 practice tests from $3.99, each with an answer key and a QR code by every question.",
+                "Kangaroo-style Grades 1-4, Noetic-style Grades 4 and 5, MOEMS-style Grades 4 to 6, AMC 8-style and MATHCOUNTS-style Grades 6 to 8 practice tests from $3.99, each with an answer key and a QR code by every question.",
                 "mock-tests/", root)
     body += nav(root, "tests")
     body += f"""<section class="page-head">
@@ -1589,7 +1607,7 @@ def page_tests(lessons, shop):
   <p class="eyebrow">Practice tests</p>
   <h1>Practice tests</h1>
   <p class="lead">Real contest length, with a worked answer key.</p>
-  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a></p>
+  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a></p>
   {sale_banner(root, " sale-page")}
  </div>
 </section>
@@ -1635,7 +1653,8 @@ def page_tests(lessons, shop):
 {mathcounts_section(root, shop)}
 {kangaroo34_section(root, shop)}
 {kangaroo12_section(root, shop)}
-<section class="sec">
+{noetic4_section(root, shop)}
+<section class="sec sec-alt">
  <div class="wrap">
   <h2>Compare</h2>
   <div class="cmp-wrap">
@@ -1655,7 +1674,7 @@ def page_tests(lessons, shop):
   {samples(root, ("practice", "key", "diagnostic"))}
  </div>
 </section>
-<section class="sec sec-alt">
+<section class="sec">
  <div class="wrap">
   <details class="qa singles-box" id="singles"{" open" if live else ""}>
    <summary>All 10 Noetic-style single tests, $3.99 each</summary>
