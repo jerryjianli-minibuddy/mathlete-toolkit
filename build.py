@@ -321,6 +321,7 @@ def foot(root, cta=True):
    <a class="brand brand-foot" href="{root}">{mark(30)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
    <p>Competition math, one key at a time.</p>
    <p class="foot-mail">Stuck on a problem? <a href="mailto:{CONTACT}">{CONTACT}</a></p>
+   <p class="foot-mail">Tutor or coach? <a href="{AFFILIATE_SIGNUP}" rel="noopener">Earn with us: 25% of every test you share</a></p>
    <a class="btn btn-yt" href="{YT_SUB}" rel="noopener">{YT_ICON}<span>Subscribe on YouTube</span></a>
   </div>
   <div>
@@ -1456,6 +1457,8 @@ def moems_section(root, shop):
 </section>"""
 
 
+# Nov 13, Jian approved affiliates. Signup link copied from his Payhip Marketing > Affiliates page.
+AFFILIATE_SIGNUP = "https://payhip.com/auth/register/af6af2be89010ee"
 QR_LINE = '<p class="qr-line"><span class="qr-ico" aria-hidden="true"></span>A QR code next to every question opens a short video on its key move.</p>'
 
 

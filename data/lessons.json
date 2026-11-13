@@ -2055,5 +2055,97 @@
    "amc10"
   ],
   "seconds": 317
+ },
+ {
+  "id": "L3-91",
+  "tool_num": 86,
+  "tool": "One Unit First",
+  "slug": "one-unit-first-grade-4",
+  "video_id": "TpVyA6wJkN4",
+  "short_id": "QzZqMFeAD98",
+  "hook": "3 Robots, 90 Plates, 5 Min. Not 144",
+  "search": "Rate Word Problems",
+  "youtube_title": "3 Robots, 90 Plates, 5 Min. Not 144 | One Unit First | Rate Word Problems | 4th Grade Math",
+  "problem": "3 robots wash 90 plates in 5 minutes. How many plates do 5 robots wash in 8 minutes?",
+  "rule": "Shrink it to one: one worker, one minute. Then multiply back up.",
+  "move": "Pick the one unit, find what one does, multiply back up",
+  "trap": "Stretching the minutes only and forgetting the new robots",
+  "family": "Rates",
+  "topic": "Workers, time and output rate problems",
+  "also_called": "Unit rate",
+  "grade": 4,
+  "contests": [
+   "noetic"
+  ],
+  "seconds": 252
+ },
+ {
+  "id": "L3-92",
+  "tool_num": 87,
+  "tool": "Whole Minus Part",
+  "slug": "whole-minus-part-grade-4",
+  "video_id": "GKnVSsXWP-c",
+  "short_id": "bFEKNdY2tfs",
+  "hook": "Pig + Goat + Sheep = 150 lb. Not 50",
+  "search": "Weight Puzzles",
+  "youtube_title": "Pig + Goat + Sheep = 150 lb. Not 50 | Whole Minus Part | Weight Puzzles | 4th Grade Math",
+  "problem": "A pig, a goat and a sheep weigh 150 lb. Pig and goat weigh 110, goat and sheep 70. How much does the goat weigh?",
+  "rule": "Start from the whole. Take away the part you know.",
+  "move": "Find the whole, find the part you know, take the part away",
+  "trap": "Splitting the total three ways when the parts aren't equal",
+  "family": "Algebra readiness",
+  "topic": "Weights in pairs and missing-part puzzles",
+  "also_called": "Part-whole subtraction",
+  "grade": 4,
+  "contests": [
+   "noetic"
+  ],
+  "seconds": 264
+ },
+ {
+  "id": "L3-93",
+  "tool_num": 88,
+  "tool": "Work Backwards",
+  "slug": "work-backwards-grade-4",
+  "video_id": "L_qaT4vbiyQ",
+  "short_id": "zvbRrYReDlk",
+  "hook": "The Squirrel Ate Half. Not 28",
+  "search": "Working Backwards Problems",
+  "youtube_title": "The Squirrel Ate Half. Not 28 | Work Backwards | Working Backwards Problems | 4th Grade Math",
+  "problem": "A squirrel ate half its acorns, found 6 more, gave 4 away and now has 15. How many did it have at first?",
+  "rule": "Start at the end. Undo each step, last one first.",
+  "move": "Start at the end, undo each step last first, check it forward",
+  "trap": "Undoing the steps in the wrong order",
+  "family": "Algebra readiness",
+  "topic": "Undo-the-steps start-number problems",
+  "also_called": "Inverse operations",
+  "grade": 4,
+  "contests": [
+   "noetic"
+  ],
+  "seconds": 271
+ },
+ {
+  "id": "L3-94",
+  "tool_num": 89,
+  "tool": "Smaller Is One Block",
+  "slug": "smaller-is-one-block-grade-4",
+  "video_id": "ugLW0_abWjY",
+  "short_id": "bpJr135fU58",
+  "hook": "3 Times as Many, 42 More. Not 126",
+  "search": "Bar Model Problems",
+  "youtube_title": "3 Times as Many, 42 More. Not 126 | Smaller Is One Block | Bar Model Problems | 4th Grade Math",
+  "problem": "A dragon has 3 times as many coins as a knight and 42 more. How many coins do they have together?",
+  "rule": "Make the smaller amount one block. Build everything else from blocks.",
+  "move": "Make the smaller one block, build the rest from blocks, find one block, answer the ask",
+  "trap": "Multiplying 42 by 3 when 42 is the difference",
+  "family": "Bar models",
+  "topic": "Times-as-many and more-than word problems",
+  "also_called": "Tape diagram",
+  "grade": 4,
+  "contests": [
+   "noetic"
+  ],
+  "seconds": 266
  }
 ]
