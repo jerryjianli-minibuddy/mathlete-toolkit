@@ -1126,7 +1126,10 @@ def grade_lessons(lessons, g, k=None):
     tagged = {int(t) for v in GRADE_TOOLS.get("by_grade", {}).values() for t in v}
     out += [l for l in lessons if int(l["tool_num"]) not in tagged and l["live"] and int(g) in title_grades(l)
             and (k is None or k in l["contests"])]
-    return out
+    # Nov 13: Tools #78-81 are Grades 1-2 versions of grade-5 tools with the same name; on a page for their own
+    # grade, show only the version made for that grade.
+    own = {l["tool"] for l in out if int(g) in title_grades(l)}
+    return [l for l in out if l["tool"] not in own or int(g) in title_grades(l)]
 
 
 def title_grades(l):

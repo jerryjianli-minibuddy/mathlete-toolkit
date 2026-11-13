@@ -1871,5 +1871,97 @@
    "noetic"
   ],
   "seconds": 307
+ },
+ {
+  "id": "L3-83",
+  "tool_num": 78,
+  "tool": "Whole Minus Part",
+  "slug": "whole-minus-part-grades-1-2",
+  "video_id": "WIZotiXklbw",
+  "short_id": "SBce-uu4-lY",
+  "hook": "2 Empty Seats? Look in the Tunnel",
+  "search": "Take Away",
+  "youtube_title": "2 Empty Seats? Look in the Tunnel | Whole Minus Part | Take Away | 1st & 2nd Grade Math",
+  "problem": "A toy train has 3 cars with 5 seats each. 9 teddies ride on it. How many seats are empty?",
+  "rule": "Start with the whole. Take away the part you know.",
+  "move": "Find the whole, find the part you know, then take the part away",
+  "trap": "Adding the numbers when one of them is already the whole",
+  "family": "Number sense",
+  "topic": "Take-away word problems",
+  "also_called": "Part-whole subtraction",
+  "grade": 1,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 214
+ },
+ {
+  "id": "L3-84",
+  "tool_num": 79,
+  "tool": "Test Before You Count",
+  "slug": "test-before-you-count-grades-1-2",
+  "video_id": "DzZsFV5jvY8",
+  "short_id": "Sa5SOzdnLPw",
+  "hook": "3 Eyes and 2 Horns? Not 5!",
+  "search": "Counting Puzzles",
+  "youtube_title": "3 Eyes and 2 Horns? Not 5! | Test Before You Count | Counting Puzzles | 1st & 2nd Grade Math",
+  "problem": "Here are 7 monsters. How many have 3 eyes and 2 horns?",
+  "rule": "Don't count yet. Test each one, then count the ones that pass.",
+  "move": "Say the test, test each one, then count the ticks",
+  "trap": "Counting ones that pass only part of the test",
+  "family": "Counting",
+  "topic": "Counting what fits a rule",
+  "also_called": "Count with conditions",
+  "grade": 1,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 222
+ },
+ {
+  "id": "L3-85",
+  "tool_num": 80,
+  "tool": "Pickiest Box First",
+  "slug": "pickiest-box-first-grades-1-2",
+  "video_id": "iFx3UAEpSVc",
+  "short_id": "Ji5bIVj_s8g",
+  "hook": "The Star Box Is Not a Triangle",
+  "search": "Mini Sudoku",
+  "youtube_title": "The Star Box Is Not a Triangle | Pickiest Box First | Mini Sudoku | 1st & 2nd Grade Math",
+  "problem": "Every row and every column gets one circle, one square and one triangle. What shape goes in the star box?",
+  "rule": "Don't guess. Start with the box that has only one choice.",
+  "move": "Find the pickiest box, fill it in, then find the next pickiest",
+  "trap": "Starting in the top corner and guessing",
+  "family": "Logic",
+  "topic": "Mini sudoku puzzles",
+  "also_called": "Shape sudoku",
+  "grade": 1,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 223
+ },
+ {
+  "id": "L3-86",
+  "tool_num": 81,
+  "tool": "Circle the Ask",
+  "slug": "circle-the-ask-grades-1-2",
+  "video_id": "0KngjQrvLag",
+  "short_id": "c7LLdYlZh-g",
+  "hook": "4 Cats, 3 Dogs: The Answer Isn't 7",
+  "search": "Word Problems",
+  "youtube_title": "4 Cats, 3 Dogs: The Answer Isn't 7 | Circle the Ask | Word Problems | 1st & 2nd Grade Math",
+  "problem": "4 cats and 3 dogs play in the yard. How many ears are in the yard?",
+  "rule": "Circle what the question asks. Check your answer matches it.",
+  "move": "Circle the ask, solve it, then check the answer matches the ask",
+  "trap": "Answering a number you found along the way, not the one asked",
+  "family": "Problem reading",
+  "topic": "Tricky word problems",
+  "also_called": "Reading the question",
+  "grade": 1,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 209
  }
 ]
