@@ -944,7 +944,7 @@ def page_lessons(lessons):
     body += f"""<section class="page-head">
  <div class="wrap">
   <h1>All lessons</h1>
-  <p class="lead">One tool per video. {f"{n_live} live now, with 2 new lessons a day and more grades on the way." if n_live < len(lessons) else f"All {len(lessons)} tools are live, with more grades on the way."}</p>
+  <p class="lead">One tool per video. {f"{n_live} live now, with new lessons every day for Grades 1 to 8." if n_live < len(lessons) else f"All {len(lessons)} tools are live, with more on the way."}</p>
  </div>
 </section>
 <section class="sec sec-tight">
