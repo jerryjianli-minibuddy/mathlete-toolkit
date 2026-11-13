@@ -1173,8 +1173,8 @@ def title_grades(l):
     tail = l.get("youtube_title", "").split("|")[-1]
     if "Middle School" in tail:
         return range(6, 9)
-    if "High School" in tail:  # Nov 13: first AMC 10 lessons (Tools #82-85) are for Grades 9 and 10
-        return range(9, 11)
+    if "High School" in tail:  # Nov 13: AMC 10 lessons (Tools #82-85) are Grades 9-10; AMC 12 lessons (#90-93, grade 11) are 11-12
+        return range(11, 13) if int(l["grade"]) >= 11 else range(9, 11)
     nums = [int(x) for x in re.findall(r"\d+", tail)]
     return range(min(nums), max(nums) + 1) if nums else [int(l["grade"])]
 
