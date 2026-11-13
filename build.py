@@ -1954,7 +1954,7 @@ GUIDE = [
                ("How to enter", "Through a school or a host site such as a college, math circle or learning center. Parents can't register with the MAA directly."),
                ("Why take it", "A great first look at real contest math, and a goal for the middle school years."),
                ("Where it leads", "To the AMC 10 in high school. The AMC 8 itself doesn't lead to the AIME.")]),
-    dict(k="amc10", name="AMC 10", grades="Grade 10 and below", ours="Lessons coming soon", diff=4,
+    dict(k="amc10", name="AMC 10", grades="Grade 10 and below", ours="Our lessons: grades 9 and 10", diff=4,
          dl="Hard",
          what="High school algebra, geometry, counting and number theory, with no precalculus.",
          rows=[("Run by", "The MAA."),
