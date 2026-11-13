@@ -1001,7 +1001,7 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .stf-in { display: grid; gap: 22px; align-items: center; }
 @media (min-width: 860px) { .stf-in { grid-template-columns: 1fr 1.1fr; gap: 40px; } }
 .stf h2 { font-size: clamp(1.6rem, 5vw, 2.3rem); line-height: 1.1; margin: 4px 0 10px; color: var(--navy); }
-.stf .lead { margin: 0 0 12px; }
+.stf .lead { margin: 0 0 12px; color: #33425F; }
 .stf-eg { background: #fff; border: 2px solid var(--yellow); border-radius: 12px; padding: 10px 12px; font-size: .9rem; margin: 0 0 16px; }
 .stf-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; align-items: end; }
 .stf-steps li { background: var(--navy); color: #fff; border-radius: 14px 14px 6px 6px; padding: 12px 10px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; }
