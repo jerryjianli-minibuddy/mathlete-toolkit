@@ -40,8 +40,8 @@ CONTESTS = {
     # Nov 13: AMC 8 lessons are out and its practice tests are on Payhip, so it is no longer "soon".
     "amc8": dict(name="AMC 8", slug="amc-8-prep", short="AMC 8", org="the MAA",
                  blurb="Middle school, 25 questions in 40 minutes."),
-    "amc10": dict(name="AMC 10", slug="amc-10-prep", short="AMC 10", org="the MAA", soon=True,
-                  blurb="High school algebra, geometry and counting, no precalculus. Lessons are on the way."),
+    "amc10": dict(name="AMC 10", slug="amc-10-prep", short="AMC 10", org="the MAA",
+                  blurb="High school algebra, geometry, counting and number theory, no precalculus. More lessons are on the way."),
     "amc12": dict(name="AMC 12", slug="amc-12-prep", short="AMC 12", org="the MAA", soon=True,
                   blurb="Everything on AMC 10, plus trig, logarithms and complex numbers. Lessons are on the way."),
     "olympiad": dict(name="Math Olympiad", slug="math-olympiad-prep", short="Olympiad", soon=True,
@@ -1117,7 +1117,7 @@ def grade_lessons(lessons, g, k=None):
     """The lessons for a grade (or a grade and contest), most-used first, only those with a video out."""
     nums = (GRADE_TOOLS.get("by_combo", {}).get(f"{g}|{k}") if k else GRADE_TOOLS.get("by_grade", {}).get(str(g)))
     if nums is None and GRADE_TOOLS:
-        return []  # no real tests logged for this grade and contest
+        nums = []  # no real tests logged for this grade and contest: only lessons titled for this grade (below)
     if nums is None:
         return [l for l in lessons if str(l["grade"]) == str(g) and (k is None or k in l["contests"]) and l["live"]]
     by = {int(l["tool_num"]): l for l in lessons}
@@ -1137,6 +1137,8 @@ def title_grades(l):
     tail = l.get("youtube_title", "").split("|")[-1]
     if "Middle School" in tail:
         return range(6, 9)
+    if "High School" in tail:  # Nov 13: first AMC 10 lessons (Tools #82-85) are for Grades 9 and 10
+        return range(9, 11)
     nums = [int(x) for x in re.findall(r"\d+", tail)]
     return range(min(nums), max(nums) + 1) if nums else [int(l["grade"])]
 
@@ -2210,7 +2212,7 @@ def main():
     lessons = load()
     SHOP.update(load_shop())
     # A grade is live once it has lessons or a free/practice test (Nov 11: MOEMS 4-6, AMC 8 and MATHCOUNTS 6-8).
-    GRADES[:] = [(g, any(str(l["grade"]) == g for l in lessons) or any(int(g) in t["grades"] and test_live(t) for t in TEST_SETS))
+    GRADES[:] = [(g, any(str(l["grade"]) == g or (l["live"] and int(g) in title_grades(l)) for l in lessons) or any(int(g) in t["grades"] and test_live(t) for t in TEST_SETS))
                  for g, _ in GRADES]
     if os.path.exists(OUT):
         shutil.rmtree(OUT)

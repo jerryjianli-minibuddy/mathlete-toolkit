@@ -1963,5 +1963,97 @@
    "kangaroo"
   ],
   "seconds": 209
+ },
+ {
+  "id": "L3-87",
+  "tool_num": 82,
+  "tool": "Split Into Cases",
+  "slug": "split-into-cases",
+  "video_id": "uyPWs1MyN3Q",
+  "short_id": "ULhjBlVAuDo",
+  "hook": "Mean = Median? There Are 3 Answers, Not 1",
+  "search": "Casework",
+  "youtube_title": "Mean = Median? There Are 3 Answers, Not 1 | Split Into Cases | Casework | High School Math",
+  "problem": "3, 5, 9, 11 and x: the mean equals the median. What is the sum of all possible x?",
+  "rule": "When the setup can change, split into cases. Solve each one, keep what fits, then combine.",
+  "move": "Find where it changes, solve each case, check each one fits, combine",
+  "trap": "Stopping at x = 7, the middle case only",
+  "family": "Algebra",
+  "topic": "Mean and median casework",
+  "also_called": "Casework",
+  "grade": 9,
+  "contests": [
+   "amc10"
+  ],
+  "seconds": 346
+ },
+ {
+  "id": "L3-88",
+  "tool_num": 83,
+  "tool": "Set Up Coordinates",
+  "slug": "set-up-coordinates",
+  "video_id": "LSdZz12ocZI",
+  "short_id": "rKlr5CZBemg",
+  "hook": "Two Paths Cross: Is It the Center?",
+  "search": "Coordinate Geometry",
+  "youtube_title": "Two Paths Cross: Is It the Center? | Set Up Coordinates | Coordinate Geometry | High School Math",
+  "problem": "A 12 m square park ABCD. Paths from A to the midpoint of CD and from B to D cross at P. Area of triangle ABP?",
+  "rule": "Put a corner at (0, 0). Turn the picture into equations, then solve.",
+  "move": "Put a corner at (0, 0), write the equations, solve them, read off the answer",
+  "trap": "Assuming the paths cross at the center (area 36)",
+  "family": "Geometry",
+  "topic": "Where two lines cross",
+  "also_called": "Coordinate geometry",
+  "grade": 9,
+  "contests": [
+   "amc10"
+  ],
+  "seconds": 350
+ },
+ {
+  "id": "L3-89",
+  "tool_num": 84,
+  "tool": "Find Similar Triangles",
+  "slug": "find-similar-triangles",
+  "video_id": "WEfgV-61_-c",
+  "short_id": "CoxCb_nD_Bo",
+  "hook": "Two Ropes Cross: How High?",
+  "search": "Similar Triangles",
+  "youtube_title": "Two Ropes Cross: How High? | Find Similar Triangles | Similar Triangles | High School Math",
+  "problem": "Poles 6 m and 12 m tall stand 15 m apart. Ropes run from each top to the other base. How high do they cross?",
+  "rule": "Same angles, same shape. Pair up the sides, write the ratio, solve.",
+  "move": "Find matching angles, pair up the sides, write the ratio, solve",
+  "trap": "Averaging 3 and 6 at the midpoint to get 4.5",
+  "family": "Geometry",
+  "topic": "Crossing ropes",
+  "also_called": "Crossed ladders",
+  "grade": 9,
+  "contests": [
+   "amc10"
+  ],
+  "seconds": 358
+ },
+ {
+  "id": "L3-90",
+  "tool_num": 85,
+  "tool": "Work in Mod",
+  "slug": "work-in-mod",
+  "video_id": "N3xRaCsozuM",
+  "short_id": "Vd04tNMCe2I",
+  "hook": "$7 Kids, $11 Adults, Exactly $200",
+  "search": "Modular Arithmetic",
+  "youtube_title": "$7 Kids, $11 Adults, Exactly $200 | Work in Mod | Modular Arithmetic | High School Math",
+  "problem": "Kids pay $7, adults $11, at least one of each, exactly $200 in all. Fewest people?",
+  "rule": "Too big? Work with remainders. Solve the small one, then build back up.",
+  "move": "Pick the mod, swap in remainders, solve the small one, build back up",
+  "trap": "Stopping at the first answer: 1 adult and 27 kids (28)",
+  "family": "Number theory",
+  "topic": "Two prices, one total",
+  "also_called": "Modular arithmetic",
+  "grade": 9,
+  "contests": [
+   "amc10"
+  ],
+  "seconds": 317
  }
 ]
