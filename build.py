@@ -986,7 +986,7 @@ def page_lesson(l, lessons):
                 image=f"assets/covers/{l['slug']}.jpg", noindex=not l["live"], extra=ld)
     body += nav(root, "lessons")
     status = (f'<a class="btn btn-yt" href="https://www.youtube.com/watch?v={l["video_id"]}" rel="noopener">{YT_ICON}<span>Watch on YouTube</span></a>'
-              if l["live"] else '<p class="soon-note">This lesson goes live soon. New lessons come out every day at 7 AM and 4 PM Pacific.</p>')
+              if l["live"] else '<p class="soon-note">This lesson goes live soon. New lessons come out every day.</p>')
     if l.get("short_live"):
         status += (f'<a class="btn btn-ghost-d" href="https://www.youtube.com/shorts/{l["short_id"]}" rel="noopener">'
                    f'1-minute Short</a>')
