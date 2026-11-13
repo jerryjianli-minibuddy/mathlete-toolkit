@@ -38,11 +38,11 @@ CONTESTS = {
                        blurb="Fast, exact answers: counting, rates, number theory and geometry."),
     # AMC split three ways (Nov 11, Jian: "People taking AMC 10 shouldn't be learning AMC 12 material").
     # Nov 13: AMC 8 lessons are out and its practice tests are on Payhip, so it is no longer "soon".
-    "amc8": dict(name="AMC 8", slug="amc-8-prep", short="AMC 8",
+    "amc8": dict(name="AMC 8", slug="amc-8-prep", short="AMC 8", org="the MAA",
                  blurb="Middle school, 25 questions in 40 minutes."),
-    "amc10": dict(name="AMC 10", slug="amc-10-prep", short="AMC 10", soon=True,
+    "amc10": dict(name="AMC 10", slug="amc-10-prep", short="AMC 10", org="the MAA", soon=True,
                   blurb="High school algebra, geometry and counting, no precalculus. Lessons are on the way."),
-    "amc12": dict(name="AMC 12", slug="amc-12-prep", short="AMC 12", soon=True,
+    "amc12": dict(name="AMC 12", slug="amc-12-prep", short="AMC 12", org="the MAA", soon=True,
                   blurb="Everything on AMC 10, plus trig, logarithms and complex numbers. Lessons are on the way."),
     "olympiad": dict(name="Math Olympiad", slug="math-olympiad-prep", short="Olympiad", soon=True,
                      blurb="Short answer, deep thinking. Lessons are on the way."),
@@ -2166,8 +2166,8 @@ def main():
                 urls.append(f"grade-{g}/{k}/")
     for k, C in CONTESTS.items():
         sub = [l for l in lessons if k in l["contests"]]
-        lead = (f"Key moves that come up on {C['name']}. {C['blurb']} Independent practice, not affiliated with {C['name']}."
-                if sub else f"{C['blurb']} Independent practice, not affiliated with the {C['name']} organizers.")
+        lead = (f"Key moves that come up on {C['name']}. {C['blurb']} Independent practice, not affiliated with {C.get('org', C['name'])}."
+                if sub else f"{C['blurb']} Independent practice, not affiliated with {C.get('org', 'the ' + C['name'] + ' organizers')}.")
         page_group(C["slug"], f"{C['name']} Prep: Free Video Lessons | {NAME}", f"{C['name']} prep", lead, sub,
                    f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.",
                    picker=grade_picker(lessons, k, "../"),
