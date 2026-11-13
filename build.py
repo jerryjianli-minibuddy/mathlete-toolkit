@@ -839,6 +839,7 @@ def page_home(lessons):
  </div>
 </section>
 {qr_feature(root)}
+{study_feature(root)}
 <section class="trust" aria-label="About our tests">
  <ul class="wrap trust-in">
   <li class="t-orig">Original problems</li>
@@ -912,6 +913,29 @@ def qr_feature(root, cta=True):
    <span class="qrf-arrow"></span>
    <div class="qrf-phone"><img src="{root}assets/covers/find-the-cycle.webp" alt="" width="640" height="360" loading="lazy"><span class="qrf-play"></span><b>Find the Cycle</b><small>Key move lesson</small></div>
   </div>
+ </div>
+</section>
+"""
+
+
+def study_feature(root, cta=True):
+    """Nov 13, Jian: "because our videos focus on strategy, going from entry level to medium to hard, kids can study on
+    their own." Checked: all 90 lesson scripts solve a starter problem in named steps, then a harder twist (tw1), then the
+    toughest twist (tw2) that the child pauses and tries alone before the answer."""
+    return f"""<section class="stf" aria-labelledby="stf-h">
+ <div class="wrap stf-in">
+  <div class="stf-copy">
+   <p class="eyebrow">Learn on their own</p>
+   <h2 id="stf-h">Built so kids can study on their own</h2>
+   <p class="lead">Each video teaches a strategy, not just one answer, and climbs from easy to hard.</p>
+   <p class="stf-eg">Newer lessons name every step, so kids can reuse them. <b>Whole Minus Part:</b> 1. Find the whole &middot; 2. Find the part you know &middot; 3. Take the part away</p>
+   {f'<a class="btn btn-primary" href="{root}lessons/">Browse the lessons</a>' if cta else ""}
+  </div>
+  <ol class="stf-steps">
+   <li class="stf-1"><b>Starter</b><span>We solve it together, step by step</span></li>
+   <li class="stf-2"><b>Harder</b><span>Same steps, a tougher problem</span></li>
+   <li class="stf-3"><b>Toughest</b><span>Your child tries it alone, then checks</span></li>
+  </ol>
  </div>
 </section>
 """
@@ -1560,6 +1584,7 @@ def page_tests(lessons, shop):
  </div>
 </section>
 {qr_feature(root, cta=False)}
+{study_feature(root, cta=False)}
 <section class="sec sec-tight" id="noetic">
  <div class="wrap">
   <p class="eyebrow">Noetic-style &middot; Grade 5</p>
