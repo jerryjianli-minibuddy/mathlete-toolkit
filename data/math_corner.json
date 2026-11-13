@@ -276,6 +276,27 @@
    "img_w": 640,
    "img_h": 360,
    "img_alt": "Euclid's idea: 2 times 3 times 5 times 7 times 11 times 13, plus 1, is 30031, which is 59 times 509, two new primes"
+  },
+  {
+   "slug": "four-colors-color-any-map",
+   "date": "2026-11-13",
+   "kind": "fact",
+   "tag": "Proof",
+   "title": "Four colors are enough to color any map",
+   "desc": "Any map can be colored with just four colors so that no two neighbors match. Why three is not always enough, a map to try with a friend, and the story of the proof.",
+   "summary": "Color any map so neighbors never match, and you will never need a fifth color.",
+   "formula": "Any map → at most 4 colors",
+   "body": [
+    "Draw any map you like, with countries, states or made-up islands. Now color it so that no two countries that share a border get the same color. However twisty the map, four colors are always enough. This is called the four color theorem.",
+    "Three colors are not always enough. Draw one country in the middle and three countries around it, each touching the middle one and both of its other neighbors. All four touch each other, so each needs its own color.",
+    "Two rules make it fair: each country must be one connected piece, and countries that meet only at a single corner point do not count as neighbors.",
+    "The idea was first noticed in 1852, while someone was coloring a map of the counties of England. It took until 1976 to prove, when Kenneth Appel and Wolfgang Haken used a computer to check a huge list of cases. It was one of the first famous proofs that needed a computer.",
+    "Show a friend: ask them to draw a map that needs five colors. They can try as long as they like, but it can never be done."
+   ],
+   "img": "four-colors-color-any-map.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "A map of four regions: a yellow circle in the middle, surrounded by pink, green and purple regions, each touching all the others"
   }
  ]
 }
