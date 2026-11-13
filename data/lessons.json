@@ -1500,6 +1500,29 @@
   "seconds": 229
  },
  {
+  "id": "L3-74",
+  "tool_num": 68,
+  "tool": "Cross Out the No's",
+  "slug": "cross-out-the-nos",
+  "video_id": "XhUBApTbbSU",
+  "short_id": "IpPGbwJt8I8",
+  "hook": "3 Kids, 3 Pets, 2 Clues: Who Has the Dog",
+  "search": "Logic Puzzles",
+  "youtube_title": "3 Kids, 3 Pets, 2 Clues: Who Has the Dog | Cross Out the No's | Logic Puzzles | 1st & 2nd Grade Math",
+  "problem": "Ava, Ben and Max each have one pet: a cat, a dog or a fish. Ava's pet lives in water. Ben does not have the dog. Who has the dog?",
+  "rule": "Don't guess. Cross out the no's, and the yes shows up.",
+  "move": "Make a grid, cross out every no, then find the only yes",
+  "trap": "Answering before every box is crossed out",
+  "family": "Logic",
+  "topic": "Logic grid puzzles",
+  "also_called": "Logic grid",
+  "grade": 1,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 234
+ },
+ {
   "id": "L3-75",
   "tool_num": 69,
   "tool": "Count Then Fit",
