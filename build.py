@@ -2104,6 +2104,11 @@ def page_amc8_plan(lessons):
 """
     body += foot(root)
     write("amc-8-in-10-weeks/index.html", body)
+    # Nov 14: short contest-free alias for lesson descriptions (lessons name no contest). Keeps #week-N.
+    write("10-weeks/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
+          '<link rel="canonical" href="https://keymovemath.com/amc-8-in-10-weeks/">'
+          '<script>location.replace("/amc-8-in-10-weeks/" + location.hash)</script>'
+          '<meta http-equiv="refresh" content="0; url=/amc-8-in-10-weeks/"><a href="/amc-8-in-10-weeks/">10-week plan</a>')
 
 
 # /contests/ parents' guide (Nov 12, Jian: "more informative, like what the contests are for, difficulty, path to
