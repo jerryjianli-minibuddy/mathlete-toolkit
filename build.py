@@ -1142,7 +1142,8 @@ TEST_SETS = [
     dict(key="kangaroo-3-4", contest="kangaroo", grades=[3, 4], label="Kangaroo-style", diag=False, practice=True, store="kangaroo34", anchor="#kangaroo34"),
     dict(key="kangaroo-1-2", contest="kangaroo", grades=[1, 2], label="Kangaroo-style", diag=False, practice=True, store="kangaroo12", anchor="#kangaroo12"),
     # Nov 14: AMC 10-style diagnostic built (25 problems, 75 min), hosted on the site. Practice tests wait on Jian's yes.
-    dict(key="amc10-9-10", contest="amc10", grades=[9, 10], label="AMC 10-style", diag=True, practice=False),
+    dict(key="amc10-9-10", contest="amc10", grades=[9, 10], label="AMC 10-style", diag=True,
+         practice=False, store="amc10", anchor="#amc10"),  # practice turns on in main() once shop.json has "amc10"
 ]
 # Drive id of each diagnostic PDF (must be shared as anyone with the link).
 DIAG_FILES = {"noetic-5": "1PReaxlTwr3zcN-xdEyVcYWJtY8c8Tc2p", "kangaroo-5-6": "1ggmbBeozrqJopzf2vQNeLZS5msb5WJ4W",
@@ -1568,6 +1569,17 @@ def amc8_section(root, shop):
         '"AMC 8-style" tests are written in the style of the AMC 8. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.')
 
 
+def amc10_section(root, shop):
+    """AMC 10-style Grades 9 and 10 (Payhip, Nov 14, Jian: "List AMC 10 tests"), with its free diagnostic."""
+    return contest_tests_section(
+        root, shop, "amc10", "AMC 10-style", "Grades 9 and 10", "amc10", 10,
+        "25 multiple-choice problems in 75 minutes, no calculator, with an answer key.",
+        "25 problems, 75 minutes, answer key", ["Grades 9 and 10", "PDF", "75 min"],
+        "AMC 10-style Practice Pack", ["Grades 9 and 10", "10 tests"],
+        '"AMC 10-style" tests are written in the style of the AMC 10. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.',
+        alt=True)
+
+
 def mathcounts_section(root, shop):
     """MATHCOUNTS-style Grades 6 to 8 (Payhip, Nov 13): Sprint + Target rounds."""
     return contest_tests_section(
@@ -1636,7 +1648,7 @@ def page_tests(lessons, shop):
   <p class="eyebrow">Practice tests</p>
   <h1>Practice tests</h1>
   <p class="lead">Real contest length, with a worked answer key.</p>
-  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a></p>
+  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a>{'<a href="#amc10">AMC 10-style, Grades 9 and 10</a>' if SHOP.get("amc10") else ""}</p>
   {sale_banner(root, " sale-page")}
  </div>
 </section>
@@ -1683,6 +1695,7 @@ def page_tests(lessons, shop):
 {kangaroo34_section(root, shop)}
 {kangaroo12_section(root, shop)}
 {noetic4_section(root, shop)}
+{amc10_section(root, shop)}
 <section class="sec sec-alt">
  <div class="wrap">
   <h2>Compare</h2>
@@ -2310,6 +2323,9 @@ def extras(lessons, urls):
 def main():
     lessons = load()
     SHOP.update(load_shop())
+    for t in TEST_SETS:
+        if t.get("store") == "amc10":
+            t["practice"] = bool(SHOP.get("amc10"))
     # A grade is live once it has lessons or a free/practice test (Nov 11: MOEMS 4-6, AMC 8 and MATHCOUNTS 6-8).
     GRADES[:] = [(g, any(str(l["grade"]) == g or (l["live"] and int(g) in title_grades(l)) for l in lessons) or any(int(g) in t["grades"] and test_live(t) for t in TEST_SETS))
                  for g, _ in GRADES]
