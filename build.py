@@ -2270,10 +2270,22 @@ def page_teachers():
     shows only once shop.json has "club" (the Payhip link), which waits on Jian's yes to list it."""
     root = "../"
     club = SHOP.get("club") if SHOP.get("live") else None  # Nov 12: listed on Payhip after Jian's "List it on Payhip"
+    # Nov 14, Jian: the diagnostic list "look[s] very disorganized". Grouped by contest (contest outranks grade),
+    # groups youngest first, grades ascending inside, a grade filter on top, and a small PDF button per row.
+    groups = {}
+    for t in sorted((t for t in TEST_SETS if t["diag"]), key=lambda t: (min(t["grades"]), max(t["grades"]))):
+        groups.setdefault(t["label"], []).append(t)
+    dl_icon = ('<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" '
+               'fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>')
     rows = "".join(
-        f'<li><span><b>{e(t["label"])} diagnostic</b><small>{grades_label(t["grades"])}</small></span>'
-        f'<a class="btn btn-primary" href="{diag_url(t)}" rel="noopener">Download PDF</a></li>'
-        for t in TEST_SETS if t["diag"])
+        f'<div class="tc-grp" data-g="{" ".join(str(g) for t in ts for g in t["grades"])}"><h3>{e(label)}</h3><ul class="tc-list">'
+        + "".join(f'<li data-g="{" ".join(map(str, t["grades"]))}"><span>{grades_label(t["grades"])}</span>'
+                  f'<a class="tc-dl" href="{diag_url(t)}" rel="noopener" aria-label="{e(label)} diagnostic, {grades_label(t["grades"])}, PDF">'
+                  f'{dl_icon}PDF</a></li>' for t in ts)
+        + '</ul></div>' for label, ts in groups.items())
+    all_g = sorted({g for ts in groups.values() for t in ts for g in t["grades"]})
+    chips = ('<div class="tc-chips" role="group" aria-label="Filter by grade"><button type="button" class="tc-chip" aria-pressed="true" data-g="">All</button>'
+             + "".join(f'<button type="button" class="tc-chip" aria-pressed="false" data-g="{g}">{g}</button>' for g in all_g) + '</div>')
     steps = [("Print one per student.", "Keep the answer key, the last page, for yourself."),
              ("Time it like the contest.", "One class period is enough."),
              ("Grade with the key.", "Each answer names the key move that solves it."),
@@ -2296,7 +2308,7 @@ def page_teachers():
  <div class="tc-box">
   <h2>Start with a diagnostic</h2>
   <p>Free to copy for your whole class. No sign-up. Answer key on the last page.</p>
-  <ul class="tc-list">{rows}</ul>
+  <div class="tc-diag" data-tc-diag><p class="tc-chips-h">Grade</p>{chips}{rows}</div>
  </div>
  <div class="tc-box">
   <h2>How to run it</h2>

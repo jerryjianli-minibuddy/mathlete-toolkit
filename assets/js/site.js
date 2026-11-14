@@ -308,3 +308,22 @@
   tick();
   setInterval(tick, 1000);
 })();
+
+// Nov 14: grade filter on the teachers page diagnostic list.
+(function () {
+  var box = document.querySelector("[data-tc-diag]");
+  if (!box) return;
+  var chips = box.querySelectorAll(".tc-chip");
+  function show(g) {
+    chips.forEach(function (c) { c.setAttribute("aria-pressed", String(c.getAttribute("data-g") === g)); });
+    box.querySelectorAll(".tc-grp").forEach(function (grp) {
+      var any = false;
+      grp.querySelectorAll("li").forEach(function (li) {
+        var ok = !g || li.getAttribute("data-g").split(" ").indexOf(g) >= 0;
+        li.hidden = !ok; if (ok) any = true;
+      });
+      grp.hidden = !any;
+    });
+  }
+  chips.forEach(function (c) { c.addEventListener("click", function () { show(c.getAttribute("data-g")); }); });
+})();
