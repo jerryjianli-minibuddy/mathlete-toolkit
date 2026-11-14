@@ -1044,3 +1044,4 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .a8-link { margin: 0 0 16px; }
 .a8-link a { display: flex; flex-direction: column; gap: 2px; background: var(--yellow); color: var(--navy); border-radius: 14px; padding: 14px 18px; text-decoration: none; }
 .a8-link span { font-size: .92rem; }
+.tc-diag [hidden]{display:none !important}
