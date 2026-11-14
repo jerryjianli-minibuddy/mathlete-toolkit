@@ -309,6 +309,7 @@ def nav(root, active=""):
     lessons = (f'<a class="dd-i" href="{root}lessons/">All video lessons</a>'
                f'<a class="dd-i" href="{root}key-moves/">Cheat sheet (print it)</a>'
                f'<a class="dd-i" href="{root}study-plan/">4-week contest plan</a>'
+               f'<a class="dd-i" href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a>'
                f'<p class="dd-h">Grade 5 topics</p>{topics}')
     return f"""<header class="top">
  <div class="wrap top-in">
@@ -353,7 +354,7 @@ def foot(root, cta=True):
   <div>
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
-   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li>
+   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li>
    <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
   </div>
   <div>
@@ -2014,6 +2015,97 @@ def page_plan():
     write("study-plan/index.html", body)
 
 
+# /amc-8-in-10-weeks/ (Nov 14, Jian approved the growth idea "AMC 8 in 10 weeks"): one key move a week, each with its
+# lesson, three practice problems (easy, medium, hard, answers hidden) and the AMC 8-style practice test that uses it.
+# Kept lighter than the Countdown Pack's own plan. No dates (Nov 12 rule), so it counts in weeks, not on a calendar.
+# Every answer below was checked by hand and in Python on Nov 14.
+AMC8_WEEKS = [
+    ("L3-12", "Work out what one unit costs, makes or takes. Then scale up.", [("4 notebooks cost $10. How much do 7 notebooks cost?", "$17.50"),
+               ("6 workers paint 3 fences in 4 hours. At the same rate, how many hours do 4 workers take to paint 4 fences?", "8 hours"),
+               ("3 hens lay 3 eggs in 3 days. At the same rate, how many eggs do 12 hens lay in 12 days?", "48 eggs")]),
+    ("L3-33", "Turn every average into a total: average &times; how many.", [("The average of 4 test scores is 85. What score on a 5th test makes the average 87?", "95"),
+               ("The average age of 6 kids is 11. When their coach joins, the average age is 15. How old is the coach?", "39"),
+               ("The average of 10 numbers is 20. Two of them, with an average of 29, are taken away. What is the average of the other 8?", "17.75")]),
+    ("L3-37", "Break the number into primes. Divisors, squares and cubes all read off the powers.", [("360 = 2<sup>a</sup> &times; 3<sup>b</sup> &times; 5<sup>c</sup>. What is a + b + c?", "6"),
+               ("How many positive whole numbers divide 72 evenly?", "12"),
+               ("What is the smallest positive whole number n that makes 60n a perfect cube?", "450")]),
+    ("L3-20", "Find when the pattern repeats, then use the remainder.", [("Today is Monday. What day of the week is it 100 days from today?", "Wednesday"),
+               ("What is the units digit of 7<sup>50</sup>?", "9"),
+               ("The pattern 1, 3, 5, 2, 4 repeats forever. What is the sum of the first 103 numbers?", "309")]),
+    ("L3-21", "Find the whole, find the part you know, take it away.", [("A 10 by 8 rectangle has a 3 by 2 rectangle cut out of it. What area is left?", "74"),
+               ("A 12 by 9 garden has a path 1 unit wide all the way around its inside edge. What is the area of the path?", "38"),
+               ("From each corner of a square with side 8, a quarter circle of radius 4 is cut away. What area is left?", "64 &minus; 16&pi;")]),
+    ("L3-03", "Count every pair from both ends, then halve so each pair counts once.", [("6 friends each shake hands once with every other friend. How many handshakes are there?", "15"),
+               ("In a league of 8 teams, every team plays every other team twice. How many games are played?", "56"),
+               ("How many diagonals does a 10-sided polygon have?", "35")]),
+    ("L3-64", "Line everything up as if all were different, then divide out the repeats.", [("How many different ways can the letters of BOOK be arranged?", "12"),
+               ("How many different ways can the letters of BANANA be arranged?", "60"),
+               ("7 people sit around a round table. Seatings that are rotations of each other count as the same. How many seatings are there?", "720")]),
+    ("L3-65", "Probability = good outcomes &divide; total, when every outcome is equally likely.", [("A bag holds 3 red and 5 blue marbles. One is drawn at random. What is the probability it is blue?", "5/8"),
+               ("Two fair dice are rolled. What is the probability that the sum is 7?", "1/6"),
+               ("Two different numbers are picked at random from 1 to 6. What is the probability that their sum is even?", "2/5")]),
+    ("L3-66", "Use 180&deg; in a triangle and on a line, one angle at a time.", [("Two angles of a triangle are 48&deg; and 75&deg;. What is the third angle?", "57&deg;"),
+               ("What is each inside angle of a regular hexagon?", "120&deg;"),
+               ("In triangle ABC, AB = AC and angle A is 40&deg;. D is on AC, and BD cuts angle B in half. What is angle BDC?", "75&deg;")]),
+    ("L3-63", "In a right triangle, the two short sides squared add up to the long side squared.", [("A right triangle has legs 6 and 8. How long is the longest side?", "10"),
+               ("A rectangle is 5 by 12. How long is its diagonal?", "13"),
+               ("A 25-foot ladder leans on a wall with its foot 7 feet out. The top slides down 4 feet. How far out does the foot move?", "8 feet")]),
+]
+
+
+def page_amc8_plan(lessons):
+    root = "../"
+    by_id = {l["id"]: l for l in lessons}
+    m = SHOP.get("amc8") if SHOP.get("live") else None
+    cards = []
+    for n, (lid, rule, probs) in enumerate(AMC8_WEEKS, 1):
+        l = by_id[lid]
+        lesson = (f'<a href="{root}lessons/{l["slug"]}/">Watch the lesson</a>' if l["live"]
+                  else f'<a href="{root}lessons/{l["slug"]}/">Lesson</a> <small>(video soon)</small>')
+        ps = "".join(f'<li><span class="a8-lv">{lv}</span> {q}<details><summary>Answer</summary><p>{a}</p></details></li>'
+                     for lv, (q, a) in zip(("Easy", "Medium", "Hard"), probs))
+        test = (f'<a href="{e(m["tests"][n - 1])}" rel="noopener">AMC 8-style Practice Test {n}</a> <small>{SINGLE_PRICE}</small>' if m
+                else f'AMC 8-style Practice Test {n} <small>(soon)</small>')
+        cards.append(f"""<li class="a8-wk" id="week-{n}">
+   <p class="pl-wk">Week {n}</p>
+   <h2>{e(l["tool"])}</h2>
+   <p class="a8-rule">{rule}</p>
+   <ol class="a8-steps">
+    <li><b>Learn:</b> {lesson}</li>
+    <li><b>Practice:</b> try these three, then check.<ol class="a8-ps">{ps}</ol></li>
+    <li><b>Test:</b> {test}. Redo every miss the next day.</li>
+   </ol>
+  </li>""")
+    pack = (f'<a class="btn btn-primary btn-lg" href="{e(m["pack"])}" rel="noopener">All 10 tests, {PACK_PRICE}</a>' if m else "")
+    body = head(f"AMC 8 in 10 Weeks: One Key Move a Week | {NAME}",
+                "A 10-week AMC 8 study plan: one key move a week, with a short video lesson, three practice problems and a matching practice test.",
+                "amc-8-in-10-weeks/", root)
+    body += nav(root, "plan")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <p class="eyebrow">AMC 8 &middot; Grades 6 to 8</p>
+  <h1>AMC 8 in 10 weeks</h1>
+  <p class="lead">One key move a week, about 20 minutes a day. Start 10 weeks before test day.</p>
+  <p class="a8-start"><b>Before Week 1:</b> take the <a href="{free_href(root, "amc8", 7)}">AMC 8-style diagnostic</a> to see where to spend extra time.</p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap">
+ <ol class="a8-plan">
+  {"".join(cards)}
+ </ol>
+ <div class="a8-end">
+  <h2>Want all 10 tests in one go?</h2>
+  <p>The AMC 8-style Countdown Pack has every test in this plan, each with a worked answer key and a QR code next to every question.</p>
+  {pack}
+  {FINAL_SALE if m else ""}
+ </div>
+ <p class="test-note">"AMC 8-style" tests are written in the style of the AMC 8. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.</p>
+</div></section>
+"""
+    body += foot(root)
+    write("amc-8-in-10-weeks/index.html", body)
+
+
 # /contests/ parents' guide (Nov 12, Jian: "more informative, like what the contests are for, difficulty, path to
 # college, why we take those"). Facts checked Nov 12, 2026 on each contest's own site: maa.org (AMC page and
 # maa-invitational-competitions), mathcounts.org (competition series, critical dates), mathkangaroo.org (logistics,
@@ -2336,7 +2428,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "contests/", "teachers/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "contests/", "teachers/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
                grade_lessons(lessons, 5),
@@ -2361,6 +2453,8 @@ def main():
         sub = [l for l in lessons if k in l["contests"]]
         lead = (f"Key moves that come up on {C['name']}. {C['blurb']} Independent practice, not affiliated with {C.get('org', C['name'])}."
                 if sub else f"{C['blurb']} Independent practice, not affiliated with {C.get('org', 'the ' + C['name'] + ' organizers')}.")
+        plan10 = ('<p class="a8-link"><a href="../amc-8-in-10-weeks/"><b>AMC 8 in 10 weeks</b>'
+                  '<span>One key move a week, with practice and a matching test</span></a></p>') if k == "amc8" else ""
         page_group(C["slug"], f"{C['name']} Prep: Free Video Lessons | {NAME}", f"{C['name']} prep", lead, sub,
                    f"Free {C['name']} prep videos: the problem-solving tools that come up most, taught one at a time.",
                    picker=grade_picker(lessons, k, "../"),
@@ -2368,7 +2462,7 @@ def main():
                    pl=playlist_links(contest=k),
                    # Nov 13: a contest with practice tests on sale shows its test box above the lessons too.
                    extra="" if sub and not any(t["practice"] for t in TEST_SETS if t["contest"] == k)
-                   else "".join(test_blocks("../", [t for t in TEST_SETS if t["contest"] == k])))
+                   else plan10 + "".join(test_blocks("../", [t for t in TEST_SETS if t["contest"] == k])))
         if sub:
             urls.append(C["slug"] + "/")
     write("amc-prep/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
@@ -2380,6 +2474,7 @@ def main():
     page_math_corner()
     page_cheatsheet(lessons)
     page_plan()
+    page_amc8_plan(lessons)
     page_compare()
     page_about(lessons)
     page_404()

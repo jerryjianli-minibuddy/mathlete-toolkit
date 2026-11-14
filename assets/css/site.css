@@ -1013,3 +1013,27 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 /* Nov 13: no-refund line under Buy buttons */
 .final-sale { margin: 8px 0 0; font-size: 13px; color: #5B6478; }
 .plan .final-sale { text-align: center; }
+
+/* AMC 8 in 10 weeks (Nov 14) */
+.a8-start { margin: 12px 0 0; }
+.a8-start a, .a8-wk a { color: var(--navy2); font-weight: 700; }
+.a8-plan { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 14px; }
+@media (min-width: 820px) { .a8-plan { grid-template-columns: repeat(2, 1fr); } }
+.a8-wk { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+.a8-wk h2 { margin: 6px 0 4px; font-size: 1.25rem; }
+.a8-rule { margin: 0 0 10px; color: var(--muted); }
+.a8-steps { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 10px; }
+.a8-steps > li { line-height: 1.45; }
+.a8-steps small { color: var(--muted); font-weight: 600; }
+.a8-ps { margin: 8px 0 0; padding-left: 0; list-style: none; display: grid; gap: 8px; }
+.a8-ps > li { background: var(--cream, #FBF8F1); border-radius: 10px; padding: 10px 12px; font-size: .95rem; }
+.a8-lv { display: inline-block; font-size: .7rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--pink); margin-right: 4px; }
+.a8-ps details { margin-top: 6px; }
+.a8-ps summary { cursor: pointer; font-weight: 700; color: var(--navy2); font-size: .88rem; min-height: 32px; display: inline-flex; align-items: center; }
+.a8-ps details p { margin: 2px 0 0; font-weight: 800; }
+.a8-end { background: #fff; border: 2px solid var(--yellow); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px; }
+.a8-end h2 { margin: 0 0 6px; }
+.a8-end p { color: var(--muted); max-width: 560px; margin: 0 auto 14px; }
+.a8-link { margin: 0 0 16px; }
+.a8-link a { display: flex; flex-direction: column; gap: 2px; background: var(--yellow); color: var(--navy); border-radius: 14px; padding: 14px 18px; text-decoration: none; }
+.a8-link span { font-size: .92rem; }
