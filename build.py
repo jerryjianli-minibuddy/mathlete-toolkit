@@ -1132,7 +1132,7 @@ TEST_SETS = [
     dict(key="noetic-5", contest="noetic", grades=[5], label="Noetic-style", diag=True, practice=True, store=None, anchor=""),
     # Nov 13: Jian, "List Grade 4 tests" -- Noetic-style Grade 4 pack and Tests 1-10 live on Payhip. Diagnostic hosted on the site.
     dict(key="noetic-4", contest="noetic", grades=[4], label="Noetic-style", diag=True, practice=True, store="noetic4", anchor="#noetic4"),
-    dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=True, practice=False),
+    dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=True, practice=True, store="kangaroo56", anchor="#kangaroo56"),
     # Nov 11: Jian shared these three (anyone with the link, viewer).
     dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=True, store="moems", anchor="#moems"),
     # Nov 13: Jian, "List them" -- AMC 8-style Countdown Pack and Tests 1-10 live on Payhip.
@@ -1579,7 +1579,7 @@ def amc10_section(root, shop):
         "25 problems, 75 minutes, answer key", ["Grades 9 and 10", "PDF", "75 min"],
         "AMC 10-style Practice Pack", ["Grades 9 and 10", "10 tests"],
         '"AMC 10-style" tests are written in the style of the AMC 10. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.',
-        alt=True)
+        )
 
 
 def mathcounts_section(root, shop):
@@ -1593,6 +1593,17 @@ def mathcounts_section(root, shop):
         alt=True)
 
 
+def kangaroo56_section(root, shop):
+    """Kangaroo-style Grades 5-6 (Payhip, Nov 14; Jian cut the pack to 10 tests), with its free diagnostic."""
+    return contest_tests_section(
+        root, shop, "kangaroo56", "Kangaroo-style", "Grades 5 and 6", "kangaroo", 5,
+        "24 multiple-choice problems in three parts (3, 4 and 5 points), easy to hard, 75 minutes, no calculator, with an answer key. Lots of spatial puzzles: nets, cube stacks, folds, views and mirrors.",
+        "24 problems, 75 minutes, answer key", ["Grades 5 and 6", "PDF", "75 min"],
+        "Kangaroo-style Grades 5-6 Practice Pack", ["Grades 5 and 6", "10 tests"],
+        '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
+        single_name="Kangaroo-style Grades 5-6")
+
+
 def kangaroo34_section(root, shop):
     """Kangaroo-style Grades 3-4 (Payhip, Nov 13). No diagnostic card until Jian shares the 3-4 diagnostic."""
     return contest_tests_section(
@@ -1601,7 +1612,7 @@ def kangaroo34_section(root, shop):
         "24 problems, 75 minutes, answer key", ["Grades 3 and 4", "PDF", "75 min"],
         "Kangaroo-style Grades 3-4 Practice Pack", ["Grades 3 and 4", "10 tests"],
         '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
-        diag=False, single_name="Kangaroo-style Grades 3-4")
+        alt=True, diag=False, single_name="Kangaroo-style Grades 3-4")
 
 def noetic4_section(root, shop):
     """Noetic-style Grade 4 (Payhip, Nov 13), with its free diagnostic."""
@@ -1610,7 +1621,7 @@ def noetic4_section(root, shop):
         "20 problems, easy to hard, 50 minutes, no calculator, with a worked answer key.",
         "20 problems, 50 minutes, answer key", ["Grade 4", "PDF", "50 min"],
         "Noetic-style Grade 4 Practice Pack", ["Grade 4", "10 tests", "60 pages"],
-        TEST_NOTE, single_name="Noetic-style Grade 4")
+        TEST_NOTE, alt=True, single_name="Noetic-style Grade 4")
 
 
 def kangaroo12_section(root, shop):
@@ -1621,7 +1632,7 @@ def kangaroo12_section(root, shop):
         "24 problems, 75 minutes, answer key", ["Grades 1 and 2", "PDF", "75 min"],
         "Kangaroo-style Grades 1-2 Practice Pack", ["Grades 1 and 2", "10 tests"],
         '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
-        alt=True, single_name="Kangaroo-style Grades 1-2")
+        single_name="Kangaroo-style Grades 1-2")
 
 
 def page_tests(lessons, shop):
@@ -1650,7 +1661,7 @@ def page_tests(lessons, shop):
   <p class="eyebrow">Practice tests</p>
   <h1>Practice tests</h1>
   <p class="lead">Real contest length, with a worked answer key.</p>
-  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a>{'<a href="#amc10">AMC 10-style, Grades 9 and 10</a>' if SHOP.get("amc10") else ""}</p>
+  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo56">Kangaroo-style, Grades 5 and 6</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a>{'<a href="#amc10">AMC 10-style, Grades 9 and 10</a>' if SHOP.get("amc10") else ""}</p>
   {sale_banner(root, " sale-page")}
  </div>
 </section>
@@ -1688,12 +1699,12 @@ def page_tests(lessons, shop):
   </div>
   {soon_note}
   <p class="test-note">{TEST_NOTE}</p>
-  <div class="next-tests"><b>Kangaroo-style tests, Grades 5 and 6</b><span>Coming soon</span></div>
  </div>
 </section>
 {moems_section(root, shop)}
 {amc8_section(root, shop)}
 {mathcounts_section(root, shop)}
+{kangaroo56_section(root, shop)}
 {kangaroo34_section(root, shop)}
 {kangaroo12_section(root, shop)}
 {noetic4_section(root, shop)}
