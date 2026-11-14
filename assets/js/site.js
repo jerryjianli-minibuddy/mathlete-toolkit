@@ -234,10 +234,12 @@
     var hit = r[st.grade];
     st.key = hit ? hit[0] : null; st.label = hit ? hit[1] : "";
     msg.className = "fpick-msg" + (hit ? " ok" : st.contest && st.grade ? " soon" : "");
-    msg.textContent = hit ? (hit[2] === "practice" ? "No diagnostic for this grade yet. Here are the " + hit[1] + "." : "Your test: " + hit[1] + ".")
+    var keys = hit ? (hit[3] || [hit[0]]) : [];
+    msg.textContent = hit ? (hit[2] === "practice" ? "No diagnostic for this grade yet. Here are the " + hit[1] + "."
+      : (keys.length > 1 ? "Two tests fit this grade: " : "Your test: ") + hit[1] + ".")
       : st.contest && st.grade ? "This test is coming soon. Pick another contest or grade."
       : st.contest ? "Now pick a grade." : "Pick a contest and a grade.";
-    Array.prototype.forEach.call(res, function (d) { d.hidden = d.getAttribute("data-key") !== st.key; });
+    Array.prototype.forEach.call(res, function (d) { d.hidden = keys.indexOf(d.getAttribute("data-key")) < 0; });
   }
   Array.prototype.forEach.call(cbs, function (b) {
     b.addEventListener("click", function () { st.contest = b.getAttribute("data-contest"); paint(); });

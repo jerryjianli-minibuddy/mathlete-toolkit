@@ -298,7 +298,7 @@ def nav(root, active=""):
     tests = ""
     for t in TEST_SETS:
         tests += f'<p class="dd-h">{t["label"]}, {grades_label(t["grades"])}</p>'
-        tests += (f'<a class="dd-i" href="{free_href(root, t["contest"], t["grades"][0])}">Diagnostic test</a>'
+        tests += (f'<a class="dd-i" href="{free_href(root, t["contest"], t["grades"][len(t["grades"]) // 2])}">Diagnostic test</a>'
                   if t["diag"] else '<span class="dd-i dd-off">Diagnostic test<small>soon</small></span>')
         tests += (f'<a class="dd-i" href="{root}mock-tests/{t.get("anchor", "")}">Practice tests</a>' if t["practice"]
                   else '<span class="dd-i dd-off">Practice tests<small>soon</small></span>')
@@ -1135,6 +1135,10 @@ TEST_SETS = [
     dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=True, practice=True, store="kangaroo56", anchor="#kangaroo56"),
     # Nov 11: Jian shared these three (anyone with the link, viewer).
     dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=True, store="moems", anchor="#moems"),
+    # Nov 14: Jian's "Go" -- MOEMS-style Grades 6-8 diagnostic (10 problems, 2 contests, 60 min) hosted on the site.
+    # Practice turns on in main() once shop.json has "moems68" (the Payhip links, verified live).
+    dict(key="moems-6-8", contest="olympiad", grades=[6, 7, 8], label="MOEMS-style", diag=True,
+         practice=False, store="moems68", anchor="#moems68"),
     # Nov 13: Jian, "List them" -- AMC 8-style Countdown Pack and Tests 1-10 live on Payhip.
     dict(key="amc8-6-8", contest="amc8", grades=[6, 7, 8], label="AMC 8-style", diag=True, practice=True, store="amc8", anchor="#amc8"),
     # Nov 13: MATHCOUNTS-style Practice Pack and Tests 1-10 live on Payhip (Jian said yes to the listing).
@@ -1159,7 +1163,8 @@ def test_live(t):
 # Diagnostics served from this site instead of Drive (path from the site root).
 DIAG_LOCAL = {"noetic-4": "/assets/pdf/noetic-style-grade-4-diagnostic.pdf",
               "amc10-9-10": "/assets/pdf/amc10-style-diagnostic.pdf",
-              "kangaroo-1-2": "/assets/pdf/kangaroo-style-grades-1-2-diagnostic.pdf"}
+              "kangaroo-1-2": "/assets/pdf/kangaroo-style-grades-1-2-diagnostic.pdf",
+              "moems-6-8": "/assets/pdf/moems-style-grades-6-8-diagnostic.pdf"}
 
 
 def diag_url(t):
@@ -1788,8 +1793,13 @@ def page_free():
     for t in TEST_SETS:
         who = grades_label(t["grades"])
         for g in t["grades"]:
-            if t["diag"]:
-                ready.setdefault(t["contest"], {})[str(g)] = [t["key"], f'{t["label"]} test, {who}']
+            cur = ready.get(t["contest"], {}).get(str(g))
+            if t["diag"] and cur and len(cur) == 4:
+                # Nov 14: two diagnostics fit one grade (MOEMS-style 4-6 and 6-8 at Grade 6): show both.
+                cur[1] += f' and {who}'
+                cur[3].append(t["key"])
+            elif t["diag"]:
+                ready.setdefault(t["contest"], {})[str(g)] = [t["key"], f'{t["label"]} test, {who}', "", [t["key"]]]
             elif t["practice"] and SHOP.get("live") and str(g) not in ready.get(t["contest"], {}):
                 # Nov 13: Kangaroo-style 3-4 has practice tests but no diagnostic yet; the pick shows the tests.
                 ready.setdefault(t["contest"], {})[str(g)] = [t["key"], f'{t["label"]} practice tests, {who}', "practice"]
@@ -2147,7 +2157,7 @@ GUIDE = [
                ("How to enter", "Through a school team, or the At-Home edition, which gives an unofficial score."),
                ("Why take it", "Two tries a year, so you can see growth. The top half nationally get a ribbon, the top 10% a medal."),
                ("Where it leads", "It stands alone. A good step toward MOEMS and MATHCOUNTS.")]),
-    dict(k="olympiad", name="MOEMS (Math Olympiad)", grades="Grades 4 to 8", ours="Our tests: grades 4 to 6", diff=3,
+    dict(k="olympiad", name="MOEMS (Math Olympiad)", grades="Grades 4 to 8", ours="Our tests: grades 4 to 8", diff=3,
          dl="Few problems, deep thinking",
          what="Five short contests, one a month, that teach out-of-the-box problem solving.",
          rows=[("Run by", "MOEMS, a nonprofit running since 1979."),
@@ -2445,8 +2455,8 @@ def main():
     lessons = load()
     SHOP.update(load_shop())
     for t in TEST_SETS:
-        if t.get("store") == "amc10":
-            t["practice"] = bool(SHOP.get("amc10"))
+        if t.get("store") in ("amc10", "moems68"):
+            t["practice"] = bool(SHOP.get(t["store"]))
     # A grade is live once it has lessons or a free/practice test (Nov 11: MOEMS 4-6, AMC 8 and MATHCOUNTS 6-8).
     GRADES[:] = [(g, any(str(l["grade"]) == g or (l["live"] and int(g) in title_grades(l)) for l in lessons) or any(int(g) in t["grades"] and test_live(t) for t in TEST_SETS))
                  for g, _ in GRADES]
