@@ -10,7 +10,9 @@ workflow rebuilds every hour). To add a lesson, add a row to data/lessons.json
 and a cover to assets/covers/<slug>.webp, <slug>-lg.webp and <slug>.jpg.
 """
 import hashlib, html, json, os, re, shutil, sys, urllib.request, urllib.error
-from datetime import date
+import csv
+from datetime import date, datetime, timezone
+from zoneinfo import ZoneInfo
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "_site")
@@ -117,6 +119,26 @@ def is_public(vid, known):
         return known
 
 
+def release_times():
+    """Nov 14: lessons are uploaded unlisted and go public 8 a day, and YouTube's oEmbed answers for unlisted
+    videos too. So a lesson with a row in data/release_calendar.csv (copied from the video thread's
+    release-calendar.csv) counts as out only once its Pacific release time has passed as well. -> {id: (lesson_utc, short_utc)}"""
+    path = os.path.join(ROOT, "data/release_calendar.csv")
+    out = {}
+    if not os.path.exists(path):
+        return out
+    pt = ZoneInfo("America/Los_Angeles")
+    for row in csv.DictReader(open(path, newline="")):
+        try:
+            day = row["release_day"].strip()
+            t = [datetime.strptime(f"{day} {row[k].strip()}", "%Y-%m-%d %I:%M %p").replace(tzinfo=pt)
+                 for k in ("lesson_time_PT", "short_time_PT")]
+        except (KeyError, ValueError):
+            continue
+        out[row["lesson"].strip()] = (t[0], t[1])
+    return out
+
+
 def load():
     lessons = json.load(open(os.path.join(ROOT, "data/lessons.json")))
     live_path = os.path.join(ROOT, "data/live.json")
@@ -149,9 +171,12 @@ def load():
                     if t.get("video_id") and is_public(t["video_id"], t["video_id"] in up_prev)]
         json.dump({"live": ids, "shorts": sids, "upcoming": upcoming}, open(live_path, "w"), indent=1)
         print(f"live: {len(ids)} of {len(lessons)}, shorts: {len(sids)}")
+    cal = release_times()
+    now = datetime.now(timezone.utc)
     for l in lessons:
-        l["live"] = l["video_id"] in live
-        l["short_live"] = l["live"] and l.get("short_id") in shorts
+        rel = cal.get(l["id"])
+        l["live"] = l["video_id"] in live and (rel is None or now >= rel[0])
+        l["short_live"] = l["live"] and l.get("short_id") in shorts and (rel is None or now >= rel[1])
         l["contests"] = [c for c in l["contests"] if c in CONTESTS]
     return lessons
 
