@@ -1141,6 +1141,8 @@ TEST_SETS = [
     # Nov 13: Kangaroo-style Grades 3-4 Practice Pack and Tests 1-10 live on Payhip (Jian said yes). Diagnostic waits on Jian.
     dict(key="kangaroo-3-4", contest="kangaroo", grades=[3, 4], label="Kangaroo-style", diag=False, practice=True, store="kangaroo34", anchor="#kangaroo34"),
     dict(key="kangaroo-1-2", contest="kangaroo", grades=[1, 2], label="Kangaroo-style", diag=False, practice=True, store="kangaroo12", anchor="#kangaroo12"),
+    # Nov 14: AMC 10-style diagnostic built (25 problems, 75 min), hosted on the site. Practice tests wait on Jian's yes.
+    dict(key="amc10-9-10", contest="amc10", grades=[9, 10], label="AMC 10-style", diag=True, practice=False),
 ]
 # Drive id of each diagnostic PDF (must be shared as anyone with the link).
 DIAG_FILES = {"noetic-5": "1PReaxlTwr3zcN-xdEyVcYWJtY8c8Tc2p", "kangaroo-5-6": "1ggmbBeozrqJopzf2vQNeLZS5msb5WJ4W",
@@ -1153,7 +1155,8 @@ def test_live(t):
 
 
 # Diagnostics served from this site instead of Drive (path from the site root).
-DIAG_LOCAL = {"noetic-4": "/assets/pdf/noetic-style-grade-4-diagnostic.pdf"}
+DIAG_LOCAL = {"noetic-4": "/assets/pdf/noetic-style-grade-4-diagnostic.pdf",
+              "amc10-9-10": "/assets/pdf/amc10-style-diagnostic.pdf"}
 
 
 def diag_url(t):
