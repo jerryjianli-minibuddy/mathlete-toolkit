@@ -1141,7 +1141,7 @@ TEST_SETS = [
     dict(key="mathcounts-6-8", contest="mathcounts", grades=[6, 7, 8], label="MATHCOUNTS-style", diag=True, practice=True, store="mathcounts", anchor="#mathcounts"),
     # Nov 13: Kangaroo-style Grades 3-4 Practice Pack and Tests 1-10 live on Payhip (Jian said yes). Diagnostic waits on Jian.
     dict(key="kangaroo-3-4", contest="kangaroo", grades=[3, 4], label="Kangaroo-style", diag=False, practice=True, store="kangaroo34", anchor="#kangaroo34"),
-    dict(key="kangaroo-1-2", contest="kangaroo", grades=[1, 2], label="Kangaroo-style", diag=False, practice=True, store="kangaroo12", anchor="#kangaroo12"),
+    dict(key="kangaroo-1-2", contest="kangaroo", grades=[1, 2], label="Kangaroo-style", diag=True, practice=True, store="kangaroo12", anchor="#kangaroo12"),
     # Nov 14: AMC 10-style diagnostic built (25 problems, 75 min), hosted on the site. Practice tests wait on Jian's yes.
     dict(key="amc10-9-10", contest="amc10", grades=[9, 10], label="AMC 10-style", diag=True,
          practice=False, store="amc10", anchor="#amc10"),  # practice turns on in main() once shop.json has "amc10"
@@ -1158,7 +1158,8 @@ def test_live(t):
 
 # Diagnostics served from this site instead of Drive (path from the site root).
 DIAG_LOCAL = {"noetic-4": "/assets/pdf/noetic-style-grade-4-diagnostic.pdf",
-              "amc10-9-10": "/assets/pdf/amc10-style-diagnostic.pdf"}
+              "amc10-9-10": "/assets/pdf/amc10-style-diagnostic.pdf",
+              "kangaroo-1-2": "/assets/pdf/kangaroo-style-grades-1-2-diagnostic.pdf"}
 
 
 def diag_url(t):
@@ -1613,14 +1614,14 @@ def noetic4_section(root, shop):
 
 
 def kangaroo12_section(root, shop):
-    """Kangaroo-style Grades 1-2 (Payhip, Nov 13). Practice tests only."""
+    """Kangaroo-style Grades 1-2 (Payhip, Nov 13), with its free diagnostic (Nov 14)."""
     return contest_tests_section(
         root, shop, "kangaroo12", "Kangaroo-style", "Grades 1 and 2", "kangaroo", 1,
         "24 multiple-choice problems in three parts (3, 4 and 5 points), easy to hard, 75 minutes, no calculator, with an answer key. Lots of pictures: shapes, patterns, counting and simple puzzles.",
         "24 problems, 75 minutes, answer key", ["Grades 1 and 2", "PDF", "75 min"],
         "Kangaroo-style Grades 1-2 Practice Pack", ["Grades 1 and 2", "10 tests"],
         '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
-        alt=True, diag=False, single_name="Kangaroo-style Grades 1-2")
+        alt=True, single_name="Kangaroo-style Grades 1-2")
 
 
 def page_tests(lessons, shop):
