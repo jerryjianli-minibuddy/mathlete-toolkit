@@ -104,5 +104,20 @@
    "https://payhip.com/b/8crzd"
   ]
  },
- "club": "https://payhip.com/b/esN50"
+ "club": "https://payhip.com/b/esN50",
+ "amc10": {
+  "pack": "https://payhip.com/b/dcDHs",
+  "tests": [
+   "https://payhip.com/b/dWu9M",
+   "https://payhip.com/b/wd7M6",
+   "https://payhip.com/b/FxMw7",
+   "https://payhip.com/b/5Mjpd",
+   "https://payhip.com/b/N4EFI",
+   "https://payhip.com/b/J1b3V",
+   "https://payhip.com/b/mQqkJ",
+   "https://payhip.com/b/LUtgn",
+   "https://payhip.com/b/MeD96",
+   "https://payhip.com/b/8ZNbO"
+  ]
+ }
 }

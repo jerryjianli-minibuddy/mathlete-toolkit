@@ -1639,8 +1639,8 @@ def page_tests(lessons, shop):
         f'    <li><span><b>Noetic-style Grade 5 Practice Test {n}</b><small>20 problems, 50 minutes, answer key</small></span><em>$3.99</em>'
         + (f'<a class="btn btn-buy" href="{e(u)}">Buy</a>' if live else '<span class="soon-tag">Coming soon</span>') + '</li>'
         for n, u in enumerate(shop["tests"], 1))
-    body = head(f"Practice Tests: Kangaroo, Noetic, MOEMS, AMC 8, MATHCOUNTS-style | {NAME}",
-                "Kangaroo-style Grades 1-4, Noetic-style Grades 4 and 5, MOEMS-style Grades 4 to 6, AMC 8-style and MATHCOUNTS-style Grades 6 to 8 practice tests from $3.99, each with an answer key and a QR code by every question.",
+    body = head(f"Practice Tests: Kangaroo, Noetic, MOEMS, AMC 8, AMC 10, MATHCOUNTS-style | {NAME}",
+                "Kangaroo-style Grades 1-4, Noetic-style Grades 4 and 5, MOEMS-style Grades 4 to 6, AMC 8-style and MATHCOUNTS-style Grades 6 to 8, and AMC 10-style Grades 9 and 10 practice tests from $3.99, each with an answer key and a QR code by every question.",
                 "mock-tests/", root)
     body += nav(root, "tests")
     body += f"""<section class="page-head">
