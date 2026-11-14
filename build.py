@@ -1567,13 +1567,25 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
 </section>"""
 
 
+def moems68_section(root, shop):
+    """MOEMS-style Grades 6-8 (Payhip, Nov 14, Jian's "Go"): full seasons in the Division M style, with its free diagnostic."""
+    return contest_tests_section(
+        root, shop, "moems68", "MOEMS-style", "Grades 6 to 8", "olympiad", 7,
+        "Each test is a full season: 5 contests of 5 problems, 30 minutes per contest, written answers, no calculator. Worked answer key. A step up from Grades 4 to 6: number theory, counting, ratios, algebra word problems and geometry.",
+        "Full season: 25 problems, answer key", ["Grades 6 to 8", "PDF", "25 problems"],
+        "MOEMS-style Grades 6-8 Practice Pack", ["Grades 6 to 8", "10 tests"],
+        '"MOEMS-style" tests are written in the style of the Math Olympiads for Elementary and Middle Schools. Key Move Math is not affiliated with or endorsed by MOEMS. Every problem is our own.',
+        single_name="MOEMS-style Grades 6-8")
+
+
 def amc8_section(root, shop):
     return contest_tests_section(
         root, shop, "amc8", "AMC 8-style", "Grades 6 to 8", "amc8", 7,
         "25 multiple-choice problems in 40 minutes, no calculator, with an answer key.",
         "25 problems, 40 minutes, answer key", ["Grades 6 to 8", "PDF", "40 min"],
         "AMC 8-style Countdown Pack", ["Grades 6 to 8", "10 tests", "Week-by-week plan"],
-        '"AMC 8-style" tests are written in the style of the AMC 8. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.')
+        '"AMC 8-style" tests are written in the style of the AMC 8. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.',
+        alt=True)
 
 
 def amc10_section(root, shop):
@@ -1584,7 +1596,7 @@ def amc10_section(root, shop):
         "25 problems, 75 minutes, answer key", ["Grades 9 and 10", "PDF", "75 min"],
         "AMC 10-style Practice Pack", ["Grades 9 and 10", "10 tests"],
         '"AMC 10-style" tests are written in the style of the AMC 10. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.',
-        )
+        alt=True)
 
 
 def mathcounts_section(root, shop):
@@ -1594,8 +1606,7 @@ def mathcounts_section(root, shop):
         "Each test has a Sprint round (30 problems, 40 minutes, no calculator) and a Target round (8 problems in pairs, calculator allowed), with an answer key.",
         "Sprint + Target rounds, answer key", ["Grades 6 to 8", "PDF", "Sprint + Target"],
         "MATHCOUNTS-style Practice Pack", ["Grades 6 to 8", "10 tests"],
-        '"MATHCOUNTS-style" tests are written in the style of MATHCOUNTS competitions. Key Move Math is not affiliated with or endorsed by the MATHCOUNTS Foundation. Every problem is our own.',
-        alt=True)
+        '"MATHCOUNTS-style" tests are written in the style of MATHCOUNTS competitions. Key Move Math is not affiliated with or endorsed by the MATHCOUNTS Foundation. Every problem is our own.')
 
 
 def kangaroo56_section(root, shop):
@@ -1606,7 +1617,7 @@ def kangaroo56_section(root, shop):
         "24 problems, 75 minutes, answer key", ["Grades 5 and 6", "PDF", "75 min"],
         "Kangaroo-style Grades 5-6 Practice Pack", ["Grades 5 and 6", "10 tests"],
         '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
-        single_name="Kangaroo-style Grades 5-6")
+        alt=True, single_name="Kangaroo-style Grades 5-6")
 
 
 def kangaroo34_section(root, shop):
@@ -1617,7 +1628,7 @@ def kangaroo34_section(root, shop):
         "24 problems, 75 minutes, answer key", ["Grades 3 and 4", "PDF", "75 min"],
         "Kangaroo-style Grades 3-4 Practice Pack", ["Grades 3 and 4", "10 tests"],
         '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
-        alt=True, diag=False, single_name="Kangaroo-style Grades 3-4")
+        diag=False, single_name="Kangaroo-style Grades 3-4")
 
 def noetic4_section(root, shop):
     """Noetic-style Grade 4 (Payhip, Nov 13), with its free diagnostic."""
@@ -1626,7 +1637,7 @@ def noetic4_section(root, shop):
         "20 problems, easy to hard, 50 minutes, no calculator, with a worked answer key.",
         "20 problems, 50 minutes, answer key", ["Grade 4", "PDF", "50 min"],
         "Noetic-style Grade 4 Practice Pack", ["Grade 4", "10 tests", "60 pages"],
-        TEST_NOTE, alt=True, single_name="Noetic-style Grade 4")
+        TEST_NOTE, single_name="Noetic-style Grade 4")
 
 
 def kangaroo12_section(root, shop):
@@ -1637,7 +1648,7 @@ def kangaroo12_section(root, shop):
         "24 problems, 75 minutes, answer key", ["Grades 1 and 2", "PDF", "75 min"],
         "Kangaroo-style Grades 1-2 Practice Pack", ["Grades 1 and 2", "10 tests"],
         '"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo. Every problem is our own.',
-        single_name="Kangaroo-style Grades 1-2")
+        alt=True, single_name="Kangaroo-style Grades 1-2")
 
 
 def page_tests(lessons, shop):
@@ -1666,7 +1677,7 @@ def page_tests(lessons, shop):
   <p class="eyebrow">Practice tests</p>
   <h1>Practice tests</h1>
   <p class="lead">Real contest length, with a worked answer key.</p>
-  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a><a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo56">Kangaroo-style, Grades 5 and 6</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a>{'<a href="#amc10">AMC 10-style, Grades 9 and 10</a>' if SHOP.get("amc10") else ""}</p>
+  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a>{'<a href="#moems68">MOEMS-style, Grades 6 to 8</a>' if SHOP.get("moems68") else ""}<a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo56">Kangaroo-style, Grades 5 and 6</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a>{'<a href="#amc10">AMC 10-style, Grades 9 and 10</a>' if SHOP.get("amc10") else ""}</p>
   {sale_banner(root, " sale-page")}
  </div>
 </section>
@@ -1707,6 +1718,7 @@ def page_tests(lessons, shop):
  </div>
 </section>
 {moems_section(root, shop)}
+{moems68_section(root, shop)}
 {amc8_section(root, shop)}
 {mathcounts_section(root, shop)}
 {kangaroo56_section(root, shop)}
@@ -1714,7 +1726,7 @@ def page_tests(lessons, shop):
 {kangaroo12_section(root, shop)}
 {noetic4_section(root, shop)}
 {amc10_section(root, shop)}
-<section class="sec sec-alt">
+<section class="sec">
  <div class="wrap">
   <h2>Compare</h2>
   <div class="cmp-wrap">
