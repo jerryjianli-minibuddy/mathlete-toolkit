@@ -2239,5 +2239,28 @@
    "amc12"
   ],
   "seconds": 302
+ },
+ {
+  "id": "L3-99",
+  "tool_num": 94,
+  "tool": "Add the Fractions First",
+  "slug": "add-the-fractions-first",
+  "video_id": "nfjTnf2OV-o",
+  "short_id": "SaZsdEUZb9g",
+  "hook": "1/4, Then 1/3 of the Set. Not 40",
+  "search": "Fraction Word Problems",
+  "youtube_title": "1/4, Then 1/3 of the Set. Not 40 | Add the Fractions First | Fraction Word Problems | 5th Grade Math",
+  "problem": "Max uses 1/4 of a set of bricks, then 15 more; later 1/3 of the whole set, then the last 10. How many bricks are in the set?",
+  "rule": "Every fraction is of the whole? Add them first. The leftover fraction = all the known amounts.",
+  "move": "Add the fractions of the whole, find the leftover fraction, match it to the known amounts, scale up",
+  "trap": "Taking the second fraction of what's left instead of the whole set",
+  "family": "Fractions",
+  "topic": "Fractions of a whole plus known amounts",
+  "also_called": "Bar model fractions",
+  "grade": 5,
+  "contests": [
+   "noetic"
+  ],
+  "seconds": 297
  }
 ]
