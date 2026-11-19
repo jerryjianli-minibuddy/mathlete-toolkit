@@ -355,7 +355,7 @@ def foot(root, cta=True):
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
    <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li>
-   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
+   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}how-to-register/">How to register</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
   </div>
   <div>
    <h3>By contest</h3>
@@ -2224,6 +2224,180 @@ GUIDE_GRADES = [
 ]
 
 
+# "How to register" pages (Nov 19, Jian's "Approve" on five pages: AMC 8, Math Kangaroo, MATHCOUNTS, Noetic, MOEMS).
+# Every fact below was read on the contest's own site on Nov 19, 2026: maa.org/student-programs/amc and maa.org/amcreg;
+# mathkangaroo.org/mks/registration (Fee tab), its 2027 centers page and logistics page; mathcounts.org competition
+# rules FAQ (cost), critical dates and official rules; noetic-learning.com/mathcontest home and At-Home page;
+# moems.org home, about-the-program, register-today and resources. Re-read them before changing a date or fee.
+REG_CHECKED = "November 19, 2026"
+REGISTER = [
+    dict(slug="amc-8", k="amc8", name="AMC 8", org="the MAA", site="maa.org",
+         url="https://maa.org/student-programs/amc/",
+         lead="Families don't sign up with the MAA. A school or a host site registers, then gives your child the MAA's student form.",
+         who=[("Grades", "Grade 8 and below."),
+              ("Age", "Under 15.5 on test day."),
+              ("How often", "Once a year.")],
+         steps=["Ask your child's school whether it is giving the AMC 8.",
+                "If it isn't, ask a nearby college, math circle or learning center. The MAA's AMC page links a public list of this year's host sites.",
+                "The host site sends you the MAA's student registration form."],
+         dates=[("Test window", "January 21 to 27, 2027. The host site picks the day."),
+                ("Host sites register by", "January 5, 2027 (new sites). Returning sites have until January 14."),
+                ("Ask a site", "Well before January 5, so it has time to order.")],
+         fees=[("The MAA charges the site", "$75 to register by January 5, 2027, plus $25 for every 10 students."),
+               ("What you pay", "Set by each host site.")],
+         test="25 questions in 40 minutes."),
+    dict(slug="math-kangaroo", k="kangaroo", name="Math Kangaroo", org="Math Kangaroo USA", site="mathkangaroo.org",
+         url="https://mathkangaroo.org/mks/registration/",
+         lead="Parents register online and pick a test center in their state.",
+         who=[("Grades", "Grades 1 to 12, for any child who can read and answer on their own."),
+              ("Level", "Your child's school grade. Testing at a lower level isn't allowed.")],
+         steps=["If your child's school is a center, ask it for its Center Invitation Code.",
+                "If not, find a public center in your state with the centers search on the Math Kangaroo site.",
+                "Register and pay on Math Kangaroo's registration site."],
+         dates=[("Registration", "Open now."),
+                ("Regular fee until", "December 31, 2026."),
+                ("Late registration", "January 1 to February 1, 2027."),
+                ("Test day", "Thursday, March 18, 2027."),
+                ("Results", "By May 1, in your registration account.")],
+         fees=[("By December 31", "$20 per student."),
+               ("January 1 to February 1", "$35 per student."),
+               ("Refunds", "None after you register.")],
+         test="24 questions (grades 1 to 4) or 30 (grade 5 and up) in 75 minutes.",
+         note="This season's remote and self-proctored virtual options are already closed."),
+    dict(slug="mathcounts", k="mathcounts", name="MATHCOUNTS", org="the MATHCOUNTS Foundation", site="mathcounts.org",
+         url="https://www.mathcounts.org/programs/competition-rules-faq",
+         lead="Most students enter through their school. If the school won't take part, a parent can register the student alone.",
+         who=[("Grades", "US students in grades 6 to 8, enrolled full time."),
+              ("Limit", "Three years of competition per student.")],
+         steps=["Ask the school's math teacher whether it is registered. A school sends one team of 4 and up to 10 individuals.",
+                "No coach? A parent can register the school, with the school's permission.",
+                "Homeschool: register as a home school and send the Home School Participation Form by December 31, 2026.",
+                "If the school won't register, check with it first, then register online as a non-school competitor (NSC)."],
+         dates=[("Register by", "December 15, 2026. Late fees after that."),
+                ("Chapter contests", "February 2027. The chapter search on mathcounts.org shows yours."),
+                ("State contests", "March 2027."),
+                ("National", "May 9 to 10, 2027.")],
+         fees=[("School, by December 15", "$48 per student ($53 after)."),
+               ("Non-school competitor", "$75 by December 15 ($85 after). No refunds."),
+               ("Going further", "No extra fee to move on to chapter, state or national.")],
+         test="A 30-problem Sprint round in 40 minutes, a Target round and a team round."),
+    dict(slug="noetic", k="noetic", name="Noetic Math Contest", org="Noetic Learning", site="noetic-learning.com",
+         url="https://www.noetic-learning.com/mathcontest/",
+         lead="Schools enter teams. If your school doesn't, the At-Home edition lets a parent enter one child.",
+         who=[("Grades", "Grades 2 to 8."),
+              ("Teams", "Up to 30 students, registered by a teacher or school administrator.")],
+         steps=["Ask your child's teacher to register a school team.",
+                "If the school won't, register for the At-Home edition. You act as team leader and supervise the online test.",
+                "At-Home scores are unofficial: your child gets a score, a national percentile and printable certificates, but no medals."],
+         dates=[("School contests", "Fall: November 12 to 25, 2026. Spring: April 1 to 15, 2027."),
+                ("At-Home, spring", "Test April 16 to 23, 2027. Register by March 11, or by March 25 with a late fee."),
+                ("At-Home, fall", "Registration has closed.")],
+         fees=[("School team", "$129 per contest."),
+               ("At-Home", "$29 per student, plus $25 if late.")],
+         test="20 problems in 50 minutes, no calculator."),
+    dict(slug="moems", k="olympiad", name="MOEMS", org="MOEMS", site="moems.org",
+         url="https://www.moems.org/pages/register-today",
+         lead="MOEMS enrolls teams, not single students. A school, homeschool group or learning center signs up the team.",
+         who=[("Division E", "Grades 4 to 6."),
+              ("Division M", "Grades 6 to 8."),
+              ("Teams", "Up to 35 students. Individuals only with restrictions, so ask MOEMS first.")],
+         steps=["Ask your child's school whether it has a MOEMS team.",
+                "If not, a homeschool group or learning center can enroll a team on the MOEMS site.",
+                "A team can still join after the season starts, at the last-chance fee."],
+         dates=[("Contest 1", "November 9 to 30, 2026."),
+                ("Contest 2", "December 7 to 28, 2026."),
+                ("Contests 3 to 5", "January, February and March 2027."),
+                ("Scores due", "March 31, 2027.")],
+         fees=[("Per team, now", "$300 in the US, Canada and Mexico ($340 elsewhere)."),
+               ("Per student", "Not stated. The fee covers the whole team.")],
+         test="5 problems in 30 minutes, five times a season."),
+]
+
+
+def reg_href(root, k):
+    r = next((r for r in REGISTER if r["k"] == k), None)
+    return f"{root}how-to-register/{r['slug']}/" if r else ""
+
+
+def reg_link(root, k):
+    """The callout on a contest page and the guide card."""
+    h = reg_href(root, k)
+    return (f'<p class="reg-link"><a href="{h}"><b>How to register</b><span>Who can enter, dates and fees</span></a></p>'
+            if h else "")
+
+
+def reg_ready(root, k):
+    rows = []
+    for t in TEST_SETS:
+        if t["contest"] != k or not test_live(t):
+            continue
+        g = t["grades"][len(t["grades"]) // 2]
+        links = []
+        if t["diag"]:
+            links.append(f'<a href="{free_href(root, k, g)}">Diagnostic test</a>')
+        if t["practice"] and SHOP.get("live"):
+            s = SHOP.get(t["store"]) if t["store"] else {"pack": SHOP.get("pack")}
+            if s and s.get("pack"):
+                links.append(f'<a href="{e(s["pack"])}" rel="noopener">Practice pack, {PACK_PRICE}</a>')
+        if links:
+            rows.append(f'<li><b>{e(t["label"])}, {grades_label(t["grades"])}</b><span>{" &middot; ".join(links)}</span></li>')
+    return "".join(rows)
+
+
+def page_register():
+    for r in REGISTER:
+        root = "../../"
+        dl = lambda xs: "".join(f"<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in xs)
+        steps = "".join(f"<li>{e(s)}</li>" for s in r["steps"])
+        note = f'<p class="rg-note">{e(r["note"])}</p>' if r.get("note") else ""
+        ready = reg_ready(root, r["k"])
+        plan = (f'<li><b>AMC 8 in 10 weeks</b><span><a href="{root}amc-8-in-10-weeks/">One key move a week</a></span></li>'
+                if r["k"] == "amc8" else "")
+        body = head(f"How to Register for {r['name']}: Who Can Enter, Dates and Fees | {NAME}",
+                    f"How to register for {r['name']}: who can enter, how to find a test site, key dates and fees, from {r['site']}.",
+                    f"how-to-register/{r['slug']}/", root)
+        body += nav(root, "contests")
+        body += f"""<section class="page-head">
+ <div class="wrap">
+  <p class="eyebrow"><a href="{root}how-to-register/">How to register</a></p>
+  <h1>How to register for {e(r['name'])}</h1>
+  <p class="lead">{e(r['lead'])}</p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap rg">
+ <div class="rg-card"><h2>Who can enter</h2><dl class="cg-dl">{dl(r['who'])}</dl><p class="rg-test"><b>Test day:</b> {e(r['test'])}</p></div>
+ <div class="rg-card"><h2>How to enter</h2><ol class="rg-steps">{steps}</ol>{note}</div>
+ <div class="rg-card"><h2>Key dates</h2><dl class="cg-dl">{dl(r['dates'])}</dl></div>
+ <div class="rg-card"><h2>Fees</h2><dl class="cg-dl">{dl(r['fees'])}</dl></div>
+ <p class="rg-off"><a class="btn btn-primary" href="{e(r['url'])}" rel="noopener">Register on {e(r['site'])}</a></p>
+ {f'<div class="rg-ready"><h2>Get ready</h2><ul class="cg-gl">{ready}{plan}</ul></div>' if ready or plan else ""}
+ <p class="glance-note">Checked on {e(r['site'])} on {REG_CHECKED}. Dates and fees can change, so confirm there before you pay. Key Move Math is not affiliated with {e(r['org'])}.</p>
+</div></section>
+"""
+        body += foot(root)
+        write(f"how-to-register/{r['slug']}/index.html", body)
+    root = "../"
+    cards = "".join(f'<li><a href="{r["slug"]}/"><b>{e(r["name"])}</b><span>{e(r["lead"])}</span></a></li>' for r in REGISTER)
+    body = head(f"How to Register for Math Contests | {NAME}",
+                "How to register for AMC 8, Math Kangaroo, MATHCOUNTS, Noetic and MOEMS: who can enter, dates and fees.",
+                "how-to-register/", root)
+    body += nav(root, "contests")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <h1>How to register</h1>
+  <p class="lead">Who can enter, how to find a test site, dates and fees for each contest.</p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap rg">
+ <ul class="rg-hub">{cards}</ul>
+ <p class="cg-teach">Not sure which contest fits? See <a href="{root}contests/">the parents' guide</a>.</p>
+ <p class="glance-note">Checked on each contest's own site on {REG_CHECKED}. We are not affiliated with any contest.</p>
+</div></section>
+"""
+    body += foot(root)
+    write("how-to-register/index.html", body)
+
+
 def page_compare():
     """/contests/: a parents' guide to the contests (Nov 12). One card per contest, then the AMC and MATHCOUNTS
     ladders and an honest note on college. Kept short enough to skim on a phone."""
@@ -2246,7 +2420,7 @@ def page_compare():
    <p class="cg-what">{e(g['what'])}</p>
    <p class="cg-diff"><b>Difficulty</b>{meter(g['diff'])}<span>{e(g['dl'])}</span></p>
    <dl class="cg-dl">{"".join(f"<div><dt>{e(a)}</dt><dd>{e(b)}</dd></div>" for a, b in g['rows'])}</dl>
-   <p class="cg-ft"><a href="{root}{CONTESTS[g['k']]['slug']}/">{e(CONTESTS[g['k']]['short'])} prep &rarr;</a><small>{e(g['ours'])}</small></p>
+   <p class="cg-ft"><a href="{root}{CONTESTS[g['k']]['slug']}/">{e(CONTESTS[g['k']]['short'])} prep &rarr;</a>{f'<a href="{reg_href(root, g["k"])}">How to register &rarr;</a>' if reg_href(root, g["k"]) else ""}<small>{e(g['ours'])}</small></p>
   </article>""" for g in GUIDE)
     amc = [("AMC 8", "Grade 8 and below. Practice for what comes next."),
            ("AMC 10 or AMC 12", "Every November."),
@@ -2512,8 +2686,8 @@ def main():
                    tests=k,  # each contest page links only its own tests
                    pl=playlist_links(contest=k),
                    # Nov 13: a contest with practice tests on sale shows its test box above the lessons too.
-                   extra="" if sub and not any(t["practice"] for t in TEST_SETS if t["contest"] == k)
-                   else plan10 + "".join(test_blocks("../", [t for t in TEST_SETS if t["contest"] == k])))
+                   extra=reg_link("../", k) + ("" if sub and not any(t["practice"] for t in TEST_SETS if t["contest"] == k)
+                   else plan10 + "".join(test_blocks("../", [t for t in TEST_SETS if t["contest"] == k]))))
         if sub:
             urls.append(C["slug"] + "/")
     write("amc-prep/index.html", '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex">'
@@ -2527,6 +2701,8 @@ def main():
     page_plan()
     page_amc8_plan(lessons)
     page_compare()
+    page_register()
+    urls += ["how-to-register/"] + [f"how-to-register/{r['slug']}/" for r in REGISTER]
     page_about(lessons)
     page_404()
     for l in lessons:
