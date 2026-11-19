@@ -822,6 +822,56 @@ def countdown(root):
 
 
 
+# Nov 19: Jian approved a two-tap "Find your kid's test" picker at the top of the home page. A parent taps a grade, then
+# a contest or "Not sure"; the panel shows the one diagnostic to start with, its lessons and the matching pack.
+FINDER_PICK = {1: "kangaroo-1-2", 2: "kangaroo-1-2", 3: "kangaroo-3-4", 4: "noetic-4", 5: "noetic-5",
+               6: "amc8-6-8", 7: "amc8-6-8", 8: "amc8-6-8", 9: "amc10-9-10", 10: "amc10-9-10", 11: "amc10-9-10", 12: "amc10-9-10"}
+FINDER_WHY = {"kangaroo": "A friendly first contest: picture puzzles, logic and counting.",
+              "noetic": "Word problems that reward a clean method. A good next step after Kangaroo.",
+              "amc8": "The main middle school contest, and the first step toward AMC 10.",
+              "amc10": "The main high school contest."}
+
+
+def finder(lessons, root):
+    data = {}
+    for g in range(1, 13):
+        opts = []
+        for t in TEST_SETS:
+            if not test_live(t) or not offered(t["contest"], g):
+                continue
+            if g not in t["grades"] and not (g >= 11 and t["key"] == "amc10-9-10"):
+                continue
+            k = t["contest"]
+            s = store_of(t)
+            o = {"key": t["key"], "name": t["label"], "grades": grades_label(t["grades"]),
+                 "diag": diag_url(t) if t["diag"] else "",
+                 "lessons": f"{root}grade-{g}/{k}/" if combo_live(lessons, str(g), k) else "",
+                 "pack": s.get("pack", "") if t["practice"] and SHOP.get("live") else "",
+                 "reg": reg_href(root, k)}
+            opts.append(o)
+        names = [o["name"] for o in opts]
+        for o in opts:
+            o["label"] = f'{o["name"]}, {o["grades"]}' if names.count(o["name"]) > 1 else o["name"]
+        pick = FINDER_PICK[g]
+        pk = next((t for t in TEST_SETS if t["key"] == pick), None)
+        why = FINDER_WHY.get(pk["contest"], "") if pk else ""
+        if g >= 11:
+            why = "AMC 12-style tests are on the way. The AMC 10-style diagnostic is a good check for now."
+        data[g] = {"opts": opts, "pick": pick, "why": why}
+    grades = "".join(f'<button type="button" class="kf-g" data-g="{g}" aria-pressed="false">{g}</button>' for g in range(1, 13))
+    return f"""<section class="kf" aria-labelledby="kf-h" data-price="{e(PACK_PRICE)}">
+ <div class="wrap kf-in">
+  <h2 id="kf-h">Find your kid's test</h2>
+  <div class="kf-step"><p class="kf-q">Grade</p><div class="kf-row kf-grades">{grades}</div></div>
+  <div class="kf-step" id="kf-c" hidden><p class="kf-q">Contest</p><div class="kf-row" id="kf-opts"></div></div>
+  <div class="kf-res" id="kf-res" hidden aria-live="polite"></div>
+  <noscript><p><a href="{root}free/">See every test by contest and grade &rarr;</a></p></noscript>
+ </div>
+ <script type="application/json" id="kf-data">{json.dumps(data).replace("</", "<\\/")}</script>
+</section>
+"""
+
+
 def page_home(lessons):
     root = ""
     live = [l for l in lessons if l["live"]]
@@ -847,6 +897,7 @@ def page_home(lessons):
                 "Free contest math diagnostic test. Pick your grade: answer key included, and a QR code beside every problem opens a short video lesson on its key move.",
                 "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script><script type="application/ld+json">{json.dumps(site_ld)}</script>' + faq_ld)
     body += nav(root)
+    body += finder(lessons, root)
     body += countdown(root)
     body += mc_strip(root)
     body += f"""<section class="hero">

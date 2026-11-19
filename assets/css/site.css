@@ -1066,3 +1066,27 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .reg-link a { display: flex; flex-direction: column; gap: 2px; background: #fff; border: 2px solid var(--navy); color: var(--navy); border-radius: 14px; padding: 12px 18px; text-decoration: none; }
 .reg-link span { font-size: .92rem; color: var(--muted); }
 @media (max-width: 640px) { .rg .cg-dl div { grid-template-columns: 1fr; gap: 2px; } }
+
+/* Home page "Find your kid's test" picker (Nov 19) */
+.kf { background: #fff; border-bottom: 1px solid var(--line); padding: 22px 0 24px; }
+.kf h2 { margin: 0 0 12px; font-size: 1.35rem; }
+.kf-step { margin-top: 10px; }
+.kf-q { margin: 0 0 6px; font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.kf-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.kf-g, .kf-o { font: inherit; font-weight: 800; border: 0; cursor: pointer; border-radius: 999px; background: var(--cream); color: var(--navy); box-shadow: inset 0 0 0 2px var(--line); }
+.kf-g { width: 44px; height: 44px; font-size: 1rem; }
+.kf-o { padding: 10px 16px; font-size: .95rem; min-height: 44px; }
+.kf-g:hover, .kf-o:hover { box-shadow: inset 0 0 0 2px var(--navy); }
+.kf-g[aria-pressed="true"], .kf-o[aria-pressed="true"] { background: var(--navy); color: #fff; box-shadow: none; }
+.kf-ns { background: #fff; }
+.kf-res { margin-top: 16px; background: var(--cream); border-radius: var(--radius); padding: 18px 18px 16px; border: 1px solid var(--line); }
+.kf-eye { margin: 0; font-size: .75rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); }
+.kf-res h3 { margin: 4px 0 6px; font-size: 1.15rem; }
+.kf-why, .kf-how { margin: 0 0 8px; color: var(--muted); font-size: .95rem; }
+.kf-btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.kf-reg { margin: 12px 0 0; font-size: .9rem; } .kf-reg a { font-weight: 800; color: var(--navy2); }
+@media (max-width: 640px) {
+  .kf-grades { display: grid; grid-template-columns: repeat(6, 1fr); }
+  .kf-g { width: 100%; }
+  .kf-btns .btn { width: 100%; text-align: center; }
+}

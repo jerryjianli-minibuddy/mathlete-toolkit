@@ -329,3 +329,47 @@
   }
   chips.forEach(function (c) { c.addEventListener("click", function () { show(c.getAttribute("data-g")); }); });
 })();
+
+// Home page "Find your kid's test" picker (Nov 19): grade, then contest or "Not sure", then one place to start.
+(function () {
+  var box = document.querySelector('.kf'); if (!box) return;
+  var data; try { data = JSON.parse(document.getElementById('kf-data').textContent); } catch (err) { return; }
+  var price = box.getAttribute('data-price') || '';
+  var step = document.getElementById('kf-c'), row = document.getElementById('kf-opts'), res = document.getElementById('kf-res');
+  var esc = function (x) { return String(x).replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); };
+  var cur = null;
+  function press(sel, el) {
+    box.querySelectorAll(sel).forEach(function (b) { b.setAttribute('aria-pressed', b === el ? 'true' : 'false'); });
+  }
+  function show(o, why) {
+    var btns = '';
+    if (o.diag) btns += '<a class="btn btn-primary" href="' + esc(o.diag) + '" rel="noopener">Download the diagnostic</a>';
+    if (o.lessons) btns += '<a class="btn ' + (o.diag ? 'btn-ghost-d' : 'btn-primary') + '" href="' + esc(o.lessons) + '">Watch the lessons</a>';
+    if (o.pack) btns += '<a class="btn btn-ghost-d" href="' + esc(o.pack) + '" rel="noopener">Practice pack, ' + esc(price) + '</a>';
+    res.innerHTML = '<p class="kf-eye">Start here</p><h3>' + esc(o.name) + (o.diag ? ' diagnostic' : ' practice') + ', ' + esc(o.grades) + '</h3>' +
+      (why ? '<p class="kf-why">' + esc(why) + '</p>' : '') +
+      (o.diag ? '<p class="kf-how">Print it, check it with the answer key, then watch the lesson for each miss.</p>' : '<p class="kf-how">The diagnostic for this set is on the way. Start with the lessons.</p>') +
+      '<div class="kf-btns">' + btns + '</div>' +
+      (o.reg ? '<p class="kf-reg"><a href="' + esc(o.reg) + '">How to register</a></p>' : '');
+    res.hidden = false;
+  }
+  box.querySelectorAll('.kf-g').forEach(function (b) {
+    b.addEventListener('click', function () {
+      cur = data[b.getAttribute('data-g')]; press('.kf-g', b); res.hidden = true;
+      var h = '';
+      cur.opts.forEach(function (o, i) { h += '<button type="button" class="kf-o" data-i="' + i + '" aria-pressed="false">' + esc(o.label) + '</button>'; });
+      if (cur.opts.length > 1) h += '<button type="button" class="kf-o kf-ns" data-i="ns" aria-pressed="false">Not sure</button>';
+      row.innerHTML = h; step.hidden = false;
+      if (cur.opts.length === 1) { var only = row.querySelector('.kf-o'); press('.kf-o', only); show(cur.opts[0], cur.why); }
+    });
+  });
+  row.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.kf-o'); if (!b || !cur) return;
+    press('.kf-o', b);
+    var i = b.getAttribute('data-i');
+    if (i === 'ns') {
+      var o = cur.opts.filter(function (x) { return x.key === cur.pick; })[0] || cur.opts[0];
+      if (o) show(o, cur.why);
+    } else { show(cur.opts[+i], ''); }
+  });
+})();
