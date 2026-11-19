@@ -1368,7 +1368,7 @@ def page_combo(lessons, g, k):
 # Contest format at a glance (Nov 11 overnight, toward "insanely useful for parents"). Source: the Contests tab of the
 # Past Test Database, which Jian's tests were logged against. Dates are left out on purpose: they move every year.
 CONTEST_FACTS = {
-    "kangaroo": dict(who="Grades 1 to 6, one test for each pair of grades (1-2, 3-4, 5-6)",
+    "kangaroo": dict(who="Grades K to 12. Our tests cover grades 1 to 6, in pairs (1-2, 3-4, 5-6)",
                      rows=[("Questions", "24 for grades 1 to 4, 30 for grades 5 and 6. Multiple choice, 5 options."),
                            ("Time", "75 minutes"),
                            ("Scoring", "3, 4 and 5-point sections. The later problems are harder and worth more.")],
@@ -2202,7 +2202,7 @@ def page_amc8_plan(lessons):
 # FAQ, about), noetic-learning.com/mathcontest (home, FAQ, procedures), moems.org (home, about, contests).
 # Difficulty is our own 1 to 5 view and the page says so.
 GUIDE = [
-    dict(k="kangaroo", name="Math Kangaroo", grades="Grades 1 to 12", ours="Our lessons: grades 1 to 6", diff=2,
+    dict(k="kangaroo", name="Math Kangaroo", grades="Grades K to 12", ours="Our lessons: grades 1 to 6", diff=2,
          dl="Easy start, hard finish",
          what="An international contest of picture puzzles, logic and counting. A friendly first contest.",
          rows=[("Run by", "Math Kangaroo USA, a nonprofit. An international committee writes the questions."),
@@ -2300,7 +2300,7 @@ REGISTER = [
     dict(slug="math-kangaroo", k="kangaroo", name="Math Kangaroo", org="Math Kangaroo USA", site="mathkangaroo.org",
          url="https://mathkangaroo.org/mks/registration/",
          lead="Parents register online and pick a test center in their state.",
-         who=[("Grades", "Grades 1 to 12, for any child who can read and answer on their own."),
+         who=[("Grades", "Grades K to 12, for any child who can read and answer on their own."),
               ("Level", "Your child's school grade. Testing at a lower level isn't allowed.")],
          steps=["If your child's school is a center, ask it for its Center Invitation Code.",
                 "If not, find a public center in your state with the centers search on the Math Kangaroo site.",
