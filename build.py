@@ -845,7 +845,7 @@ def finder(lessons, root):
             s = store_of(t)
             o = {"key": t["key"], "name": t["label"], "grades": grades_label(t["grades"]),
                  "diag": diag_url(t) if t["diag"] else "",
-                 "lessons": f"{root}grade-{g}/{k}/" if combo_live(lessons, str(g), k) else "",
+                 "lessons": f"{root}grade-{g}/{k}/" if combo_live(lessons, str(g), k) and combo_lessons(lessons, str(g), k) else "",
                  "pack": s.get("pack", "") if t["practice"] and SHOP.get("live") else "",
                  "reg": reg_href(root, k)}
             opts.append(o)
