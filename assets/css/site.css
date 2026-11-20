@@ -1102,3 +1102,10 @@ main .cdx :focus-visible { outline-color: var(--navy); }
   .gf-list li { flex-direction: column; align-items: flex-start; }
   .gf-buy { width: 100%; justify-content: center; }
 }
+
+/* Nov 20: Black Friday bar on top of every page, through Dec 1 */
+.sbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2px 12px; background: var(--yellow); color: var(--navy); text-decoration: none; text-align: center; font-size: .86rem; line-height: 1.35; padding: 7px 16px; }
+.sbar b { font-weight: 900; }
+.sbar code { background: var(--navy); color: var(--yellow); font-weight: 900; font-family: inherit; letter-spacing: .04em; padding: 1px 6px; border-radius: 5px; }
+.sbar-go { font-weight: 800; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.sbar [hidden] { display: none; }

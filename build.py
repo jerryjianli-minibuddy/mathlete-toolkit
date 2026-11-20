@@ -312,7 +312,7 @@ def nav(root, active=""):
                f'<a class="dd-i" href="{root}study-plan/">4-week contest plan</a>'
                f'<a class="dd-i" href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a>'
                f'<p class="dd-h">Grade 5 topics</p>{topics}')
-    return f"""<header class="top">
+    return f"""{sale_bar(root)}<header class="top">
  <div class="wrap top-in">
   <a class="brand" href="{root}" aria-label="{NAME} home">{mark(34)}<span><b>KEY MOVE</b> <i>MATH</i></span></a>
   <div class="socials">
@@ -768,6 +768,23 @@ def sale_banner(root, cls=""):
             f'<a href="{root}mock-tests/">Shop tests &rarr;</a></div>'
             '<script>(function(){var b=document.currentScript.previousElementSibling,n=Date.now();'
             'if((n>=Date.parse(b.dataset.saleStart)&&n<=Date.parse(b.dataset.saleEnd))||/[?&]salepreview/.test(location.search))b.hidden=false;})();</script>')
+
+
+
+def sale_bar(root):
+    """Slim Black Friday bar on top of every page (Nov 20, Jian approved: from now through Dec 1 PT, links to the gift
+    page). Before the sale it names the dates; during it says "through Dec 1". The script hides it after the end, and
+    the hourly build drops it once the sale is over."""
+    if not SALE["code"] or datetime.now(timezone.utc) > datetime.fromisoformat(SALE["end"]):
+        return ""
+    code = f'<code>{e(SALE["code"])}</code>'
+    return (f'<a class="sbar" href="{root}math-gifts/" data-sale-start="{SALE["start"]}" data-sale-end="{SALE["end"]}">'
+            f'<span><b>Black Friday:</b> {SALE["off"]} every practice test with {code}'
+            f'<span class="sbar-pre">, {SALE["when"]}</span><span class="sbar-on" hidden>, through Dec 1</span>.</span>'
+            f'<span class="sbar-go">Gift ideas &rarr;</span></a>'
+            '<script>(function(){var b=document.currentScript.previousElementSibling,n=Date.now();'
+            'if(n>Date.parse(b.dataset.saleEnd)){b.remove();return}'
+            'if(n>=Date.parse(b.dataset.saleStart)){b.querySelector(".sbar-pre").hidden=true;b.querySelector(".sbar-on").hidden=false;}})();</script>')
 
 
 def countdown(root):
@@ -2642,6 +2659,7 @@ def page_gifts():
   <h1>Math gifts for contest kids</h1>
   <p class="lead">A pack of 10 practice tests for the contest they love, with a gift card you print at home.</p>
   <p class="cs-actions"><a class="btn btn-primary" href="{root}{GIFT_CARD}" download>Download the gift card (PDF)</a></p>
+  {sale_banner(root, " sale-page")}
  </div>
 </section>
 <section class="sec sec-tight"><div class="wrap tc">
