@@ -2784,6 +2784,8 @@ def extras(lessons, urls):
     sm.append("</urlset>")
     write("sitemap.xml", "\n".join(sm) + "\n")
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n")
+    # Google Search Console ownership file (Nov 20); keep it or the site loses verification
+    write("google6d49699635b91a7f.html", "google-site-verification: google6d49699635b91a7f.html")
     write("assets/img/favicon.svg", mark(64))
     write(".nojekyll", "")
 
