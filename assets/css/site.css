@@ -1090,3 +1090,15 @@ main .cdx :focus-visible { outline-color: var(--navy); }
   .kf-g { width: 100%; }
   .kf-btns .btn { width: 100%; text-align: center; }
 }
+
+/* Nov 20: /math-gifts/ */
+.gf-list li { padding: 10px 0; }
+.gf-tx { display: flex; flex-direction: column; gap: 2px; }
+.gf-tx b { color: var(--navy); }
+.gf-tx small { color: var(--muted); font-size: .88rem; }
+.gf-buy { flex: none; white-space: nowrap; }
+.gf-card { display: block; margin-top: 16px; max-width: 520px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+@media (max-width: 560px) {
+  .gf-list li { flex-direction: column; align-items: flex-start; }
+  .gf-buy { width: 100%; justify-content: center; }
+}

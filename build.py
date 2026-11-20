@@ -303,6 +303,7 @@ def nav(root, active=""):
         tests += (f'<a class="dd-i" href="{root}mock-tests/{t.get("anchor", "")}">Practice tests</a>' if t["practice"]
                   else '<span class="dd-i dd-off">Practice tests<small>soon</small></span>')
     tests += f'<a class="dd-i dd-more" href="{root}teachers/">For teachers and clubs</a>'
+    tests += f'<a class="dd-i dd-more" href="{root}math-gifts/">Math gifts</a>'
     topics = "".join(
         f'<a class="dd-i" href="{root}grade-5/#topic-{chr(97 + i)}"><span class="dd-letter">{chr(65 + i)}</span>{e(name)}</a>'
         for i, (name, _) in enumerate(TOPICS))
@@ -355,7 +356,7 @@ def foot(root, cta=True):
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
    <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li>
-   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}how-to-register/">How to register</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
+   <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}how-to-register/">How to register</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-gifts/">Math gifts</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
   </div>
   <div>
    <h3>By contest</h3>
@@ -2593,6 +2594,75 @@ def page_teachers():
     write("teachers/index.html", body)
 
 
+# /math-gifts/ (Nov 20, Jian approved the holiday idea "Math gifts for contest kids"): every 10-test pack as a gift,
+# by contest and grade, plus a printable gift card. No dates (Nov 12 rule). Store links only; Payhip is unchanged.
+GIFT_PACKS = [  # (TEST_SETS key, pack name, one line on what's inside)
+    ("kangaroo-1-2", "Kangaroo-style Grades 1-2 Practice Pack", "Picture puzzles, shapes, patterns and counting."),
+    ("kangaroo-3-4", "Kangaroo-style Grades 3-4 Practice Pack", "Mirrors, cube nets, folding and views from above."),
+    ("kangaroo-5-6", "Kangaroo-style Grades 5-6 Practice Pack", "Nets, cube stacks, folds and mirror puzzles."),
+    ("noetic-4", "Noetic-style Grade 4 Practice Pack", "20 problems each, easy to hard, 50 minutes."),
+    ("noetic-5", "Noetic-style Grade 5 Practice Pack", "20 problems each, easy to hard, 50 minutes."),
+    ("moems-4-6", "MOEMS-style Practice Pack", "Each test is a full season: 5 contests of 5 problems."),
+    ("moems-6-8", "MOEMS-style Grades 6-8 Practice Pack", "Full seasons with number theory, counting and algebra."),
+    ("mathcounts-6-8", "MATHCOUNTS-style Practice Pack", "Sprint and Target rounds in every test."),
+    ("amc8-6-8", "AMC 8-style Countdown Pack", "25 problems in 40 minutes, with a week-by-week plan."),
+    ("amc10-9-10", "AMC 10-style Practice Pack", "25 problems in 75 minutes."),
+]
+GIFT_CARD = "assets/pdf/key-move-math-gift-card.pdf"
+
+
+def page_gifts():
+    root = "../"
+    sets = {t["key"]: t for t in TEST_SETS}
+    groups = {}
+    for key, name, line in GIFT_PACKS:
+        t = sets[key]
+        link = store_of(t).get("pack") if SHOP.get("live") else None
+        if link:
+            groups.setdefault(t["label"], []).append((t, name, line, link))
+    rows = "".join(
+        f'<div class="tc-grp" data-g="{" ".join(str(g) for x in ps for g in x[0]["grades"])}"><h3>{e(label)}</h3><ul class="tc-list gf-list">'
+        + "".join(f'<li data-g="{" ".join(map(str, t["grades"]))}"><span class="gf-tx"><b>{e(name)}</b>'
+                  f'<small>{grades_label(t["grades"])} &middot; 10 tests &middot; {e(line)}</small></span>'
+                  f'<a class="btn btn-primary gf-buy" href="{e(link)}" rel="noopener">Buy, {PACK_PRICE}</a></li>' for t, name, line, link in ps)
+        + '</ul></div>' for label, ps in groups.items())
+    all_g = sorted({g for ps in groups.values() for x in ps for g in x[0]["grades"]})
+    chips = ('<div class="tc-chips" role="group" aria-label="Filter by grade"><button type="button" class="tc-chip" aria-pressed="true" data-g="">All</button>'
+             + "".join(f'<button type="button" class="tc-chip" aria-pressed="false" data-g="{g}">{g}</button>' for g in all_g) + '</div>')
+    steps = [("Pick a pack.", "The download link comes to your email right after checkout."),
+             ("Print the gift card.", "Write their name and the pack on it."),
+             ("Wrap it.", "Tuck the card in with the first printed test, or forward the download email.")]
+    how = "".join(f'<li><b>{e(a)}</b> {e(b)}</li>' for a, b in steps)
+    body = head(f"Math Gifts for Contest Kids: Practice Test Packs | {NAME}",
+                "Math gifts for kids who love contests: 10-test practice packs for Kangaroo, Noetic, MOEMS, MATHCOUNTS, AMC 8 and AMC 10-style practice, Grades 1 to 10, with a printable gift card.",
+                "math-gifts/", root)
+    body += nav(root, "gifts")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <h1>Math gifts for contest kids</h1>
+  <p class="lead">A pack of 10 practice tests for the contest they love, with a gift card you print at home.</p>
+  <p class="cs-actions"><a class="btn btn-primary" href="{root}{GIFT_CARD}" download>Download the gift card (PDF)</a></p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap tc">
+ <div class="tc-box">
+  <h2>Pick a pack</h2>
+  <p>Each pack: 10 printable tests, worked answer keys, and a QR code by every question that opens a short video on its key move.</p>
+  <div class="tc-diag" data-tc-diag><p class="tc-chips-h">Grade</p>{chips}{rows}</div>
+  {FINAL_SALE}
+ </div>
+ <div class="tc-box gf-how">
+  <h2>How to give it</h2>
+  <ol class="tc-steps">{how}</ol>
+  <a class="gf-card" href="{root}{GIFT_CARD}" download><img src="{root}assets/img/gift-card.webp" alt="The printable gift card: A gift for, Contest math practice, Pack, From, and a QR code to the video lessons" width="600" height="385" loading="lazy"></a>
+ </div>
+ <p class="glance-note">Every problem is our own. Each test is written in the style of its contest. {NAME} is not affiliated with or endorsed by Math Kangaroo, Noetic Learning, MOEMS, the MATHCOUNTS Foundation or the MAA.</p>
+</div></section>
+"""
+    body += foot(root)
+    write("math-gifts/index.html", body)
+
+
 def page_404():
     root = "/"
     body = head(f"Page not found | {NAME}", "This page does not exist.", "404.html", root, noindex=True)
@@ -2704,7 +2774,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "contests/", "teachers/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
                grade_lessons(lessons, 5),
@@ -2746,6 +2816,7 @@ def main():
     page_tests(lessons, SHOP)
     page_free()
     page_teachers()
+    page_gifts()
     LIVE_SLUGS.update({l['slug']: l['tool'] for l in lessons if l['live']})
     page_math_corner()
     page_cheatsheet(lessons)
