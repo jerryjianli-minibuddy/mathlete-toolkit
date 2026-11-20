@@ -242,6 +242,17 @@ PLAY = ('<svg class="play" viewBox="0 0 68 48" aria-hidden="true"><path d="M66.5
         '<path d="M27 34l18-10-18-10z" fill="#fff"/></svg>')
 
 
+GA_ID = ""  # Google Analytics 4 measurement ID (G-XXXXXXX); empty = no tag
+
+
+def ga_tag():
+    if not GA_ID:
+        return ""
+    return (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>\n'
+            "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+            f"gtag('js',new Date());gtag('config','{GA_ID}');</script>")
+
+
 def head(title, desc, path, root, image=None, noindex=False, extra=""):
     url = SITE + "/" + path
     img = SITE + "/" + (image or "assets/img/og-default.jpg")
@@ -250,6 +261,7 @@ def head(title, desc, path, root, image=None, noindex=False, extra=""):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{ga_tag()}
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{e(url)}">
