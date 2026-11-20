@@ -242,15 +242,15 @@ PLAY = ('<svg class="play" viewBox="0 0 68 48" aria-hidden="true"><path d="M66.5
         '<path d="M27 34l18-10-18-10z" fill="#fff"/></svg>')
 
 
-GA_ID = ""  # Google Analytics 4 measurement ID (G-XXXXXXX); empty = no tag
+GA_ID = "GTM-W4DVPFPF"  # Google tag for the Key Move Math GA4 property (Nov 20); empty = no tag
 
 
 def ga_tag():
     if not GA_ID:
         return ""
-    return (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>\n'
+    return (f'<script async src="https://www.googletagmanager.com/gtm.js?id={GA_ID}"></script>\n'
             "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
-            f"gtag('js',new Date());gtag('config','{GA_ID}');</script>")
+            "gtag('js',new Date());</script>")
 
 
 def head(title, desc, path, root, image=None, noindex=False, extra=""):
