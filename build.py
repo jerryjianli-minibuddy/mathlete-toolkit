@@ -780,7 +780,7 @@ def sale_bar(root):
     code = f'<code>{e(SALE["code"])}</code>'
     return (f'<a class="sbar" href="{root}math-gifts/" data-sale-start="{SALE["start"]}" data-sale-end="{SALE["end"]}">'
             f'<span><b>Black Friday:</b> {SALE["off"]} tests with {code}'
-            f'<span class="sbar-pre">, {SALE["when"]}</span><span class="sbar-on" hidden>, through Dec 1</span>.</span>'
+            f'<span class="sbar-pre">, {SALE["when"].replace(" ", "&nbsp;")}.</span><span class="sbar-on" hidden>, through Dec&nbsp;1.</span></span>'
             f'<span class="sbar-go">Gift ideas &rarr;</span></a>'
             '<script>(function(){var b=document.currentScript.previousElementSibling,n=Date.now();'
             'if(n>Date.parse(b.dataset.saleEnd)){b.remove();return}'

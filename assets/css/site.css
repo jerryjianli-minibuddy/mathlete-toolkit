@@ -1109,3 +1109,4 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .sbar code { background: var(--navy); color: var(--yellow); font-weight: 900; font-family: inherit; letter-spacing: .04em; padding: 1px 6px; border-radius: 5px; }
 .sbar-go { font-weight: 800; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
 .sbar [hidden] { display: none; }
+@media (max-width: 560px) { .sbar { font-size: .8rem; padding: 6px 12px; } }
