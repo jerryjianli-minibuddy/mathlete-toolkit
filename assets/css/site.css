@@ -1110,3 +1110,20 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .sbar-go { font-weight: 800; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
 .sbar [hidden] { display: none; }
 @media (max-width: 560px) { .sbar { font-size: .8rem; padding: 6px 12px; } }
+/* /amc-8-scores/ (Nov 21) */
+.sc-chart { width: 100%; height: auto; display: block; }
+.sc-grid { stroke: var(--line); }
+.sc-ax, .sc-v { font: 600 11px var(--font); fill: var(--muted); }
+.sc-yr { font: 700 13px var(--font); fill: var(--ink); }
+.sc-d { fill: var(--navy2); background: var(--navy2); }
+.sc-h { fill: var(--teal); background: var(--teal); }
+.sc-a { fill: var(--yellow); background: var(--yellow); }
+.sc-key { list-style: none; padding: 0; margin: 8px 0 14px; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .88rem; color: var(--muted); }
+.sc-key i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.sc-table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.sc-table th, .sc-table td { padding: 8px 6px; border-top: 1px solid var(--line); text-align: center; }
+.sc-table thead th { border-top: 0; color: var(--muted); font-size: .82rem; }
+.sc-goals { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.sc-next { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.sc-next a { display: flex; flex-direction: column; gap: 2px; background: var(--cream); border: 1px solid var(--line); color: var(--navy); border-radius: 12px; padding: 12px 16px; text-decoration: none; }
+.sc-next span { font-size: .9rem; color: var(--muted); }

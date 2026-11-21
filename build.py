@@ -367,7 +367,7 @@ def foot(root, cta=True):
   <div>
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
-   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li>
+   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li><li><a href="{root}amc-8-scores/">Good AMC 8 scores</a></li>
    <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}how-to-register/">How to register</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-gifts/">Math gifts</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
   </div>
   <div>
@@ -2202,6 +2202,7 @@ def page_amc8_plan(lessons):
   <h1>AMC 8 in 10 weeks</h1>
   <p class="lead">One key move a week, about 20 minutes a day. Start 10 weeks before test day.</p>
   <p class="a8-start"><b>Before Week 1:</b> take the <a href="{free_href(root, "amc8", 7)}">AMC 8-style diagnostic</a> to see where to spend extra time.</p>
+  <p class="a8-start"><b>Setting a goal?</b> See <a href="{root}amc-8-scores/">what's a good AMC 8 score</a>.</p>
  </div>
 </section>
 <section class="sec sec-tight"><div class="wrap">
@@ -2224,6 +2225,88 @@ def page_amc8_plan(lessons):
           '<link rel="canonical" href="https://keymovemath.com/amc-8-in-10-weeks/">'
           '<script>location.replace("/amc-8-in-10-weeks/" + location.hash)</script>'
           '<meta http-equiv="refresh" content="0; url=/amc-8-in-10-weeks/"><a href="/amc-8-in-10-weeks/">10-week plan</a>')
+
+
+# /amc-8-scores/ (Nov 21, Jian approved the growth idea "AMC 8 score guide"). Award lines are MAA results as compiled by
+# Ivy League Education Center (cites MAA's reports page) and Think Academy; the two agree on every shared year. MAA's own
+# stats page (amc-reg.maa.org/reports) was down when checked Nov 21, 2026. Add each new year after results come out.
+AMC8_SCORES = [  # year, Distinction (top 1%), Honor Roll (top 5%), national average, all out of 25
+    (2022, 22, 19, 9.69), (2023, 21, 17, 10.26), (2024, 22, 18, 10.75), (2025, 23, 19, 11.74), (2026, 24, 21, 12.42),
+]
+
+
+def amc8_chart():
+    W, H, L, B, T = 560, 300, 34, 40, 14
+    ph = H - B - T
+    y = lambda v: T + ph - v / 25 * ph
+    gw = (W - L - 8) / len(AMC8_SCORES)
+    bw = gw / 4.6
+    out = [f'<svg class="sc-chart" viewBox="0 0 {W} {H}" role="img" aria-labelledby="sc-ct sc-cd">'
+           '<title id="sc-ct">AMC 8 award lines by year</title>'
+           '<desc id="sc-cd">' + "; ".join(f"{yr}: Distinction {d}, Honor Roll {h}, average {a}" for yr, d, h, a in AMC8_SCORES) + '</desc>']
+    for v in (0, 5, 10, 15, 20, 25):
+        out.append(f'<line x1="{L}" x2="{W - 4}" y1="{y(v):.1f}" y2="{y(v):.1f}" class="sc-grid"/>'
+                   f'<text x="{L - 6}" y="{y(v) + 4:.1f}" text-anchor="end" class="sc-ax">{v}</text>')
+    for i, (yr, d, h, a) in enumerate(AMC8_SCORES):
+        x0 = L + i * gw + (gw - 3 * bw - 8) / 2
+        for j, (v, cls, lab) in enumerate(((d, "sc-d", d), (h, "sc-h", h), (a, "sc-a", f"{a:.1f}"))):
+            x = x0 + j * (bw + 4)
+            out.append(f'<rect x="{x:.1f}" y="{y(v):.1f}" width="{bw:.1f}" height="{y(0) - y(v):.1f}" rx="3" class="{cls}"/>'
+                       f'<text x="{x + bw / 2:.1f}" y="{y(v) - 5:.1f}" text-anchor="middle" class="sc-v">{lab}</text>')
+        out.append(f'<text x="{L + i * gw + gw / 2:.1f}" y="{H - B + 20}" text-anchor="middle" class="sc-yr">{yr}</text>')
+    out.append('</svg>')
+    key = ('<ul class="sc-key"><li><i class="sc-d"></i>Distinction (top 1%)</li><li><i class="sc-h"></i>Honor Roll (top 5%)</li>'
+           '<li><i class="sc-a"></i>Average</li></ul>')
+    return "".join(out) + key
+
+
+def page_amc8_scores():
+    root = "../"
+    m = SHOP.get("amc8") if SHOP.get("live") else None
+    rows = "".join(f"<tr><th scope=\"row\">{yr}</th><td>{d}</td><td>{h}</td><td>{a:.1f}</td></tr>" for yr, d, h, a in reversed(AMC8_SCORES))
+    lo_h, hi_h = min(r[2] for r in AMC8_SCORES), max(r[2] for r in AMC8_SCORES)
+    lo_d, hi_d = min(r[1] for r in AMC8_SCORES), max(r[1] for r in AMC8_SCORES)
+    lo_a, hi_a = min(r[3] for r in AMC8_SCORES), max(r[3] for r in AMC8_SCORES)
+    goals = [("A strong first try", f"Beat the national average. It has been about {round(lo_a)} to {round(hi_a)} out of 25."),
+             ("Grade 6 or below", "15 or more earns the Achievement Roll, a real award for younger students."),
+             ("Top 5%", f"The Honor Roll has needed {lo_h} to {hi_h}."),
+             ("Top 1%", f"Distinction has needed {lo_d} to {hi_d}. The line has gone up the last few years.")]
+    gl = "".join(f"<li><b>{a}:</b> {b}</li>" for a, b in goals)
+    pack = (f'<li><a href="{e(m["pack"])}" rel="noopener"><b>AMC 8-style Countdown Pack</b><span>10 practice tests with worked keys, {PACK_PRICE}</span></a></li>' if m else "")
+    body = head(f"What's a Good AMC 8 Score? Award Cutoffs by Year | {NAME}",
+                "What counts as a good AMC 8 score: Honor Roll and Distinction cutoffs from recent years, the national average, and score goals by grade.",
+                "amc-8-scores/", root)
+    body += nav(root, "plan")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <p class="eyebrow">AMC 8 &middot; Grades 8 and below</p>
+  <h1>What's a good AMC 8 score?</h1>
+  <p class="lead">25 questions, one point each. Here is where the award lines fell in recent years.</p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap sc">
+ <div class="tc-box">
+  <h2>Award lines by year</h2>
+  {amc8_chart()}
+  <table class="sc-table"><thead><tr><th scope="col">Year</th><th scope="col">Distinction</th><th scope="col">Honor Roll</th><th scope="col">Average</th></tr></thead><tbody>{rows}</tbody></table>
+ </div>
+ <div class="tc-box">
+  <h2>Score goals</h2>
+  <ul class="sc-goals">{gl}</ul>
+ </div>
+ <div class="tc-box">
+  <h2>Raise the score</h2>
+  <ul class="sc-next">
+   <li><a href="{free_href(root, "amc8", 7)}"><b>AMC 8-style diagnostic</b><span>See which topics cost points</span></a></li>
+   <li><a href="{root}amc-8-in-10-weeks/"><b>AMC 8 in 10 weeks</b><span>One key move a week</span></a></li>
+   {pack}
+  </ul>
+ </div>
+ <p class="glance-note">Award lines are MAA results as compiled by Ivy League Education Center and Think Academy. {NAME} is not affiliated with or endorsed by the MAA.</p>
+</div></section>
+"""
+    body += foot(root)
+    write("amc-8-scores/index.html", body)
 
 
 # /contests/ parents' guide (Nov 12, Jian: "more informative, like what the contests are for, difficulty, path to
@@ -2806,7 +2889,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "amc-8-scores/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
                grade_lessons(lessons, 5),
@@ -2854,6 +2937,7 @@ def main():
     page_cheatsheet(lessons)
     page_plan()
     page_amc8_plan(lessons)
+    page_amc8_scores()
     page_compare()
     page_register()
     urls += ["how-to-register/"] + [f"how-to-register/{r['slug']}/" for r in REGISTER]
