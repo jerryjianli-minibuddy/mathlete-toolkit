@@ -297,6 +297,26 @@
    "img_w": 640,
    "img_h": 360,
    "img_alt": "A map of four regions: a yellow circle in the middle, surrounded by pink, green and purple regions, each touching all the others"
+  },
+  {
+   "slug": "square-numbers-ending-in-5",
+   "date": "2026-11-21",
+   "kind": "fact",
+   "tag": "Trick",
+   "title": "Square any number ending in 5 in seconds",
+   "desc": "A mental math trick to square numbers that end in 5, like 35 × 35 = 1225, and the simple algebra that shows why it always works.",
+   "summary": "35 × 35 = 1225. Multiply 3 by the next number, 4, to get 12, then write 25 after it.",
+   "formula": "35² → 3 × 4 = 12, then 25 → 1225",
+   "body": [
+    "Take a number that ends in 5, like 35. Cover the 5 and look at what is left: 3. Multiply it by the next whole number up: 3 × 4 = 12. Write 25 after it and you have the answer: 35 × 35 = 1225.",
+    "More to try: 65 × 65 starts with 6 × 7 = 42, so it is 4225. 85 × 85 starts with 8 × 9 = 72, so it is 7225. It even works for 105 × 105: 10 × 11 = 110, so the answer is 11025.",
+    "Why it works: a number ending in 5 is 10a + 5, where a is the part in front. Squaring it gives 100a² + 100a + 25, which is 100 × a(a + 1) + 25. The a(a + 1) part fills the hundreds and up, and the 25 is always the last two digits.",
+    "Show a friend: ask them for any two-digit number that ends in 5, then call out its square before they can reach for a calculator."
+   ],
+   "img": "square-numbers-ending-in-5.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "35 times 35: 3 times 4 equals 12 in a yellow box, followed by 25, making 1225"
   }
  ]
 }
