@@ -1636,7 +1636,7 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
     <p class="ribbon">Best value</p>
     <p class="eyebrow">All 10 tests</p>
     <h2>{pack_name}</h2>
-    <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
+    <p class="price"><b>{PACK_PRICE}</b>{f' <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span>' if m["tests"] else ""}</p>
     <ul class="facts-row">{li(pack_facts)}</ul>
     {pack_btn}
     {FINAL_SALE}
