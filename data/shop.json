@@ -157,5 +157,20 @@
   "noetic3": {
     "pack": "https://payhip.com/b/9bV3q",
     "tests": []
+  },
+  "amc12": {
+    "pack": "https://payhip.com/b/F219e",
+    "tests": [
+      "https://payhip.com/b/gYOWS",
+      "https://payhip.com/b/28IPj",
+      "https://payhip.com/b/6qmuQ",
+      "https://payhip.com/b/zIOcS",
+      "https://payhip.com/b/Y9ulB",
+      "https://payhip.com/b/1X4vK",
+      "https://payhip.com/b/0zjSr",
+      "https://payhip.com/b/2Wkcs",
+      "https://payhip.com/b/mUJBs",
+      "https://payhip.com/b/Z3ast"
+    ]
   }
 }

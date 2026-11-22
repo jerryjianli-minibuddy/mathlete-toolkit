@@ -1233,8 +1233,8 @@ TEST_SETS = [
     # Nov 14: AMC 10-style diagnostic built (25 problems, 75 min), hosted on the site. Practice tests wait on Jian's yes.
     dict(key="amc10-9-10", contest="amc10", grades=[9, 10], label="AMC 10-style", diag=True,
          practice=False, store="amc10", anchor="#amc10"),  # practice turns on in main() once shop.json has "amc10"
-    # Nov 22: AMC 12-style diagnostic built (25 problems, 75 min, answer check passed), hosted on the site. The 10-test
-    # pack shows as coming soon until Jian says yes to Payhip; practice turns on in main() once shop.json has "amc12".
+    # Nov 22: AMC 12-style diagnostic built (25 problems, 75 min, answer check passed), hosted on the site. Jian: "List them"
+    # -- pack and Tests 1-10 on Payhip; practice turns on in main() from shop.json "amc12".
     dict(key="amc12-11-12", contest="amc12", grades=[11, 12], label="AMC 12-style", diag=True,
          practice=False, store="amc12", anchor="#amc12"),
 ]
@@ -1694,7 +1694,7 @@ def amc10_section(root, shop):
 
 
 def amc12_section(root, shop):
-    """AMC 12-style Grades 11 and 12 (Nov 22): free diagnostic; the 10-test pack is coming soon until it is on Payhip."""
+    """AMC 12-style Grades 11 and 12 (Nov 22): free diagnostic, pack and Tests 1-10 on Payhip (Jian: "List them")."""
     return contest_tests_section(
         root, shop, "amc12", "AMC 12-style", "Grades 11 and 12", "amc12", 11,
         "25 multiple-choice problems in 75 minutes, no calculator, with an answer key. AMC 10 topics plus trig, logarithms and complex numbers.",
@@ -2758,6 +2758,7 @@ GIFT_PACKS = [  # (TEST_SETS key, pack name, one line on what's inside)
     ("mathcounts-6-8", "MATHCOUNTS-style Practice Pack", "Sprint and Target rounds in every test."),
     ("amc8-6-8", "AMC 8-style Countdown Pack", "25 problems in 40 minutes, with a week-by-week plan."),
     ("amc10-9-10", "AMC 10-style Practice Pack", "25 problems in 75 minutes."),
+    ("amc12-11-12", "AMC 12-style Practice Pack", "25 problems in 75 minutes, with trig, logs and complex numbers."),
 ]
 GIFT_CARD = "assets/pdf/key-move-math-gift-card.pdf"
 
