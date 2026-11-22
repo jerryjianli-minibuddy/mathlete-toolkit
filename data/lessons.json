@@ -2883,5 +2883,97 @@
    "noetic"
   ],
   "seconds": 337
+ },
+ {
+  "id": "L3-127",
+  "tool_num": 122,
+  "tool": "Turn the Top Row",
+  "slug": "turn-the-top-row",
+  "video_id": "lfOFzxyOJeM",
+  "short_id": "WFjJTUoTPAw",
+  "hook": "Quarter Turn a Card: Which One Do You See?",
+  "search": "Rotation Puzzles",
+  "youtube_title": "Quarter Turn a Card: Which One Do You See? | Turn the Top Row | Rotation | 3rd & 4th Grade Math",
+  "problem": "Leo's square card has nine little squares. He gives it a quarter turn to the right, without flipping it. Which card does he see?",
+  "rule": "A quarter turn to the right moves the top row to the right side, read down. The rest of the card follows it.",
+  "move": "Watch where the top row goes, then let the rest of the card follow",
+  "trap": "Flipping the card instead of turning it",
+  "family": "Geometry: spatial",
+  "topic": "Turning a picture",
+  "also_called": "Rotation",
+  "grade": 3,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 339
+ },
+ {
+  "id": "L3-128",
+  "tool_num": 123,
+  "tool": "Land on O'Clock",
+  "slug": "land-on-oclock",
+  "video_id": "c6w8OZSO1dY",
+  "short_id": "XmyAVay2tYA",
+  "hook": "Practice Starts at 3:40: When Does It End?",
+  "search": "Elapsed Time",
+  "youtube_title": "Practice Starts at 3:40: When Does It End? | Land on O'Clock | Elapsed Time | 3rd & 4th Grade Math",
+  "problem": "Soccer practice starts at 3:40. Warm-up takes 25 minutes, the game takes 1 hour 10 minutes, and cool-down takes 15 minutes. When does practice end?",
+  "rule": "Jump to the next o'clock, then whole hours, then the minutes left. An hour is 60 minutes, never 100.",
+  "move": "Jump to the next o'clock, then whole hours, then the minutes left",
+  "trap": "Treating an hour as 100 minutes",
+  "family": "Number sense",
+  "topic": "Clock and elapsed time",
+  "also_called": "Elapsed time",
+  "grade": 3,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 340
+ },
+ {
+  "id": "L3-129",
+  "tool_num": 124,
+  "tool": "Swap and Balance",
+  "slug": "swap-and-balance",
+  "video_id": "NTBJDABl-Ss",
+  "short_id": "SZDGBci30_w",
+  "hook": "Pumpkin and Melons vs 12 Apples",
+  "search": "Balance Puzzles",
+  "youtube_title": "Pumpkin and Melons vs 12 Apples | Swap and Balance | Balance Puzzles | 3rd & 4th Grade Math",
+  "problem": "A pumpkin balances 2 melons. A pumpkin and a melon balance 12 apples. How many apples weigh as much as the pumpkin?",
+  "rule": "Things that balance can trade places. Swap until one kind is left, then get one thing alone.",
+  "move": "Trade things that balance until one kind is left, then find one alone",
+  "trap": "Forgetting the extra item sitting on the same side",
+  "family": "Algebra",
+  "topic": "Balance scale puzzles",
+  "also_called": "Substitution",
+  "grade": 3,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 345
+ },
+ {
+  "id": "L3-130",
+  "tool_num": 125,
+  "tool": "Turn the Arrow",
+  "slug": "turn-the-arrow",
+  "video_id": "6sCxP1LCGic",
+  "short_id": "MH0QkrXU2jI",
+  "hook": "Robot Turns Right 3 Times: Where Does It Stop?",
+  "search": "Direction Puzzles",
+  "youtube_title": "Robot Turns Right 3 Times: Where Does It Stop? | Turn the Arrow | Directions | 3rd & 4th Grade Math",
+  "problem": "Robo starts on the star, facing up. It goes 2, turns right, goes 3, turns right, goes 1, turns right, and goes 1. On which letter does Robo stop?",
+  "rule": "Spin the arrow, not your head. A right turn always goes the way a clock hand moves.",
+  "move": "Turn the facing arrow before every move, then step",
+  "trap": "Turning the wrong way on a later turn",
+  "family": "Geometry: spatial",
+  "topic": "Turn-by-turn paths",
+  "also_called": "Directions",
+  "grade": 3,
+  "contests": [
+   "kangaroo"
+  ],
+  "seconds": 333
  }
 ]
