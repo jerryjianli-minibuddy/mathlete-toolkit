@@ -3119,5 +3119,97 @@
    "kangaroo"
   ],
   "seconds": 329
+ },
+ {
+  "id": "L3-137",
+  "tool_num": 132,
+  "tool": "Draw the Probability Region",
+  "slug": "draw-the-probability-region",
+  "video_id": "GLNJ5qDirC4",
+  "short_id": "tPALIMAo5Wc",
+  "hook": "Will the Cats Ever Meet?",
+  "search": "Geometric Probability",
+  "youtube_title": "Will the Cats Ever Meet? | Draw the Probability Region | Geometric Probability | High School Math",
+  "problem": "Two cats share one sunny windowsill. Mochi jumps up at a random time between 1:00 and 2:00 and naps for 10 minutes. Tofu jumps up at a random time in the same hour and naps for 20 minutes. What is the probability that both cats are on the sill at the same time?",
+  "rule": "Make every outcome a point. Chance = good area ÷ total area.",
+  "move": "Make each start time an axis, shade where the naps overlap, divide shaded area by the whole square",
+  "trap": "Adding the nap times and dividing by 60: 1/2",
+  "family": "Probability",
+  "topic": "Geometric probability",
+  "also_called": "Geometric probability",
+  "grade": 11,
+  "contests": [
+   "amc12"
+  ],
+  "seconds": 376
+ },
+ {
+  "id": "L3-138",
+  "tool_num": 133,
+  "tool": "Use Inscribed Angles",
+  "slug": "use-inscribed-angles",
+  "video_id": "pfR9jrS_CjI",
+  "short_id": "RsLcv73A798",
+  "hook": "No Protractor Needed",
+  "search": "Circle Geometry",
+  "youtube_title": "No Protractor Needed | Use Inscribed Angles | Circle Geometry | High School Math",
+  "problem": "Cars A, B, C, D and E sit in that order on a round Ferris wheel. From car C, cars A and B look 30° apart. From D, B and C look 25° apart. From E, C and D look 35° apart. From A, D and E look 40° apart. From car B, how many degrees apart do A and E look?",
+  "rule": "An angle on the circle is half the arc it sees. Double to get arcs, fill to 360°, halve back.",
+  "move": "Double each angle to get its arc, fill the circle to 360°, halve the arc you need",
+  "trap": "Giving the arc (100°) instead of the angle (50°)",
+  "family": "Geometry",
+  "topic": "Angles in a circle",
+  "also_called": "Inscribed angle theorem",
+  "grade": 11,
+  "contests": [
+   "amc12"
+  ],
+  "seconds": 365
+ },
+ {
+  "id": "L3-139",
+  "tool_num": 134,
+  "tool": "Use the Remainder Theorem",
+  "slug": "use-the-remainder-theorem",
+  "video_id": "lDRtTjISAtk",
+  "short_id": "Op1sxYKKv9Q",
+  "hook": "Remainder of a Mystery Polynomial",
+  "search": "Polynomials",
+  "youtube_title": "Remainder of a Mystery Polynomial | Use the Remainder Theorem | Polynomials | High School Math",
+  "problem": "When P(x) is divided by x − 2, the remainder is 7. When P(x) is divided by x + 3, the remainder is −8. What is the remainder when P(x) is divided by x² + x − 6?",
+  "rule": "At a root of the divisor, only the remainder is left. Plug in the roots and solve.",
+  "move": "Write the remainder as ax + b, plug in x = 2 and x = −3, solve for a and b",
+  "trap": "Adding the two remainders: −1",
+  "family": "Algebra",
+  "topic": "Polynomial remainders",
+  "also_called": "Factor theorem",
+  "grade": 11,
+  "contests": [
+   "amc12"
+  ],
+  "seconds": 387
+ },
+ {
+  "id": "L3-140",
+  "tool_num": 135,
+  "tool": "Use the Law of Cosines",
+  "slug": "use-the-law-of-cosines",
+  "video_id": "HrK790c42s0",
+  "short_id": "-DIic1OPwWs",
+  "hook": "No Right Angle? No Problem",
+  "search": "Trigonometry",
+  "youtube_title": "No Right Angle? No Problem | Use the Law of Cosines | Trigonometry | High School Math",
+  "problem": "A delivery drone flies 7 km due east. Then it turns 60° to the left and flies 8 km. How far is it now from where it started?",
+  "rule": "c² = a² + b² − 2ab·cos C. C is the angle BETWEEN the two sides.",
+  "move": "Turn the 60° turn into the 120° inside angle, then use c² = a² + b² − 2ab·cos C",
+  "trap": "Using the 60° turn as the angle: √57",
+  "family": "Geometry",
+  "topic": "Triangles without a right angle",
+  "also_called": "Cosine rule",
+  "grade": 11,
+  "contests": [
+   "amc12"
+  ],
+  "seconds": 354
  }
 ]
