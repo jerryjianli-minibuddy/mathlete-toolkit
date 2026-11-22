@@ -855,11 +855,12 @@ def countdown(root):
 # Nov 19: Jian approved a two-tap "Find your kid's test" picker at the top of the home page. A parent taps a grade, then
 # a contest or "Not sure"; the panel shows the one diagnostic to start with, its lessons and the matching pack.
 FINDER_PICK = {1: "kangaroo-1-2", 2: "kangaroo-1-2", 3: "kangaroo-3-4", 4: "noetic-4", 5: "noetic-5",
-               6: "amc8-6-8", 7: "amc8-6-8", 8: "amc8-6-8", 9: "amc10-9-10", 10: "amc10-9-10", 11: "amc10-9-10", 12: "amc10-9-10"}
+               6: "amc8-6-8", 7: "amc8-6-8", 8: "amc8-6-8", 9: "amc10-9-10", 10: "amc10-9-10", 11: "amc12-11-12", 12: "amc12-11-12"}
 FINDER_WHY = {"kangaroo": "A friendly first contest: picture puzzles, logic and counting.",
               "noetic": "Word problems that reward a clean method. A good next step after Kangaroo.",
               "amc8": "The main middle school contest, and the first step toward AMC 10.",
-              "amc10": "The main high school contest."}
+              "amc10": "The main high school contest.",
+              "amc12": "The top high school contest: AMC 10 topics plus trig, logs and complex numbers."}
 
 
 def finder(lessons, root):
@@ -885,8 +886,6 @@ def finder(lessons, root):
         pick = FINDER_PICK[g]
         pk = next((t for t in TEST_SETS if t["key"] == pick), None)
         why = FINDER_WHY.get(pk["contest"], "") if pk else ""
-        if g >= 11:
-            why = "AMC 12-style tests are on the way. The AMC 10-style diagnostic is a good check for now."
         data[g] = {"opts": opts, "pick": pick, "why": why}
     grades = "".join(f'<button type="button" class="kf-g" data-g="{g}" aria-pressed="false">{g}</button>' for g in range(1, 13))
     return f"""<section class="kf" aria-labelledby="kf-h" data-price="{e(PACK_PRICE)}">
@@ -1234,6 +1233,10 @@ TEST_SETS = [
     # Nov 14: AMC 10-style diagnostic built (25 problems, 75 min), hosted on the site. Practice tests wait on Jian's yes.
     dict(key="amc10-9-10", contest="amc10", grades=[9, 10], label="AMC 10-style", diag=True,
          practice=False, store="amc10", anchor="#amc10"),  # practice turns on in main() once shop.json has "amc10"
+    # Nov 22: AMC 12-style diagnostic built (25 problems, 75 min, answer check passed), hosted on the site. The 10-test
+    # pack shows as coming soon until Jian says yes to Payhip; practice turns on in main() once shop.json has "amc12".
+    dict(key="amc12-11-12", contest="amc12", grades=[11, 12], label="AMC 12-style", diag=True,
+         practice=False, store="amc12", anchor="#amc12"),
 ]
 # Drive id of each diagnostic PDF (must be shared as anyone with the link).
 DIAG_FILES = {"noetic-5": "1PReaxlTwr3zcN-xdEyVcYWJtY8c8Tc2p", "kangaroo-5-6": "1ggmbBeozrqJopzf2vQNeLZS5msb5WJ4W",
@@ -1250,6 +1253,7 @@ DIAG_LOCAL = {"noetic-4": "/assets/pdf/noetic-style-grade-4-diagnostic.pdf",
               "noetic-3": "/assets/pdf/noetic-style-grade-3-diagnostic.pdf",
               "noetic-2": "/assets/pdf/noetic-style-grade-2-diagnostic.pdf",
               "amc10-9-10": "/assets/pdf/amc10-style-diagnostic.pdf",
+              "amc12-11-12": "/assets/pdf/amc12-style-diagnostic.pdf",
               "kangaroo-1-2": "/assets/pdf/kangaroo-style-grades-1-2-diagnostic.pdf",
               "moems-6-8": "/assets/pdf/moems-style-grades-6-8-diagnostic.pdf"}
 
@@ -1599,9 +1603,12 @@ AFFILIATE_SIGNUP = "https://payhip.com/auth/register/af6af2be89010ee"
 QR_LINE = '<p class="qr-line"><span class="qr-ico" aria-hidden="true"></span>A QR code next to every question opens a short video on its key move.</p>'
 
 
-def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, lead, single_small, single_facts, pack_name, pack_facts, note, alt=False, diag=True, single_name=None):
-    """A contest's practice tests on /mock-tests (pack and singles), the MOEMS layout: AMC 8-style and MATHCOUNTS-style (Nov 13)."""
+def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, lead, single_small, single_facts, pack_name, pack_facts, note, alt=False, diag=True, single_name=None, soon=False):
+    """A contest's practice tests on /mock-tests (pack and singles), the MOEMS layout: AMC 8-style and MATHCOUNTS-style (Nov 13).
+    soon=True (Nov 22, AMC 12-style): no store links yet, so the pack box shows Coming soon beside the free diagnostic."""
     m, live = shop.get(key), shop["live"]
+    if not m and soon:
+        m, live = {"pack": "", "tests": []}, False
     if not m:
         return ""
     pack_btn = (f'<a class="btn btn-primary btn-lg" href="{e(m["pack"])}">Buy all 10 for {PACK_PRICE}</a>' if live
@@ -1639,7 +1646,7 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
     <p class="price"><b>{PACK_PRICE}</b>{f' <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span>' if m["tests"] else ""}</p>
     <ul class="facts-row">{li(pack_facts)}</ul>
     {pack_btn}
-    {FINAL_SALE}
+    {FINAL_SALE if m["pack"] else ""}
    </div>
   </div>
 {f"""  <details class="qa singles-box" id="{key}-singles"{" open" if live else ""}>
@@ -1684,6 +1691,17 @@ def amc10_section(root, shop):
         "AMC 10-style Practice Pack", ["Grades 9 and 10", "10 tests"],
         '"AMC 10-style" tests are written in the style of the AMC 10. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.',
         alt=True)
+
+
+def amc12_section(root, shop):
+    """AMC 12-style Grades 11 and 12 (Nov 22): free diagnostic; the 10-test pack is coming soon until it is on Payhip."""
+    return contest_tests_section(
+        root, shop, "amc12", "AMC 12-style", "Grades 11 and 12", "amc12", 11,
+        "25 multiple-choice problems in 75 minutes, no calculator, with an answer key. AMC 10 topics plus trig, logarithms and complex numbers.",
+        "25 problems, 75 minutes, answer key", ["Grades 11 and 12", "PDF", "75 min"],
+        "AMC 12-style Practice Pack", ["Grades 11 and 12", "10 tests"],
+        '"AMC 12-style" tests are written in the style of the AMC 12. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.',
+        soon=True)
 
 
 def mathcounts_section(root, shop):
@@ -1773,7 +1791,7 @@ def page_tests(lessons, shop):
   <p class="eyebrow">Practice tests</p>
   <h1>Practice tests</h1>
   <p class="lead">Real contest length, with a worked answer key.</p>
-  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a>{'<a href="#moems68">MOEMS-style, Grades 6 to 8</a>' if SHOP.get("moems68") else ""}<a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo56">Kangaroo-style, Grades 5 and 6</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a><a href="#noetic3">Noetic-style, Grade 3</a><a href="#noetic2">Noetic-style, Grade 2</a>{'<a href="#amc10">AMC 10-style, Grades 9 and 10</a>' if SHOP.get("amc10") else ""}</p>
+  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a>{'<a href="#moems68">MOEMS-style, Grades 6 to 8</a>' if SHOP.get("moems68") else ""}<a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo56">Kangaroo-style, Grades 5 and 6</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a><a href="#noetic3">Noetic-style, Grade 3</a><a href="#noetic2">Noetic-style, Grade 2</a>{'<a href="#amc10">AMC 10-style, Grades 9 and 10</a>' if SHOP.get("amc10") else ""}<a href="#amc12">AMC 12-style, Grades 11 and 12</a></p>
   {sale_banner(root, " sale-page")}
  </div>
 </section>
@@ -1824,6 +1842,7 @@ def page_tests(lessons, shop):
 {noetic23_section(root, shop, 3)}
 {noetic23_section(root, shop, 2)}
 {amc10_section(root, shop)}
+{amc12_section(root, shop)}
 <section class="sec">
  <div class="wrap">
   <h2>Compare</h2>
@@ -1868,7 +1887,7 @@ def page_tests(lessons, shop):
 
 def store_of(t):
     """Payhip links for a test set: data/shop.json top level is Noetic G5, other sets sit under their own key."""
-    return SHOP[t["store"]] if t.get("store") else SHOP
+    return SHOP.get(t["store"], {}) if t.get("store") else SHOP
 
 
 def free_result(root, t):
@@ -2897,7 +2916,7 @@ def main():
     lessons = load()
     SHOP.update(load_shop())
     for t in TEST_SETS:
-        if t.get("store") in ("amc10", "moems68"):
+        if t.get("store") in ("amc10", "moems68", "amc12"):
             t["practice"] = bool(SHOP.get(t["store"]))
     # A grade is live once it has lessons or a free/practice test (Nov 11: MOEMS 4-6, AMC 8 and MATHCOUNTS 6-8).
     GRADES[:] = [(g, any(str(l["grade"]) == g or (l["live"] and int(g) in title_grades(l)) for l in lessons) or any(int(g) in t["grades"] and test_live(t) for t in TEST_SETS))
