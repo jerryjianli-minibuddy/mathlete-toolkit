@@ -317,6 +317,27 @@
    "img_w": 640,
    "img_h": 360,
    "img_alt": "35 times 35: 3 times 4 equals 12 in a yellow box, followed by 25, making 1225"
+  },
+  {
+   "slug": "multiply-by-5-trick",
+   "date": "2026-11-22",
+   "kind": "fact",
+   "tag": "Trick",
+   "title": "Multiply any number by 5 in your head",
+   "desc": "A quick mental math trick for times 5: halve the number, then add a zero. Plus the times 25 version and why both always work.",
+   "summary": "48 × 5 = 240. Half of 48 is 24, then add a zero.",
+   "formula": "48 × 5 → 48 ÷ 2 = 24, then 0 → 240",
+   "body": [
+    "To multiply by 5, cut the number in half, then multiply by 10 by adding a zero. For 48 × 5, half of 48 is 24, so the answer is 240. Big numbers are just as easy: 864 × 5 starts with 432, so it is 4320.",
+    "Odd numbers work too. Multiply by 10 first, then halve: 37 × 5 is half of 370, which is 185.",
+    "Why it works: 5 is half of 10. So multiplying by 5 is the same as multiplying by 10 and then taking half, in either order.",
+    "Level up with 25, which is a quarter of 100. Divide by 4, then add two zeros: 36 × 25 starts with 9, so it is 900, and 44 × 25 starts with 11, so it is 1100.",
+    "Show a friend: have them pick any number under 1000 and call out five times it before they finish typing it into a calculator."
+   ],
+   "img": "multiply-by-5-trick.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "48 times 5: half of 48 is 24 in a yellow box, followed by a 0, making 240"
   }
  ]
 }
