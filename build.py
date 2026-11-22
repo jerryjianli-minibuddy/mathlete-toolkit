@@ -1213,6 +1213,9 @@ TEST_SETS = [
     dict(key="noetic-5", contest="noetic", grades=[5], label="Noetic-style", diag=True, practice=True, store=None, anchor=""),
     # Nov 13: Jian, "List Grade 4 tests" -- Noetic-style Grade 4 pack and Tests 1-10 live on Payhip. Diagnostic hosted on the site.
     dict(key="noetic-4", contest="noetic", grades=[4], label="Noetic-style", diag=True, practice=True, store="noetic4", anchor="#noetic4"),
+    # Nov 22: Noetic-style Grade 2 and Grade 3 diagnostics (answer check passed), hosted on the site. Packs wait on Jian's yes.
+    dict(key="noetic-3", contest="noetic", grades=[3], label="Noetic-style", diag=True, practice=False, store=None, anchor=""),
+    dict(key="noetic-2", contest="noetic", grades=[2], label="Noetic-style", diag=True, practice=False, store=None, anchor=""),
     dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=True, practice=True, store="kangaroo56", anchor="#kangaroo56"),
     # Nov 11: Jian shared these three (anyone with the link, viewer).
     dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=True, store="moems", anchor="#moems"),
@@ -1243,6 +1246,8 @@ def test_live(t):
 
 # Diagnostics served from this site instead of Drive (path from the site root).
 DIAG_LOCAL = {"noetic-4": "/assets/pdf/noetic-style-grade-4-diagnostic.pdf",
+              "noetic-3": "/assets/pdf/noetic-style-grade-3-diagnostic.pdf",
+              "noetic-2": "/assets/pdf/noetic-style-grade-2-diagnostic.pdf",
               "amc10-9-10": "/assets/pdf/amc10-style-diagnostic.pdf",
               "kangaroo-1-2": "/assets/pdf/kangaroo-style-grades-1-2-diagnostic.pdf",
               "moems-6-8": "/assets/pdf/moems-style-grades-6-8-diagnostic.pdf"}
