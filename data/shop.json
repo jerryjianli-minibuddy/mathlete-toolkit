@@ -1,153 +1,161 @@
 {
- "store": "https://payhip.com/keymovemath",
- "pack": "https://payhip.com/b/BVeZQ",
- "tests": [
-  "https://payhip.com/b/gAYfX",
-  "https://payhip.com/b/3Q7Kx",
-  "https://payhip.com/b/wD5bs",
-  "https://payhip.com/b/vgUJE",
-  "https://payhip.com/b/jvKAD",
-  "https://payhip.com/b/2eBRL",
-  "https://payhip.com/b/9hZA2",
-  "https://payhip.com/b/6d7KF",
-  "https://payhip.com/b/O1RH3",
-  "https://payhip.com/b/RDyJb"
- ],
- "live": true,
- "moems": {
-  "pack": "https://payhip.com/b/Et35g",
+  "store": "https://payhip.com/keymovemath",
+  "pack": "https://payhip.com/b/BVeZQ",
   "tests": [
-   "https://payhip.com/b/wHacF",
-   "https://payhip.com/b/nOB8K",
-   "https://payhip.com/b/oTAEx",
-   "https://payhip.com/b/liBDa",
-   "https://payhip.com/b/0shfV",
-   "https://payhip.com/b/cfeRN",
-   "https://payhip.com/b/0SzU6",
-   "https://payhip.com/b/ueSvx",
-   "https://payhip.com/b/dB1XG",
-   "https://payhip.com/b/qNfFQ"
-  ]
- },
- "amc8": {
-  "pack": "https://payhip.com/b/rsDuq",
-  "tests": [
-   "https://payhip.com/b/KxPAL",
-   "https://payhip.com/b/V3ZSR",
-   "https://payhip.com/b/WXxeF",
-   "https://payhip.com/b/5UBQz",
-   "https://payhip.com/b/9zlFL",
-   "https://payhip.com/b/JzQer",
-   "https://payhip.com/b/9dSAD",
-   "https://payhip.com/b/mDBi9",
-   "https://payhip.com/b/RW4fH",
-   "https://payhip.com/b/Oq1Kn"
-  ]
- },
- "mathcounts": {
-  "pack": "https://payhip.com/b/q9BoA",
-  "tests": [
-   "https://payhip.com/b/Z8APi",
-   "https://payhip.com/b/nPzWL",
-   "https://payhip.com/b/eOQ1Z",
-   "https://payhip.com/b/n7C03",
-   "https://payhip.com/b/dbAgw",
-   "https://payhip.com/b/fANaX",
-   "https://payhip.com/b/Mj1qx",
-   "https://payhip.com/b/4wYBD",
-   "https://payhip.com/b/S4FLn",
-   "https://payhip.com/b/uxidW"
-  ]
- },
- "kangaroo34": {
-  "pack": "https://payhip.com/b/mZ2Xb",
-  "tests": [
-   "https://payhip.com/b/TF2qJ",
-   "https://payhip.com/b/uYUpR",
-   "https://payhip.com/b/lNS8a",
-   "https://payhip.com/b/o4Hsk",
-   "https://payhip.com/b/rROYf",
-   "https://payhip.com/b/sufwt",
-   "https://payhip.com/b/X7Mom",
-   "https://payhip.com/b/dAPWY",
-   "https://payhip.com/b/6Pp9c",
-   "https://payhip.com/b/gxyuj"
-  ]
- },
- "kangaroo12": {
-  "pack": "https://payhip.com/b/lczJa",
-  "tests": [
-   "https://payhip.com/b/GfhdU",
-   "https://payhip.com/b/zJkEm",
-   "https://payhip.com/b/OSG6n",
-   "https://payhip.com/b/FKTj2",
-   "https://payhip.com/b/Gajm1",
-   "https://payhip.com/b/N6cVt",
-   "https://payhip.com/b/v4T5L",
-   "https://payhip.com/b/oiXUb",
-   "https://payhip.com/b/gGaoe",
-   "https://payhip.com/b/zoILb"
-  ]
- },
- "noetic4": {
-  "pack": "https://payhip.com/b/BWKYi",
-  "tests": [
-   "https://payhip.com/b/JbHaU",
-   "https://payhip.com/b/KHoLq",
-   "https://payhip.com/b/xgjLw",
-   "https://payhip.com/b/9J4WB",
-   "https://payhip.com/b/4hstA",
-   "https://payhip.com/b/hxZ3b",
-   "https://payhip.com/b/EWalv",
-   "https://payhip.com/b/sbh09",
-   "https://payhip.com/b/TdnFo",
-   "https://payhip.com/b/8crzd"
-  ]
- },
- "club": "https://payhip.com/b/esN50",
- "amc10": {
-  "pack": "https://payhip.com/b/dcDHs",
-  "tests": [
-   "https://payhip.com/b/dWu9M",
-   "https://payhip.com/b/wd7M6",
-   "https://payhip.com/b/FxMw7",
-   "https://payhip.com/b/5Mjpd",
-   "https://payhip.com/b/N4EFI",
-   "https://payhip.com/b/J1b3V",
-   "https://payhip.com/b/mQqkJ",
-   "https://payhip.com/b/LUtgn",
-   "https://payhip.com/b/MeD96",
-   "https://payhip.com/b/8ZNbO"
-  ]
- },
- "kangaroo56": {
-  "pack": "https://payhip.com/b/fv5cI",
-  "tests": [
-   "https://payhip.com/b/yhLGF",
-   "https://payhip.com/b/1aIrU",
-   "https://payhip.com/b/ShqaQ",
-   "https://payhip.com/b/q4URO",
-   "https://payhip.com/b/4Zytx",
-   "https://payhip.com/b/iFyDC",
-   "https://payhip.com/b/HMqoU",
-   "https://payhip.com/b/xUztb",
-   "https://payhip.com/b/QcqE1",
-   "https://payhip.com/b/UY0zW"
-  ]
- },
- "moems68": {
-  "pack": "https://payhip.com/b/5P8lg",
-  "tests": [
-   "https://payhip.com/b/Nq7of",
-   "https://payhip.com/b/HVNtI",
-   "https://payhip.com/b/p5HUF",
-   "https://payhip.com/b/M9Tiv",
-   "https://payhip.com/b/cSHmu",
-   "https://payhip.com/b/mzEga",
-   "https://payhip.com/b/xJqQo",
-   "https://payhip.com/b/cFTCH",
-   "https://payhip.com/b/BbTrY",
-   "https://payhip.com/b/zGPbK"
-  ]
- }
+    "https://payhip.com/b/gAYfX",
+    "https://payhip.com/b/3Q7Kx",
+    "https://payhip.com/b/wD5bs",
+    "https://payhip.com/b/vgUJE",
+    "https://payhip.com/b/jvKAD",
+    "https://payhip.com/b/2eBRL",
+    "https://payhip.com/b/9hZA2",
+    "https://payhip.com/b/6d7KF",
+    "https://payhip.com/b/O1RH3",
+    "https://payhip.com/b/RDyJb"
+  ],
+  "live": true,
+  "moems": {
+    "pack": "https://payhip.com/b/Et35g",
+    "tests": [
+      "https://payhip.com/b/wHacF",
+      "https://payhip.com/b/nOB8K",
+      "https://payhip.com/b/oTAEx",
+      "https://payhip.com/b/liBDa",
+      "https://payhip.com/b/0shfV",
+      "https://payhip.com/b/cfeRN",
+      "https://payhip.com/b/0SzU6",
+      "https://payhip.com/b/ueSvx",
+      "https://payhip.com/b/dB1XG",
+      "https://payhip.com/b/qNfFQ"
+    ]
+  },
+  "amc8": {
+    "pack": "https://payhip.com/b/rsDuq",
+    "tests": [
+      "https://payhip.com/b/KxPAL",
+      "https://payhip.com/b/V3ZSR",
+      "https://payhip.com/b/WXxeF",
+      "https://payhip.com/b/5UBQz",
+      "https://payhip.com/b/9zlFL",
+      "https://payhip.com/b/JzQer",
+      "https://payhip.com/b/9dSAD",
+      "https://payhip.com/b/mDBi9",
+      "https://payhip.com/b/RW4fH",
+      "https://payhip.com/b/Oq1Kn"
+    ]
+  },
+  "mathcounts": {
+    "pack": "https://payhip.com/b/q9BoA",
+    "tests": [
+      "https://payhip.com/b/Z8APi",
+      "https://payhip.com/b/nPzWL",
+      "https://payhip.com/b/eOQ1Z",
+      "https://payhip.com/b/n7C03",
+      "https://payhip.com/b/dbAgw",
+      "https://payhip.com/b/fANaX",
+      "https://payhip.com/b/Mj1qx",
+      "https://payhip.com/b/4wYBD",
+      "https://payhip.com/b/S4FLn",
+      "https://payhip.com/b/uxidW"
+    ]
+  },
+  "kangaroo34": {
+    "pack": "https://payhip.com/b/mZ2Xb",
+    "tests": [
+      "https://payhip.com/b/TF2qJ",
+      "https://payhip.com/b/uYUpR",
+      "https://payhip.com/b/lNS8a",
+      "https://payhip.com/b/o4Hsk",
+      "https://payhip.com/b/rROYf",
+      "https://payhip.com/b/sufwt",
+      "https://payhip.com/b/X7Mom",
+      "https://payhip.com/b/dAPWY",
+      "https://payhip.com/b/6Pp9c",
+      "https://payhip.com/b/gxyuj"
+    ]
+  },
+  "kangaroo12": {
+    "pack": "https://payhip.com/b/lczJa",
+    "tests": [
+      "https://payhip.com/b/GfhdU",
+      "https://payhip.com/b/zJkEm",
+      "https://payhip.com/b/OSG6n",
+      "https://payhip.com/b/FKTj2",
+      "https://payhip.com/b/Gajm1",
+      "https://payhip.com/b/N6cVt",
+      "https://payhip.com/b/v4T5L",
+      "https://payhip.com/b/oiXUb",
+      "https://payhip.com/b/gGaoe",
+      "https://payhip.com/b/zoILb"
+    ]
+  },
+  "noetic4": {
+    "pack": "https://payhip.com/b/BWKYi",
+    "tests": [
+      "https://payhip.com/b/JbHaU",
+      "https://payhip.com/b/KHoLq",
+      "https://payhip.com/b/xgjLw",
+      "https://payhip.com/b/9J4WB",
+      "https://payhip.com/b/4hstA",
+      "https://payhip.com/b/hxZ3b",
+      "https://payhip.com/b/EWalv",
+      "https://payhip.com/b/sbh09",
+      "https://payhip.com/b/TdnFo",
+      "https://payhip.com/b/8crzd"
+    ]
+  },
+  "club": "https://payhip.com/b/esN50",
+  "amc10": {
+    "pack": "https://payhip.com/b/dcDHs",
+    "tests": [
+      "https://payhip.com/b/dWu9M",
+      "https://payhip.com/b/wd7M6",
+      "https://payhip.com/b/FxMw7",
+      "https://payhip.com/b/5Mjpd",
+      "https://payhip.com/b/N4EFI",
+      "https://payhip.com/b/J1b3V",
+      "https://payhip.com/b/mQqkJ",
+      "https://payhip.com/b/LUtgn",
+      "https://payhip.com/b/MeD96",
+      "https://payhip.com/b/8ZNbO"
+    ]
+  },
+  "kangaroo56": {
+    "pack": "https://payhip.com/b/fv5cI",
+    "tests": [
+      "https://payhip.com/b/yhLGF",
+      "https://payhip.com/b/1aIrU",
+      "https://payhip.com/b/ShqaQ",
+      "https://payhip.com/b/q4URO",
+      "https://payhip.com/b/4Zytx",
+      "https://payhip.com/b/iFyDC",
+      "https://payhip.com/b/HMqoU",
+      "https://payhip.com/b/xUztb",
+      "https://payhip.com/b/QcqE1",
+      "https://payhip.com/b/UY0zW"
+    ]
+  },
+  "moems68": {
+    "pack": "https://payhip.com/b/5P8lg",
+    "tests": [
+      "https://payhip.com/b/Nq7of",
+      "https://payhip.com/b/HVNtI",
+      "https://payhip.com/b/p5HUF",
+      "https://payhip.com/b/M9Tiv",
+      "https://payhip.com/b/cSHmu",
+      "https://payhip.com/b/mzEga",
+      "https://payhip.com/b/xJqQo",
+      "https://payhip.com/b/cFTCH",
+      "https://payhip.com/b/BbTrY",
+      "https://payhip.com/b/zGPbK"
+    ]
+  },
+  "noetic2": {
+    "pack": "https://payhip.com/b/rYxB1",
+    "tests": []
+  },
+  "noetic3": {
+    "pack": "https://payhip.com/b/9bV3q",
+    "tests": []
+  }
 }

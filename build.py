@@ -1213,9 +1213,10 @@ TEST_SETS = [
     dict(key="noetic-5", contest="noetic", grades=[5], label="Noetic-style", diag=True, practice=True, store=None, anchor=""),
     # Nov 13: Jian, "List Grade 4 tests" -- Noetic-style Grade 4 pack and Tests 1-10 live on Payhip. Diagnostic hosted on the site.
     dict(key="noetic-4", contest="noetic", grades=[4], label="Noetic-style", diag=True, practice=True, store="noetic4", anchor="#noetic4"),
-    # Nov 22: Noetic-style Grade 2 and Grade 3 diagnostics (answer check passed), hosted on the site. Packs wait on Jian's yes.
-    dict(key="noetic-3", contest="noetic", grades=[3], label="Noetic-style", diag=True, practice=False, store=None, anchor=""),
-    dict(key="noetic-2", contest="noetic", grades=[2], label="Noetic-style", diag=True, practice=False, store=None, anchor=""),
+    # Nov 22: Noetic-style Grade 2 and Grade 3 diagnostics (answer check passed), hosted on the site. Jian: "List both" --
+    # the two packs are on Payhip (packs only, no single tests).
+    dict(key="noetic-3", contest="noetic", grades=[3], label="Noetic-style", diag=True, practice=True, store="noetic3", anchor="#noetic3"),
+    dict(key="noetic-2", contest="noetic", grades=[2], label="Noetic-style", diag=True, practice=True, store="noetic2", anchor="#noetic2"),
     dict(key="kangaroo-5-6", contest="kangaroo", grades=[5, 6], label="Kangaroo-style", diag=True, practice=True, store="kangaroo56", anchor="#kangaroo56"),
     # Nov 11: Jian shared these three (anyone with the link, viewer).
     dict(key="moems-4-6", contest="olympiad", grades=[4, 5, 6], label="MOEMS-style", diag=True, practice=True, store="moems", anchor="#moems"),
@@ -1616,7 +1617,7 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
   <h2>{label} practice tests</h2>
   <p class="lead">{lead}</p>
   {QR_LINE}
-  <div class="plans{"" if diag else " plans-2"}">{f"""
+  <div class="plans{"" if diag and m["tests"] else " plans-2"}">{f"""
    <div class="plan plan-free">
     <p class="eyebrow">Start here</p>
     <h2>{label} diagnostic</h2>
@@ -1624,13 +1625,13 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
     <ul class="facts-row"><li>PDF</li><li>Answer key</li><li>Share with your class</li></ul>
     <a class="btn btn-primary btn-lg" href="{free_href(root, contest, diag_grade)}">Get the diagnostic</a>
    </div>""" if diag else ""}
-   <div class="plan">
+{f"""   <div class="plan">
     <p class="eyebrow eyebrow-n">One test</p>
     <h2>{label} test</h2>
     <p class="price"><b>{SINGLE_PRICE}</b> each</p>
     <ul class="facts-row">{li(single_facts)}</ul>
     <a class="btn btn-ghost-d btn-lg" href="#{key}-singles">Choose a test</a>
-   </div>
+   </div>""" if m["tests"] else ""}
    <div class="plan plan-pack">
     <p class="ribbon">Best value</p>
     <p class="eyebrow">All 10 tests</p>
@@ -1641,13 +1642,13 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
     {FINAL_SALE}
    </div>
   </div>
-  <details class="qa singles-box" id="{key}-singles"{" open" if live else ""}>
+{f"""  <details class="qa singles-box" id="{key}-singles"{" open" if live else ""}>
    <summary>{label} tests, {SINGLE_PRICE} each</summary>
    <ul class="singles">
 {singles}
    </ul>
    {FINAL_SALE}
-  </details>
+  </details>""" if m["tests"] else ""}
   <p class="test-note">{note}</p>
  </div>
 </section>"""
@@ -1726,6 +1727,15 @@ def noetic4_section(root, shop):
         TEST_NOTE, single_name="Noetic-style Grade 4")
 
 
+def noetic23_section(root, shop, g):
+    """Noetic-style Grade 2 / Grade 3 (Payhip, Nov 22, Jian: "List both"): pack only, with its free diagnostic."""
+    return contest_tests_section(
+        root, shop, f"noetic{g}", "Noetic-style", f"Grade {g}", "noetic", g,
+        "20 problems, easy to hard, 50 minutes, no calculator, with a worked answer key.",
+        "", [], f"Noetic-style Grade {g} Practice Pack", [f"Grade {g}", "10 tests", "PDF"],
+        TEST_NOTE, single_name=f"Noetic-style Grade {g}")
+
+
 def kangaroo12_section(root, shop):
     """Kangaroo-style Grades 1-2 (Payhip, Nov 13), with its free diagnostic (Nov 14)."""
     return contest_tests_section(
@@ -1763,7 +1773,7 @@ def page_tests(lessons, shop):
   <p class="eyebrow">Practice tests</p>
   <h1>Practice tests</h1>
   <p class="lead">Real contest length, with a worked answer key.</p>
-  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a>{'<a href="#moems68">MOEMS-style, Grades 6 to 8</a>' if SHOP.get("moems68") else ""}<a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo56">Kangaroo-style, Grades 5 and 6</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a>{'<a href="#amc10">AMC 10-style, Grades 9 and 10</a>' if SHOP.get("amc10") else ""}</p>
+  <p class="pt-jump"><a href="#noetic">Noetic-style, Grade 5</a><a href="#moems">MOEMS-style, Grades 4 to 6</a>{'<a href="#moems68">MOEMS-style, Grades 6 to 8</a>' if SHOP.get("moems68") else ""}<a href="#amc8">AMC 8-style, Grades 6 to 8</a><a href="#mathcounts">MATHCOUNTS-style, Grades 6 to 8</a><a href="#kangaroo56">Kangaroo-style, Grades 5 and 6</a><a href="#kangaroo34">Kangaroo-style, Grades 3 and 4</a><a href="#kangaroo12">Kangaroo-style, Grades 1 and 2</a><a href="#noetic4">Noetic-style, Grade 4</a><a href="#noetic3">Noetic-style, Grade 3</a><a href="#noetic2">Noetic-style, Grade 2</a>{'<a href="#amc10">AMC 10-style, Grades 9 and 10</a>' if SHOP.get("amc10") else ""}</p>
   {sale_banner(root, " sale-page")}
  </div>
 </section>
@@ -1811,6 +1821,8 @@ def page_tests(lessons, shop):
 {kangaroo34_section(root, shop)}
 {kangaroo12_section(root, shop)}
 {noetic4_section(root, shop)}
+{noetic23_section(root, shop, 3)}
+{noetic23_section(root, shop, 2)}
 {amc10_section(root, shop)}
 <section class="sec">
  <div class="wrap">
@@ -1866,7 +1878,8 @@ def free_result(root, t):
                 f'<div class="fres-btns">'
                 + (f'<a class="btn btn-primary" href="{e(store_of(t)["pack"])}" rel="noopener">Get the 10-test pack, {PACK_PRICE}</a>'
                    if store_of(t).get("pack") else "")
-                + f'<a class="btn {"btn-ghost-d" if store_of(t).get("pack") else "btn-primary"}" href="{root}mock-tests/{t.get("anchor", "")}">Buy one test, {SINGLE_PRICE}</a></div>' + FINAL_SALE)
+                + (f'<a class="btn {"btn-ghost-d" if store_of(t).get("pack") else "btn-primary"}" href="{root}mock-tests/{t.get("anchor", "")}">Buy one test, {SINGLE_PRICE}</a>'
+                   if store_of(t).get("tests") else "") + '</div>' + FINAL_SALE)
     else:
         paid = '<p>Practice tests coming soon.</p>'
     if not t["diag"]:
@@ -2717,6 +2730,8 @@ GIFT_PACKS = [  # (TEST_SETS key, pack name, one line on what's inside)
     ("kangaroo-1-2", "Kangaroo-style Grades 1-2 Practice Pack", "Picture puzzles, shapes, patterns and counting."),
     ("kangaroo-3-4", "Kangaroo-style Grades 3-4 Practice Pack", "Mirrors, cube nets, folding and views from above."),
     ("kangaroo-5-6", "Kangaroo-style Grades 5-6 Practice Pack", "Nets, cube stacks, folds and mirror puzzles."),
+    ("noetic-2", "Noetic-style Grade 2 Practice Pack", "20 problems each, easy to hard, 50 minutes."),
+    ("noetic-3", "Noetic-style Grade 3 Practice Pack", "20 problems each, easy to hard, 50 minutes."),
     ("noetic-4", "Noetic-style Grade 4 Practice Pack", "20 problems each, easy to hard, 50 minutes."),
     ("noetic-5", "Noetic-style Grade 5 Practice Pack", "20 problems each, easy to hard, 50 minutes."),
     ("moems-4-6", "MOEMS-style Practice Pack", "Each test is a full season: 5 contests of 5 problems."),
