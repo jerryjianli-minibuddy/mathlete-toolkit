@@ -1538,6 +1538,15 @@ def playlist_links(grade=None, contest=None):
 YES = '<span class="yes" role="img" aria-label="Yes"></span>'
 
 
+def pack_preview(key):
+    """A real page from a pack, QR code ringed, with "Stuck? Scan the code for the video solution." (Nov 23, Jian: "Approve")."""
+    rel = f"/assets/img/packs/{key}-preview.webp"
+    if not os.path.exists(os.path.join(ROOT, rel.lstrip("/"))):
+        return ""
+    return (f'<img class="pack-peek" src="{rel}" width="640" height="592" loading="lazy" '
+            f'alt="A real page from this pack: each question has a QR code beside it. Stuck? Scan the code for the video solution.">')
+
+
 def moems_section(root, shop):
     """MOEMS-style Grades 4 to 6 practice tests (Payhip, Nov 11): pack and singles, same layout as the Noetic block."""
     m, live = shop.get("moems"), shop["live"]
@@ -1554,6 +1563,7 @@ def moems_section(root, shop):
     <h2>MOEMS-style Practice Pack</h2>
     <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
     <ul class="facts-row"><li>Grades 4 to 6</li><li>10 tests</li></ul>
+    {pack_preview("moems")}
     {pack_btn}
     {FINAL_SALE}
    </div>"""
@@ -1645,6 +1655,7 @@ def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, l
     <h2>{pack_name}</h2>
     <p class="price"><b>{PACK_PRICE}</b>{f' <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span>' if m["tests"] else ""}</p>
     <ul class="facts-row">{li(pack_facts)}</ul>
+    {pack_preview(key)}
     {pack_btn}
     {FINAL_SALE if m["pack"] else ""}
    </div>
@@ -1823,6 +1834,7 @@ def page_tests(lessons, shop):
     <h2>Noetic-style Grade 5 Practice Pack</h2>
     <p class="price"><b>{PACK_PRICE}</b> <s>$39.90</s> <span class="save">Save {PACK_SAVE}</span></p>
     <ul class="facts-row"><li>Noetic-style</li><li>Grade 5</li><li>10 tests</li><li>60 pages</li></ul>
+    {pack_preview("noetic")}
     {pack_btn}
     {FINAL_SALE}
    </div>
