@@ -338,6 +338,27 @@
    "img_w": 640,
    "img_h": 360,
    "img_alt": "48 times 5: half of 48 is 24 in a yellow box, followed by a 0, making 240"
+  },
+  {
+   "slug": "handshake-problem",
+   "date": "2026-11-23",
+   "kind": "fact",
+   "tag": "Formula",
+   "title": "How many handshakes? A quick formula for any party",
+   "desc": "If everyone at a party shakes hands with everyone else once, how many handshakes is that? Count them fast with n × (n − 1) ÷ 2, and see why it works.",
+   "summary": "10 people shaking hands once each: 10 × 9 ÷ 2 = 45 handshakes.",
+   "formula": "handshakes = n × (n − 1) ÷ 2",
+   "body": [
+    "Ten friends meet, and each pair shakes hands once. Counting one by one gets messy fast, but there is a shortcut: multiply the number of people by one less, then halve it. For 10 people, 10 × 9 ÷ 2 = 45 handshakes.",
+    "Why it works: each person shakes hands with everyone except themselves, so each of the 10 people makes 9 handshakes. That gives 10 × 9 = 90, but every handshake has two people in it, so it got counted twice. Half of 90 is 45.",
+    "Check it on a small group. With 5 people, 5 × 4 ÷ 2 = 10. Draw 5 dots, join every pair with a line, and you will count exactly 10 lines.",
+    "The same formula counts many things: games in a tournament where every team plays every other team once, lines joining points, or pairs you can pick from a group. A class of 30 kids would make 30 × 29 ÷ 2 = 435 handshakes.",
+    "Show a friend: ask how many handshakes happen when 20 people meet. While they start counting, you can say 190."
+   ],
+   "img": "handshake-problem.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "Five white dots in a pentagon, every pair joined by a yellow line, making 10 lines, above the formula n times n minus 1 divided by 2"
   }
  ]
 }
