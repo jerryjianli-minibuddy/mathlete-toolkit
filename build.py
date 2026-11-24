@@ -367,7 +367,7 @@ def foot(root, cta=True):
   <div>
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
-   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li><li><a href="{root}amc-8-scores/">Good AMC 8 scores</a></li>
+   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li><li><a href="{root}amc-8-scores/">Good AMC 8 scores</a></li><li><a href="{root}amc-8-cheat-sheet/">AMC 8 cheat sheet</a></li>
    <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}how-to-register/">How to register</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-gifts/">Math gifts</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
   </div>
   <div>
@@ -2252,6 +2252,7 @@ def page_amc8_plan(lessons):
   <p class="lead">One key move a week, about 20 minutes a day. Start 10 weeks before test day.</p>
   <p class="a8-start"><b>Before Week 1:</b> take the <a href="{free_href(root, "amc8", 7)}">AMC 8-style diagnostic</a> to see where to spend extra time.</p>
   <p class="a8-start"><b>Setting a goal?</b> See <a href="{root}amc-8-scores/">what's a good AMC 8 score</a>.</p>
+  <p class="a8-start"><b>Want it on one page?</b> Print the <a href="{root}amc-8-cheat-sheet/">AMC 8 key tools cheat sheet</a>.</p>
  </div>
 </section>
 <section class="sec sec-tight"><div class="wrap">
@@ -2348,6 +2349,7 @@ def page_amc8_scores():
   <ul class="sc-next">
    <li><a href="{free_href(root, "amc8", 7)}"><b>AMC 8-style diagnostic</b><span>See which topics cost points</span></a></li>
    <li><a href="{root}amc-8-in-10-weeks/"><b>AMC 8 in 10 weeks</b><span>One key move a week</span></a></li>
+   <li><a href="{root}amc-8-cheat-sheet/"><b>AMC 8 key tools cheat sheet</b><span>16 key moves on one printable page</span></a></li>
    {pack}
   </ul>
  </div>
@@ -2356,6 +2358,47 @@ def page_amc8_scores():
 """
     body += foot(root)
     write("amc-8-scores/index.html", body)
+
+
+# /amc-8-cheat-sheet/ (Nov 24, Jian approved the growth idea "AMC 8 key tools cheat sheet"): one printable page, 16 key
+# tools, each with one tiny original example and a QR code to its lesson (t/<n>/). The PDF is built by
+# mock-tests/cheatsheets/amc8_key_tools.py into assets/pdf/. Direct download, no form.
+def page_amc8_cheat():
+    root = "../"
+    m = SHOP.get("amc8") if SHOP.get("live") else None
+    pdf = f"{root}assets/pdf/amc-8-key-tools-cheat-sheet.pdf"
+    pack = (f'<li><a href="{e(m["pack"])}" rel="noopener"><b>AMC 8-style Countdown Pack</b><span>10 practice tests with worked keys, {PACK_PRICE}</span></a></li>' if m else "")
+    body = head(f"AMC 8 Key Tools Cheat Sheet (Printable PDF) | {NAME}",
+                "A one-page printable AMC 8 cheat sheet: 16 key problem-solving tools, each with a tiny example and a QR code to its video lesson.",
+                "amc-8-cheat-sheet/", root)
+    body += nav(root, "plan")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <p class="eyebrow">AMC 8 &middot; Printable PDF</p>
+  <h1>AMC 8 key tools cheat sheet</h1>
+  <p class="lead">16 key moves on one page, each with a tiny example. Stuck on one? Scan its QR code for a short video lesson.</p>
+  <p><a class="btn btn-primary btn-lg" href="{pdf}" download>Download the PDF</a></p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap sc">
+ <div class="tc-box">
+  <h2>What's on it</h2>
+  <img class="pack-peek" src="{root}assets/img/amc-8-key-tools-preview.webp" width="935" height="1210" loading="lazy" alt="The AMC 8 key tools cheat sheet: 16 tools in four groups, each with an example and a QR code to its lesson.">
+  <p>Arithmetic and algebra, number theory, counting and probability, and geometry. One US Letter page, made to print.</p>
+ </div>
+ <div class="tc-box">
+  <h2>Next steps</h2>
+  <ul class="sc-next">
+   <li><a href="{free_href(root, "amc8", 7)}"><b>AMC 8-style diagnostic</b><span>See which moves need the most practice</span></a></li>
+   <li><a href="{root}amc-8-in-10-weeks/"><b>AMC 8 in 10 weeks</b><span>One key move a week</span></a></li>
+   {pack}
+  </ul>
+ </div>
+ <p class="glance-note">Every example is our own. {NAME} is not affiliated with or endorsed by the Mathematical Association of America (MAA).</p>
+</div></section>
+"""
+    body += foot(root)
+    write("amc-8-cheat-sheet/index.html", body)
 
 
 # /contests/ parents' guide (Nov 12, Jian: "more informative, like what the contests are for, difficulty, path to
@@ -2941,7 +2984,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "amc-8-scores/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "amc-8-scores/", "amc-8-cheat-sheet/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
                grade_lessons(lessons, 5),
@@ -2990,6 +3033,7 @@ def main():
     page_plan()
     page_amc8_plan(lessons)
     page_amc8_scores()
+    page_amc8_cheat()
     page_compare()
     page_register()
     urls += ["how-to-register/"] + [f"how-to-register/{r['slug']}/" for r in REGISTER]
