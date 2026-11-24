@@ -359,6 +359,27 @@
    "img_w": 640,
    "img_h": 360,
    "img_alt": "Five white dots in a pentagon, every pair joined by a yellow line, making 10 lines, above the formula n times n minus 1 divided by 2"
+  },
+  {
+   "slug": "nines-on-your-fingers",
+   "date": "2026-11-24",
+   "kind": "fact",
+   "tag": "Trick",
+   "title": "The 9 times table on your fingers: a trick that never misses",
+   "desc": "Hold up ten fingers, fold one down, and read the answer to any 9 times fact from 9 × 1 to 9 × 10. Learn the finger trick and why it works.",
+   "summary": "For 9 × 4, fold down your 4th finger: 3 fingers on the left, 6 on the right, so 36.",
+   "formula": "9 × n = 10 × n − n",
+   "body": [
+    "Hold both hands up with all ten fingers out. To work out 9 × 4, count from your left and fold down the 4th finger. Now look: there are 3 fingers to the left of the folded one and 6 to the right. The answer is 36.",
+    "It works for every fact from 9 × 1 to 9 × 10. For 9 × 7, fold the 7th finger: 6 on the left, 3 on the right, so 63. For 9 × 9, fold the 9th: 8 on the left, 1 on the right, so 81.",
+    "Why it works: 9 × 4 is the same as 10 × 4 take away 4, which is 40 − 4 = 36. Folding finger 4 leaves 4 − 1 = 3 fingers on the left, and that is the tens digit. The right side holds 10 − 4 = 6 fingers, and that is the ones digit.",
+    "You can spot the same pattern without your hands. In every answer from 9 × 2 to 9 × 10, the two digits add up to 9: 18, 27, 36, 45, 54, 63, 72, 81, 90.",
+    "Show a friend: ask them to pick any 9 times fact, then hold up your hands and read the answer before they finish counting."
+   ],
+   "img": "nines-on-your-fingers.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "Ten fingers drawn as bars with the fourth one folded down; three yellow fingers on its left and six white fingers on its right, labelled 3 and 6, making 36 for 9 times 4"
   }
  ]
 }
