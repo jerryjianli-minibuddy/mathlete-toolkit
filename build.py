@@ -323,6 +323,7 @@ def nav(root, active=""):
                f'<a class="dd-i" href="{root}key-moves/">Cheat sheet (print it)</a>'
                f'<a class="dd-i" href="{root}study-plan/">4-week contest plan</a>'
                f'<a class="dd-i" href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a>'
+               f'<a class="dd-i" href="{root}math-kangaroo-in-12-weeks/">Math Kangaroo in 12 weeks</a>'
                f'<p class="dd-h">Grade 5 topics</p>{topics}')
     return f"""{sale_bar(root)}<header class="top">
  <div class="wrap top-in">
@@ -367,7 +368,7 @@ def foot(root, cta=True):
   <div>
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
-   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li><li><a href="{root}amc-8-scores/">Good AMC 8 scores</a></li><li><a href="{root}amc-8-cheat-sheet/">AMC 8 cheat sheet</a></li>
+   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li><li><a href="{root}math-kangaroo-in-12-weeks/">Math Kangaroo in 12 weeks</a></li><li><a href="{root}amc-8-scores/">Good AMC 8 scores</a></li><li><a href="{root}amc-8-cheat-sheet/">AMC 8 cheat sheet</a></li>
    <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}how-to-register/">How to register</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-gifts/">Math gifts</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
   </div>
   <div>
@@ -977,6 +978,7 @@ def page_home(lessons):
   <div class="freebies">
    <a class="freebie" href="key-moves/"><b>Key moves cheat sheet</b><span>Every rule and trap on one printable page</span></a>
    <a class="freebie" href="study-plan/"><b>4-week contest plan</b><span>15 to 20 minutes a day, with a miss log</span></a>
+   <a class="freebie" href="math-kangaroo-in-12-weeks/"><b>Math Kangaroo in 12 weeks</b><span>One key move a week, grades 1 to 6</span></a>
    <a class="freebie" href="teachers/"><b>For teachers and clubs</b><span>Run contest practice with a whole class or team</span></a>
   </div>
  </div>
@@ -2277,6 +2279,79 @@ def page_amc8_plan(lessons):
           '<meta http-equiv="refresh" content="0; url=/amc-8-in-10-weeks/"><a href="/amc-8-in-10-weeks/">10-week plan</a>')
 
 
+# /math-kangaroo-in-12-weeks/ (Nov 24, Jian approved the growth idea "Math Kangaroo in 12 weeks"): one key move a week
+# in three tracks (Grades 1-2, 3-4, 5-6), each week with its lesson, a QR code to it (assets/img/qr/t-<n>.svg, made with
+# segno because the deploy build has no segno) and, in weeks 1-10, the matching Kangaroo-style practice test. Tracks 1-2
+# and 3-4 run in lesson release order so early weeks have videos first; 5-6 follows the tools seen most on real papers
+# (data/grade_tools.json). No dates on the plan (Nov 12 rule): it counts in weeks.
+KANGAROO_TRACKS = [
+    ("1-2", "Grades 1 and 2", "kangaroo12", "kangaroo-1-2", 1, [66, 65, 67, 68, 74, 75, 76, 78, 80, 81, 127, 128]),
+    ("3-4", "Grades 3 and 4", "kangaroo34", "kangaroo-3-4", 3, [49, 50, 51, 69, 70, 71, 72, 77, 122, 123, 124, 125]),
+    ("5-6", "Grades 5 and 6", "kangaroo56", "kangaroo-5-6", 5, [31, 1, 4, 36, 10, 5, 39, 37, 34, 32, 16, 19]),
+]
+
+
+def page_kangaroo_plan(lessons):
+    root = "../"
+    by_num = {l["tool_num"]: l for l in lessons}
+    has_diag = {t["key"] for t in TEST_SETS if t.get("diag")}
+    tracks, jump = [], []
+    for slug, label, store, tkey, g, nums in KANGAROO_TRACKS:
+        m = SHOP.get(store) if SHOP.get("live") else None
+        cards = []
+        for w, n in enumerate(nums, 1):
+            l = by_num[n]
+            lesson = (f'<a href="{root}lessons/{l["slug"]}/">Watch the lesson</a>' if l["live"]
+                      else f'<a href="{root}lessons/{l["slug"]}/">Lesson</a> <small>(video soon)</small>')
+            if w <= 10:
+                test = (f'<a href="{e(m["tests"][w - 1])}" rel="noopener">Kangaroo-style Practice Test {w}</a> <small>{SINGLE_PRICE}</small>' if m
+                        else f"Kangaroo-style Practice Test {w} <small>(soon)</small>")
+                test = f"<li><b>Test:</b> {test}. Redo every miss the next day.</li>"
+            elif w == 11:
+                test = "<li><b>Review:</b> redo the three practice tests with the most misses, with a timer.</li>"
+            else:
+                test = "<li><b>Review:</b> go back over every miss you logged. Keep the last day before the contest light.</li>"
+            cards.append(f"""<li class="a8-wk kg-wk" id="g{slug}-week-{w}">
+    <img class="kg-qr" src="{root}assets/img/qr/t-{n}.svg" width="99" height="99" alt="QR code for the {e(l['tool'])} lesson" loading="lazy">
+    <p class="pl-wk">Week {w}</p>
+    <h3>{e(l["tool"])}</h3>
+    <p class="a8-rule">{e(l["rule"])}</p>
+    <ol class="a8-steps"><li><b>Learn:</b> {lesson}</li>{test}</ol>
+   </li>""")
+        start = (f'<p class="a8-start"><b>Before Week 1:</b> take the <a href="{free_href(root, "kangaroo", g)}">Kangaroo-style {label} diagnostic</a> to see where to spend extra time.</p>'
+                 if tkey in has_diag else
+                 '<p class="a8-start"><b>Before Week 1:</b> do Practice Test 1 with a timer and keep the score to compare later.</p>')
+        pack = (f'<p class="kg-pack"><a class="btn btn-primary" href="{e(m["pack"])}" rel="noopener">All 10 {label} tests, {PACK_PRICE}</a></p>' if m else "")
+        jump.append(f'<a href="#grades-{slug}">{label}</a>')
+        tracks.append(f"""<section class="kg-track" id="grades-{slug}" aria-labelledby="grades-{slug}-h">
+  <h2 id="grades-{slug}-h">{label}</h2>
+  {start}
+  <ol class="a8-plan">{"".join(cards)}</ol>
+  {pack}
+ </section>""")
+    body = head(f"Math Kangaroo in 12 Weeks: A Study Plan for Grades 1 to 6 | {NAME}",
+                "A 12-week Math Kangaroo study plan for grades 1-2, 3-4 and 5-6: one key move a week, with a short video lesson and a matching practice test.",
+                "math-kangaroo-in-12-weeks/", root)
+    body += nav(root, "plan")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <p class="eyebrow">Math Kangaroo &middot; Grades 1 to 6</p>
+  <h1>Math Kangaroo in 12 weeks</h1>
+  <p class="lead">One key move a week, about 15 to 20 minutes a day. Kids can follow it on their own: watch the lesson, try the test, check with the answer key, then scan the QR beside each miss.</p>
+  <p class="kg-jump">{" ".join(jump)}</p>
+  <p class="a8-start"><b>Not signed up yet?</b> See <a href="{root}how-to-register/math-kangaroo/">how to register for Math Kangaroo</a>.</p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap">
+ {"".join(tracks)}
+ {FINAL_SALE}
+ <p class="test-note">"Kangaroo-style" tests are written in the style of Math Kangaroo. Key Move Math is not affiliated with or endorsed by Math Kangaroo USA. Every problem is our own.</p>
+</div></section>
+"""
+    body += foot(root)
+    write("math-kangaroo-in-12-weeks/index.html", body)
+
+
 # /amc-8-scores/ (Nov 21, Jian approved the growth idea "AMC 8 score guide"). Award lines are MAA results as compiled by
 # Ivy League Education Center (cites MAA's reports page) and Think Academy; the two agree on every shared year. MAA's own
 # stats page (amc-reg.maa.org/reports) was down when checked Nov 21, 2026. Add each new year after results come out.
@@ -2608,7 +2683,9 @@ def page_register():
         note = f'<p class="rg-note">{e(r["note"])}</p>' if r.get("note") else ""
         ready = reg_ready(root, r["k"])
         plan = (f'<li><b>AMC 8 in 10 weeks</b><span><a href="{root}amc-8-in-10-weeks/">One key move a week</a></span></li>'
-                if r["k"] == "amc8" else "")
+                if r["k"] == "amc8" else
+                f'<li><b>Math Kangaroo in 12 weeks</b><span><a href="{root}math-kangaroo-in-12-weeks/">One key move a week, grades 1 to 6</a></span></li>'
+                if r["k"] == "kangaroo" else "")
         body = head(f"How to Register for {r['name']}: Who Can Enter, Dates and Fees | {NAME}",
                     f"How to register for {r['name']}: who can enter, how to find a test site, key dates and fees, from {r['site']}.",
                     f"how-to-register/{r['slug']}/", root)
@@ -2984,7 +3061,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "amc-8-scores/", "amc-8-cheat-sheet/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "amc-8-scores/", "amc-8-cheat-sheet/", "math-kangaroo-in-12-weeks/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
                grade_lessons(lessons, 5),
@@ -3034,6 +3111,7 @@ def main():
     page_amc8_plan(lessons)
     page_amc8_scores()
     page_amc8_cheat()
+    page_kangaroo_plan(lessons)
     page_compare()
     page_register()
     urls += ["how-to-register/"] + [f"how-to-register/{r['slug']}/" for r in REGISTER]
