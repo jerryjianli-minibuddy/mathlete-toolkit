@@ -1135,7 +1135,7 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .kg-track { margin: 0 0 34px; scroll-margin-top: 16px; }
 .kg-track > h2 { margin: 0 0 6px; font-size: 1.6rem; }
 .kg-wk { position: relative; }
-.kg-wk h3 { margin: 6px 0 4px; font-size: 1.2rem; padding-right: 96px; }
-.kg-wk .a8-rule { padding-right: 96px; }
-.kg-qr { position: absolute; top: 14px; right: 14px; width: 80px; height: 80px; background: #fff; }
+.kg-wk h3 { margin: 6px 0 4px; font-size: 1.2rem; padding-right: 104px; }
+.kg-wk .a8-rule { padding-right: 104px; }
+.kg-qr { position: absolute; top: 12px; right: 12px; width: 99px; height: 99px; background: #fff; }
 .kg-pack { margin: 4px 0 0; }
