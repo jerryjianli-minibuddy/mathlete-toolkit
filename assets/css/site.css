@@ -913,6 +913,7 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .nw-prize { background: var(--pink); } .nw-discovery { background: var(--teal); } .nw-quantum { background: #6B4FD8; } .nw-contest { background: var(--navy2); }
 .nw-body { display: flex; flex-direction: column; flex: 1; padding: 12px 15px 14px; }
 .nw-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 6px; margin: 0 0 4px !important; font-size: .74rem !important; font-weight: 700; color: var(--muted); letter-spacing: .02em; }
+.nw-meta .nw-tag { position: static; box-shadow: none; margin-right: 4px; }
 .nw-src::before { content: "\00B7"; margin-right: 6px; }
 .nw-card h3 { margin: 0 0 6px; font-size: 1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .nw-card h3 a { color: var(--navy); text-decoration: none; }
