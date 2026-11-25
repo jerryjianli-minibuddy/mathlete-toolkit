@@ -2104,6 +2104,21 @@ def page_about(lessons):
     write("about/index.html", body)
 
 
+
+# Nov 25: past-contest walkthroughs (video thread, one a week). Real MAA problems: say so on every item.
+PAST = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "past_problems.json")))
+def past_box(contest="amc8", label="AMC 8"):
+    items = sorted([x for x in PAST if x["contest"] == contest], key=lambda x: x["added"], reverse=True)
+    if not items:
+        return ""
+    lis = "".join(f'<li><a href="https://www.youtube.com/watch?v={e(x["video_id"])}"><b>{x["year"]} {label} Problem {x["num"]}</b>'
+                  f'<span>{e(x["topic"])}. MAA problem, not affiliated</span></a></li>' for x in items)
+    return f"""<div class="tc-box">
+  <h2>Real {label} problems, explained</h2>
+  <ul class="sc-next">{lis}</ul>
+ </div>
+ """
+
 def page_cheatsheet(lessons):
     """/key-moves/: every key move on one printable page: the tool, its rule and the trap to avoid.
     Built for the fridge or the pencil case (Nov 11 overnight)."""
@@ -2269,7 +2284,7 @@ def page_amc8_plan(lessons):
   {pack}
   {FINAL_SALE if m else ""}
  </div>
- <p class="test-note">"AMC 8-style" tests are written in the style of the AMC 8. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.</p>
+ {past_box()}<p class="test-note">"AMC 8-style" tests are written in the style of the AMC 8. Key Move Math is not affiliated with or endorsed by the MAA. Every problem is our own.</p>
 </div></section>
 """
     body += foot(root)
@@ -2480,7 +2495,7 @@ def page_amc8_scores():
    {pack}
   </ul>
  </div>
- <p class="glance-note">Award lines are MAA results as compiled by Ivy League Education Center and Think Academy. {NAME} is not affiliated with or endorsed by the MAA.</p>
+ {past_box()}<p class="glance-note">Award lines are MAA results as compiled by Ivy League Education Center and Think Academy. {NAME} is not affiliated with or endorsed by the MAA.</p>
 </div></section>
 """
     body += foot(root)
@@ -2521,7 +2536,7 @@ def page_amc8_cheat():
    {pack}
   </ul>
  </div>
- <p class="glance-note">Every example is our own. {NAME} is not affiliated with or endorsed by the Mathematical Association of America (MAA).</p>
+ {past_box()}<p class="glance-note">Every example is our own. The past problems linked above are real MAA problems. {NAME} is not affiliated with or endorsed by the Mathematical Association of America (MAA).</p>
 </div></section>
 """
     body += foot(root)
