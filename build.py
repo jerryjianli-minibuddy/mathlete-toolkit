@@ -171,6 +171,17 @@ def load():
                     if t.get("video_id") and is_public(t["video_id"], t["video_id"] in up_prev)]
         json.dump({"live": ids, "shorts": sids, "upcoming": upcoming}, open(live_path, "w"), indent=1)
         print(f"live: {len(ids)} of {len(lessons)}, shorts: {len(sids)}")
+        if "--titles" in sys.argv:  # TEMP Nov 25: list Short titles to catch wrong short_ids
+            extra = {"L3-40": "GR2_kF0FPeU", "L3-38": "neN6SJPcTWo", "L3-35": "PbnJxyspkeI", "L3-10": "8JK6nr9HhGw"}
+            for l in lessons:
+                for sid in [l.get("short_id"), extra.get(l["id"])]:
+                    if not sid: continue
+                    try:
+                        u = "https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v=" + sid
+                        t = json.load(urllib.request.urlopen(urllib.request.Request(u, headers={"User-Agent": "keymovemath-site"}), timeout=20))["title"]
+                    except Exception as e:
+                        t = "ERR " + str(e)
+                    print("TITLE", l["id"], sid, "|", l["tool"], "|", t)
     cal = release_times()
     now = datetime.now(timezone.utc)
     for l in lessons:
