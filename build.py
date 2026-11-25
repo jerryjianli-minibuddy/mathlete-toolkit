@@ -378,7 +378,7 @@ def foot(root, cta=True):
   </div>
  </div>
  <div class="wrap fine">
-  <p>{NAME} is an independent practice channel. It is not affiliated with or endorsed by Math Kangaroo, Noetic Learning, MATHCOUNTS, the MAA (AMC) or any math olympiad. Contest names are used only to describe what each lesson helps with. Every problem in our videos and tests is our own.</p>
+  <p>{NAME} is an independent practice channel. It is not affiliated with or endorsed by Math Kangaroo, Noetic Learning, MATHCOUNTS, the MAA (AMC) or any math olympiad. Contest names are used only to describe what each lesson helps with. Every problem in our lessons and tests is our own. Past contest problems are labeled as such.</p>
   <p>All sales are final. No refunds on digital downloads.</p>
   <p>&copy; {yr} {NAME}</p>
  </div>
