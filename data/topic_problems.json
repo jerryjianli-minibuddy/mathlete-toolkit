@@ -1,0 +1,677 @@
+{
+"L3-21": {
+"q": "A square tile has an area of 196 square centimeters. A smaller square with an area of 36 sits in the middle. The rest is cut into 4 identical pieces. What is the area of one piece?",
+"a": "40 square cm",
+"pic": false
+},
+"L3-22": {
+"q": "3 apples weigh the same as 2 pears. One pear weighs the same as 6 plums. How many plums weigh the same as 9 apples?",
+"a": "36 plums",
+"pic": false
+},
+"L3-32": {
+"q": "A prime number has exactly 2 factors: 1 and itself. How many primes are there between 80 and 100?",
+"a": "3 primes",
+"pic": false
+},
+"L3-17": {
+"q": "50 peaches are packed into 4 boxes. Every box has at least one peach, and no 2 boxes have the same number. What is the greatest number of peaches one box can hold?",
+"a": "44 peaches",
+"pic": false
+},
+"L3-20": {
+"q": "Today is Friday. What day of the week will it be 100 days from now?",
+"a": "Sunday",
+"pic": false
+},
+"L3-33": {
+"q": "5 test scores have an average of 86. The first 3 scores have an average of 80. What is the average of the last 2 scores?",
+"a": "95",
+"pic": false
+},
+"L3-06": {
+"q": "Maya has a jar of marbles. She gives one quarter of them to her brother. Then she gives 2 thirds of what's left to her friend. Now Maya has 12 marbles. How many did she start with?",
+"a": "48 marbles",
+"pic": false
+},
+"L3-15": {
+"q": "Some kids sit on benches. With 4 kids on each bench, 6 kids have no seat. With 6 kids on each bench, 4 seats are left empty. How many benches are there, and how many kids?",
+"a": "5 benches, 26 kids",
+"pic": false
+},
+"L3-34": {
+"q": "Write the numbers from 1 to 100. How many times is the digit 7 written?",
+"a": "20 times",
+"pic": false
+},
+"L3-12": {
+"q": "Mia bikes 24 miles in 2 hours. At the same speed, how many minutes does she take to bike 30 miles?",
+"a": "150 minutes",
+"pic": false
+},
+"L3-23": {
+"q": "A farm has only chickens and cows. There are 20 animals, with 56 legs in all. How many cows are there?",
+"a": "8 cows",
+"pic": false
+},
+"L3-35": {
+"q": "How many different triangles have whole-number sides and a perimeter of 15? Triangles with the same 3 side lengths count as one.",
+"a": "7 triangles",
+"pic": false
+},
+"L3-03": {
+"q": "8 friends meet at a party. Each friend shakes hands with every other friend exactly once. How many handshakes are there?",
+"a": "28 handshakes",
+"pic": false
+},
+"L3-19": {
+"q": "A drawer has 6 red socks, 5 blue socks and 4 green socks, all mixed up. In the dark, what is the fewest socks you must take out to be sure you get 2 blue socks?",
+"a": "12 socks",
+"pic": false
+},
+"L3-01": {
+"q": "6 kids line up for a photo. Ana and Ben must stand next to each other. How many different lines are possible?",
+"a": "240 lines",
+"pic": false
+},
+"L3-14": {
+"q": "An auditorium has 20 rows of seats. The first row has 12 seats, and each row has 3 more seats than the row in front of it. How many seats are in the last row, and how many are there in all?",
+"a": "69 seats, 810 in all",
+"pic": false
+},
+"L3-08": {
+"q": "Today, Dad is 4 times as old as Leo. In 18 years, Dad will be twice as old as Leo. How old is Leo now?",
+"a": "Leo is 9",
+"pic": false
+},
+"L3-10": {
+"q": "Q, P, 8, plus R, P, 8, equals 1, Q, Q, P. Each letter stands for a different digit. Find P, Q and R.",
+"a": "P = 6, Q = 3, R = 9",
+"pic": false
+},
+"L3-25": {
+"q": "A jar has nickels and quarters. There are 3 times as many nickels as quarters. The coins are worth 2 dollars and 40 cents. How many nickels are in the jar?",
+"a": "18 nickels",
+"pic": false
+},
+"L3-07": {
+"q": "2 boxes hold 48 marbles in all. Mia moves 6 marbles from the red box to the blue box. Now the boxes are equal. How many were in the red box at first?",
+"a": "30 marbles",
+"pic": false
+},
+"L3-09": {
+"q": "A class has 30 students. 18 play soccer, and 15 play chess. 5 students play neither. How many play both?",
+"a": "8 play both",
+"pic": false
+},
+"L3-26": {
+"q": "A 2-digit number is 54 more than the number with its digits reversed. Its digits add to 12. What is the number?",
+"a": "93",
+"pic": false
+},
+"L3-27": {
+"q": "36 desks are arranged in equal rows, with the same number of desks in every row. How many different numbers of rows are possible?",
+"a": "9",
+"pic": false
+},
+"L3-02": {
+"q": "How many 3-digit numbers can you make from the digits 1, 2, 3, 4 and 5? No digit is used twice, and the number must be even.",
+"a": "24 numbers",
+"pic": false
+},
+"L3-24": {
+"q": "How many ways can you make 25 cents using dimes, nickels and pennies? You can use any number of each coin.",
+"a": "12 ways",
+"pic": false
+},
+"L3-28": {
+"q": "This grid is 3 squares by 3 squares. How many squares are there in all?",
+"a": "14 squares",
+"pic": false
+},
+"L3-29": {
+"q": "A book has 120 pages, numbered 1, 2, 3, and so on. How many digits are used to print all the page numbers?",
+"a": "252 digits",
+"pic": false
+},
+"L3-30": {
+"q": "How many 3-digit even numbers can you make from the digits 0, 1, 2, 3 and 4, with no digit used twice?",
+"a": "30 numbers",
+"pic": false
+},
+"L3-31": {
+"q": "A lake is 12 miles away. Kai bikes there and back, riding 12 miles per hour there, and 6 miles per hour on the way back. What is the average speed for the whole trip?",
+"a": "8 miles per hour",
+"pic": false
+},
+"L3-05": {
+"q": "Sam has one third as many stickers as Mia. Together they have 48 stickers. How many stickers does Mia have?",
+"a": "36 stickers",
+"pic": false
+},
+"L3-36": {
+"q": "Pip the puppy climbs a staircase with 5 steps. Each hop goes up one step or 2 steps. How many different ways can Pip get to the top?",
+"a": "8 ways",
+"pic": false
+},
+"L3-37": {
+"q": "Ava stacks 210 small cubes into one solid box. Its length, width and height are all different, and each one is more than one. How many different boxes can she make? A box turned on its side is the same box.",
+"a": "6 boxes",
+"pic": false
+},
+"L3-38": {
+"q": "Campers sit evenly spaced around a campfire. They are numbered 1, 2, 3, and so on, in order. Camper 7 sits directly across the fire from camper 25. How many campers are there?",
+"a": "36 campers",
+"pic": false
+},
+"L3-39": {
+"q": "A plus sign of squares grows. Figure 1 has 5 squares, figure 2 has 9, figure 3 has 13. Each new figure adds one square to the end of every arm. How many squares are in figure 12?",
+"a": "49 squares",
+"pic": false
+},
+"L3-40": {
+"q": "One batch of pancakes needs 3 eggs, 4 cups of flour and 2 cups of milk. The kitchen has 40 eggs, 64 cups of flour, 30 cups of milk, and all the syrup you want. How many batches can they make?",
+"a": "13 batches",
+"pic": false
+},
+"L3-41": {
+"q": "Ava, Ben, Cara and Dev each do a different sport: soccer, tennis, swimming or judo. Ava's sport doesn't use a ball. Ben doesn't play tennis or do judo. Ava and Cara don't do judo. What sport does Dev do?",
+"a": "Dev does judo",
+"pic": false
+},
+"L3-42": {
+"q": "8 equal square tiles make a rectangle, 4 tiles long and 2 tiles wide. The perimeter of the rectangle is 48 centimeters. What is the area of the rectangle?",
+"a": "128 square cm",
+"pic": false
+},
+"L3-43": {
+"q": "Mr. Park sets up 86 chairs in rows of the same size. He makes 6 full rows, and 8 chairs are left over, not enough for another row. How many chairs are in each row?",
+"a": "13 chairs",
+"pic": false
+},
+"L3-44": {
+"q": "Zip the robot takes a secret number and adds 6. Then Zip doubles it, and takes away 5. Out pops 35. What was the secret number?",
+"a": "14",
+"pic": false
+},
+"L3-45": {
+"q": "A cat and a dog stand on a scale together. It reads 42 pounds. The dog and a rabbit weigh 35 pounds. The cat and the rabbit weigh 17. How much do all 3 pets weigh together?",
+"a": "47 pounds",
+"pic": false
+},
+"L3-47": {
+"q": "This flat net folds up into a cube. Which of the 4 cubes can it make?",
+"a": "cube 3",
+"pic": true
+},
+"L3-48": {
+"q": "A square sheet is folded in half, top down. Then in half again, right side over to the left. One hole is punched, right here, near the middle edge. Which picture shows the sheet when you open it up?",
+"a": "picture C",
+"pic": true
+},
+"L3-49": {
+"q": "Ana, Ben, Cy and Dee live on one straight street, in that order. Ana to Cy is 9 blocks. Ben to Dee is 11 blocks. And Ana to Dee is 15 blocks. How many blocks is it from Ben to Cy?",
+"a": "5 blocks",
+"pic": false
+},
+"L3-50": {
+"q": "A house is drawn on centimeter grid paper. The walls are 6 centimeters wide and 4 tall. The roof is a triangle, 3 centimeters tall. What is the area of the whole house?",
+"a": "33 square cm",
+"pic": false
+},
+"L3-51": {
+"q": "A big jar holds 4 times as many marbles as a small jar. Add 8 marbles to each jar. Now the big jar holds twice as many as the small one. How many marbles were in the big jar at first? 10, 12, 14, 16, or 18?",
+"a": "16 marbles",
+"pic": false
+},
+"L3-52": {
+"q": "A stack of cubes sits on a 3 by 3 square. Every cube rests on the table or on another cube. How many cubes are in the stack?",
+"a": "15 cubes",
+"pic": true
+},
+"L3-53": {
+"q": "A road trip starts at 9:35 in the morning. It ends at 1:10 in the afternoon, on the same day. How long is the trip?",
+"a": "3 hours 35 minutes",
+"pic": false
+},
+"L3-54": {
+"q": "The scale balances. On the left, 3 apples and 2 lemons. On the right, one apple and 8 lemons. How many lemons weigh the same as one apple?",
+"a": "3 lemons",
+"pic": false
+},
+"L3-55": {
+"q": "A sandwich shop has 3 kinds of bread, 4 kinds of filling, and 2 kinds of sauce. Each sandwich uses one bread, one filling and one sauce. How many different sandwiches can the shop make?",
+"a": "24 sandwiches",
+"pic": false
+},
+"L3-56": {
+"q": "A gecko is at the bottom of a 16-foot wall. Every day it climbs up 5 feet. Every night it slides back down 3 feet. On which day does it first reach the top?",
+"a": "day 7",
+"pic": false
+},
+"L3-57": {
+"q": "A big cube is painted red on all 6 sides. Then it's cut into 125 little cubes, 5 by 5 by 5. How many little cubes have paint on exactly 2 faces?",
+"a": "36 little cubes",
+"pic": false
+},
+"L3-58": {
+"q": "2 ferries leave the dock together at 9 o'clock. The red ferry leaves every 12 minutes. The blue ferry leaves every 18 minutes. When is the next time they leave together?",
+"a": "9:36",
+"pic": false
+},
+"L3-59": {
+"q": "A baker's dozen is 13. 13 identical cupcakes go to 3 friends. Each friend gets at least 3. In how many ways can the cupcakes be shared?",
+"a": "15 ways",
+"pic": false
+},
+"L3-60": {
+"q": "3 logs, each 10 centimeters across, are stacked: 2 on the bottom and one on top. A rope is pulled tight around all 3. How long is the rope?",
+"a": "30 + 10π cm",
+"pic": false
+},
+"L3-61": {
+"q": "A farm packs a 4-digit number of eggs into cartons of 6. The number starts with 4, 5, 1. No eggs are left over. But the last digit got smudged. How many different digits could it be?",
+"a": "2 digits",
+"pic": false
+},
+"L3-62": {
+"q": "10 cubes, each one centimeter on a side, are glued into a staircase 4 steps tall. Surface area means the number of little square faces on the outside, on every side of the shape. What is the total surface area?",
+"a": "36 sq cm",
+"pic": false
+},
+"L3-63": {
+"q": "A 25 foot ladder leans against a wall that stands straight up. Its foot sits 7 feet from the wall. How high up the wall does the top of the ladder reach?",
+"a": "24 ft",
+"pic": false
+},
+"L3-64": {
+"q": "A robotics club has 8 members. 3 of them will go to the science fair as a team. How many different teams are possible?",
+"a": "56 teams",
+"pic": false
+},
+"L3-65": {
+"q": "Mia rolls 2 regular dice, each with 6 sides. She adds the 2 numbers. What is the probability that the sum is 8?",
+"a": "5/36",
+"pic": false
+},
+"L3-66": {
+"q": "In triangle ABC, side AB equals side AC. Angle A is 40 degrees. Side BC is extended past C to a point D. What is angle ACD?",
+"a": "110°",
+"pic": false
+},
+"L3-67": {
+"q": "A square rug is 53 inches on each side. A square box, 47 inches on each side, is pushed into one corner of the rug. How many square inches of rug can you still see?",
+"a": "600 sq in",
+"pic": false
+},
+"L3-68": {
+"q": "A stop-sign shape 20 centimeters tall takes 12 grams of red paint. Now paint the same shape, 30 centimeters tall, with the same coat of paint. How many grams of paint does it take?",
+"a": "27 grams",
+"pic": false
+},
+"L3-69": {
+"q": "16 to the x equals 8 to the x plus 2. Both sides are powers, and x hides up in the exponents. What is x?",
+"a": "x = 6",
+"pic": false
+},
+"L3-70": {
+"q": "A snail crawls one half of a meter, then one sixth, then one twelfth, then one twentieth, and so on. Its last crawl is one ninetieth of a meter. How far does it crawl in all?",
+"a": "9/10 meter",
+"pic": false
+},
+"L3-71": {
+"q": "Lily's card has a sun on top, a star on the right, a moon on the bottom, and a heart on the left. Lily turns the card, but does not flip it over. Which card could it be now?",
+"a": "C",
+"pic": true
+},
+"L3-72": {
+"q": "Kids wait in a line for the slide. Tom is fourth from the front. Tom is also third from the back. How many kids are in the line?",
+"a": "6 kids",
+"pic": false
+},
+"L3-73": {
+"q": "Zoe has 3 number cards: 2, 5 and 8. Zoe puts 2 different cards side by side to make a number. How many numbers can Zoe make?",
+"a": "6 numbers",
+"pic": false
+},
+"L3-74": {
+"q": "Ava, Ben and Max each have one pet: a cat, a dog or a fish. Ava's pet lives in water. Ben does not have the dog. Who has the dog?",
+"a": "Max",
+"pic": false
+},
+"L3-75": {
+"q": "A brick path has a hole in it. Here are 5 pieces: A, B, C, D and E. The pieces can be turned, but not flipped over. Which 2 pieces fill the hole exactly?",
+"a": "B and D",
+"pic": true
+},
+"L3-76": {
+"q": "Nora sticks a picture on the window, facing out to the street. Dad stands outside and looks at it through the glass. Which picture does Dad see?",
+"a": "D",
+"pic": true
+},
+"L3-77": {
+"q": "Ella folds a square sheet of paper in half, left onto right. Then she folds it in half again, top down onto bottom. She punches one hole. Then she snips off the corner where the 2 folds meet. How many holes are in the paper when she unfolds it?",
+"a": "5 holes",
+"pic": false
+},
+"L3-78": {
+"q": "Grandpa's garden is shaped like an L. The bottom is 9 meters, the left side is 7 meters, the top is 5 meters, and the lower right side is 4 meters. 2 sides have no numbers. Grandpa puts a fence all the way around. How many meters of fence does he need?",
+"a": "32 m",
+"pic": false
+},
+"L3-79": {
+"q": "Lily's birthday cake is round. It has 4 candles. It also has 3 cherries on top. Which cake is Lily's?",
+"a": "Cake D",
+"pic": true
+},
+"L3-80": {
+"q": "A scale is level. On one side sit a pineapple and 2 apples. On the other side sit 8 apples. All the apples weigh the same. How many apples weigh the same as the pineapple?",
+"a": "6 apples",
+"pic": false
+},
+"L3-81": {
+"q": "Ana, Ben and Cy fly kites. Their strings cross over each other. Which kite is Ana's? The red one, the blue one, or the green one?",
+"a": "the green kite",
+"pic": true
+},
+"L3-82": {
+"q": "Tiles made a pyramid on a wall. 5 on the bottom, then 4, 3, 2, and one on top. Some tiles fell off. How many tiles fell off the wall?",
+"a": "4 tiles",
+"pic": true
+},
+"L3-46": {
+"q": "Lily's 6 books are numbered 1 to 6. On the shelf, they read 4, one, 6, 2, 5, 3. In one move, she can swap any 2 books. What is the fewest moves to put them in order, one to 6?",
+"a": "3 moves",
+"pic": false
+},
+"L3-83": {
+"q": "A toy train has 3 cars. Each car has 5 seats. 9 teddies ride on the train. How many seats are empty?",
+"a": "6 seats",
+"pic": false
+},
+"L3-84": {
+"q": "Here are 7 monsters. Look at their eyes and their horns. How many monsters have 3 eyes and 2 horns?",
+"a": "3 monsters",
+"pic": true
+},
+"L3-85": {
+"q": "Every row and every column gets one circle, one square and one triangle. What shape goes in the star box?",
+"a": "a circle",
+"pic": true
+},
+"L3-86": {
+"q": "4 cats and 3 dogs play in the yard. How many ears are in the yard?",
+"a": "14 ears",
+"pic": false
+},
+"L3-87": {
+"q": "The numbers 3, 5, 9, 11, and x have a mean equal to their median. What is the sum of all possible values of x?",
+"a": "21",
+"pic": false
+},
+"L3-88": {
+"q": "A square park, A-B-C-D, has sides of 12 meters. One path runs from corner A, to M, the middle of side CD. Another path runs along the diagonal, from B to D. A fountain, P, sits where they cross. What is the area of triangle ABP?",
+"a": "48 sq m",
+"pic": false
+},
+"L3-89": {
+"q": "2 poles, 6 meters and 12 meters tall, stand 15 meters apart. A rope runs from the top of each pole to the bottom of the other. How high above the ground do the ropes cross?",
+"a": "4 m",
+"pic": false
+},
+"L3-90": {
+"q": "Tickets cost 7 dollars for kids, and 11 dollars for adults. A group with at least one kid and one adult paid exactly 200 dollars. What is the fewest people the group could have?",
+"a": "20 people",
+"pic": false
+},
+"L3-91": {
+"q": "3 robots wash 90 plates in 5 minutes. At the same speed, how many plates do 5 robots wash in 8 minutes?",
+"a": "240 plates",
+"pic": false
+},
+"L3-92": {
+"q": "A pig, a goat and a sheep stand on a scale. Together they weigh 150 pounds. The pig and the goat weigh 110 pounds. The goat and the sheep weigh 70 pounds. How much does the goat weigh?",
+"a": "30 pounds",
+"pic": false
+},
+"L3-93": {
+"q": "A squirrel had some acorns. It ate half of them. Then it found 6 more. Then it gave 4 to a friend. Now it has 15 acorns. How many acorns did it have at first?",
+"a": "26 acorns",
+"pic": false
+},
+"L3-94": {
+"q": "A dragon has 3 times as many gold coins as a knight. The dragon has 42 more coins than the knight. How many coins do they have together?",
+"a": "84 coins",
+"pic": false
+},
+"L3-95": {
+"q": "Log base 4 of x squared, plus log base 2 of x minus 6, equals 4. What is the sum of all real numbers x that make it true?",
+"a": "8",
+"pic": false
+},
+"L3-96": {
+"q": "Sine theta, plus cosine theta, equals 4 thirds. What is tangent theta, plus cotangent theta? Only one fits.",
+"a": "18/7",
+"pic": false
+},
+"L3-97": {
+"q": "A complex number z has: the absolute value of z minus 6, plus the absolute value of z minus 8 i, equals 10. What is the smallest possible absolute value of z?",
+"a": "24/5",
+"pic": false
+},
+"L3-98": {
+"q": "The roots of x cubed, plus 2 x squared, minus 5 x, minus 3, are ar, ess, and tee. What is one over ar, plus one over ess, plus one over tee?",
+"a": "−5/3",
+"pic": false
+},
+"L3-99": {
+"q": "Max builds a castle with a set of bricks. On Saturday he uses one quarter of the whole set, then 15 more. On Sunday he uses one third of the whole set, then the last 10. How many bricks are in the set?",
+"a": "60 bricks",
+"pic": false
+},
+"L3-100": {
+"q": "3 pirates share 75 coins. Blue Beard gets 6 more than Red Beard. Gold Beard gets 9 more than Blue Beard. How many coins does Gold Beard get?",
+"a": "33 coins",
+"pic": false
+},
+"L3-101": {
+"q": "4 equal rectangles go around a small square hole, and make one big square tile. The big square is 14 centimeters on a side. The hole is 4 centimeters on a side. What is the area of one rectangle?",
+"a": "45 cm²",
+"pic": false
+},
+"L3-102": {
+"q": "Put the numbers 2 to 10 in a 3 by 3 grid, once each, so every row, column and diagonal has the same sum. The top row starts 3, 8. The middle row starts with 10. What number goes in the bottom right corner?",
+"a": "9",
+"pic": false
+},
+"L3-103": {
+"q": "A red jar has 3 times as many marbles as a blue jar. 14 marbles are taken out of the red jar, and 6 are put into the blue jar. Now the jars have the same number. How many marbles were in the red jar at first?",
+"a": "30 marbles",
+"pic": false
+},
+"L3-104": {
+"q": "Use the digits 3, 0, 7, 5 and one, once each. Make the largest 5-digit number, and the smallest 5-digit number. What is their difference?",
+"a": "64,953",
+"pic": false
+},
+"L3-105": {
+"q": "Stickers cost 25 cents each, or 2 dollars for a pack of 10. You need exactly 34 stickers. What is the least you can pay?",
+"a": "$7",
+"pic": false
+},
+"L3-106": {
+"q": "10 red balls, 12 blue balls and 8 green balls are packed into boxes. Each box holds 2 balls of different colors. Every ball is used. How many boxes hold one red and one blue ball?",
+"a": "7 boxes",
+"pic": false
+},
+"L3-107": {
+"q": "A family of 4 has ages that add up to 86. Everybody gets one year older every year. In how many years will their ages add up to 110?",
+"a": "6 years",
+"pic": false
+},
+"L3-108": {
+"q": "4 bus stops sit on a straight road, in order: A, B, C and D. A to B is 2 kilometers, B to C is 5, and C to D is 3. The driver adds up the distance between every 2 stops. What's the total?",
+"a": "35 km",
+"pic": false
+},
+"L3-109": {
+"q": "On planet Zib, one glob is worth 5 blobs, and one blob is worth 4 bips. Mo has 2 globs, 3 blobs and one bip. Nia has one glob and 4 blobs. How many more bips is Mo's money worth than Nia's?",
+"a": "17 bips",
+"pic": false
+},
+"L3-110": {
+"q": "2 square stickers overlap on a page. Their sides are 6 centimeters and 4 centimeters. Together they cover 44 square centimeters of the page. What is the area of the overlap?",
+"a": "8 cm²",
+"pic": false
+},
+"L3-111": {
+"q": "2 thirds of the kids in a class ride the bus. 3 quarters of the bus riders sit by a window. 6 bus riders don't. How many kids are in the class?",
+"a": "36 kids",
+"pic": false
+},
+"L3-112": {
+"q": "At a toy shop, balls cost 2 dollars, kites cost 5 dollars, and robots cost 9 dollars. Leo buys 8 toys for 40 dollars, with at least one of each kind. How many kites does Leo buy?",
+"a": "1 kite",
+"pic": false
+},
+"L3-113": {
+"q": "5 whole numbers in a row add up to 115. Each one is one more than the one before. What is the largest of the 5 numbers?",
+"a": "25",
+"pic": false
+},
+"L3-114": {
+"q": "A shop buys pencils at 3 for one dollar. It sells them at 2 for one dollar. How many pencils must the shop sell to make 10 dollars of profit?",
+"a": "60 pencils",
+"pic": false
+},
+"L3-115": {
+"q": "Amy, Ben or Cal broke the vase. Amy says, Ben did it. Ben says, Amy is lying. Cal says, I didn't do it. Exactly one of them is telling the truth. Who broke the vase?",
+"a": "Cal",
+"pic": false
+},
+"L3-116": {
+"q": "Jo and Kim each start with 20 marbles. They play 16 games. The loser of each game gives the winner one marble. At the end, Jo has 26. How many games did Jo win?",
+"a": "11 wins",
+"pic": false
+},
+"L3-117": {
+"q": "A class has 30 kids. 18 are in the art club, 15 are in the chess club, and 13 are in the drama club. Every kid is in at least one club. What is the most kids that could be in all 3 clubs?",
+"a": "8 kids",
+"pic": false
+},
+"L3-118": {
+"q": "For every 2 dollars Lia spends on stickers, she spends 3 dollars on books. She spends 60 dollars in all. Stickers cost 3 dollars each. Books cost 9 dollars each. How many books did Lia buy?",
+"a": "4 books",
+"pic": false
+},
+"L3-119": {
+"q": "A coach puts 47 balls into 5 bins. Every bin gets a different number of balls. What is the smallest number of balls the fullest bin could have?",
+"a": "12 balls",
+"pic": false
+},
+"L3-120": {
+"q": "Ava and Ben are twins. Cal, Dee and Eli are triplets. Ava's age plus Cal's age is 15. All 5 ages add up to 39. How old is each triplet?",
+"a": "9 years old",
+"pic": false
+},
+"L3-121": {
+"q": "Amy, Ben, Cal, Dee and Eli line up in a row for a photo. Amy must stand somewhere to the left of Ben. Not always next to Ben, just somewhere to the left. How many different lineups are there?",
+"a": "60 lineups",
+"pic": false
+},
+"L3-122": {
+"q": "Ella's age is 4 more than one third of her dad's age. Her dad is 28 years older than Ella. How old is Ella?",
+"a": "Ella is 20",
+"pic": false
+},
+"L3-123": {
+"q": "8 kids split into 4 pairs of reading buddies. Every kid has exactly one buddy. How many different ways can they pair up?",
+"a": "105 ways",
+"pic": false
+},
+"L3-124": {
+"q": "A shop gives one free candy for every 4 wrappers. Leo buys 25 candies. Every candy he eats, even a free one, gives him a wrapper. How many candies can he eat in all?",
+"a": "33 candies",
+"pic": false
+},
+"L3-125": {
+"q": "A box has 9 cards. There's a circle, a square and a star, and each shape comes in red, blue and green. You pick 3 cards. No 2 can share a shape, and no 2 can share a color. How many different sets of 3 cards can you pick?",
+"a": "6 sets",
+"pic": false
+},
+"L3-126": {
+"q": "ABCD, times 9, equals DCBA. Each letter stands for a digit, and ABCD is a 4-digit number. What is ABCD?",
+"a": "ABCD = 1089",
+"pic": false
+},
+"L3-127": {
+"q": "Leo has a square card with 9 little squares. 2 are pink, one is blue, one is yellow and one is green. He gives the card a quarter turn to the right. A quarter turn is one corner's worth of turning, the way a clock hand moves from 12 to 3. He does not flip it over. After the turn, which of the 5 cards does Leo see?",
+"a": "C",
+"pic": true
+},
+"L3-128": {
+"q": "Soccer practice starts at 3:40 in the afternoon. Warm-up takes 25 minutes. The game takes one hour and 10 minutes. Cool-down takes 15 minutes. What time does practice end?",
+"a": "5:30",
+"pic": false
+},
+"L3-129": {
+"q": "2 scales are level. Level means the scale balances: both sides weigh the same. On the first scale, a pumpkin balances 2 melons. On the second scale, a pumpkin and a melon balance 12 apples. All the melons weigh the same, and so do all the apples. How many apples weigh as much as the pumpkin?",
+"a": "8 apples",
+"pic": false
+},
+"L3-130": {
+"q": "Robo the robot starts on the star, facing up. Each go moves Robo forward that many squares. Robo goes 2, turns right, goes 3, turns right, goes one, turns right, and goes one. A turn means Robo spins a quarter turn on the same square. A right turn spins the way a clock hand moves. On which letter does Robo stop?",
+"a": "C",
+"pic": true
+},
+"L3-131": {
+"q": "Ava is hungry. She buys a sandwich, and the price tag says 3 dollars and 65 cents. She pays with a 10 dollar bill. The cashier gives back the change, the money left over after paying. How much change does Ava get?",
+"a": "$6.35",
+"pic": false
+},
+"L3-132": {
+"q": "Today is Tuesday, March 28th. March has 31 days. Ana's family leaves for a trip 17 days from today. She's already packing her teddy bear. On what day of the week, and on what date, does the trip start?",
+"a": "Friday, April 14",
+"pic": false
+},
+"L3-133": {
+"q": "Grandpa covers an L-shaped floor with square tiles. Then he lays a big rug in the middle, so you can only see the tiles around the edge. The bottom part is 8 tiles long and 3 tiles tall. The part sticking up on the left is 3 tiles wide and 4 tiles taller. How many tiles cover the whole floor?",
+"a": "36 tiles",
+"pic": false
+},
+"L3-134": {
+"q": "Ella has 18 shiny stickers. She puts 2 thirds of them in her sticker book. 2 thirds means: split them into 3 equal groups, and take 2 of the groups. How many stickers go in her book?",
+"a": "12 stickers",
+"pic": false
+},
+"L3-135": {
+"q": "5 friends pick strawberries. They pick 9, 14, 7, 11, and 5. They want to put all the strawberries on plates, 2 on each plate. 2 together make a pair. Can they put every strawberry in a pair, with none left over?",
+"a": "Yes, none left over",
+"pic": false
+},
+"L3-136": {
+"q": "Nia builds a number with blocks. A big flat is 100, a long stick is 10, and a little cube is one. She uses 2 hundreds, 13 tens and 15 ones. What number did Nia build?",
+"a": "345",
+"pic": false
+},
+"L3-137": {
+"q": "2 cats share one sunny windowsill. Mochi jumps up at a random time between 1 and 2 o'clock, and naps for 10 minutes. Tofu also jumps up at a random time in that hour, and naps for 20 minutes. Tofu is a professional. What is the probability that both cats are on the sill at the same time?",
+"a": "31/72",
+"pic": false
+},
+"L3-138": {
+"q": "5 cars, A, B, C, D and E, sit in that order on a round Ferris wheel. Riders check how far apart other cars look. From car C, cars A and B look 30 degrees apart. From D, B and C look 25 degrees apart. From E, C and D look 35 degrees apart. And from A, D and E look 40 degrees apart. From car B, how many degrees apart do A and E look?",
+"a": "50°",
+"pic": false
+},
+"L3-139": {
+"q": "When P of x is divided by x minus 2, the remainder is 7. When P of x is divided by x plus 3, the remainder is minus 8. What is the remainder when P of x is divided by x squared, plus x, minus 6?",
+"a": "3x + 1",
+"pic": false
+},
+"L3-140": {
+"q": "A delivery drone flies 7 kilometers due east. Then it turns 60 degrees to the left, and flies 8 kilometers. How far is it now from where it started?",
+"a": "13 km",
+"pic": false
+}
+}

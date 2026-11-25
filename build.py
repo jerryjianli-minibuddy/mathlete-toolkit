@@ -369,7 +369,7 @@ def foot(root, cta=True):
   <div>
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
-   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li><li><a href="{root}math-kangaroo-in-12-weeks/">Math Kangaroo in 12 weeks</a></li><li><a href="{root}mathcounts-in-10-weeks/">MATHCOUNTS in 10 weeks</a></li><li><a href="{root}amc-8-scores/">Good AMC 8 scores</a></li><li><a href="{root}amc-8-cheat-sheet/">AMC 8 cheat sheet</a></li>
+   <li><a href="{root}practice/">Practice by topic</a></li><li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li><li><a href="{root}math-kangaroo-in-12-weeks/">Math Kangaroo in 12 weeks</a></li><li><a href="{root}mathcounts-in-10-weeks/">MATHCOUNTS in 10 weeks</a></li><li><a href="{root}amc-8-scores/">Good AMC 8 scores</a></li><li><a href="{root}amc-8-cheat-sheet/">AMC 8 cheat sheet</a></li>
    <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}how-to-register/">How to register</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-gifts/">Math gifts</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
   </div>
   <div>
@@ -977,6 +977,7 @@ def page_home(lessons):
    <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten Noetic-style Grade 5 tests with worked answer keys.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
   </ol>
   <div class="freebies">
+   <a class="freebie" href="practice/"><b>Practice problems by topic</b><span>AMC 8, MATHCOUNTS, Kangaroo and Noetic, with answers</span></a>
    <a class="freebie" href="key-moves/"><b>Key moves cheat sheet</b><span>Every rule and trap on one printable page</span></a>
    <a class="freebie" href="study-plan/"><b>4-week contest plan</b><span>15 to 20 minutes a day, with a miss log</span></a>
    <a class="freebie" href="math-kangaroo-in-12-weeks/"><b>Math Kangaroo in 12 weeks</b><span>One key move a week, grades 1 to 6</span></a>
@@ -2419,6 +2420,132 @@ def page_mathcounts_plan(lessons):
     write("mathcounts-in-10-weeks/index.html", body)
 
 
+
+# ---------- /practice/ problem-by-topic pages (Nov 25, Jian: "Do all five" traffic ideas, idea 1) ----------
+# One page per contest x topic group, titled the way parents search ("AMC 8 counting and probability problems").
+# Problems are each lesson's own example problem (our own, already in the video), written out from the script in
+# data/topic_problems.json, with the key move and answer behind a tap and a QR to the lesson. Picture problems
+# send kids to the lesson for the picture instead of showing an answer they can't check.
+_TP_PATH = os.path.join(ROOT, "data/topic_problems.json")
+TOPIC_PROBLEMS = json.load(open(_TP_PATH)) if os.path.exists(_TP_PATH) else {}
+PRACTICE_CONTESTS = {  # contest -> (search name, style label, tests anchor on /mock-tests/, tests line, plan page)
+    "amc8": ("AMC 8", "AMC 8", "amc8", "AMC 8-style practice tests", "amc-8-in-10-weeks/"),
+    "mathcounts": ("MATHCOUNTS", "MATHCOUNTS", "mathcounts", "MATHCOUNTS-style practice tests", "mathcounts-in-10-weeks/"),
+    "kangaroo": ("Math Kangaroo", "Math Kangaroo", "kangaroo12", "Kangaroo-style practice tests, grades 1 to 6", "math-kangaroo-in-12-weeks/"),
+    "noetic": ("Noetic Math Contest", "Noetic", "noetic", "Noetic-style practice tests, grades 2 to 5", None),
+}
+PRACTICE_MIN = 3
+PRACTICE_LABEL = {"Number sense": "number sense", "Number theory and cycles": "number theory", "Patterns": "pattern",
+                  "Bar models and word problems": "word", "Algebra readiness": "algebra", "Rates and averages": "rate and average",
+                  "Counting and probability": "counting and probability", "Geometry": "geometry",
+                  "Trigonometry and complex numbers": "trigonometry", "Logic and reading the problem": "logic"}
+
+
+def slugify(t):
+    return re.sub(r"[^a-z0-9]+", "-", t.lower()).strip("-")
+
+
+def practice_pages(lessons):
+    """[(contest, group name, slug, lessons)] for every contest x topic group with enough problems."""
+    out = []
+    for k in PRACTICE_CONTESTS:
+        for name, fams in TOPICS:
+            ls = sorted([l for l in lessons if l["live"] and k in l["contests"] and l["family"] in fams
+                         and l["id"] in TOPIC_PROBLEMS], key=lambda l: l["tool_num"])
+            if len(ls) >= PRACTICE_MIN:
+                lab = PRACTICE_LABEL.get(name, name.lower())
+                out.append((k, lab, f"{slugify(PRACTICE_CONTESTS[k][0])}-{slugify(lab)}-problems", ls))
+    return out
+
+
+def page_practice_topic(k, name, slug, ls, pages):
+    root = "../../"
+    cname, style, anchor, tests_line, plan = PRACTICE_CONTESTS[k]
+    C = CONTESTS[k]
+    gs = sorted({int(g) for l in ls for g in title_grades(l) if offered(k, g)}) or [int(l["grade"]) for l in ls]
+    glabel = f"Grade {gs[0]}" if gs[0] == gs[-1] else f"Grades {gs[0]} to {gs[-1]}"
+    diag_g = sorted(gs)[len(gs) // 2]
+    items = []
+    for i, l in enumerate(ls, 1):
+        tp = TOPIC_PROBLEMS[l["id"]]
+        ans = (f'<p class="tp-pic">This one comes with a picture. <a href="{root}lessons/{l["slug"]}/">See it in the lesson</a>.</p>'
+               if tp.get("pic") else f'<details class="tp-d"><summary>Answer</summary><p>{e(tp["a"])}</p></details>')
+        items.append(f"""<li class="a8-wk kg-wk tp-item" id="p{i}">
+    <img class="kg-qr" src="{root}assets/img/qr/t-{l['tool_num']}.svg" width="99" height="99" alt="QR code for the {e(l['tool'])} lesson" loading="lazy">
+    <p class="pl-wk">Problem {i}</p>
+    <h3>{e(l['tool'])}</h3>
+    <p class="tp-q">{e(tp['q'])}</p>
+    <details class="tp-d"><summary>Key move</summary><p>{e(l['rule'])}</p><p class="tp-trap"><b>The trap:</b> {e(l['trap'])}</p></details>
+    {ans}
+    <p class="tp-go"><a href="{root}lessons/{l['slug']}/">Watch the lesson</a></p>
+   </li>""")
+    others = [p for p in pages if p[0] == k and p[2] != slug]
+    other_html = "".join(f'<li><a href="../{p[2]}/"><b>{e(cname)} {e(p[1])} problems</b><span>{len(p[3])} problems</span></a></li>' for p in others)
+    plan_li = (f'<li><a href="{root}{plan}"><b>{e(cname)} study plan</b><span>One key move a week</span></a></li>' if plan else "")
+    title = f"{cname} {name.title().replace(' And ', ' and ')} Problems with Answers and Video Lessons | {NAME}"
+    desc = (f"{len(ls)} {cname} {name} practice problems for {glabel.lower()}, each with its key move, "
+            f"the answer and a short video lesson. Kids can work through them on their own.")
+    crumbs = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"},
+        {"@type": "ListItem", "position": 2, "name": "Practice by topic", "item": SITE + "/practice/"},
+        {"@type": "ListItem", "position": 3, "name": f"{cname} {name} problems", "item": f"{SITE}/practice/{slug}/"}]}
+    body = head(title, desc, f"practice/{slug}/", root, extra=f'<script type="application/ld+json">{json.dumps(crumbs)}</script>')
+    body += nav(root, "lessons")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="{root}">Home</a></li><li><a href="{root}practice/">Practice by topic</a></li><li><span aria-current="page">{e(cname)} {e(name)}</span></li></ol></nav>
+  <p class="eyebrow">{e(cname)} &middot; {glabel}</p>
+  <h1>{e(cname)} {e(name)} problems</h1>
+  <p class="lead">{len(ls)} problems in the style of {e(cname)}. Try each one, then tap for the key move and the answer. Stuck? Scan the QR code or watch the lesson.</p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap">
+ <ol class="a8-plan">{"".join(items)}</ol>
+ <div class="tc-box">
+  <h2>Keep going</h2>
+  <ul class="sc-next">
+   <li><a href="{free_href(root, k, diag_g)}"><b>{e(style)}-style diagnostic</b><span>See which topics need the most practice</span></a></li>
+   {plan_li}
+   <li><a href="{root}mock-tests/#{anchor}"><b>{e(tests_line)}</b><span>Worked answer keys, a QR code next to every question</span></a></li>
+   {other_html}
+  </ul>
+ </div>
+ <p class="test-note">Every problem on this page is our own, written in the style of {e(cname)}. {NAME} is not affiliated with or endorsed by {e(C.get('org', C['name']))}.</p>
+</div></section>
+"""
+    body += foot(root)
+    write(f"practice/{slug}/index.html", body)
+
+
+def page_practice(pages):
+    root = "../"
+    blocks = []
+    for k, (cname, *_rest) in PRACTICE_CONTESTS.items():
+        ps = [p for p in pages if p[0] == k]
+        if not ps:
+            continue
+        lis = "".join(f'<li><a href="{p[2]}/"><b>{e(cname)} {e(p[1])} problems</b><span>{len(p[3])} problems</span></a></li>' for p in ps)
+        blocks.append(f'<div class="tc-box"><h2>{e(cname)}</h2><ul class="sc-next">{lis}</ul></div>')
+    body = head(f"Competition Math Practice Problems by Topic | {NAME}",
+                "AMC 8, MATHCOUNTS, Math Kangaroo and Noetic practice problems sorted by topic, each with the key move, the answer and a short video lesson.",
+                "practice/", root)
+    body += nav(root, "lessons")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <p class="eyebrow">Practice by topic</p>
+  <h1>Practice problems by topic</h1>
+  <p class="lead">Pick a contest and a topic. Every problem has its key move, the answer and a short video lesson, so kids can work on their own.</p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap">
+ {"".join(blocks)}
+ <p class="test-note">Every problem is our own, written in the style of each contest. {NAME} is not affiliated with or endorsed by the MAA, the MATHCOUNTS Foundation, Math Kangaroo or Noetic Learning.</p>
+</div></section>
+"""
+    body += foot(root)
+    write("practice/index.html", body)
+
+
 # /amc-8-scores/ (Nov 21, Jian approved the growth idea "AMC 8 score guide"). Award lines are MAA results as compiled by
 # Ivy League Education Center (cites MAA's reports page) and Think Academy; the two agree on every shared year. MAA's own
 # stats page (amc-reg.maa.org/reports) was down when checked Nov 21, 2026. Add each new year after results come out.
@@ -3182,6 +3309,11 @@ def main():
     page_amc8_cheat()
     page_kangaroo_plan(lessons)
     page_mathcounts_plan(lessons)
+    pp = practice_pages(lessons)
+    for p in pp:
+        page_practice_topic(*p, pp)
+    page_practice(pp)
+    urls += ["practice/"] + [f"practice/{p[2]}/" for p in pp]
     page_compare()
     page_register()
     urls += ["how-to-register/"] + [f"how-to-register/{r['slug']}/" for r in REGISTER]

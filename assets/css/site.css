@@ -1139,3 +1139,12 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .kg-wk .a8-rule { padding-right: 104px; }
 .kg-qr { position: absolute; top: 12px; right: 12px; width: 99px; height: 99px; background: #fff; }
 .kg-pack { margin: 4px 0 0; }
+/* /practice/ topic pages (Nov 25) */
+.tp-q { margin: 0 0 10px; padding-right: 104px; min-height: 40px; }
+.tp-d { margin: 0 0 8px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; background: #fafbfd; }
+.tp-d summary { cursor: pointer; font-weight: 700; color: var(--navy2); }
+.tp-d p { margin: 8px 0 0; }
+.tp-trap { color: var(--muted); }
+.tp-pic { margin: 0 0 8px; color: var(--muted); font-size: .95rem; }
+.tp-go { margin: 6px 0 0; }
+.tp-go a { color: var(--navy2); font-weight: 700; }
