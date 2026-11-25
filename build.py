@@ -324,6 +324,7 @@ def nav(root, active=""):
                f'<a class="dd-i" href="{root}study-plan/">4-week contest plan</a>'
                f'<a class="dd-i" href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a>'
                f'<a class="dd-i" href="{root}math-kangaroo-in-12-weeks/">Math Kangaroo in 12 weeks</a>'
+               f'<a class="dd-i" href="{root}mathcounts-in-10-weeks/">MATHCOUNTS in 10 weeks</a>'
                f'<p class="dd-h">Grade 5 topics</p>{topics}')
     return f"""{sale_bar(root)}<header class="top">
  <div class="wrap top-in">
@@ -368,7 +369,7 @@ def foot(root, cta=True):
   <div>
    <h3>Learn</h3>
    <ul><li><a href="{root}lessons/">All lessons</a></li><li><a href="{root}grade-5/">Grade 5</a></li>
-   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li><li><a href="{root}math-kangaroo-in-12-weeks/">Math Kangaroo in 12 weeks</a></li><li><a href="{root}amc-8-scores/">Good AMC 8 scores</a></li><li><a href="{root}amc-8-cheat-sheet/">AMC 8 cheat sheet</a></li>
+   <li><a href="{root}key-moves/">Key moves cheat sheet</a></li><li><a href="{root}study-plan/">4-week contest plan</a></li><li><a href="{root}amc-8-in-10-weeks/">AMC 8 in 10 weeks</a></li><li><a href="{root}math-kangaroo-in-12-weeks/">Math Kangaroo in 12 weeks</a></li><li><a href="{root}mathcounts-in-10-weeks/">MATHCOUNTS in 10 weeks</a></li><li><a href="{root}amc-8-scores/">Good AMC 8 scores</a></li><li><a href="{root}amc-8-cheat-sheet/">AMC 8 cheat sheet</a></li>
    <li><a href="{root}mock-tests/">Mock tests</a></li><li><a href="{root}free/">Diagnostic test</a></li><li><a href="{root}how-to-register/">How to register</a></li><li><a href="{root}teachers/">For teachers and clubs</a></li><li><a href="{root}math-gifts/">Math gifts</a></li><li><a href="{root}math-corner/">Math Corner</a></li></ul>
   </div>
   <div>
@@ -979,6 +980,7 @@ def page_home(lessons):
    <a class="freebie" href="key-moves/"><b>Key moves cheat sheet</b><span>Every rule and trap on one printable page</span></a>
    <a class="freebie" href="study-plan/"><b>4-week contest plan</b><span>15 to 20 minutes a day, with a miss log</span></a>
    <a class="freebie" href="math-kangaroo-in-12-weeks/"><b>Math Kangaroo in 12 weeks</b><span>One key move a week, grades 1 to 6</span></a>
+   <a class="freebie" href="mathcounts-in-10-weeks/"><b>MATHCOUNTS in 10 weeks</b><span>One key move a week, grades 6 to 8</span></a>
    <a class="freebie" href="teachers/"><b>For teachers and clubs</b><span>Run contest practice with a whole class or team</span></a>
   </div>
  </div>
@@ -2352,6 +2354,56 @@ def page_kangaroo_plan(lessons):
     write("math-kangaroo-in-12-weeks/index.html", body)
 
 
+# /mathcounts-in-10-weeks/ (Nov 25, Jian approved the growth idea "MATHCOUNTS in 10 weeks"): one key move a week for
+# grades 6-8. The 10 tools are the ones our MATHCOUNTS-style tests use most (bank/group-MCP.json, 380 problems), easy to
+# hard, one per topic family; each week pairs its lesson (QR to t/N) with that week's practice test.
+MATHCOUNTS_WEEKS = [10, 6, 1, 32, 39, 58, 59, 60, 57, 62]
+
+
+def page_mathcounts_plan(lessons):
+    root = "../"
+    by_num = {l["tool_num"]: l for l in lessons}
+    m = SHOP.get("mathcounts") if SHOP.get("live") else None
+    cards = []
+    for w, n in enumerate(MATHCOUNTS_WEEKS, 1):
+        l = by_num[n]
+        lesson = (f'<a href="{root}lessons/{l["slug"]}/">Watch the lesson</a>' if l["live"]
+                  else f'<a href="{root}lessons/{l["slug"]}/">Lesson</a> <small>(video soon)</small>')
+        test = (f'<a href="{e(m["tests"][w - 1])}" rel="noopener">MATHCOUNTS-style Practice Test {w}</a> <small>{SINGLE_PRICE}</small>' if m
+                else f"MATHCOUNTS-style Practice Test {w} <small>(soon)</small>")
+        last = (" In the last days, redo the misses from all 10 tests and keep the day before the contest light." if w == 10 else "")
+        cards.append(f"""<li class="a8-wk kg-wk" id="week-{w}">
+    <img class="kg-qr" src="{root}assets/img/qr/t-{n}.svg" width="99" height="99" alt="QR code for the {e(l['tool'])} lesson" loading="lazy">
+    <p class="pl-wk">Week {w}</p>
+    <h3>{e(l["tool"])}</h3>
+    <p class="a8-rule">{e(l["rule"])}</p>
+    <ol class="a8-steps"><li><b>Learn:</b> {lesson}</li><li><b>Test:</b> {test}. Sprint round first, then the Target pairs. Redo every miss the next day.{last}</li></ol>
+   </li>""")
+    pack = (f'<p class="kg-pack"><a class="btn btn-primary btn-lg" href="{e(m["pack"])}" rel="noopener">All 10 tests, {PACK_PRICE}</a></p>' if m else "")
+    body = head(f"MATHCOUNTS in 10 Weeks: A Study Plan for Grades 6 to 8 | {NAME}",
+                "A 10-week MATHCOUNTS study plan for grades 6 to 8: one key move a week, with a short video lesson and a matching Sprint and Target practice test.",
+                "mathcounts-in-10-weeks/", root)
+    body += nav(root, "plan")
+    body += f"""<section class="page-head">
+ <div class="wrap">
+  <p class="eyebrow">MATHCOUNTS &middot; Grades 6 to 8</p>
+  <h1>MATHCOUNTS in 10 weeks</h1>
+  <p class="lead">One key move a week, about 20 minutes a day. Kids can follow it on their own: watch the lesson, take the test, check with the answer key, then scan the QR beside each miss.</p>
+  <p class="a8-start"><b>Before Week 1:</b> take the <a href="{free_href(root, "mathcounts", 7)}">MATHCOUNTS-style diagnostic</a> to see where to spend extra time.</p>
+  <p class="a8-start"><b>Not signed up yet?</b> See <a href="{root}how-to-register/mathcounts/">how to register for MATHCOUNTS</a>.</p>
+ </div>
+</section>
+<section class="sec sec-tight"><div class="wrap">
+ <ol class="a8-plan">{"".join(cards)}</ol>
+ {pack}
+ {FINAL_SALE}
+ <p class="test-note">"MATHCOUNTS-style" tests are written in the style of MATHCOUNTS. Key Move Math is not affiliated with or endorsed by the MATHCOUNTS Foundation. Every problem is our own.</p>
+</div></section>
+"""
+    body += foot(root)
+    write("mathcounts-in-10-weeks/index.html", body)
+
+
 # /amc-8-scores/ (Nov 21, Jian approved the growth idea "AMC 8 score guide"). Award lines are MAA results as compiled by
 # Ivy League Education Center (cites MAA's reports page) and Think Academy; the two agree on every shared year. MAA's own
 # stats page (amc-reg.maa.org/reports) was down when checked Nov 21, 2026. Add each new year after results come out.
@@ -2685,7 +2737,9 @@ def page_register():
         plan = (f'<li><b>AMC 8 in 10 weeks</b><span><a href="{root}amc-8-in-10-weeks/">One key move a week</a></span></li>'
                 if r["k"] == "amc8" else
                 f'<li><b>Math Kangaroo in 12 weeks</b><span><a href="{root}math-kangaroo-in-12-weeks/">One key move a week, grades 1 to 6</a></span></li>'
-                if r["k"] == "kangaroo" else "")
+                if r["k"] == "kangaroo" else
+                f'<li><b>MATHCOUNTS in 10 weeks</b><span><a href="{root}mathcounts-in-10-weeks/">One key move a week, grades 6 to 8</a></span></li>'
+                if r["k"] == "mathcounts" else "")
         body = head(f"How to Register for {r['name']}: Who Can Enter, Dates and Fees | {NAME}",
                     f"How to register for {r['name']}: who can enter, how to find a test site, key dates and fees, from {r['site']}.",
                     f"how-to-register/{r['slug']}/", root)
@@ -3061,7 +3115,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "amc-8-scores/", "amc-8-cheat-sheet/", "math-kangaroo-in-12-weeks/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "amc-8-scores/", "amc-8-cheat-sheet/", "math-kangaroo-in-12-weeks/", "mathcounts-in-10-weeks/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
                grade_lessons(lessons, 5),
@@ -3112,6 +3166,7 @@ def main():
     page_amc8_scores()
     page_amc8_cheat()
     page_kangaroo_plan(lessons)
+    page_mathcounts_plan(lessons)
     page_compare()
     page_register()
     urls += ["how-to-register/"] + [f"how-to-register/{r['slug']}/" for r in REGISTER]
