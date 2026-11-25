@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Check which lessons are public and build
-        run: python3 build.py --check --titles
+        run: python3 build.py --check
       - name: Save the list of public lessons
         run: |
           if ! git diff --quiet data/live.json data/shop.json; then
