@@ -3230,7 +3230,11 @@ def page_qr_upcoming(t):
 def extras(lessons, urls):
     today = date.today().isoformat()
     sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    # Nov 26: Search Console flagged sitemap pages with noindex. Only list pages that exist and are indexable.
     for u in urls:
+        p = os.path.join(OUT, u + "index.html" if (u == "" or u.endswith("/")) else u)
+        if not os.path.exists(p) or 'name="robots" content="noindex"' in open(p, encoding="utf-8").read():
+            continue
         sm.append(f"<url><loc>{SITE}/{u}</loc><lastmod>{today}</lastmod></url>")
     sm.append("</urlset>")
     write("sitemap.xml", "\n".join(sm) + "\n")
