@@ -401,6 +401,27 @@
    "img_w": 640,
    "img_h": 360,
    "img_alt": "The words 0.999... = 1 in large type above a box showing one third equals 0.333..., and three times one third equals 0.999... which equals 1"
+  },
+  {
+   "slug": "kaprekar-6174",
+   "date": "2026-11-26",
+   "kind": "fact",
+   "tag": "Number trick",
+   "title": "The 6174 trick: why every 4-digit number ends up at the same place",
+   "desc": "Pick almost any 4-digit number, sort its digits big to small and small to big, subtract, and repeat. You always land on 6174 in 7 steps or fewer.",
+   "summary": "Sort the digits both ways, subtract, repeat: every 4-digit number with two different digits reaches 6174.",
+   "formula": "big − small → 6174",
+   "body": [
+    "Pick a 4-digit number that uses at least two different digits, like 3524. Arrange its digits from biggest to smallest (5432) and from smallest to biggest (2345). Subtract the small one from the big one: 5432 − 2345 = 3087.",
+    "Now do the same thing to 3087. Big to small is 8730, small to big is 0378, and 8730 − 378 = 8352. Once more: 8532 − 2358 = 6174.",
+    "Keep going and you get stuck, because 7641 − 1467 = 6174 again. This number is called Kaprekar's constant, after D. R. Kaprekar, the Indian math teacher who found it.",
+    "Here is the amazing part: it works for every 4-digit number with at least two different digits, and it never takes more than 7 rounds. Only numbers like 1111 or 7777 fail, because big minus small is 0.",
+    "One rule to remember: always keep four digits. If a subtraction gives 999, write it as 0999, so the next round is 9990 − 0999 = 8991. Show a friend: let them pick the number, and tell them where it will end before they start."
+   ],
+   "img": "kaprekar-6174.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "The number 6174 in large yellow type above three subtractions: 5432 minus 2345 equals 3087, 8730 minus 0378 equals 8352, and 8532 minus 2358 equals 6174"
   }
  ]
 }
