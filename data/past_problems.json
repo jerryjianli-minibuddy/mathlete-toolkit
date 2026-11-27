@@ -87,5 +87,32 @@
   "video_id": "Xa2FmgTPkF4",
   "added": "2026-12-17",
   "public": "2026-12-17T07:00:00-08:00"
+ },
+ {
+  "contest": "amc8",
+  "year": 2026,
+  "num": 4,
+  "topic": "Savings down 20%, then up 50%",
+  "video_id": "A3DEhFSH-0E",
+  "added": "2026-12-04",
+  "public": "2026-12-04T07:00:00-08:00"
+ },
+ {
+  "contest": "amc8",
+  "year": 2026,
+  "num": 16,
+  "topic": "Even digits divisible by 4",
+  "video_id": "npHboBI6B1g",
+  "added": "2026-12-07",
+  "public": "2026-12-07T07:00:00-08:00"
+ },
+ {
+  "contest": "amc8",
+  "year": 2026,
+  "num": 20,
+  "topic": "Gold and silver coin stacks",
+  "video_id": "_Zx-nTseTqY",
+  "added": "2026-12-09",
+  "public": "2026-12-09T07:00:00-08:00"
  }
 ]
