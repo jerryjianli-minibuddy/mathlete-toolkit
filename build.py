@@ -2161,7 +2161,9 @@ def page_about(lessons):
 
 
 # Nov 25: past-contest walkthroughs (video thread, one a week). Real MAA problems: say so on every item.
-PAST = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "past_problems.json")))
+PAST_ALL = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "past_problems.json")))
+# a walkthrough shows only once its video goes public (hourly rebuild picks it up)
+PAST = [x for x in PAST_ALL if "public" not in x or datetime.now(timezone.utc) >= datetime.fromisoformat(x["public"])]
 def past_box(contest="amc8", label="AMC 8"):
     items = sorted([x for x in PAST if x["contest"] == contest], key=lambda x: x["added"], reverse=True)
     if not items:

@@ -1,3 +1,37 @@
 [
- {"contest": "amc8", "year": 2024, "num": 12, "topic": "Guppies in 4 tanks", "video_id": "D5i0xTsfuRk", "added": "2026-11-25"}
+ {
+  "contest": "amc8",
+  "year": 2024,
+  "num": 12,
+  "topic": "Guppies in 4 tanks",
+  "video_id": "D5i0xTsfuRk",
+  "added": "2026-11-25"
+ },
+ {
+  "contest": "amc8",
+  "year": 2026,
+  "num": 10,
+  "topic": "Who finished 4th",
+  "video_id": "7_7BbhZQIvI",
+  "added": "2026-11-27",
+  "public": "2026-11-27T07:00:00-08:00"
+ },
+ {
+  "contest": "amc8",
+  "year": 2026,
+  "num": 14,
+  "topic": "Three equally spaced numbers",
+  "video_id": "xnRMyw46Ens",
+  "added": "2026-11-30",
+  "public": "2026-11-30T07:00:00-08:00"
+ },
+ {
+  "contest": "amc8",
+  "year": 2026,
+  "num": 19,
+  "topic": "Dog fetches the ball",
+  "video_id": "J2J_e_a3-qA",
+  "added": "2026-12-02",
+  "public": "2026-12-02T07:00:00-08:00"
+ }
 ]
