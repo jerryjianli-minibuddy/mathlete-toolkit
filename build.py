@@ -951,7 +951,7 @@ def page_home(lessons):
                                    "query-input": "required name=search_term_string"}}
     faq_html, faq_ld = faq(("who", "misses", "original", "when", "independent"))
     body = head(f"{NAME}: Free Diagnostic Test and Contest Math Video Lessons",
-                "Free contest math diagnostic test. Pick your grade: answer key included, and a QR code beside every problem opens a short video lesson on its key move.",
+                "Free contest math diagnostic test. Pick your grade: answer key included, and a QR code beside every problem opens a full video lesson on its key move.",
                 "", root, extra=f'<script type="application/ld+json">{json.dumps(ld)}</script><script type="application/ld+json">{json.dumps(site_ld)}</script>' + faq_ld)
     body += nav(root)
     body += finder(lessons, root)
@@ -1045,7 +1045,7 @@ def qr_feature(root, cta=True):
   <div class="qrf-copy">
    <p class="eyebrow">Only on our tests</p>
    <h2 id="qrf-h">A QR code next to every question</h2>
-   <p class="lead">Stuck or got it wrong? Scan the code with a phone. A short video teaches the key move behind that problem.</p>
+   <p class="lead">Stuck or got it wrong? Scan the code with a phone. A full video lesson teaches the key move behind that problem.</p>
    <ol class="qrf-steps"><li>Scan the code</li><li>Watch the key move</li><li>Try the problem again</li></ol>
    {f'<a class="btn btn-primary" href="{root}mock-tests/">See the tests</a>' if cta else ""}
   </div>
@@ -1642,7 +1642,7 @@ def moems_section(root, shop):
 FINAL_SALE = '<p class="final-sale">All sales are final. No refunds on digital downloads.</p>'
 # Nov 13, Jian approved affiliates. Signup link copied from his Payhip Marketing > Affiliates page.
 AFFILIATE_SIGNUP = "https://payhip.com/auth/register/af6af2be89010ee"
-QR_LINE = '<p class="qr-line"><span class="qr-ico" aria-hidden="true"></span>A QR code next to every question opens a short video on its key move.</p>'
+QR_LINE = '<p class="qr-line"><span class="qr-ico" aria-hidden="true"></span>A QR code next to every question opens a full video lesson on its key move.</p>'
 
 
 def contest_tests_section(root, shop, key, label, grades, contest, diag_grade, lead, single_small, single_facts, pack_name, pack_facts, note, alt=False, diag=True, single_name=None, soon=False):
@@ -2316,7 +2316,7 @@ def page_amc8_plan(lessons):
   </li>""")
     pack = (f'<a class="btn btn-primary btn-lg" href="{e(m["pack"])}" rel="noopener">All 10 tests, {PACK_PRICE}</a>' if m else "")
     body = head(f"AMC 8 in 10 Weeks: One Key Move a Week | {NAME}",
-                "A 10-week AMC 8 study plan: one key move a week, with a short video lesson, three practice problems and a matching practice test.",
+                "A 10-week AMC 8 study plan: one key move a week, with a full video lesson, three practice problems and a matching practice test.",
                 "amc-8-in-10-weeks/", root)
     body += nav(root, "plan")
     body += f"""<section class="page-head">
@@ -2402,7 +2402,7 @@ def page_kangaroo_plan(lessons):
   {pack}
  </section>""")
     body = head(f"Math Kangaroo in 12 Weeks: A Study Plan for Grades 1 to 6 | {NAME}",
-                "A 12-week Math Kangaroo study plan for grades 1-2, 3-4 and 5-6: one key move a week, with a short video lesson and a matching practice test.",
+                "A 12-week Math Kangaroo study plan for grades 1-2, 3-4 and 5-6: one key move a week, with a full video lesson and a matching practice test.",
                 "math-kangaroo-in-12-weeks/", root)
     body += nav(root, "plan")
     body += f"""<section class="page-head">
@@ -2451,7 +2451,7 @@ def page_mathcounts_plan(lessons):
    </li>""")
     pack = (f'<p class="kg-pack"><a class="btn btn-primary btn-lg" href="{e(m["pack"])}" rel="noopener">All 10 tests, {PACK_PRICE}</a></p>' if m else "")
     body = head(f"MATHCOUNTS in 10 Weeks: A Study Plan for Grades 6 to 8 | {NAME}",
-                "A 10-week MATHCOUNTS study plan for grades 6 to 8: one key move a week, with a short video lesson and a matching Sprint and Target practice test.",
+                "A 10-week MATHCOUNTS study plan for grades 6 to 8: one key move a week, with a full video lesson and a matching Sprint and Target practice test.",
                 "mathcounts-in-10-weeks/", root)
     body += nav(root, "plan")
     body += f"""<section class="page-head">
@@ -2561,7 +2561,7 @@ def page_practice_topic(k, name, slug, ls, pages):
     plan_li = (f'<li><a href="{root}{plan}"><b>{e(cname)} study plan</b><span>One key move a week</span></a></li>' if plan else "")
     title = f"{cname} {name.title().replace(' And ', ' and ')} Problems with Answers and Video Lessons | {NAME}"
     desc = (f"{len(ls)} {cname} {name} practice problems for {glabel.lower()}, each with its key move, "
-            f"the answer and a short video lesson. Kids can work through them on their own.")
+            f"the answer and a full video lesson. Kids can work through them on their own.")
     crumbs = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"},
         {"@type": "ListItem", "position": 2, "name": "Practice by topic", "item": SITE + "/practice/"},
@@ -2605,14 +2605,14 @@ def page_practice(pages):
         lis = "".join(f'<li><a href="{p[2]}/"><b>{e(cname)} {e(p[1])} problems</b><span>{len(p[3])} problems</span></a></li>' for p in ps)
         blocks.append(f'<div class="tc-box"><h2>{e(cname)}</h2><ul class="sc-next">{lis}</ul></div>')
     body = head(f"Competition Math Practice Problems by Topic | {NAME}",
-                "AMC 8, MATHCOUNTS, Math Kangaroo and Noetic practice problems sorted by topic, each with the key move, the answer and a short video lesson.",
+                "AMC 8, MATHCOUNTS, Math Kangaroo and Noetic practice problems sorted by topic, each with the key move, the answer and a full video lesson.",
                 "practice/", root)
     body += nav(root, "lessons")
     body += f"""<section class="page-head">
  <div class="wrap">
   <p class="eyebrow">Practice by topic</p>
   <h1>Practice problems by topic</h1>
-  <p class="lead">Pick a contest and a topic. Every problem has its key move, the answer and a short video lesson, so kids can work on their own.</p>
+  <p class="lead">Pick a contest and a topic. Every problem has its key move, the answer and a full video lesson, so kids can work on their own.</p>
  </div>
 </section>
 <section class="sec sec-tight"><div class="wrap">
@@ -2723,7 +2723,7 @@ def page_amc8_cheat():
  <div class="wrap">
   <p class="eyebrow">AMC 8 &middot; Printable PDF</p>
   <h1>AMC 8 key tools cheat sheet</h1>
-  <p class="lead">16 key moves on one page, each with a tiny example. Stuck on one? Scan its QR code for a short video lesson.</p>
+  <p class="lead">16 key moves on one page, each with a tiny example. Stuck on one? Scan its QR code for a full video lesson.</p>
   <p><a class="btn btn-primary btn-lg" href="{pdf}" download>Download the PDF</a></p>
  </div>
 </section>
@@ -3104,7 +3104,7 @@ def page_teachers():
     steps = [("Print one per student.", "Keep the answer key, the last page, for yourself."),
              ("Time it like the contest.", "One class period is enough."),
              ("Grade with the key.", "Each answer names the key move that solves it."),
-             ("Send misses home.", "A QR code beside every problem opens a short video lesson on that move."),
+             ("Send misses home.", "A QR code beside every problem opens a full video lesson on that move."),
              ("Warm up on the top miss.", "Next meeting, start with the key move most students missed.")]
     plan = "".join(f'<li><b>{e(a)}</b> {e(b)}</li>' for a, b in steps)
     buy = (f'<a class="btn btn-primary btn-lg" href="{e(club)}" rel="noopener">Get the Club License, $99</a>' if club
@@ -3116,7 +3116,7 @@ def page_teachers():
     body += f"""<section class="page-head">
  <div class="wrap">
   <h1>For teachers and clubs</h1>
-  <p class="lead">Run contest practice in one class period. Everything prints, and every problem links to a short video lesson.</p>
+  <p class="lead">Run contest practice in one class period. Everything prints, and every problem links to a full video lesson.</p>
  </div>
 </section>
 <section class="sec sec-tight"><div class="wrap tc">
@@ -3206,7 +3206,7 @@ def page_gifts():
 <section class="sec sec-tight"><div class="wrap tc">
  <div class="tc-box">
   <h2>Pick a pack</h2>
-  <p>Each pack: 10 printable tests, worked answer keys, and a QR code by every question that opens a short video on its key move.</p>
+  <p>Each pack: 10 printable tests, worked answer keys, and a QR code by every question that opens a full video lesson on its key move.</p>
   <div class="tc-diag" data-tc-diag><p class="tc-chips-h">Grade</p>{chips}{rows}</div>
   {FINAL_SALE}
  </div>
@@ -3341,7 +3341,7 @@ def main():
         page_lesson(l, lessons)
     urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "amc-8-scores/", "amc-8-cheat-sheet/", "math-kangaroo-in-12-weeks/", "mathcounts-in-10-weeks/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
-               "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a short video lesson.",
+               "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a full video lesson.",
                grade_lessons(lessons, 5),
                "Free Grade 5 competition math lessons: one tool per video, from shaded area to round-trip speed.",
                badge="5", picker=contest_picker(lessons, 5, "../"), pl=playlist_links(5))
