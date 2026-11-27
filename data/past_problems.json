@@ -69,5 +69,23 @@
   "video_id": "5-u9NVB8QWg",
   "added": "2026-12-10",
   "public": "2026-12-10T07:00:00-08:00"
+ },
+ {
+  "contest": "amc10a",
+  "year": 2026,
+  "num": 8,
+  "topic": "Rounded highway sign speed",
+  "video_id": "reQvCCsG6dk",
+  "added": "2026-12-15",
+  "public": "2026-12-15T07:00:00-08:00"
+ },
+ {
+  "contest": "amc10b",
+  "year": 2026,
+  "num": 6,
+  "topic": "When a fraction is an integer",
+  "video_id": "Xa2FmgTPkF4",
+  "added": "2026-12-17",
+  "public": "2026-12-17T07:00:00-08:00"
  }
 ]
