@@ -1166,3 +1166,28 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .btn-sm { padding: 8px 14px; font-size: .92rem; }
 /* Nov 27: pack box under topic practice problems */
 .tp-pack{margin:24px 0;border-radius:16px;padding:20px}
+
+/* Parent sign-in (Nov 27) */
+.au-back { position: fixed; inset: 0; background: rgba(14, 26, 50, .55); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 200; }
+.au-box { position: relative; background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow-lg); max-width: 430px; width: 100%; padding: 28px 24px 20px; }
+.au-box h2 { font-size: 1.6rem; margin-bottom: .4em; }
+.au-box p { color: var(--muted); font-size: .97rem; }
+.au-kick { text-transform: uppercase; letter-spacing: .08em; font-size: .78rem !important; font-weight: 800; color: var(--pink) !important; margin-bottom: .4em; }
+.au-x { position: absolute; top: 10px; right: 12px; border: 0; background: none; font-size: 1.7rem; line-height: 1; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+.au-opt { display: flex; gap: 10px; align-items: flex-start; font-size: .95rem; margin: 4px 0 16px; cursor: pointer; }
+.au-opt input { width: 18px; height: 18px; margin-top: 2px; flex: none; }
+.au-g { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 13px 16px; border: 1px solid #DADCE0; border-radius: 999px; background: #fff; font: 600 1rem var(--font); color: #1F1F1F; cursor: pointer; }
+.au-g:hover { background: #F8FAFF; } .au-g:disabled { opacity: .6; cursor: wait; }
+.au-err { color: var(--red) !important; margin: 10px 0 0; }
+.au-fine { font-size: .8rem !important; margin: 14px 0 0; }
+.au-fine a, .pv a, .mp a { color: var(--navy3); }
+.pv h2, .mp h2 { font-size: 1.3rem; margin-top: 1.4em; }
+.pv ul { padding-left: 1.2em; }
+.mp-list { list-style: none; padding: 0; margin: 0 0 1em; }
+.mp-list li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.mp-list small { color: var(--muted); white-space: nowrap; }
+.mp-none { color: var(--muted); }
+.mp-acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.2em; }
+.mp-del { color: var(--red); }
+.mp-t { width: 100%; border-collapse: collapse; font-size: .9rem; } .mp-t td, .mp-t th { border-bottom: 1px solid var(--line); padding: 6px; text-align: left; }
+.narrow { max-width: 760px; }

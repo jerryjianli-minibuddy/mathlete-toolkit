@@ -379,15 +379,130 @@ def foot(root, cta=True):
  </div>
  <div class="wrap fine">
   <p>{NAME} is an independent practice channel. It is not affiliated with or endorsed by Math Kangaroo, Noetic Learning, MATHCOUNTS, the MAA (AMC) or any math olympiad. Contest names are used only to describe what each lesson helps with. Every problem in our lessons and tests is our own. Past contest problems are labeled as such.</p>
-  <p>All sales are final. No refunds on digital downloads.</p>
+  <p>All sales are final. No refunds on digital downloads. <a href="{root}privacy/">Privacy</a></p>
   <p>&copy; {yr} {NAME}</p>
  </div>
 </footer>
 {bar}<script src="{root}assets/js/site.js?v={ASSET_V}" defer></script>
+{auth_tags(root)}
 </body>
 </html>
 """
 
+
+
+def page_privacy():
+    """/privacy/ (Nov 27): what parent sign-in keeps, why, and how to delete it. Linked in the footer and the sign-in box."""
+    root = "../"
+    body = head(f"Privacy | {NAME}", f"What {NAME} keeps when a parent signs in, why, and how to delete it.", "privacy/", root)
+    body += nav(root, "privacy")
+    body += f"""<section class="sec"><div class="wrap narrow pv">
+  <h1>Privacy</h1>
+  <p>Lessons, topic pages and practice problems on {NAME} are open to everyone with no account. Downloading a PDF asks a parent or guardian to sign in with Google. Here is what that keeps.</p>
+  <h2>What we keep</h2>
+  <ul>
+   <li>Your name and email address, as Google shares them at sign-in.</li>
+   <li>Which PDFs were downloaded and which lessons were opened while you were signed in, and any tests you mark as done.</li>
+   <li>Whether you asked for email updates.</li>
+  </ul>
+  <p>We don't create child accounts and we don't ask for a child's name, age, school or anything else about a child. Kids should ask a parent to sign in.</p>
+  <h2>Why</h2>
+  <ul>
+   <li>To give you the downloads.</li>
+   <li>To show your child's lessons and tests on your <a href="{root}my-progress/">My progress</a> page.</li>
+   <li>To email you new practice tests and study tips, only if you ticked the box for it.</li>
+  </ul>
+  <h2>Emails</h2>
+  <p>You get emails only if you opt in. Every email has an unsubscribe link, and you can turn emails off at any time on your My progress page.</p>
+  <h2>Who sees it</h2>
+  <p>Only {NAME}. We don't sell or share it. It is stored with Google Firebase. Purchases happen on Payhip, which has its own privacy policy. We use Google Analytics to count site visits.</p>
+  <h2>Deleting your data</h2>
+  <p>Use <b>Delete my account</b> on your <a href="{root}my-progress/">My progress</a> page to delete your record at once, or email <a href="mailto:{CONTACT}">{CONTACT}</a> and we'll delete it for you.</p>
+  <p class="note">Last updated November 27, 2026.</p>
+ </div></section>
+"""
+    body += foot(root)
+    write("privacy/index.html", body)
+
+
+def page_progress():
+    """/my-progress/ (Nov 27): a signed-in parent sees their child's lessons and downloads, the email choice,
+    sign-out and delete. Rendered by assets/js/auth.js data; noindex."""
+    root = "../"
+    body = head(f"My progress | {NAME}", "Your child's lessons and downloads on Key Move Math.", "my-progress/", root, noindex=True)
+    body += nav(root, "progress")
+    off = "" if AUTH_ON else "<p>Parent sign-in opens soon.</p>"
+    body += f"""<section class="sec"><div class="wrap narrow mp">
+  <h1>My progress</h1>
+  {off}
+  <div id="mp-out" hidden>
+   <p>Sign in with Google to see the lessons and tests your child has used.</p>
+   <p><button type="button" class="btn btn-primary" id="mp-in">Parent sign-in</button></p>
+   <p class="note">Lessons and topic pages stay open without an account. <a href="{root}privacy/">Privacy</a></p>
+  </div>
+  <div id="mp-in-box" hidden>
+   <p class="mp-who" id="mp-who"></p>
+   <h2>Downloads</h2><ul class="mp-list" id="mp-dl"></ul>
+   <h2>Lessons opened</h2><ul class="mp-list" id="mp-ls"></ul>
+   <h2>Email updates</h2>
+   <label class="au-opt"><input type="checkbox" id="mp-opt"> Email me new practice tests and study tips. Unsubscribe anytime.</label>
+   <p class="mp-acts"><button type="button" class="btn btn-ghost-d" id="mp-out-btn">Sign out</button>
+   <button type="button" class="btn btn-ghost-d mp-del" id="mp-del">Delete my account</button></p>
+   <p class="note" id="mp-msg" role="status"></p>
+  </div>
+ </div></section>
+<script>
+(function(){{
+function start(){{var A=window.KMM_AUTH;if(!A)return;
+var $=function(i){{return document.getElementById(i)}};
+function list(el,o){{var a=Object.keys(o||{{}}).map(function(k){{return o[k]}}).sort(function(x,y){{return (y.at&&y.at.seconds||0)-(x.at&&x.at.seconds||0)}});
+el.innerHTML=a.length?a.map(function(x){{var d=x.at&&x.at.toDate?x.at.toDate().toLocaleDateString():"";return "<li><span>"+A.esc(x.label)+"</span><small>"+A.esc(d)+"</small></li>"}}).join(""):"<li class=\\"mp-none\\">Nothing yet.</li>";}}
+function show(u){{$("mp-out").hidden=!!u;$("mp-in-box").hidden=!u;if(!u)return;
+A.doc(u).get().then(function(s){{var d=s.data()||{{}};$("mp-who").textContent="Signed in as "+(d.name||u.displayName||"")+" ("+(d.email||u.email)+")";
+list($("mp-dl"),d.downloads);list($("mp-ls"),d.lessons);$("mp-opt").checked=!!d.optIn;}});}}
+A.fb().then(show);
+$("mp-in").onclick=function(){{A.dialog("Parent sign-in").then(function(u){{if(u)show(u)}})}};
+$("mp-opt").onchange=function(){{var on=this.checked;A.fb().then(function(u){{return A.doc(u).update({{optIn:on,updated:A.now()}})}}).then(function(){{$("mp-msg").textContent=on?"Email updates are on.":"Email updates are off."}})}};
+$("mp-out-btn").onclick=function(){{firebase.auth().signOut().then(function(){{A.setSigned(false);show(null)}})}};
+$("mp-del").onclick=function(){{if(!confirm("Delete your account and all saved progress? This can't be undone."))return;
+A.fb().then(function(u){{return A.doc(u).delete().then(function(){{return u.delete()}})}}).then(function(){{A.setSigned(false);show(null);$("mp-msg").textContent="Your account and data are deleted."}})
+.catch(function(){{$("mp-msg").textContent="Please sign out, sign in again, and then delete. Or email {CONTACT}."}})}};}}
+if(window.KMM_AUTH)start();else document.addEventListener("kmm-auth-ready",start);
+}})();
+</script>
+"""
+    body += foot(root)
+    write("my-progress/index.html", body)
+
+
+def page_admin_parents():
+    """/admin/parents/ (Nov 27): Jian signs in as keymovemath@gmail.com and downloads the opted-in parent list as CSV.
+    Firestore rules let only that account read other records. noindex, not linked anywhere."""
+    root = "../../"
+    body = head(f"Parent list | {NAME}", "Admin.", "admin/parents/", root, noindex=True)
+    body += f"""<main class="wrap narrow mp"><h1>Parent list</h1>
+<p>Sign in with the Key Move Math Google account to export parents who asked for email updates.</p>
+<p><button type="button" class="btn btn-primary" id="ad-go">Sign in and load</button> <button type="button" class="btn btn-ghost-d" id="ad-csv" hidden>Download CSV</button></p>
+<p id="ad-msg" role="status"></p><div id="ad-tbl"></div></main>
+<script>window.KMM_FB={json.dumps({k: FIREBASE.get(k, "") for k in ("apiKey", "authDomain", "projectId", "appId")})};</script>
+<script src="{root}assets/js/auth.js?v={ASSET_V}"></script>
+<script>
+(function(){{var A=window.KMM_AUTH,rows=[];var $=function(i){{return document.getElementById(i)}};
+if(!A){{$("ad-msg").textContent="Sign-in is not set up yet.";$("ad-go").hidden=true;return;}}
+function q(v){{v=String(v==null?"":v);return /[",\\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}}
+$("ad-go").onclick=function(){{A.fb().then(function(u){{return u||firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(r){{return r.user}})}})
+.then(function(u){{return firebase.firestore().collection("parents").get()}})
+.then(function(snap){{var all=0;rows=[];snap.forEach(function(d){{all++;var x=d.data();if(x.optIn)rows.push([x.name,x.email,x.created&&x.created.toDate?x.created.toDate().toISOString().slice(0,10):"",Object.keys(x.downloads||{{}}).length,Object.keys(x.lessons||{{}}).length])}});
+$("ad-msg").textContent=all+" parents signed in. "+rows.length+" asked for email updates.";
+$("ad-tbl").innerHTML="<table class=\\"mp-t\\"><tr><th>Name</th><th>Email</th><th>Joined</th><th>Downloads</th><th>Lessons</th></tr>"+rows.map(function(r){{return "<tr>"+r.map(function(c){{return "<td>"+A.esc(c)+"</td>"}}).join("")+"</tr>"}}).join("")+"</table>";
+$("ad-csv").hidden=!rows.length;}})
+.catch(function(){{$("ad-msg").textContent="Only the Key Move Math account can load this list."}})}};
+$("ad-csv").onclick=function(){{var csv="name,email,joined,downloads,lessons\\n"+rows.map(function(r){{return r.map(q).join(",")}}).join("\\n");
+var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{{type:"text/csv"}}));a.download="key-move-math-parents.csv";a.click();}};
+}})();
+</script></body></html>
+"""
+    write("admin/parents/index.html", body)
 
 
 def grade_title(g):
@@ -1169,7 +1284,7 @@ def page_lesson(l, lessons):
         {"@type": "ListItem", "position": 1, "name": "Home", "item": SITE + "/"},
         {"@type": "ListItem", "position": 2, "name": "Lessons", "item": SITE + "/lessons/"},
         {"@type": "ListItem", "position": 3, "name": crumb_name, "item": f"{SITE}/lessons/{l['slug']}/"}]}
-    ld += f'<script type="application/ld+json">{json.dumps(crumbs_ld)}</script>'
+    ld += f'<script type="application/ld+json">{json.dumps(crumbs_ld)}</script><meta name="kmm-lesson" content="{e(l["slug"])}">'
     body = head(f"{l['tool']}: {l['hook']} | {gl} | {NAME}", desc, f"lessons/{l['slug']}/", root,
                 image=f"assets/covers/{l['slug']}.jpg", noindex=not l["live"], extra=ld)
     body += nav(root, "lessons")
@@ -2046,6 +2161,22 @@ def page_free():
 """
     body += foot(root, cta=False)
     write("free/index.html", body)
+
+
+FIREBASE = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "firebase.json")))
+# Nov 27, Jian: "Enable Google login" + "Both": parents sign in with Google to download PDFs (progress + opt-in list).
+# Off until data/firebase.json has the project's web config; lessons and topic pages never need sign-in.
+AUTH_ON = bool(FIREBASE.get("apiKey")) or os.environ.get("KMM_AUTH_PREVIEW") == "1"
+
+
+def auth_tags(root):
+    if not AUTH_ON:
+        return ""
+    cfg = {k: FIREBASE.get(k, "") for k in ("apiKey", "authDomain", "projectId", "appId")}
+    if not cfg["apiKey"]:
+        cfg["apiKey"] = "preview"
+    return (f'<script>window.KMM_FB={json.dumps(cfg)};window.KMM_ADMIN={json.dumps(FIREBASE.get("admin", ""))};</script>'
+            f'<script src="{root}assets/js/auth.js?v={ASSET_V}" defer></script>')
 
 
 CONTACT = "keymovemath@gmail.com"  # Nov 11, Jian: "They can email me at keymovemath@gmail.com if they get stuck"
@@ -3342,7 +3473,7 @@ def main():
     page_lessons(lessons)
     for l in lessons:
         page_lesson(l, lessons)
-    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "amc-8-scores/", "amc-8-cheat-sheet/", "math-kangaroo-in-12-weeks/", "mathcounts-in-10-weeks/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/"]
+    urls = ["", "free/", "lessons/", "key-moves/", "study-plan/", "amc-8-in-10-weeks/", "amc-8-scores/", "amc-8-cheat-sheet/", "math-kangaroo-in-12-weeks/", "mathcounts-in-10-weeks/", "contests/", "teachers/", "math-gifts/", "math-corner/", "grade-5/", "mock-tests/", "about/", "privacy/"]
     page_group("grade-5", f"Grade 5 Competition Math Lessons | {NAME}", "Grade 5 math",
                "The key moves that come up most on Grade 5 contests, grouped by topic. Each one is a full video lesson.",
                grade_lessons(lessons, 5),
@@ -3403,6 +3534,9 @@ def main():
     page_register()
     urls += ["how-to-register/"] + [f"how-to-register/{r['slug']}/" for r in REGISTER]
     page_about(lessons)
+    page_privacy()
+    page_progress()
+    page_admin_parents()
     page_404()
     for l in lessons:
         page_qr(l)

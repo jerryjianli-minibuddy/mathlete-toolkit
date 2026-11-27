@@ -1,0 +1,17 @@
+rules_version = '2';
+// Key Move Math parent sign-in (Nov 27). Paste into Firebase console > Firestore > Rules.
+// Each parent reads and writes only their own record; the Key Move Math account can read all to export the opt-in list.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == "keymovemath@gmail.com"
+        && request.auth.token.email_verified == true;
+    }
+    match /parents/{uid} {
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['name', 'email', 'optIn', 'created', 'updated', 'downloads', 'lessons', 'done']);
+      allow delete: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}
