@@ -903,6 +903,32 @@ def finder(lessons, root):
 """
 
 
+def home_packs(root):
+    """Nov 27: every 10-test pack on the home page, right under the hero, each with its buy button and its free diagnostic."""
+    rows = []
+    for t in sorted(TEST_SETS, key=lambda t: (t["grades"][0], t["grades"][-1])):
+        st = store_of(t)
+        if not (t["practice"] and SHOP.get("live") and st.get("pack")):
+            continue
+        k = t["contest"]
+        diag = (f'<a class="pk-diag" href="{free_href(root, k, t["grades"][0])}">Diagnostic first</a>' if t["diag"] else "")
+        rows.append(f'<li class="hp"><div class="hp-t"><b>{e(t["label"])}</b><span>{grades_label(t["grades"])}</span></div>'
+                    f'<div class="hp-a"><a class="btn btn-primary btn-sm" href="{e(st["pack"])}" rel="noopener">Buy 10 tests</a>{diag}</div></li>')
+    if not rows:
+        return ""
+    sale = (f'<p class="hp-sale"><b>Black Friday:</b> {SALE["off"]} with code <code>{e(SALE["code"])}</code>, through Dec 1.</p>'
+            if sale_now() else "")
+    return f"""<section class="sec hpacks" aria-labelledby="packs-h">
+ <div class="wrap">
+  <div class="sec-head"><h2 id="packs-h">Practice packs: 10 tests, {PACK_PRICE}</h2><a class="more" href="{root}mock-tests/">See inside &rarr;</a></div>
+  <p class="hp-lead">Every problem has a QR code to its video lesson, so your child can study on their own. Worked answer key for every test.</p>
+  {sale}
+  <ul class="hp-list">{"".join(rows)}</ul>
+  <p class="test-note">Our own original problems, modeled on each contest. Not affiliated with any contest.</p>
+ </div>
+</section>"""
+
+
 def page_home(lessons):
     root = ""
     live = [l for l in lessons if l["live"]]
@@ -949,6 +975,7 @@ def page_home(lessons):
   </div>
  </div>
 </section>
+{home_packs(root)}
 {qr_feature(root)}
 {study_feature(root)}
 <section class="trust" aria-label="About our tests">
@@ -974,7 +1001,7 @@ def page_home(lessons):
   <ol class="steps">
    <li><span class="n n1">1</span><h3>Take the diagnostic</h3><p>Pick your contest and grade. Check with the answer key.</p></li>
    <li><span class="n n2">2</span><h3>Watch the key move</h3><p>Scan the QR beside each miss.</p><a class="go" href="lessons/">See all {len(lessons)} lessons &rarr;</a></li>
-   <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten Noetic-style Grade 5 tests with worked answer keys.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
+   <li><span class="n n3">3</span><h3>Practice with the pack</h3><p>Ten tests for your contest and grade, each with a worked answer key.</p><a class="go" href="mock-tests/">See the practice tests &rarr;</a></li>
   </ol>
   <div class="freebies">
    <a class="freebie" href="practice/"><b>Practice problems by topic</b><span>AMC 8, MATHCOUNTS, Kangaroo and Noetic, with answers</span></a>
@@ -1907,26 +1934,52 @@ def store_of(t):
     return SHOP.get(t["store"], {}) if t.get("store") else SHOP
 
 
+def sale_now():
+    """True while the Black Friday code works (the build runs every hour, so the line comes and goes on its own)."""
+    if not SALE["code"]:
+        return False
+    n = datetime.now(timezone.utc)
+    return datetime.fromisoformat(SALE["start"]) <= n <= datetime.fromisoformat(SALE["end"])
+
+
+def sale_line():
+    return (f'<p class="fres-sale"><b>Black Friday:</b> {SALE["off"]} with code <code>{e(SALE["code"])}</code> at checkout, through Dec 1.</p>'
+            if sale_now() else "")
+
+
+def pack_pitch(t, root, big=False):
+    """Nov 27 (Jian: "My livelihood depends on this"): what the pack gives a parent, the price per test and the buy button."""
+    st = store_of(t)
+    why = ('<ul class="fres-why"><li>10 full practice tests, easy to hard</li>'
+           '<li>A QR code beside every problem opens its video lesson, so your child can study on their own</li>'
+           '<li>A worked answer key for every test</li></ul>')
+    btns = ""
+    if st.get("pack"):
+        btns += f'<a class="btn btn-primary{" btn-lg" if big else ""}" href="{e(st["pack"])}" rel="noopener">Get all 10 tests, {PACK_PRICE}</a>'
+    if st.get("tests"):
+        btns += f'<a class="btn btn-ghost-d" href="{root}mock-tests/{t.get("anchor", "")}">Or one test, {SINGLE_PRICE}</a>'
+    price = (f'<p class="fres-price"><b>{PACK_PRICE}</b> for all 10, about $2.50 a test. Print at home, use all year.</p>'
+             if st.get("pack") else "")
+    return why + price + sale_line() + f'<div class="fres-btns">{btns}</div>' + FINAL_SALE
+
+
 def free_result(root, t):
     """One result panel on /free: the free download next to the paid practice tests for that test set."""
     if t["practice"] and SHOP.get("live"):
-        paid = (f'<p>Printable practice tests, each with a worked answer key.</p>'
-                f'<div class="fres-btns">'
-                + (f'<a class="btn btn-primary" href="{e(store_of(t)["pack"])}" rel="noopener">Get the 10-test pack, {PACK_PRICE}</a>'
-                   if store_of(t).get("pack") else "")
-                + (f'<a class="btn {"btn-ghost-d" if store_of(t).get("pack") else "btn-primary"}" href="{root}mock-tests/{t.get("anchor", "")}">Buy one test, {SINGLE_PRICE}</a>'
-                   if store_of(t).get("tests") else "") + '</div>' + FINAL_SALE)
+        paid = pack_pitch(t, root, big=True)
     else:
         paid = '<p>Practice tests coming soon.</p>'
+    head_paid = f'<p class="eyebrow">Next step</p><h2>10 more {t["label"]} tests, {grades_label(t["grades"])}</h2>'
     if not t["diag"]:
         return f"""<div class="fres fres-1" data-key="{t['key']}">
-   <div class="fres-card fres-paid"><p class="eyebrow">Practice tests</p><h2>{t['label']} practice tests, {grades_label(t['grades'])}</h2>{paid}</div>
+   <div class="fres-card fres-paid">{head_paid}{paid}</div>
   </div>"""
     return f"""<div class="fres" data-key="{t['key']}">
    <div class="fres-card fres-free"><h2>{t['label']} diagnostic, {grades_label(t['grades'])}</h2>
     <p>Printable PDF with the answer key.</p>
-    <div class="fres-btns"><a class="btn btn-primary btn-lg" href="{diag_url(t)}" rel="noopener">Download PDF</a></div></div>
-   <div class="fres-card fres-paid"><p class="eyebrow">Practice tests</p><h2>{t['label']} practice tests</h2>{paid}</div>
+    <div class="fres-btns"><a class="btn btn-primary btn-lg" href="{diag_url(t)}" rel="noopener" data-diag-dl>Download PDF</a></div>
+    <p class="fres-after" hidden><b>Downloaded.</b> After the test, scan the QR beside each miss to watch its lesson. Then keep the momentum with the 10-test pack.</p></div>
+   <div class="fres-card fres-paid">{head_paid}{paid}</div>
   </div>"""
 
 
@@ -1971,6 +2024,7 @@ def page_free():
   <p class="lead">Pick your contest and grade, then download. No sign-up.</p>
   {picker}
   <div class="fres-list">{"".join(free_result(root, t) for t in TEST_SETS if t["diag"] or (t["practice"] and SHOP.get("live")))}</div>
+  <script>document.addEventListener("click",function(ev){{var a=ev.target.closest("[data-diag-dl]");if(!a)return;var c=a.closest(".fres");c.querySelector(".fres-after").hidden=false;c.querySelector(".fres-paid").classList.add("fres-hot");}});</script>
   <p class="teacher-note"><b>Teachers:</b> copy it for your class. <a href="{root}teachers/">See our page for teachers and clubs</a>.</p>
   <p class="test-note test-note-d">Every problem is our own. Not affiliated with any contest.</p>
  </div>
@@ -2445,12 +2499,22 @@ def slugify(t):
     return re.sub(r"[^a-z0-9]+", "-", t.lower()).strip("-")
 
 
+def practice_fits(l, k):
+    """Nov 27: AMC 8 and MATHCOUNTS test the same middle-school math, so a MATHCOUNTS lesson for grade 6 and up also
+    counts as AMC 8 practice, and so do grade 5 to 8 contest lessons. That gives parents searching "AMC 8 number theory problems" and the like a page."""
+    if k in l["contests"]:
+        return True
+    # AMC 8 is open to grade 8 and younger, and its first problems sit at grade 5 contest level (Nov 27).
+    return (k == "amc8" and bool({"mathcounts", "olympiad", "kangaroo", "noetic"} & set(l["contests"]))
+            and 5 <= max(title_grades(l) or [int(l["grade"])]) <= 8)
+
+
 def practice_pages(lessons):
     """[(contest, group name, slug, lessons)] for every contest x topic group with enough problems."""
     out = []
     for k in PRACTICE_CONTESTS:
         for name, fams in TOPICS:
-            ls = sorted([l for l in lessons if l["live"] and k in l["contests"] and l["family"] in fams
+            ls = sorted([l for l in lessons if l["live"] and practice_fits(l, k) and l["family"] in fams
                          and l["id"] in TOPIC_PROBLEMS], key=lambda l: l["tool_num"])
             if len(ls) >= PRACTICE_MIN:
                 lab = PRACTICE_LABEL.get(name, name.lower())

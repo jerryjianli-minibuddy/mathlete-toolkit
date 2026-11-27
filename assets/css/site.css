@@ -1148,3 +1148,19 @@ main .cdx :focus-visible { outline-color: var(--navy); }
 .tp-pic { margin: 0 0 8px; color: var(--muted); font-size: .95rem; }
 .tp-go { margin: 6px 0 0; }
 .tp-go a { color: var(--navy2); font-weight: 700; }
+/* Nov 27: pack pitch on /free and pack list on home */
+.fres-why { margin: 0 0 10px; padding-left: 1.1em; }
+.fres-why li { margin: 4px 0; }
+.fres-price { font-size: 1.02rem; }
+.fres-sale, .hp-sale { background: #FFD23F; color: #0E1A32; border-radius: 10px; padding: 8px 12px; }
+.fres-sale code, .hp-sale code { font-weight: 800; }
+.fres-after { margin-top: 12px; }
+.fres-hot { outline: 3px solid #FFD23F; }
+.hp-lead { margin: 0 0 12px; }
+.hp-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.hp { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #fff; border-radius: 14px; padding: 12px 14px; box-shadow: 0 3px 12px rgba(14,26,50,.08); }
+.hp-t { display: flex; flex-direction: column; }
+.hp-t span { font-size: .9rem; opacity: .75; }
+.hp-a { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.hp-a .pk-diag { font-size: .85rem; }
+.btn-sm { padding: 8px 14px; font-size: .92rem; }
