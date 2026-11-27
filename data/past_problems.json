@@ -33,5 +33,23 @@
   "video_id": "J2J_e_a3-qA",
   "added": "2026-12-02",
   "public": "2026-12-02T07:00:00-08:00"
+ },
+ {
+  "contest": "amc10a",
+  "year": 2026,
+  "num": 5,
+  "topic": "Sequence of averages",
+  "video_id": "aYNb5JaT3-k",
+  "added": "2026-12-01",
+  "public": "2026-12-01T07:00:00-08:00"
+ },
+ {
+  "contest": "amc10a",
+  "year": 2026,
+  "num": 13,
+  "topic": "Handshakes between two clubs",
+  "video_id": "UxNSqlX7ysg",
+  "added": "2026-12-03",
+  "public": "2026-12-03T07:00:00-08:00"
  }
 ]
