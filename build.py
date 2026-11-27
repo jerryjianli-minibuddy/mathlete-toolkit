@@ -1728,7 +1728,7 @@ def amc8_section(root, shop):
 def amc10_section(root, shop):
     """AMC 10-style Grades 9 and 10 (Payhip, Nov 14, Jian: "List AMC 10 tests"), with its free diagnostic.
     Real AMC 10A walkthroughs (Nov 27) show above it once each video is public."""
-    return past_box("amc10a", "AMC 10A") + contest_tests_section(
+    return past_box("amc10a", "AMC 10A") + past_box("amc10b", "AMC 10B") + contest_tests_section(
         root, shop, "amc10", "AMC 10-style", "Grades 9 and 10", "amc10", 10,
         "25 multiple-choice problems in 75 minutes, no calculator, with an answer key.",
         "25 problems, 75 minutes, answer key", ["Grades 9 and 10", "PDF", "75 min"],

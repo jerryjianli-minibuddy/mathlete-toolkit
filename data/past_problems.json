@@ -51,5 +51,23 @@
   "video_id": "UxNSqlX7ysg",
   "added": "2026-12-03",
   "public": "2026-12-03T07:00:00-08:00"
+ },
+ {
+  "contest": "amc10b",
+  "year": 2026,
+  "num": 7,
+  "topic": "Circle through 3 points",
+  "video_id": "eqgxYlLy69I",
+  "added": "2026-12-08",
+  "public": "2026-12-08T07:00:00-08:00"
+ },
+ {
+  "contest": "amc10a",
+  "year": 2026,
+  "num": 9,
+  "topic": "Similar triangles",
+  "video_id": "5-u9NVB8QWg",
+  "added": "2026-12-10",
+  "public": "2026-12-10T07:00:00-08:00"
  }
 ]
