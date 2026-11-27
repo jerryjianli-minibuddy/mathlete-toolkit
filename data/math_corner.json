@@ -422,6 +422,27 @@
    "img_w": 640,
    "img_h": 360,
    "img_alt": "The number 6174 in large yellow type above three subtractions: 5432 minus 2345 equals 3087, 8730 minus 0378 equals 8352, and 8532 minus 2358 equals 6174"
+  },
+  {
+   "slug": "the-37-trick",
+   "date": "2026-11-27",
+   "kind": "fact",
+   "tag": "Number trick",
+   "title": "The 37 trick: why 444 ÷ 12 always comes out to 37",
+   "desc": "Take any three-digit number with matching digits, like 444 or 777, and divide it by the sum of its digits. The answer is always 37. Here's why.",
+   "summary": "Any number like 444 or 777, divided by the sum of its digits, always gives 37.",
+   "formula": "aaa ÷ (a + a + a) = 37",
+   "body": [
+    "Ask a friend to pick a digit from 1 to 9 and write it three times, like 444. Then have them add up the three digits: 4 + 4 + 4 = 12. Now divide: 444 ÷ 12 = 37.",
+    "Try another one. 777 ÷ (7 + 7 + 7) = 777 ÷ 21 = 37. And 999 ÷ 27 = 37 too. Every digit gives the same answer, so you can say 37 before they even start.",
+    "Here is why it works. A number like 444 is just 4 × 111, and 111 = 3 × 37. So 444 = 4 × 3 × 37. The sum of the digits is 4 + 4 + 4 = 3 × 4. When you divide, the 3 and the 4 cancel out, and only 37 is left.",
+    "The same fact gives a neat times table: 37 × 3 = 111, 37 × 6 = 222, 37 × 9 = 333, all the way up to 37 × 27 = 999. Multiply 37 by any multiple of 3 up to 27 and you get three matching digits.",
+    "This is a good habit for contest problems too: when a number looks special, try breaking it into factors. Seeing 111 as 3 × 37 turns a puzzle into one line of work."
+   ],
+   "img": "the-37-trick.svg",
+   "img_w": 640,
+   "img_h": 360,
+   "img_alt": "The number 37 in large yellow type above three divisions: 444 divided by 12, 777 divided by 21, and 999 divided by 27, each equal to 37"
   }
  ]
 }
