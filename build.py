@@ -2527,8 +2527,21 @@ def page_practice_topic(k, name, slug, ls, pages):
     cname, style, anchor, tests_line, plan = PRACTICE_CONTESTS[k]
     C = CONTESTS[k]
     gs = sorted({int(g) for l in ls for g in title_grades(l) if offered(k, g)}) or [int(l["grade"]) for l in ls]
+    # Nov 27: match the page to the pack a parent can buy, so the grade line, diagnostic and buy button agree.
+    sets = [t for t in TEST_SETS if t["contest"] == k and test_live(t)]
+    pack = max(sets, key=lambda t: (len(set(t["grades"]) & set(gs)), t["practice"]), default=None)
+    if pack and not set(pack["grades"]) & set(gs):
+        gs = list(pack["grades"])
+    if k == "amc8" and pack:  # AMC 8 pages hold grade 5 to 8 lessons; the pack and diagnostic are grades 6 to 8
+        gs = list(pack["grades"])
     glabel = f"Grade {gs[0]}" if gs[0] == gs[-1] else f"Grades {gs[0]} to {gs[-1]}"
     diag_g = sorted(gs)[len(gs) // 2]
+    if pack and pack["diag"] and diag_g not in pack["grades"]:
+        diag_g = pack["grades"][0]
+    pack_box = ""
+    if pack and pack["practice"] and SHOP.get("live") and store_of(pack).get("pack"):
+        pack_box = (f'<div class="fres-card fres-paid tp-pack"><p class="eyebrow">Want more like these?</p>'
+                    f'<h2>10 full {e(pack["label"])} tests, {grades_label(pack["grades"])}</h2>{pack_pitch(pack, root)}</div>')
     items = []
     for i, l in enumerate(ls, 1):
         tp = TOPIC_PROBLEMS[l["id"]]
@@ -2565,6 +2578,7 @@ def page_practice_topic(k, name, slug, ls, pages):
 </section>
 <section class="sec sec-tight"><div class="wrap">
  <ol class="a8-plan">{"".join(items)}</ol>
+ {pack_box}
  <div class="tc-box">
   <h2>Keep going</h2>
   <ul class="sc-next">
